@@ -1,0 +1,110 @@
+@media only screen and (max-width: 767px), only screen and (max-device-width: 767px) {
+	/*rtl*/
+
+		body { direction: rtl; unicode-bidi: embed; }
+		.form_row .selectbox, .form_row input.input-text, .form_row input[type="date"], .form_row input[type="datetime-local"], .form_row input[type="datetime"], .form_row input[type="email"], .form_row input[type="file"], .form_row input[type="month"], .form_row input[type="number"], .form_row input[type="password"], .form_row input[type="search"], .form_row input[type="tel"], .form_row input[type="text"], .form_row input[type="url"], .form_row select, .form_row textarea, input[type="time"], input[type="week"] { text-align: right; }
+input.input-text, input[type="date"], input[type="datetime-local"], input[type="datetime"], input[type="email"], input[type="month"], input[type="number"], input[type="password"], input[type="search"], input[type="tel"], input[type="text"], input[type="time"], input[type="url"], input[type="week"], select, textarea { text-align: right; }
+		.author_social_networks.social_media .social_media_list{ text-align: right;}
+		body .comment-list li > a, .comment-list li > img.avatar{ float: right; margin-right: 0; margin-left: 20px;}
+		/*single page*/
+		body .comment-header img.avatar { left: auto; right: -74px; }
+		body .comment-meta span.comment-reply { padding: 0 5px 0 0; margin: 2px 10px 0 0; }
+		body .comment-meta span.comment-reply:after { left: auto; right: -6px; }
+		body .comments_rating span { padding-left: 0; padding-right: 10px; } 
+
+		td, th { text-align: right; }
+		#dir-container { direction: rtl !important; }
+		.hide_map_direction { text-align: left; }
+
+		.list [class*="post"] p.owner_name:before, .grid [class*="post"] p.owner_name:before, .list [class*="post"] p.phone:before, .grid [class*="post"] p.phone:before, .list [class*="post"] p.address:before, .grid [class*="post"] p.address:before, .list [class*="post"] p.time:before, .grid [class*="post"] p.time:before, .list [class*="post"] p.event_date:before, .grid [class*="post"] p.event_date:before, .list [class*="post"] p.address:before, .grid [class*="post"] p.address:before, .list [class*="post"] p.time:before, .grid [class*="post"] p.time:before, .peoplelink .website:before, .peoplelink .facebook:before, .peoplelink .twitter:before, .peoplelink .linkedin:before, .links .email:before, .links .phone:before, .post .rev_pin ul li.pinpoint:before, .post .rev_pin ul li.review:before { left: auto; right: 1px; width: 10px; }
+		.mobile-view .list .post p.phone, .mobile-view .grid .post p.phone, .mobile-view .list .post p.address, .mobile-view .grid .post p.address, .mobile-view .list .post p.time, .mobile-view .grid .post p.time, .mobile-view .rev_pin ul li.review, .mobile-view .rev_pin ul li.pinpoint, .mobile-view .rev_pin ul li.favourite, .mobile-view .list .post p.event_date, .mobile-view .grid .post p.event_date { padding-right: 15px; padding-left: 0; }
+		.mobile-view .fa-star-half.rating-half-on { left: -3px; }
+		.mobile-view .average_rating .fa-stack, .mobile-view .single_rating .fa-stack { margin-right: 0; }
+		.mobile-view .category_list_wrap h3 a:before { content: "\f104"; line-height: 1.4; left: 20px; right: auto; }
+		.mobile-view .list .entry h2.entry-title + [class*="rating"] { float: right; }
+
+
+		/*category page*/
+		body.mobile-view .list .post [class*="_img"], body #loop_property_taxonomy.list .post .property_img, body #tmpl-search-results.list .post .property_img, .mobile-view #content .peopleinfo-wrap > a { float: right; margin: 0 0 0 4%; }
+		body.mobile-view #loop_listing_archive.list .post .entry, body.mobile-view #loop_listing_taxonomy.list .post .entry, body.mobile-view #tmpl-search-results.list .hentry .entry, body.mobile-view.user #content .hentry .entry, body.mobile-view .hfeed .post .entry, body.mobile-view.user #content .author_cont div[id*="post"] .entry, body.mobile-view #loop_listing_archive .post .entry, body.mobile-view #loop_listing_taxonomy .post .entry, body.mobile-view .list .post .entry, body.mobile-view .grid .post .entry, .mobile-view #content .people_info {  }
+		body #loop_listing_archive.list .post .entry .listing_rating, body #loop_listing_taxonomy.list .post .entry .listing_rating, body #tmpl-search-results.list .hentry .entry .listing_rating, .user #content .hentry .entry .listing_rating, .user #content .author_cont div[id*="post"] .entry .listing_rating, body #loop_event_archive.list .post .entry .listing_rating, body #loop_event_taxonomy.list .post .entry div.listing_rating { float: right; }
+		.list .entry h2.entry-title { padding-left: 0; }
+		.mobile-view p.entry_address:before, .mobile-view p.address:before, .mobile-view p.website:before, .mobile-view p.phone:before, .mobile-view p.time:before, .mobile-view p.org_name:before, .mobile-view p.address:before, .mobile-view p.date:before, .mobile-view p.fees:before, .mobile-view p.property-price:before, .mobile-view p.bedrooms:before, .mobile-view p.bathrooms:before, .mobile-view p.area:before { left: auto; right: 15px; }
+
+			/*category page top links*/
+			.mobile-view .mobile-listing-header h1.loop-title, .mobile-view .entry-links-mobile { float: right; }
+			.mobile-view a#mobile_listing_popup_link, .mobile-view .directory_manager_tab { float: left; }
+			.mobile-view a#mobile_listing_popup_link { margin-left: 0; margin-right: 7px; }
+			.mobile-view .tev_sorting_option { margin-left: 0; margin-right: 7px; }
+			.mobile-view .directory_manager_tab ul.view_mode { float: right; }
+			.mobile-view .directory_manager_tab ul.view_mode li { float: left; margin-left: 0; margin-right: 7px; }
+			.mobile-view .select-wrap span.select:after { right: auto; left: 14px; }
+
+			/*popup form*/
+			.hrz-list-filter ul li { padding: 0 0 0 20px !important; }
+			.mobile-view .header-widget-wrap .widget.tmpl_search_property #tmpl_find_property .flt-pstatus li input[type="checkbox"] + label:before, .filter ul li input[type="checkbox"] + label:before, .hr_input_multicheckbox > .form_cat input[type="checkbox"] + label:before, .filter ul li input[type="radio"] + label:before { right: 10px; left: auto; }  
+			.mobile-view .header-widget-wrap .widget.tmpl_search_property #tmpl_find_property .flt-pstatus li label, .filter ul li label, .hr_input_multicheckbox > .form_cat label { padding: 10px 40px 10px 15px; }
+			#searchfilterform .ui-slider { float: left; }
+
+		/*detail page*/
+		body.directory-single-page .hentry .entry-header-logo { margin-left: 0; margin-right: 15px; }
+		.mobile-view .hentry .entry-header-logo ~ .entry-info { float: right; margin: 0 10px 0 0px; }
+		.mobile-view .entry-links-mobile ul li { float: right; }
+		
+		.mobile-view .hentry .entry-header-title .entry-header-custom-wrap p, .mobile-view.single-property .property .entry-header-left p.address, .mobile-view.singular-property .property .entry-header-left p.address, .mobile-view.event-single-page .hentry .entry-header-title .entry-header-custom-wrap p, .mobile-view .event-organizer .event-organizer-right p, .mobile-view .event-organizer p { padding: 10px 40px 10px 15px; }
+		.tmpl-accordion .tmpl-accordion-navigation > a:before { right: auto; left: 20px; }
+		body.directory-single-page .hentry .entry-header-title .entry-header-custom-wrap .entry-header-custom-right { padding-right: 0; }
+
+		/*comments*/
+		.comment-list li > a + div, .comment-list li > a + div.comment-wrap, .comment-list li > img.avatar + div, .comment-list li > img.avatar + div.comment-wrap { padding-left: 0; padding-right: 80px; }
+		.mobile-view .comment .average_rating .fa-stack, .mobile-view .comment .single_rating .fa-stack { left: 9px;  }
+		.fa-star-half.rating-half-on { left: -9px; }  
+		.average_rating_wrapper .fa-star-half.rating-half-on { left: -6px; }
+		.average_rating_wrapper .average_rating.clear_rating #rate .fa-stack { left: 6px; margin: 0 7px; }
+		.entry-info .average_rating_wrapper .average_rating.clear_rating #rate .fa-stack { left: 0; margin: 0; }
+		.entry-info .average_rating_wrapper .fa-star-half.rating-half-on { left: -3px; }
+		.mobile-view.singular .pos_navigation .post_left a { padding-left: 20px !important; }
+		.mobile-view.singular .pos_navigation .post_right a { padding-right: 20px !important; }
+		.readtooltipitem { left: auto; right: 0; }
+		.tmpl-accordion ul,.tmpl-accordion ol{ margin: 0 15px 10px 0px;}
+
+		/*realestate*/
+		.property-tax-detail .dfeature li.bedrooms:before, .property-tax-detail .dfeature li.bathrooms:before, .property-tax-detail .dfeature li.area:before { left: auto; right: 2px; text-align: right; }
+		.property-tax-detail .dfeature li { margin: 0 0 0 14px !important; padding: 0 16px 0 0; }
+		.mobile-view #listpagi { float: right; width: 100%; }
+
+		/*event*/
+		.mobile-view .post .entry .date { float: right; }
+		.mobile-view .list .post .entry .date, .mobile-view .list .post .entry .date span, .mobile-view #loop_event_archive.list .post .entry .date, .mobile-view #loop_event_taxonomy.list .post .entry .date, .mobile-view #loop_event_archive.list .post .entry .date span, .mobile-view #loop_event_taxonomy.list .post .entry .date span { text-align: right; }
+
+		.mobile-view #sub_event_categories ul li a:before { left: 15px; right: auto;  content: "\f104"; }
+
+		.mobile-view .widget_loop_taxonomy h3.widget-title .more { float: left; }
+		.mobile-view .select-wrap .tev_options_sel + span.select:after { left: -12px; top: -27px; }
+		.mobile-view .list .entry h2.entry-title { padding-left: 0; }
+		body.mobile-view #loop_listing_archive.list .post .entry .listing_rating, body.mobile-view #loop_listing_taxonomy.list .post .entry .listing_rating, body.mobile-view #tmpl-search-results.list .hentry .entry .listing_rating, .mobile-view.user #content .hentry .entry .listing_rating, .mobile-view.user #content .author_cont div[id*="post"] .entry .listing_rating, body.mobile-view #loop_event_archive.list .post .entry .listing_rating, body.mobile-view #loop_event_taxonomy.list .post .entry div.listing_rating { float: right; }
+
+		.mobile-view .widget_loop_taxonomy h3.widget-title .more { float: left; }
+		.mobile-view .select-wrap .tev_options_sel + span.select:after { left: -12px; top: -27px; }
+		.mobile-view .list .entry h2.entry-title { padding-left: 0; }
+
+
+		.mobile-view .templatic_rating ul, .mobile-view .templatic_rating ul + span { float: right; }
+		.mobile-view .templatic_rating ul  { margin-right: 0; margin-left: 10px; }
+		.comment-header .comment { float: left; }
+		.mobile-view h1.loop-title, body.mobile-view h1.page-title { float: right; }
+		.entry-content #submit_form h1, .entry-content #submit_form h2, .entry-content #submit_form h3, .entry-content #submit_form h4, .entry-content #submit_form h5, .entry-content #submit_form h6 { margin-top: 0; margin-bottom: 5px; }
+		.mobile-view #submit_form h3 { padding-right: 0; }
+		.mobile-view .user_dsb_cf { width: 100%; margin: 0; border-color: #000; }
+		.mobile-view .user_dsb_cf > div { padding: 8px 15px; float:right; }
+		.mobile-view .user_dsb_cf label { float: right; margin-right: 0; margin-left: 15px; text-align: right; width: 110px; vertical-align: top; }
+		.mobile-view .user_dsb_cf > p { background: transparent; vertical-align: top; text-align: right; }
+		.mobile-view .tab-bar-section.middle { text-align: left; }
+		.mobile-view .user_dsb_cf span { vertical-align: top; width: calc(100% - 125px); text-align: right; }
+		body.mobile-view .author_cont .author_photo img { float:right; margin-right:0; margin-left:15px; }
+		body.mobile-view .author_cont .author_photo .editProfile { float:right; width:60%; text-align:right; }
+		.mobile-view .author_cont .author_photo h2 { float:right; width: }
+		.author_social_networks.social_media .social_media_list { margin-right:0; margin-left:30px; clear:both; } 
+
+
+}

@@ -1,0 +1,38 @@
+<wpml-config>
+	<admin-texts>
+		<key name="templatic_settings">
+            <key name="mail_friend_sub" />
+            <key name="mail_friend_description" />
+            <key name="send_inquirey_email_sub" />
+            <key name="send_inquirey_email_description" />
+            <key name="registration_success_email_subject" />
+            <key name="registration_success_email_content" />
+            <key name="post_submited_success_email_subject" />
+            <key name="post_submited_success_email_content" />
+            <key name="payment_success_email_subject_to_client" />
+            <key name="payment_success_email_content_to_client" />
+            <key name="payment_success_email_subject_to_admin" />
+            <key name="payment_success_email_content_to_admin" />
+            <key name="pre_payment_success_email_subject_to_admin" />
+            <key name="pre_payment_success_email_content_to_admin" />
+			<key name="post_pre_bank_trasfer_msg_content" />
+			<key name="post_payment_success_msg_content" />
+			<key name="admin_post_upgrade_email_subject" />			
+			<key name="client_post_upgrade_email_subject" />			
+			<key name="reset_password_subject" />			
+			<key name="claim_ownership_subject" />			
+			<key name="listing_expiration_subject" />			
+			<key name="payment_cancelled_subject" />			
+			<key name="update_listing_notification_subject" />			
+			<key name="renew_listing_notification_subject" />			
+			<key name="contact_us_email_content" />			
+			<key name="admin_post_upgrade_email_content" />			
+			<key name="client_post_upgrade_email_content" />			
+			<key name="reset_password_content" />			
+			<key name="listing_expiration_content" />			
+			<key name="payment_cancelled_content" />
+			<key name="update_listing_notification_content" />
+			<key name="renew_listing_notification_content" />
+        </key>
+    </admin-texts>    
+</wpml-config>

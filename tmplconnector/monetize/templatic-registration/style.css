@@ -1,0 +1,149 @@
+/*-----------------------------------------------------------------------------------*/
+/*	12. Login Form Page
+/*-----------------------------------------------------------------------------------*/
+.error_msg { padding:8px 10px; text-align:center; margin-bottom:30px;  }
+.success_msg { padding:8px 10px; text-align:center; margin-bottom:30px;  }
+.login_form_l { float:left;  width:300px; }
+.login_form_l h4, .registration_form_box h4 { margin:0 0 10px 0; font-size:22px; font-weight:normal;  }
+.login_form_l .form_row label, .registration_form_box .form_row label { display:block; float:left; text-align:left; width:95%; font-size:14px; padding:4px; margin-top:10px;  }
+.login_form_l .form_row .textfield, .registration_form_box .form_row .textfield { width:270px; padding:8px 10px; margin-bottom:5px; font-size:13px; }
+.login_form_l .message_error2, .registration_form_box .message_error2, .submit_article_form span.message_error2 {  clear:both; padding-top:4px; padding-bottom:8px; display:block; font-size:12px;color:#de3230; }
+.submit_article_form span.message_error2 { margin-left:153px;  }
+.login_form_l p { font-size:12px; margin-bottom:10px; }
+.login_form_l a { font-size:12px; }
+.login_form_l a:hover {  }
+.login_form_l .b_signin_n { margin-right:10px;   padding:5px 15px; font-size:14px;
+cursor:pointer;  }
+.login_form_l .b_signin_n:hover { }
+#lostpassword_form h4, #register_form h4 { font-size:15px; padding-top:12px; font-weight:normal;  }
+.checkbox_field .message_note { float:left; width:auto; clear:none; }
+.registration_form_box .select {  width:270px; padding:8px 10px; margin-bottom:5px; font-size:13px;  }
+.registration_form_box .form_row .textarea { width:280px; }
+.registration_form_box .form_row .textfield_date { border:1px double #ccc ; margin-right:10px; float:left; background:#fff;   width:200px; padding:8px 10px; margin-bottom:5px; font-size:13px; }
+.registration_form_box calendar_img {  margin:0;   }
+.user_define {
+    float: left;
+    padding-bottom: 10px;
+    padding-top: 0;
+	width:200px;
+}
+.registration_form_box .form_row  .message_error2 { padding-left:0 !important; }
+/* login form color & bg */
+.login_form_l h4, .registration_form_box h4 { }
+.login_form_l .form_row label, .registration_form_box .form_row label { color:#4a4a4a;  }
+.login_form_l .form_row .textfield, .registration_form_box .form_row .textfield { border:1px double #ccc; background:#fff; }
+.login_form_l a { color:#CC4B3E; font-size:12px; }
+.login_form_l a:hover { color:#333; }
+.login_form_l .b_signin_n { color:#fff;  border:1px solid #666; 
+background:#000; }
+.login_form_l .b_signin_n:hover { background:#666; }
+#lostpassword_form h4, #register_form h4 { border-top:1px solid #ccc;  }
+.error_msg { background:#ffe4e4; border-top:1px solid #ee8686;  border-bottom:1px solid #ee8686; color:#d70000;   }
+.success_msg { text-align:center; color:#356c1d; background:#cee8c3; border-top:1px solid #7ea96b; border-bottom:1px solid #7ea96b; }
+.upload_img input { border:1px solid #ccc; }
+#loginwidgetform .form_row label { padding: 5px 0; }
+/* add place  form ------------------------------------------------------------*/
+#propertyform { clear:both; }
+#user_sample_image{ float:left; }
+#content p.note  { font:11px Arial, Helvetica, sans-serif; text-align:right; }
+.user_define { position:relative; top:6px; margin-right:10px; }
+#span_Free { clear:both; display:block; font-weight: bold; }
+.form_row  table.img_table{ /*margin-left: 270px */ }
+.form_row  table.img_table .success { float:left; margin-right:15px;}
+.b_review { /*padding:7px 20px; margin:0px 0 10px 147px; float:left; font-size:17px; cursor:pointer;*/  }
+.b_submit { margin-left:140px; cursor:pointer; }
+input#submit { cursor:pointer; margin-bottom:20px; }
+#cat_price, #pkg_price, #feture_price { font-size:20px; }
+#result_price { font-size:24px;  }
+.claim_ownership .claim_recaptcha_div,
+.claim_ownership label.recaptcha_claim { margin-left: 20px;}
+/* activation box css */
+.panel-right{ float:left; width:60%; margin-left: 10%;}
+.panel-left{ float:left; margin-left: 70px; text-align: center; width: 20%;  }
+.msg-templatic{ margin:30px 0px; }
+.panel-right .updated{  margin-left: -5px; padding: 5px;}
+.clearfixb{ clear:both; margin-top: 10px;}
+/* login_form */
+.login_form_l { float:left; margin-top:40px; width:297px; }
+.login_form_l h4 { margin:0; padding:0;  }
+.login_form_l .form_row label { display:block; float:left; text-align:left; width:95%; padding:4px; }
+.login_form_l .form_row .textfield { width:255px; margin-bottom:3px; }
+.login_form_l .message_error2 { padding-left:0; }
+#content .login_form_l .b_signin_n { padding:4px 20px; margin-right:8px; font:bold 13px Arial, Helvetica, sans-serif; cursor:pointer;  text-transform:uppercase;  }
+#lostpassword_form h4 { font:15px Georgia, "Times New Roman", Times, serif; border-top:1px solid #ccc; padding-top:12px; }
+/* registration_form_r */
+.registration_form_box h4 { margin:0px; padding:7px 0 0;  }
+.registration_form_box { float:right;  padding-top:40px; width:300px; } 
+.registration_form_box .form_row label { display:block; float:left; text-align:left; width:95%; padding:4px; }
+.registration_form_box .message_error2 { padding-left:0; }
+ #content .registration_form_box .b_registernow { padding:4px 20px; margin-right:8px; font:bold 13px Arial, Helvetica, sans-serif; cursor:pointer;  text-transform:uppercase;  }
+ #reg_passmail { font:11px Arial, Helvetica, sans-serif;  }
+/* preview & publish page */
+.preview_section { display:table; margin-top:20px; width:96%;  clear:both;  margin-bottom:30px; padding:10px 20px; background:#ffeaa3; border-top:1px solid #e17f3e; border-bottom:1px solid #e17f3e;   }
+.preview_section h5.free_property, .preview_section h5.payment_head { padding:12px 0 25px 0; font:18px Georgia, "Times New Roman", Times, serif; color:#cc4d00; }
+.b_goback { margin-right:10px; padding-top:6px; }
+.preview_section h5.free_property {  text-align:center; }
+.preview_section .b_cancel { float:right; padding:4px 20px; cursor:pointer; }
+.preview_section .b_delete { padding:4px 20px; cursor:pointer; }
+/*-----------------------------------------------------------------------------------*/
+/*   13. Registration Form
+/*-----------------------------------------------------------------------------------*/
+.content_full .registration_form_box { float:right; width:300px; }
+.edit_profile .registration_form_box {  margin:0 auto; width:300px; float:inherit;  } 
+.registration_form_box .b_registernow {  margin-right:10px;  padding:5px 15px; font-size:14px;
+cursor:pointer;  }
+.button_cancel { background:none; color:#666; border:none; cursor:pointer; }
+.button_cancel:hover { color:#000; }
+.b_submit{ cursor: pointer; font-size: 14px; margin-right: 10px; padding: 5px 15px; }
+.editprofile_page #sign_up .registration_form_box { border: medium none; float: inherit; margin: 0; width: auto; display:table; }
+#reg_passmail { font-size:11px; margin-bottom:10px;  }
+.content .edit_profile { float:left; margin-left:20%; }
+ 
+#personal_info { border-right: 1px solid #EEEEEE; }
+#personal_info { float: left; margin-right: 50px; padding-right: 45px; width: 300px; }
+/* registration color  */
+#reg_passmail { color:#a8a79f; }
+.content .registration_form_box {  float:left; margin-top:40px; width: 290px; }
+/* #loginform { margin:0px 0px 55px 0px; padding:0; }
+ */
+#sign_up .registration_form_box { padding-top:0; margin-top:33px; border-left:1px solid #eee; }
+.registration_form_r .registration_form_box { padding-left:22px;}
+#componentDiv {
+    margin-left: -9px;
+    margin-top: 11px;
+}
+.sidebar #componentDiv { margin-left :0px; }
+.option  h3{
+    font-weight: normal !important;
+}
+#signin-btn{
+background :url('images/sign-in-with-twitter-l.png') no-repeat;
+width:160px;
+height:30px;
+border:0px;
+margin:5px 0px 5px 0px;
+cursor:pointer;
+}
+.error 
+{ color:red; }
+.message_error{ color:red;  font-size:12px; }
+.clearfix { clear: both; }
+.author_cont { border: 1px solid #dddddd; border-radius: 2px; padding: 10px; }
+.author_cont .author_photo { float: left; margin-right: 20px; }
+.author_cont .author_photo img {
+	background: #FFFFFF;
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 1px 2px #BBBBBB;
+    padding: 3px;}
+.author_cont .author_photo .editProfile { font-size: 12px; text-align: center; }
+.author_cont .right_box { float: left; }
+.author_cont .right_box p { margin-bottom: 0; }
+.author_cont .right_box p label { font-weight: bold; }
+.login_cont_left { float: left;}
+#userform .message_note { padding-left: 0; }
+.checkbox_field .message_note { clear: both !important; }
+#chngpwdform { margin-bottom: 30px; }
+.form_row .indicates{
+ color:red;
+}
+.available_tick { /*background: url(images/tick.png) no-repeat 250px center !important; padding-right: 20px !important; width: 245px !important;*/  }

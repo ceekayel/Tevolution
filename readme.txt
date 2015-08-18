@@ -1,0 +1,1 @@
+If you want to enable facebook login simply click on enabled facebook login in login wizard if still facing the problem and not using templatic themes then add do_action('templ_body_start'); below <body> tag.
