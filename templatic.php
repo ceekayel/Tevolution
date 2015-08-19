@@ -13,10 +13,10 @@ if (defined('WP_DEBUG') and WP_DEBUG == true){
 } else {
 	error_reporting(0);
 }
-define('PLUGIN_FOLDER_NAME','Tevolution');
+define('PLUGIN_FOLDER_NAME','tevolution');
 define('TEVOLUTION_VERSION','2.2.11');
 @define('PLUGIN_NAME','Tevolution Plugin');
-define('TEVOLUTION_SLUG','Tevolution/templatic.php');
+define('TEVOLUTION_SLUG','tevolution/templatic.php');
 
 include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 require_once(plugin_dir_path( __FILE__ ).'classes/templconnector.class.php' );
