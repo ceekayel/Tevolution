@@ -4,11 +4,24 @@
 */
 
 $tmpdata = get_option('templatic_settings');
-/*if(in_array('submit',$tmpdata['user_verification_page']) && !$_SESSION['gotit']){
+
+/* get value for  "submit before pay" for package */
+$subscription_as_pay_post = get_post_meta($_POST['pkg_id'],'subscription_as_pay_post',true);
+
+/* check if subscrpition package is selected and "submit before pay" option is enabled from backend
+ * if that option is enabled then check the condition for variable "$_SESSION['gotit']" is set or not 
+ * Otherwise do as it is 
+*/
+$is_subscriptioncheck = ($_POST['pkg_type'] == 2 && $subscription_as_pay_post  == 1) ? true : false;
+
+/* check for possibilities for adding spam posts */
+if(empty($_POST) || (is_array($tmpdata['user_verification_page']) && in_array('submit',$tmpdata['user_verification_page']) && ($is_subscriptioncheck || $_POST['pkg_type'] == 1)) && !$_SESSION['gotit'] && get_option('gotit') == ''){
 	return;
 }else{
+	delete_option('gotit');
 	unset($_SESSION['gotit']);
-}*/
+}
+
 unset($_SESSION['custom_fields']);
 if(($_POST['submit_post_type'] && $_POST['submit_post_type']!="")  && (isset( $_POST['submit_form_nonce_field'] ) || wp_verify_nonce( $_POST['submit_form_nonce_field'], 'submit_form_action' )) )
 {
@@ -95,7 +108,8 @@ if(($_POST['submit_post_type'] && $_POST['submit_post_type']!="")  && (isset( $_
 			else
 			{
 				update_user_meta($current_user_id,'package_selected',$_POST['package_select']);
-				update_user_meta($current_user_id,$submit_post_type.'_package_select',$_POST['package_select']);				
+				update_user_meta($current_user_id,$submit_post_type.'_package_select',$_POST['package_select']);
+				update_user_meta($current_user_id,'sub_id',$_POST['package_select']);
 				update_user_meta($current_user_id,'total_list_of_post',0);
 				update_user_meta($current_user_id,$submit_post_type.'_list_of_post',0);
 			}
@@ -162,7 +176,7 @@ if(($_POST['submit_post_type'] && $_POST['submit_post_type']!="")  && (isset( $_
 		}
 	}
 	/* Finish category price calculation*/
-	
+
 	$exclude_post=apply_filters('submit_exclude_post',array('category','post_title','post_content','imgarr','Update','post_excerpt','post_tags','selectall','submitted','submit_post_type','action','pid'),$_POST);
 	
 	
@@ -386,6 +400,7 @@ if(($_POST['submit_post_type'] && $_POST['submit_post_type']!="")  && (isset( $_
 					update_user_meta($current_user_id,'total_list_of_post',$limit_post+1);
 					update_user_meta($current_user_id,$submit_post_type.'_package_select',$_POST['package_select']);
 				}
+				
 				update_user_meta($current_user_id,'package_selected',$_POST['package_select']);
 				
 				if(isset($_REQUEST['package_free_submission']) &&  @$_REQUEST['package_free_submission'] >0 && get_user_meta($current_user_id,'package_free_submission_completed',true) != 'completed')
@@ -417,6 +432,7 @@ if(($_POST['submit_post_type'] && $_POST['submit_post_type']!="")  && (isset( $_
 				if(get_post_meta($_POST['package_select'],'package_type',true) == 2){
 					update_user_meta($current_user_id,$submit_post_type.'_package_select',$_POST['package_select']);				
 					update_user_meta($current_user_id,'total_list_of_post',1);
+					update_user_meta($current_user_id,'sub_id',$_POST['package_select']);
 					update_user_meta($current_user_id,$submit_post_type.'_list_of_post',1);
 				}
 				
@@ -548,14 +564,14 @@ if(($_POST['submit_post_type'] && $_POST['submit_post_type']!="")  && (isset( $_
 	}
 	
 	if(function_exists('icl_t')){
-		icl_register_string(DOMAIN,$mail_post_title,$mail_post_title);
-		$mail_post_title = icl_t(DOMAIN,$mail_post_title,$mail_post_title);
+		icl_register_string('templatic',$mail_post_title,$mail_post_title);
+		$mail_post_title = icl_t('templatic',$mail_post_title,$mail_post_title);
 	}else{
 		$mail_post_title = @$mail_post_title;
 	}
 	
 	if(!$email_subject){
-		$email_subject = __('A new post has been submitted on your site',DOMAIN);
+		$email_subject = __('A new post has been submitted on your site','templatic');
 	}
 	if($_POST['pid']){
 		$update_listing_notification_subject=$tmpdata['update_listing_notification_subject'];
@@ -569,14 +585,14 @@ if(($_POST['submit_post_type'] && $_POST['submit_post_type']!="")  && (isset( $_
 		$email_subject = __(sprintf('%s renew of ID:#%s',$mail_post_title,$last_postid));
 	}
 	if(!$email_content){
-		$email_content = __('<p>Dear [#to_name#],</p><p>A new submission has been made on your site with the details below.</p><p>[#information_details#]</p><p>Thank You,<br/>[#site_name#]</p>',DOMAIN);
+		$email_content = __('<p>Dear [#to_name#],</p><p>A new submission has been made on your site with the details below.</p><p>[#information_details#]</p><p>Thank You,<br/>[#site_name#]</p>','templatic');
 	}
 	if($_POST['pid'] ){				
 		$email_content = __(sprintf('<p>Dear [#to_name#],</p>
 		<p>%s has been updated on your site. Here is the information about the %s:</p>
 		[#information_details#]
 		<br>
-		<p>[#site_name#]</p>',$mail_post_title,$mail_post_title),DOMAIN);
+		<p>[#site_name#]</p>',$mail_post_title,$mail_post_title),'templatic');
 		$email_content=$tmpdata['update_listing_notification_content'];	
 		if(!$email_content)
 			$email_content = "<p>Dear [#to_name#],</p><p>[#post_type#] ID #[#submition_Id#] has been updated on your site.</p><p>You can review it again by clicking on its title in this email or through your admin dashboard.</p>[#information_details#]<br><p>[#site_name#]</p>";
@@ -586,12 +602,12 @@ if(($_POST['submit_post_type'] && $_POST['submit_post_type']!="")  && (isset( $_
 		<p>%s has been renew on your site. Here is the information about the %s:</p>
 		[#information_details#]
 		<br>
-		<p>[#site_name#]</p>',$mail_post_title,$mail_post_title),DOMAIN);
+		<p>[#site_name#]</p>',$mail_post_title,$mail_post_title),'templatic');
 		
 	}
 	
 	if(!$email_subject_user){
-		$email_subject_user = __('Details about the listing you have submitted on [#site_title#]',DOMAIN);	
+		$email_subject_user = __('Details about the listing you have submitted on [#site_title#]','templatic');	
 	}
 	if($_POST['pid']){
 		$update_listing_notification_subject=$tmpdata['update_listing_notification_subject'];
@@ -605,7 +621,7 @@ if(($_POST['submit_post_type'] && $_POST['submit_post_type']!="")  && (isset( $_
 	{
 		$update_listing_notification_subject=$tmpdata['renew_listing_notification_subject'];
 		if(!$update_listing_notification_subject){
-			$update_listing_notification_subject = __('[#post_type#] renew of ID:#[#submition_Id#]',DOMAIN);	
+			$update_listing_notification_subject = __('[#post_type#] renew of ID:#[#submition_Id#]','templatic');	
 		}
 		$email_subject_user = str_replace(array('[#post_type#]','[#submition_Id#]'),array($mail_post_title,$last_postid),$update_listing_notification_subject);
 		
@@ -615,7 +631,7 @@ if(($_POST['submit_post_type'] && $_POST['submit_post_type']!="")  && (isset( $_
 	}
 	if(!$email_content_user)
 	{
-		$email_content_user = __("<p>Howdy [#to_name#],</p><p>You have submitted a new listing. Here are some details about it,</p><p>[#information_details#]</p><p>Thank You,<br/>[#site_name#]</p>",DOMAIN);
+		$email_content_user = __("<p>Howdy [#to_name#],</p><p>You have submitted a new listing. Here are some details about it,</p><p>[#information_details#]</p><p>Thank You,<br/>[#site_name#]</p>",'templatic');
 	}
 	if($_POST['pid'])
 	{
@@ -627,18 +643,18 @@ if(($_POST['submit_post_type'] && $_POST['submit_post_type']!="")  && (isset( $_
 	{
 		$email_content_user=$tmpdata['renew_listing_notification_content'];
 		if(!$email_content_user){
-			$email_content_user = __('<p>Dear [#to_name#],</p><p>Your [#post_type#] has been renewed by you . Here is the information about the [#post_type#]:</p><p>[#information_details#]</p><p>[#site_name#]</p>',DOMAIN);	
+			$email_content_user = __('<p>Dear [#to_name#],</p><p>Your [#post_type#] has been renewed by you . Here is the information about the [#post_type#]:</p><p>[#information_details#]</p><p>[#site_name#]</p>','templatic');	
 		}
 		
 	}	
-	$information_details = "<p>".__('ID',DOMAIN)." : ".$last_postid."</p>";
-	$information_details .= '<p>'.__('View more detail of',DOMAIN).' <a href="'.get_permalink($last_postid).'">'.stripslashes($my_post['post_title']).'</a></p>';
+	$information_details = "<p>".__('ID','templatic')." : ".$last_postid."</p>";
+	$information_details .= '<p>'.__('View more detail of','templatic').' <a href="'.get_permalink($last_postid).'">'.stripslashes($my_post['post_title']).'</a></p>';
 	global $payable_amount;
 	if($payable_amount > 0){
-		$information_details .= '<p>'.__('Payment Status: <b>Pending</b>',DOMAIN).'</p>';
-		$information_details .= '<p>'.__('Payment Method: <b>'.ucfirst(@$_POST['paymentmethod']).'</b>',DOMAIN).'</p>';
+		$information_details .= '<p>'.__('Payment Status: <b>Pending</b>','templatic').'</p>';
+		$information_details .= '<p>'.__('Payment Method: <b>'.ucfirst(@$_POST['paymentmethod']).'</b>','templatic').'</p>';
 	}else{
-		$information_details .= '<p>'.__('Payment Status: <b>Success</b>',DOMAIN).'</p>';
+		$information_details .= '<p>'.__('Payment Status: <b>Success</b>','templatic').'</p>';
 	}
 	/* Get the custom fields for send via email  */
 	remove_all_actions('posts_where');
@@ -682,13 +698,13 @@ if(($_POST['submit_post_type'] && $_POST['submit_post_type']!="")  && (isset( $_
 			else
 				$post_title = '<a href="'.get_permalink($_POST['pid']).'">'.$my_post['post_title'].'</a>';
 				
-			$information_details.= '<li><label>'.__('Title',DOMAIN).': </label>'.$post_title.'</li>';
+			$information_details.= '<li><label>'.__('Title','templatic').': </label>'.$post_title.'</li>';
 		}else{
 			if(get_post_status( $last_postid ) == 'draft')
 				$post_title = $my_post['post_title'];
 			else
 				$post_title = '<a href="'.get_permalink($last_postid).'">'.$my_post['post_title'].'</a>';
-			$information_details.= '<li><label>'.__('Title',DOMAIN).': </label>'.$post_title.'</li>';
+			$information_details.= '<li><label>'.__('Title','templatic').': </label>'.$post_title.'</li>';
 		}
 		/* Submitted Post category */
 		$category_name = wp_get_post_terms($last_postid, $taxonomy);
@@ -699,7 +715,7 @@ if(($_POST['submit_post_type'] && $_POST['submit_post_type']!="")  && (isset( $_
 			{
 				$_value .= $value->name.",";
 			}
-			$information_details.= "<li><label>".sprintf(__('%s Category',DOMAIN),$mail_post_title).": </label> ".substr($_value,0,-1)."</li>";
+			$information_details.= "<li><label>".sprintf(__('%s Category','templatic'),$mail_post_title).": </label> ".substr($_value,0,-1)."</li>";
 		}
 		
 		foreach($show_on_email as $key=>$val)
@@ -785,22 +801,22 @@ if(($_POST['submit_post_type'] && $_POST['submit_post_type']!="")  && (isset( $_
 		if(get_post_meta($last_postid,'package_select',true))
 		{
 			$package_name = get_post(get_post_meta($last_postid,'package_select',true));
-			$information_details.= "<li><h4>".__('Price Package Information',DOMAIN)."</h4></li>";
-			$information_details.= "<li><label>".__('Package Name',DOMAIN).": </label>".$package_name->post_title."</li>";
-			$information_details.= "<li><label>".__('Total Price',DOMAIN).": </label>".fetch_currency_with_position(get_post_meta($last_postid,'total_price',true))."</li>";				 
+			$information_details.= "<li><h4>".__('Price Package Information','templatic')."</h4></li>";
+			$information_details.= "<li><label>".__('Package Name','templatic').": </label>".$package_name->post_title."</li>";
+			$information_details.= "<li><label>".__('Total Price','templatic').": </label>".fetch_currency_with_position(str_replace(",", "",get_post_meta($last_postid,'total_price',true)))."</li>";				 
 		}
 		if(get_post_meta($last_postid,'alive_days',true))
 		{
-			 $information_details.= "<li><label>".__('Validity',DOMAIN).": </label> ".get_post_meta($last_postid,'alive_days',true).' '.__('Days',DOMAIN)."</li>";
+			 $information_details.= "<li><label>".__('Validity','templatic').": </label> ".get_post_meta($last_postid,'alive_days',true).' '.__('Days','templatic')."</li>";
 		}
 		if(get_user_meta($suc_post->post_author,'list_of_post',true))
 		{
-			 $information_details.= "<li><label>".__('Submited number of posts',DOMAIN).": </label> ".get_user_meta($suc_post->post_author,'list_of_post',true)."</li>";
+			 $information_details.= "<li><label>".__('Submited number of posts','templatic').": </label> ".get_user_meta($suc_post->post_author,'list_of_post',true)."</li>";
 		}
 		if(get_post_meta(get_post_meta($last_postid,'package_select',true),'recurring',true))
 		{
 			$package_name = get_post(get_post_meta($last_postid,'package_select',true));
-			$information_details.= "<li><label>".__('Recurring Charges',DOMAIN).": </label> ".fetch_currency_with_position(get_post_meta($last_postid,'paid_amount',true))."</li>";
+			$information_details.= "<li><label>".__('Recurring Charges','templatic').": </label> ".fetch_currency_with_position(get_post_meta($last_postid,'paid_amount',true))."</li>";
 		}
 		$information_details.='</ul>';
 	}

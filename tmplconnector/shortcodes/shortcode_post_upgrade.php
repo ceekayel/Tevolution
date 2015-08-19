@@ -89,7 +89,7 @@ function tevolution_post_upgrade_template(){
 
 		?>
         <div id="step-post" class="accordion-navigation step-wrapper step-post">
-				<a class="step-heading active" href="#"><span><?php echo $post_heading_number; ?></span><span><?php _e('Enter Details',DOMAIN); ?></span><span><i class="fa fa-caret-down"></i><i class="fa fa-caret-right"></i></span></a>
+				<a class="step-heading active" href="#"><span><?php echo $post_heading_number; ?></span><span><?php _e('Enter Details','templatic'); ?></span><span><i class="fa fa-caret-down"></i><i class="fa fa-caret-right"></i></span></a>
 					<div id="post" class="step-post content <?php echo $active; ?> clearfix">
                     <?php
 				
@@ -131,7 +131,7 @@ function tevolution_post_upgrade_template(){
 		
 			tevolution_show_term_and_condition(); /* show terms and conditions check box*/
 			echo '<span class="message_error2" id="common_error"></span>';
-			echo '<input type="button" id="continue_submit_from" name="continue_submit_from" value="'.__('Continue',DOMAIN).'" '.$submit_button.'/>&nbsp;&nbsp;';
+			echo '<input type="button" id="continue_submit_from" name="continue_submit_from" value="'.__('Continue','templatic').'" '.$submit_button.'/>&nbsp;&nbsp;';
 			echo '</div>';
 		echo '</div>';
 
@@ -140,7 +140,7 @@ function tevolution_post_upgrade_template(){
 				if($current_user->ID=='') {  
 				?>
                  <div id="step-auth" class="accordion-navigation step-wrapper step-auth">
-		            <a class="step-heading active" href="#"><span id="span_user_login">3</span><span><?php _e('Login / Register',DOMAIN); ?></span><span><i class="fa fa-caret-down"></i><i class="fa fa-caret-right"></i></span></a>
+		            <a class="step-heading active" href="#"><span id="span_user_login">3</span><span><?php _e('Login / Register','templatic'); ?></span><span><i class="fa fa-caret-down"></i><i class="fa fa-caret-right"></i></span></a>
         		    <div id="auth" class="step-auth content clearfix">
                     <?php
 						/*display the login and register form while user submit a form without logged in.*/
@@ -165,13 +165,13 @@ function tevolution_post_upgrade_template(){
 				
 				?>
 				<div id="step-payment" class="accordion-navigation step-wrapper step-payment">
-					<a class="step-heading active" href="#"><span id="select_payment"><?php echo $val; ?></span><span><?php _e('Payment',DOMAIN); ?></span><span><i class="fa fa-caret-down"></i><i class="fa fa-caret-right"></i></span></a>
+					<a class="step-heading active" href="#"><span id="select_payment"><?php echo $val; ?></span><span><?php _e('Payment','templatic'); ?></span><span><i class="fa fa-caret-down"></i><i class="fa fa-caret-right"></i></span></a>
 					<div id="payment" class="step-payment content clearfix">
 					<?php
 						/*To display the payment gateways on submit form page*/
 						templatic_payment_option_preview_page(); 
 					?>
-					<input type="button" id="submit_form_button" name="submit_form_button" value="<?php  _e('Submit',DOMAIN);?>" class="progress-button" />
+					<input type="button" id="submit_form_button" name="submit_form_button" value="<?php  _e('Submit','templatic');?>" class="progress-button" />
 					</div>
 				</div>
 				<?php
@@ -212,7 +212,7 @@ function tevolution_post_upgrade_template(){
 							   'name' 	      => $taxonomy,
 							   'espan'	      => 'category_span',
 							   'type'	           => $tmpdata['templatic-category_type'],
-							   'text'	           => __('Please select Category',DOMAIN),
+							   'text'	           => __('Please select Category','templatic'),
 							   'validation_type' => 'require'
 							   );
 	}

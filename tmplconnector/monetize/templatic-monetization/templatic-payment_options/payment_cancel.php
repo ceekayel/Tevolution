@@ -4,8 +4,8 @@
  */
 global $current_user,$wpdb;
 $transaction_tabel = $wpdb->prefix."transactions";
-define('PAY_CANCELATION_TITLE',__('Payment Cancellation',DOMAIN));
-define('PAY_FAST_CANCEL_MSG',__('Payment has been cancelled successfully. The post submitted by you has not been published.',DOMAIN));
+define('PAY_CANCELATION_TITLE',__('Payment Cancellation','templatic'));
+define('PAY_FAST_CANCEL_MSG',__('Payment has been cancelled successfully. The post submitted by you has not been published.','templatic'));
 $postid = @$_REQUEST['pid'];
 $trans_id = @$_REQUEST['trans_id'];
 $post_author = $wpdb->get_var( "select post_author from $wpdb->posts where ID = {$postid}" );
@@ -42,6 +42,6 @@ if( $post_author == $current_user->ID ){
 	get_sidebar('primary');
 	get_footer(); 
 }else{
-	wp_die(__('You have not permission to access this page',DOMAIN));
+	wp_die(__('You have not permission to access this page','templatic'));
 }
 ?>

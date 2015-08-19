@@ -5,12 +5,13 @@
 class templatic_advanced_search extends WP_Widget {
 	function templatic_advanced_search() {
 	/*Constructor*/
-		$widget_ops = array('classname' => 'templatic-advanced-search', 'description' => __('Display search fields for a specific post type. Custom fields selected to show inside the Advanced search form will also show inside this widget. Works best in sidebar areas.',ADMINDOMAIN),'before_widget'=>'<div class="column_wrap">' );
-		$this->WP_Widget('templatic_advanced_search', __('T &rarr; Advanced Search',ADMINDOMAIN), $widget_ops);
+		$widget_ops = array('classname' => 'templatic-advanced-search', 'description' => __('Display search fields for a specific post type. Custom fields selected to show inside the Advanced search form will also show inside this widget. Works best in sidebar areas.','templatic-admin'),'before_widget'=>'<div class="column_wrap">' );
+		$this->WP_Widget('templatic_advanced_search', __('T &rarr; Advanced Search','templatic-admin'), $widget_ops);
 	}
 	function widget($args, $instance) {
 	/* prints the widget*/
 		extract($args, EXTR_SKIP);
+
 		global $wp_locale;
 		
 		$title = empty($instance['title']) ? '' : apply_filters('widget_title', $instance['title']); 		
@@ -21,8 +22,8 @@ class templatic_advanced_search extends WP_Widget {
 		
 		echo $args['before_widget'];
 		if (function_exists('icl_register_string')) {	
-			icl_register_string(DOMAIN,'templatic_about_title'.$title,$title);
-			$title = icl_t(DOMAIN, 'templatic_about_title'.$title,$title);
+			icl_register_string('templatic','templatic_about_title'.$title,$title);
+			$title = icl_t('templatic', 'templatic_about_title'.$title,$title);
 		}
 		if ( $title <> "" ) { 
 			echo $args['before_title'].$title.$args['after_title'];
@@ -34,7 +35,7 @@ class templatic_advanced_search extends WP_Widget {
 		$aryArgs = array(
 			'monthNames'        => strip_array_indices( $wp_locale->month ),
 			'monthNamesShort'   => strip_array_indices( $wp_locale->month_abbrev ),
-			'monthStatus'       => __( 'Show a different month', DOMAIN ),
+			'monthStatus'       => __( 'Show a different month', 'templatic' ),
 			'dayNames'          => strip_array_indices( $wp_locale->weekday ),
 			'dayNamesShort'     => strip_array_indices( $wp_locale->weekday_abbrev ),
 			'dayNamesMin'       => strip_array_indices( $wp_locale->weekday_initial ),
@@ -48,14 +49,14 @@ class templatic_advanced_search extends WP_Widget {
 		?>
             <form method="get" id="searchform" action="<?php echo esc_url( home_url( '/' ) ); ?>" class="form_front_style">        
                 <div class="form_row clearfix search_keyword">               
-                    <input class="adv_input" name="s" id="adv_s" type="text" PLACEHOLDER="<?php _e('Search',DOMAIN); ?>" value="" />			  
+                    <input class="adv_input" name="s" id="adv_s" type="text" PLACEHOLDER="<?php _e('Search','templatic'); ?>" value="" />			  
                     <span class="message_error2"  style="color:red;font-size:12px;" id="search_error"></span>			  
                 </div>
                 <?php				
 				if(!empty($orderby_customfields) && is_array($orderby_customfields)){
 					
 					foreach($orderby_customfields as $value){
-						
+							
 						display_search_widget_custom_post_fields($value,$instance,1);
 
 					}/*Finish Foreach loop*/
@@ -66,7 +67,7 @@ class templatic_advanced_search extends WP_Widget {
                 <input type="hidden" name="search_template" value="1"/>
                 <!--<input class="adv_input" name="adv_search" id="adv_search" type="hidden" value="1"  />-->
                 <input class="adv_input" name="post_type" id="post_type" type="hidden" value="<?php echo $post_type; ?>"  />
-                <input type="submit" name="submit" value="<?php _e('Search',DOMAIN); ?>" class="adv_submit"  onclick="return set_adv_search();"/>              
+                <input type="submit" name="submit" value="<?php _e('Search','templatic'); ?>" class="adv_submit"  onclick="return set_adv_search();"/>              
             </form>
 		<?php		
 		echo $args['after_widget'];
@@ -80,7 +81,7 @@ class templatic_advanced_search extends WP_Widget {
 		/*widgetform in backend*/
 		global $search_custom_fields_instance;
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '',  'post_type' => '','search_custom_fields'=>'','search_ctype'=>'','orderby_customfields'=>'') );
-		$title = ($instance['title']) ? $instance['title'] : __("Advanced Search",ADMINDOMAIN);
+		$title = ($instance['title']) ? $instance['title'] : __("Advanced Search",'templatic-admin');
 		$current_post_type = ($instance['post_type']) ? $instance['post_type'] : 'post';
 		
 		/*global set advance search widget instance */
@@ -90,14 +91,14 @@ class templatic_advanced_search extends WP_Widget {
 		$orderby_customfields = $this->get_field_name('orderby_customfields');
 	?>
 	<p>
-	  <label for="<?php echo $this->get_field_id('title'); ?>"><?php echo __('Title:',ADMINDOMAIN);?>
+	  <label for="<?php echo $this->get_field_id('title'); ?>"><?php echo __('Title:','templatic-admin');?>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
 	  </label>
 	</p>
 	<p>
-    	<label for="<?php echo $this->get_field_id('post_type');?>" ><?php echo __('Post Type:',ADMINDOMAIN);?>     </label>
+    	<label for="<?php echo $this->get_field_id('post_type');?>" ><?php echo __('Post Type:','templatic-admin');?>     </label>
     	<select  id="<?php echo $this->get_field_id('post_type'); ?>" name="<?php echo $this->get_field_name('post_type'); ?>" class="widefat" onchange="tmpl_search_post_type(this,'<?php echo $this->get_field_id('custom_fields_lists'); ?>','<?php echo $search_custom_fields;?>','<?php echo $search_ctype;?>','<?php echo $this->get_field_id('search_custom_fields'); ?>','<?php echo $this->get_field_id('custom_fields_lists')?>');">
-			<option value="post"><?php _e("Post",DOMAIN);?></option>
+			<option value="post"><?php _e("Post",'templatic');?></option>
     <?php
 		$all_post_types = get_option("templatic_custom_post");
 		foreach($all_post_types as $key=>$post_type){ 
@@ -107,11 +108,11 @@ class templatic_advanced_search extends WP_Widget {
 			<option value="<?php echo $key;?>" <?php if($key == $current_post_type){ echo 'selected="selected"';}?>><?php echo esc_attr($post_type['label']);?></option>
      <?php }?>
     	</select>
-        <span class="description"><?php echo __('Select the post type you wish to display on an advanced search form.',ADMINDOMAIN);?></span>
+        <span class="description"><?php echo __('Select the post type you wish to display on an advanced search form.','templatic-admin');?></span>
     </p>
     
      
-    <span><label for="<?php echo $this->get_field_id('search_field');?>" ><?php echo __('Search Field:',ADMINDOMAIN);?>     </label></span>
+    <span><label for="<?php echo $this->get_field_id('search_field');?>" ><?php echo __('Search Field:','templatic-admin');?>     </label></span>
     <div id="<?php echo $this->get_field_id('custom_fields_lists'); ?>" class="custom_fields_list dropdown <?php echo $this->get_field_id('custom_fields_lists'); ?>" data-class="<?php echo $this->get_field_id('search_custom_fields');?>"  data-order="<?php echo $orderby_customfields;?>">
     <?php
 	if($current_post_type){
@@ -119,7 +120,7 @@ class templatic_advanced_search extends WP_Widget {
 	}
 	?>
     </div>
-    <p class="description"><?php echo __('Select custom field to display selected custom fields on frontend.',ADMINDOMAIN);?></p>
+    <p class="description"><?php echo __('Select custom field to display selected custom fields on frontend.','templatic-admin');?></p>
     <br class="clear">
     
     <div class="<?php echo $this->get_field_id('search_custom_fields'); ?>  advance_search_custom_fields" id="<?php echo $this->get_field_id('search_custom_fields'); ?>">
@@ -127,20 +128,20 @@ class templatic_advanced_search extends WP_Widget {
 	if(!empty( $instance['orderby_customfields']) && is_array($instance['orderby_customfields'])):
 		foreach(array_unique($instance['orderby_customfields']) as $k=>$value){
 			$key=$value;
-				
 			$ctype=get_post_meta($key,"ctype",true);
-			$search_ctype_val=$instance['search_ctype'][$key]['search_ctype'];
-			
-			$option_title=$instance['search_ctype'][$key]['option_title'];
-			$option_values=$instance['search_ctype'][$key]['option_values'];
-			
-			$min_option_title=$instance['search_ctype'][$key]['min_option_title'];
-			$min_option_values=$instance['search_ctype'][$key]['min_option_values'];
-			$max_option_title=$instance['search_ctype'][$key]['max_option_title'];
-			$max_option_values=$instance['search_ctype'][$key]['max_option_values'];
-			$range_min=$instance['search_ctype'][$key]['range_min'];
-			$range_max=$instance['search_ctype'][$key]['range_max'];
-			
+			/* condition is for older php version. otherwise it creates fatal error */
+			if(!empty($instance['search_ctype'])):	
+				$search_ctype_val=$instance['search_ctype'][$key]['search_ctype'];
+				$option_title=$instance['search_ctype'][$key]['option_title'];
+				$option_values=$instance['search_ctype'][$key]['option_values'];
+				
+				$min_option_title=$instance['search_ctype'][$key]['min_option_title'];
+				$min_option_values=$instance['search_ctype'][$key]['min_option_values'];
+				$max_option_title=$instance['search_ctype'][$key]['max_option_title'];
+				$max_option_values=$instance['search_ctype'][$key]['max_option_values'];
+				$range_min=$instance['search_ctype'][$key]['range_min'];
+				$range_max=$instance['search_ctype'][$key]['range_max'];
+			endif;
 			?>
             <div class="widget <?php echo 'custom_'. $this->get_field_id('search_custom_fields').'_'.$key; ?>" id="search_custom_field_<?php echo $key; ?>"  data-sort="<?php echo $key;?>">
                 <input type="hidden" value="<?php echo $key;?>" name="<?php echo $orderby_customfields; ?>[]">
@@ -159,15 +160,17 @@ class templatic_advanced_search extends WP_Widget {
 					echo "<input type='hidden' value='".$ctype."' name='".$search_ctype."[".$key."][search_ctype]'>";
 					
 					if($ctype=='geo_map'){
-						$radius_measure=$instance['search_ctype'][$key]['radius_measure'];
-						$miles_search=$instance['search_ctype'][$key]['miles_search'];						
-						echo '<p><label><input name="'.$search_ctype.'['.$key.'][miles_search]" type="checkbox" value="1" style="width:10px;"  '.(($miles_search=='1')? 'checked':'').' />'.__('Search By Distance?',ADMINDOMAIN).'</label>';
-						echo '<p><label>'.__('Search By','templatic-admin').'
-							<select name="'.$search_ctype.'['.$key.'][radius_measure]">
-								<option value="kilometer" '.(($radius_measure=='kilometer')? 'selected':'').'>'.__('Kilometers',ADMINDOMAIN).'</option>
-								<option value="miles" '.(($radius_measure=='miles')? 'selected':'').'>'. __('Miles',ADMINDOMAIN).'</option>             
-							</select>
-						</p>';						
+						if(!empty($instance['search_ctype'])):
+							$radius_measure=$instance['search_ctype'][$key]['radius_measure'];
+							$miles_search=$instance['search_ctype'][$key]['miles_search'];						
+							echo '<p><label><input name="'.$search_ctype.'['.$key.'][miles_search]" type="checkbox" value="1" style="width:10px;"  '.(($miles_search=='1')? 'checked':'').' />'.__('Search By Distance?','templatic-admin').'</label>';
+							echo '<p><label>'.__('Search By','templatic-admin').'
+								<select name="'.$search_ctype.'['.$key.'][radius_measure]">
+									<option value="kilometer" '.(($radius_measure=='kilometer')? 'selected':'').'>'.__('Kilometers','templatic-admin').'</option>
+									<option value="miles" '.(($radius_measure=='miles')? 'selected':'').'>'. __('Miles','templatic-admin').'</option>             
+								</select>
+							</p>';
+						endif;	
 					}
 
 				}else{
@@ -184,38 +187,38 @@ class templatic_advanced_search extends WP_Widget {
 						$select='';		 
 					}
 					
-					echo '<p><label>'.__('Show on search as',ADMINDOMAIN).'</label>';
+					echo '<p><label>'.__('Show on search as','templatic-admin').'</label>';
 					echo "<select name='".$search_ctype."[".$key."][search_ctype]' class='search_ctype_".$key." search_custom_ctype' data-post-id='".$key."' onchange='select_search_type_option(this);' data-search-type='".$ctype."'>";
-						echo '<option value="" >'. __('Select type on search',ADMINDOMAIN).'</option>';
-						echo '<option '.$text.' value="text" '.(($search_ctype_val=='text') ? 'selected':'').'>'. __('Text',ADMINDOMAIN).'</option>';
-						/*echo '<option '.$date.' value="date">'.__('Date Picker',ADMINDOMAIN).'</option>';*/
-						echo '<option '.$multicheckbox.' value="multicheckbox" '.(($search_ctype_val=='multicheckbox')? 'selected':'').'>'.__('Multi Checkbox',ADMINDOMAIN).'</option>';
-						echo '<option '.$radio.' value="radio"  '.(($search_ctype_val=='radio')? 'selected':'').'>'.__('Radio',ADMINDOMAIN).'</option>';
-						echo '<option '.$select.' value="select" '.(($search_ctype_val=='select')? 'selected':'').'>'.__('Select',ADMINDOMAIN).'</option>';
-						echo '<option '.$min_max_range.' value="min_max_range" '.(($search_ctype_val=='min_max_range')? 'selected':'').'>'.__('Min-Max Range (Text)',ADMINDOMAIN).'</option>';
-						echo '<option '.$min_max_range_select.' value="min_max_range_select" '.(($search_ctype_val=='min_max_range_select')? 'selected':'').'>'.__('Min-Max Range (Select)',ADMINDOMAIN).'</option>';
-						echo '<option '.$slider_range.' value="slider_range" '.(($search_ctype_val=='slider_range')? 'selected':'').'>'.__('Range Slider',ADMINDOMAIN).'</option>';
+						echo '<option value="" >'. __('Select type on search','templatic-admin').'</option>';
+						echo '<option '.$text.' value="text" '.(($search_ctype_val=='text') ? 'selected':'').'>'. __('Text','templatic-admin').'</option>';
+						/*echo '<option '.$date.' value="date">'.__('Date Picker','templatic-admin').'</option>';*/
+						echo '<option '.$multicheckbox.' value="multicheckbox" '.(($search_ctype_val=='multicheckbox')? 'selected':'').'>'.__('Multi Checkbox','templatic-admin').'</option>';
+						echo '<option '.$radio.' value="radio"  '.(($search_ctype_val=='radio')? 'selected':'').'>'.__('Radio','templatic-admin').'</option>';
+						echo '<option '.$select.' value="select" '.(($search_ctype_val=='select')? 'selected':'').'>'.__('Select','templatic-admin').'</option>';
+						echo '<option '.$min_max_range.' value="min_max_range" '.(($search_ctype_val=='min_max_range')? 'selected':'').'>'.__('Min-Max Range (Text)','templatic-admin').'</option>';
+						echo '<option '.$min_max_range_select.' value="min_max_range_select" '.(($search_ctype_val=='min_max_range_select')? 'selected':'').'>'.__('Min-Max Range (Select)','templatic-admin').'</option>';
+						echo '<option '.$slider_range.' value="slider_range" '.(($search_ctype_val=='slider_range')? 'selected':'').'>'.__('Range Slider','templatic-admin').'</option>';
 					echo "</select>";
 					echo '</p>';
 					
 					/*select option */
 					echo "<div class='search_select_".$key." search_select' ".(($ctype=='text' && $search_ctype_val=='select')? "style='display:block'":"style='display:none'").">";
-					echo '<p><label>'.__('Option Title',ADMINDOMAIN).'</label><input type="text" size="41" value="'.$option_title.'" id="search_option_title" name="'.$search_ctype.'['.$key.'][option_title]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No',ADMINDOMAIN).'</span></p>';
-					echo '<p><label>'.__('Option values',ADMINDOMAIN).'</label><input type="text" size="41" value="'.$option_values.'" id="search_option_values" name="'.$search_ctype.'['.$key.'][option_values]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No',ADMINDOMAIN).'</span></p>';							
+					echo '<p><label>'.__('Option Title','templatic-admin').'</label><input type="text" size="41" value="'.$option_title.'" id="search_option_title" name="'.$search_ctype.'['.$key.'][option_title]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No','templatic-admin').'</span></p>';
+					echo '<p><label>'.__('Option values','templatic-admin').'</label><input type="text" size="41" value="'.$option_values.'" id="search_option_values" name="'.$search_ctype.'['.$key.'][option_values]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No','templatic-admin').'</span></p>';							
 					echo "</div>";
 					/*End Search title */
 			
 					/* Range field related option */
 					echo "<div class='range_type_select_".$key." range_type_select' ".(($search_ctype_val=='min_max_range_select')? "style='display:block'":"style='display:none'").">";
-					echo '<p><label>'.__('Min Option Title',ADMINDOMAIN).'</label><input type="text" size="41" value="'.$min_option_title.'" id="search_min_option_title" name="'.$search_ctype.'['.$key.'][min_option_title]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No',ADMINDOMAIN).'</span></p>';
-					echo '<p><label>'.__('Min Option values',ADMINDOMAIN).'</label><input type="text" size="41" value="'.$min_option_values.'" id="search_min_option_values" name="'.$search_ctype.'['.$key.'][min_option_values]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No',ADMINDOMAIN).'</span></p>';
-					echo '<p><label>'.__('Max Option Title',ADMINDOMAIN).'</label><input type="text" size="41" value="'.$max_option_title.'" id="search_max_option_title" name="'.$search_ctype.'['.$key.'][max_option_title]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No',ADMINDOMAIN).'</span></p>';
-					echo '<p><label>'.__('Max Option values',ADMINDOMAIN).'</label><input type="text" size="41" value="'.$max_option_values.'" id="search_mzx_option_values" name="'.$search_ctype.'['.$key.'][max_option_values]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No',ADMINDOMAIN).'</span></p>';
+					echo '<p><label>'.__('Min Option Title','templatic-admin').'</label><input type="text" size="41" value="'.$min_option_title.'" id="search_min_option_title" name="'.$search_ctype.'['.$key.'][min_option_title]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No','templatic-admin').'</span></p>';
+					echo '<p><label>'.__('Min Option values','templatic-admin').'</label><input type="text" size="41" value="'.$min_option_values.'" id="search_min_option_values" name="'.$search_ctype.'['.$key.'][min_option_values]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No','templatic-admin').'</span></p>';
+					echo '<p><label>'.__('Max Option Title','templatic-admin').'</label><input type="text" size="41" value="'.$max_option_title.'" id="search_max_option_title" name="'.$search_ctype.'['.$key.'][max_option_title]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No','templatic-admin').'</span></p>';
+					echo '<p><label>'.__('Max Option values','templatic-admin').'</label><input type="text" size="41" value="'.$max_option_values.'" id="search_mzx_option_values" name="'.$search_ctype.'['.$key.'][max_option_values]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No','templatic-admin').'</span></p>';
 					echo "</div>";
 					
 					/* Range slider related option */
 					echo "<div class='range_type_slider_".$key." range_type_slider' ".(($search_ctype_val=='slider_range')? "style='display:block'":"style='display:none'").">";
-					echo '<p><label>'.__('Define your range',ADMINDOMAIN).'</label>';
+					echo '<p><label>'.__('Define your range','templatic-admin').'</label>';
 					echo '<fieldset>
 					<input type="text" placeholder="Min value" value="'.$range_min.'" name="'.$search_ctype.'['.$key.'][range_min]" id="range_min_value">
 					<input type="text" placeholder="max value" value="'.$range_max.'" name="'.$search_ctype.'['.$key.'][range_max]" id="range_max_value">
@@ -226,7 +229,7 @@ class templatic_advanced_search extends WP_Widget {
 				
 					echo '<div class="widget-control-actions">';
 					echo '<div class="alignleft">';
-					echo '<a class="widget-control-remove" href="#remove">'.__('Delete',ADMINDOMAIN).'</a> | <a class="widget-control-close" href="#close">'.__('Close',ADMINDOMAIN).'</a>';
+					echo '<a class="widget-control-remove" href="#remove">'.__('Delete','templatic-admin').'</a> | <a class="widget-control-close" href="#close">'.__('Close','templatic-admin').'</a>';
 					echo '</div><br class="clear" />';
 					
 					echo '</div>';/*Finish widget control actionsdiv*/
@@ -350,7 +353,7 @@ function tmpl_advance_search_custom_fields($post_types,$search_custom_fields,$se
 	remove_filter('posts_join', 'templ_advance_search_custom_fields_where_filter');
 	
 	if($post_meta_info->have_posts()){
-		echo '<dt><a href="#" onclick=\'show_custom_fields("'.$custom_fields_list_id.'");return false;\'><span>'.__('Add a Search Field',ADMINDOMAIN).'</span></a></dt>';
+		echo '<dt><a href="#" onclick=\'show_custom_fields("'.$custom_fields_list_id.'");return false;\'><span>'.__('Add a Search Field','templatic-admin').'</span></a></dt>';
 		
 		echo "<dd><ul>";
 		$i=0;
@@ -398,11 +401,11 @@ function tmpl_advance_search_custom_fields($post_types,$search_custom_fields,$se
 						if($ctype=='geo_map'){
 							$radius_measure=(isset($search_custom_fields_instance['search_ctype'][get_the_ID()]['radius_measure']))?$search_custom_fields_instance['search_ctype'][get_the_ID()]['radius_measure']:'';
 							$miles_search=(isset($search_custom_fields_instance['search_ctype'][get_the_ID()]['miles_search']))?$search_custom_fields_instance['search_ctype'][get_the_ID()]['miles_search']:'';							
-							echo '<p><label><input name="'.$search_ctype.'['.get_the_ID().'][miles_search]" type="checkbox" value="1" style="width:10px;"  />'.__('Search By Distance?',ADMINDOMAIN).'</label>';
+							echo '<p><label><input name="'.$search_ctype.'['.get_the_ID().'][miles_search]" type="checkbox" value="1" style="width:10px;"  />'.__('Search By Distance?','templatic-admin').'</label>';
 							echo '<p><label>'.__('Search By','templatic-admin').'
 								<select name="'.$search_ctype.'['.get_the_ID().'][radius_measure]">
-									<option value="kilometer" '.(($radius_measure=='kilometer')? 'selected':'').'>'.__('Kilometers',ADMINDOMAIN).'</option>
-									<option value="miles" '.(($radius_measure=='miles')? 'selected':'').'>'. __('Miles',ADMINDOMAIN).'</option>             
+									<option value="kilometer" '.(($radius_measure=='kilometer')? 'selected':'').'>'.__('Kilometers','templatic-admin').'</option>
+									<option value="miles" '.(($radius_measure=='miles')? 'selected':'').'>'. __('Miles','templatic-admin').'</option>             
 								</select>
 							</p>';							
 						}
@@ -455,38 +458,38 @@ function tmpl_advance_search_custom_fields($post_types,$search_custom_fields,$se
 						}
 						
 						
-							echo '<p><label>'.__('Show on search as',ADMINDOMAIN).'</label>';
+							echo '<p><label>'.__('Show on search as','templatic-admin').'</label>';
 							echo "<select name='".$search_ctype."[".get_the_ID()."][search_ctype]' class='search_ctype_".get_the_ID()." search_custom_ctype' data-post-id='".get_the_ID()."' onchange='select_search_type_option(this);' data-search-type='".$ctype."'>";
-								echo '<option value="" >'. __('Select type on search',ADMINDOMAIN).'</option>';					
-								echo '<option '.$text.' value="text" '.(($search_ctype_val=='text') ? 'selected':'').'>'. __('Text',ADMINDOMAIN).'</option>';
-								/*echo '<option '.$date.' value="date">'.__('Date Picker',ADMINDOMAIN).'</option>';*/
-								echo '<option '.$multicheckbox.' value="multicheckbox" '.(($search_ctype_val=='multicheckbox')? 'selected':'').'>'.__('Multi Checkbox',ADMINDOMAIN).'</option>';
-								echo '<option '.$radio.' value="radio"  '.(($search_ctype_val=='radio')? 'selected':'').'>'.__('Radio',ADMINDOMAIN).'</option>';
-								echo '<option '.$select.' value="select" '.(($search_ctype_val=='select')? 'selected':'').'>'.__('Select',ADMINDOMAIN).'</option>';
-								echo '<option '.$min_max_range.' value="min_max_range" '.(($search_ctype_val=='min_max_range')? 'selected':'').'>'.__('Min-Max Range (Text)',ADMINDOMAIN).'</option>';
-								echo '<option '.$min_max_range_select.' value="min_max_range_select" '.(($search_ctype_val=='min_max_range_select')? 'selected':'').'>'.__('Min-Max Range (Select)',ADMINDOMAIN).'</option>';
-								echo '<option '.$slider_range.' value="slider_range" '.(($search_ctype_val=='slider_range')? 'selected':'').'>'.__('Range Slider',ADMINDOMAIN).'</option>';
+								echo '<option value="" >'. __('Select type on search','templatic-admin').'</option>';					
+								echo '<option '.$text.' value="text" '.(($search_ctype_val=='text') ? 'selected':'').'>'. __('Text','templatic-admin').'</option>';
+								/*echo '<option '.$date.' value="date">'.__('Date Picker','templatic-admin').'</option>';*/
+								echo '<option '.$multicheckbox.' value="multicheckbox" '.(($search_ctype_val=='multicheckbox')? 'selected':'').'>'.__('Multi Checkbox','templatic-admin').'</option>';
+								echo '<option '.$radio.' value="radio"  '.(($search_ctype_val=='radio')? 'selected':'').'>'.__('Radio','templatic-admin').'</option>';
+								echo '<option '.$select.' value="select" '.(($search_ctype_val=='select')? 'selected':'').'>'.__('Select','templatic-admin').'</option>';
+								echo '<option '.$min_max_range.' value="min_max_range" '.(($search_ctype_val=='min_max_range')? 'selected':'').'>'.__('Min-Max Range (Text)','templatic-admin').'</option>';
+								echo '<option '.$min_max_range_select.' value="min_max_range_select" '.(($search_ctype_val=='min_max_range_select')? 'selected':'').'>'.__('Min-Max Range (Select)','templatic-admin').'</option>';
+								echo '<option '.$slider_range.' value="slider_range" '.(($search_ctype_val=='slider_range')? 'selected':'').'>'.__('Range Slider','templatic-admin').'</option>';
 							echo "</select>";
 							echo '</p>';
 							
 							/*select option */
 							echo "<div class='search_select_".get_the_ID()." search_select' ".(($ctype=='text' && $search_ctype_val=='select')? "style='display:block'":"style='display:none'").">";
-							echo '<p><label>'.__('Option Title',ADMINDOMAIN).'</label><input type="text" size="41" value="'.$option_title.'" id="search_option_title" name="'.$search_ctype.'['.get_the_ID().'][option_title]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No',ADMINDOMAIN).'</span></p>';
-							echo '<p><label>'.__('Option values',ADMINDOMAIN).'</label><input type="text" size="41" value="'.$option_values.'" id="search_option_values" name="'.$search_ctype.'['.get_the_ID().'][option_values]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No',ADMINDOMAIN).'</span></p>';							
+							echo '<p><label>'.__('Option Title','templatic-admin').'</label><input type="text" size="41" value="'.$option_title.'" id="search_option_title" name="'.$search_ctype.'['.get_the_ID().'][option_title]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No','templatic-admin').'</span></p>';
+							echo '<p><label>'.__('Option values','templatic-admin').'</label><input type="text" size="41" value="'.$option_values.'" id="search_option_values" name="'.$search_ctype.'['.get_the_ID().'][option_values]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No','templatic-admin').'</span></p>';							
 							echo "</div>";
 							/*End Search title */
 							
 							/* Range field related option */
 							echo "<div class='range_type_select_".get_the_ID()." range_type_select' ".(($search_ctype_val=='min_max_range_select')? "style='display:block'":"style='display:none'").">";
-							echo '<p><label>'.__('Min Option Title',ADMINDOMAIN).'</label><input type="text" size="41" value="'.$min_option_title.'" id="search_min_option_title" name="'.$search_ctype.'['.get_the_ID().'][min_option_title]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No',ADMINDOMAIN).'</span></p>';
-							echo '<p><label>'.__('Min Option values',ADMINDOMAIN).'</label><input type="text" size="41" value="'.$min_option_values.'" id="search_min_option_values" name="'.$search_ctype.'['.get_the_ID().'][min_option_values]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No',ADMINDOMAIN).'</span></p>';
-							echo '<p><label>'.__('Max Option Title',ADMINDOMAIN).'</label><input type="text" size="41" value="'.$max_option_title.'" id="search_max_option_title" name="'.$search_ctype.'['.get_the_ID().'][max_option_title]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No',ADMINDOMAIN).'</span></p>';
-							echo '<p><label>'.__('Max Option values',ADMINDOMAIN).'</label><input type="text" size="41" value="'.$max_option_values.'" id="search_mzx_option_values" name="'.$search_ctype.'['.get_the_ID().'][max_option_values]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No',ADMINDOMAIN).'</span></p>';
+							echo '<p><label>'.__('Min Option Title','templatic-admin').'</label><input type="text" size="41" value="'.$min_option_title.'" id="search_min_option_title" name="'.$search_ctype.'['.get_the_ID().'][min_option_title]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No','templatic-admin').'</span></p>';
+							echo '<p><label>'.__('Min Option values','templatic-admin').'</label><input type="text" size="41" value="'.$min_option_values.'" id="search_min_option_values" name="'.$search_ctype.'['.get_the_ID().'][min_option_values]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No','templatic-admin').'</span></p>';
+							echo '<p><label>'.__('Max Option Title','templatic-admin').'</label><input type="text" size="41" value="'.$max_option_title.'" id="search_max_option_title" name="'.$search_ctype.'['.get_the_ID().'][max_option_title]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No','templatic-admin').'</span></p>';
+							echo '<p><label>'.__('Max Option values','templatic-admin').'</label><input type="text" size="41" value="'.$max_option_values.'" id="search_mzx_option_values" name="'.$search_ctype.'['.get_the_ID().'][max_option_values]"><span class="clearfix description">'.__('Separate multiple option titles with a comma. eg. Yes,No','templatic-admin').'</span></p>';
 							echo "</div>";
 							
 							/* Range slider related option */
 							echo "<div class='range_type_slider_".get_the_ID()." range_type_slider' ".(($search_ctype_val=='slider_range')? "style='display:block'":"style='display:none'").">";
-							echo '<p><label>'.__('Define your range',ADMINDOMAIN).'</label>';
+							echo '<p><label>'.__('Define your range','templatic-admin').'</label>';
 							echo '<fieldset>
 							<input type="text" placeholder="Min value" value="'.$range_min.'" name="'.$search_ctype.'['.get_the_ID().'][range_min]" id="range_min_value">
 							<input type="text" placeholder="max value" value="'.$range_max.'" name="'.$search_ctype.'['.get_the_ID().'][range_max]" id="range_max_value">
@@ -497,7 +500,7 @@ function tmpl_advance_search_custom_fields($post_types,$search_custom_fields,$se
 					
 					echo '<div class="widget-control-actions">';
 					echo '<div class="alignleft">';
-					echo '<a class="widget-control-remove" href="#remove">'.__('Delete',ADMINDOMAIN).'</a> | <a class="widget-control-close" href="#close">'.__('Close',ADMINDOMAIN).'</a>';
+					echo '<a class="widget-control-remove" href="#remove">'.__('Delete','templatic-admin').'</a> | <a class="widget-control-close" href="#close">'.__('Close','templatic-admin').'</a>';
 					echo '</div><br class="clear" />';
 					echo '</div>';/*Finish widget control actionsdiv*/
 					echo '</div>';/*Finish widget-inside div*/
@@ -526,7 +529,7 @@ function tmpl_advance_searchable_scripts(){
     <script  type="text/javascript" async >
 	function tmpl_search_post_type(str,id,search_custom_fields,search_ctype,search_custom_fields_id,custom_fields_list_id){
 		
-		if(confirm("<?php echo __('Changing postype will reset search fields below !',ADMINDOMAIN);?>"))
+		if(confirm("<?php echo __('Changing postype will reset search fields below !','templatic-admin');?>"))
 		{
 			var post_types=str.value;
 			jQuery.ajax({
@@ -639,7 +642,7 @@ function display_search_widget_custom_post_fields($value,$instance, $show_label)
 		/*fetch the categories of selected post type */
 		$taxonomies = get_object_taxonomies( (object) array( 'post_type' => $post_type,'public'   => true, '_builtin' => true ));
 		$args = array(
-					'show_option_all'    => __('Select Categories',DOMAIN),
+					'show_option_all'    => __('Select Category','templatic'),
 					'show_option_none'   => '',
 					'orderby'            => 'name', 
 					'order'              => 'ASC',
@@ -667,11 +670,11 @@ function display_search_widget_custom_post_fields($value,$instance, $show_label)
 		/* Display within radius field on geo_map custom field type */
 		if($type=='geo_map' && $instance['search_ctype'][$value]['miles_search']==1){
 			$radius_measure=$instance['search_ctype'][$value]['radius_measure'];
-			$radius_type=($radius_measure=='miles')? __('Miles',DOMAIN) : __('Kilometers',DOMAIN);
+			$radius_type=($radius_measure=='miles')? __('Miles','templatic') : __('Kilometers','templatic');
 			?>
             <select id="radius" name="radius">
-                <option value=''><?php _e('Within?',DOMAIN); ?></option>
-                <option value="1" <?php if(isset($distance_factor) && esc_attr($distance_factor)=='1'){ echo 'selected="selected"';} ?>>1 <?php echo ($radius_measure=='miles')? __('Mile',DOMAIN) : __('Kilometer',DOMAIN);; ?></option>
+                <option value=''><?php _e('Within?','templatic'); ?></option>
+                <option value="1" <?php if(isset($distance_factor) && esc_attr($distance_factor)=='1'){ echo 'selected="selected"';} ?>>1 <?php echo ($radius_measure=='miles')? __('Mile','templatic') : __('Kilometer','templatic');; ?></option>
                 <option value="5" <?php if(isset($distance_factor) && esc_attr($distance_factor)=='5'){ echo 'selected="selected"';} ?>>5 <?php echo $radius_type; ?></option>
                 <option value="10" <?php if(isset($distance_factor) && esc_attr($distance_factor)=='10'){ echo 'selected="selected"';} ?>>10 <?php echo $radius_type; ?></option>
                 <option value="100" <?php if(isset($distance_factor) && esc_attr($distance_factor)=='100'){ echo 'selected="selected"';} ?>>100 <?php echo $radius_type; ?></option>
@@ -777,7 +780,7 @@ function display_search_widget_custom_post_fields($value,$instance, $show_label)
 				$chkcounter = 0;
 				echo '<div class="select">';
 				echo '<select name="'.$htmlvar_name.'" id="'.$htmlvar_name.'" class="textfield textfield_x '.$style_class.' select" '.$extra_parameter.'>';
-				echo '<option value="">'.sprintf(__('Please Select %s',DOMAIN),$label).'</option>';
+				echo '<option value="">'.sprintf(__('Please Select %s','templatic'),$label).'</option>';
 				for($i=0;$i<count($option_values);$i++)
 				{
 					if($option_values[$i]=='') continue;
@@ -797,10 +800,10 @@ function display_search_widget_custom_post_fields($value,$instance, $show_label)
 		?>
         <div class="form_row clearfix">
             <div class="half_row clearfix">      
-            	<input type="text" name="<?php echo $htmlvar_name.'_min';?>" id="<?php echo $htmlvar_name;?>_min" value="" placeholder="<?php if($show_label ==0){  echo $site_title.' ';	_e('Min value',DOMAIN); } ?>" class="min_range" onfocus="if (this.placeholder == '<?php  echo $site_title.' ';	_e('Min value',DOMAIN); ?>') {this.placeholder = '';}" onblur="if (this.placeholder == '') {this.placeholder = '<?php  echo $site_title.' ';	_e('Min value',DOMAIN); ?>';}"/>
+            	<input type="text" name="<?php echo $htmlvar_name.'_min';?>" id="<?php echo $htmlvar_name;?>_min" value="" placeholder="<?php if($show_label ==0){  echo $site_title.' ';	_e('Min value','templatic'); } ?>" class="min_range" onfocus="if (this.placeholder == '<?php  echo $site_title.' ';	_e('Min value','templatic'); ?>') {this.placeholder = '';}" onblur="if (this.placeholder == '') {this.placeholder = '<?php  echo $site_title.' ';	_e('Min value','templatic'); ?>';}"/>
             </div>
             <div class="half_row clearfix">      
-            	<input type="text" name="<?php echo $htmlvar_name.'_max';?>" id="<?php echo $htmlvar_name;?>_max" value="" placeholder="<?php if($show_label ==0){  echo $site_title.' ';	_e('Max value',DOMAIN); } ?>" class="max_range" onfocus="if (this.placeholder == '<?php echo $site_title.' ';	_e('Max value',DOMAIN); ?>') {this.placeholder = '';}" onblur="if (this.placeholder == '') {this.placeholder = '<?php echo $site_title.' ';	_e('Max value',DOMAIN); ?>';}"/>
+            	<input type="text" name="<?php echo $htmlvar_name.'_max';?>" id="<?php echo $htmlvar_name;?>_max" value="" placeholder="<?php if($show_label ==0){  echo $site_title.' ';	_e('Max value','templatic'); } ?>" class="max_range" onfocus="if (this.placeholder == '<?php echo $site_title.' ';	_e('Max value','templatic'); ?>') {this.placeholder = '';}" onblur="if (this.placeholder == '') {this.placeholder = '<?php echo $site_title.' ';	_e('Max value','templatic'); ?>';}"/>
             </div>
         </div>
         <?php	
@@ -830,7 +833,7 @@ function display_search_widget_custom_post_fields($value,$instance, $show_label)
 		<div class="form_row clearfix">
             <div class="selectbox">
             <select name="<?php echo $htmlvar_name;?>_min" id="<?php echo $htmlvar_name;?>_min" class="textfield textfield_x <?php echo $style_class;?> select" <?php echo $extra_parameter;?>>
-                <option value=""><?php echo sprintf(__('Please Select %s Min value',DOMAIN),$site_title);?></option>
+                <option value=""><?php echo sprintf(__('Please Select %s Min value','templatic'),$site_title);?></option>
                 <?php if(!empty($value_min_range)){
                 for($i=0;$i<count($value_min_range);$i++){?>
                     <option value="<?php echo $value_min_range[$i]; ?>" <?php if($value==$value_min_range[$i]){ echo 'selected="selected"';} else if($default_value==$value_min_range[$i]){ echo 'selected="selected"';}?>><?php echo ($title_min_range[$i])? $title_min_range[$i]:$value_min_range[$i]; ?></option>
@@ -844,7 +847,7 @@ function display_search_widget_custom_post_fields($value,$instance, $show_label)
         <div class="form_row clearfix">
 			<div class="selectbox">
                 <select name="<?php echo $htmlvar_name;?>_max" id="<?php echo $htmlvar_name;?>_max" class="textfield textfield_x <?php echo $style_class;?> select" <?php echo $extra_parameter;?>>
-                <option value=""><?php echo sprintf(__('Please Select %s Max value',DOMAIN),$site_title);?></option>
+                <option value=""><?php echo sprintf(__('Please Select %s Max value','templatic'),$site_title);?></option>
                 <?php if(!empty($value_max_range)){
                 for($i=0;$i<count($value_max_range);$i++){?>
                     <option value="<?php echo $value_max_range[$i]; ?>" <?php if($value==$value_max_range[$i]){ echo 'selected="selected"';} else if($default_value==$value_max_range[$i]){ echo 'selected="selected"';}?>><?php echo ($title_max_range[$i])? $title_max_range[$i]:$value_max_range[$i]; ?></option>

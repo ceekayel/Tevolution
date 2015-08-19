@@ -21,7 +21,7 @@ for($i=0;$i<count($validation_info);$i++) {
 	$espan = $validation_info[$i]['espan'];
 	$type = $validation_info[$i]['type'];
 	$search_ctype = $validation_info[$i]['search_ctype'];
-	$text = __($validation_info[$i]['text'],DOMAIN);
+	$text = __($validation_info[$i]['text'],'templatic');
 	$validation_type = $validation_info[$i]['validation_type'];
 	$is_required = $validation_info[$i]['is_require'];
 	$is_required_desc = $validation_info[$i]['field_require_desc'];
@@ -36,13 +36,13 @@ for($i=0;$i<count($validation_info);$i++) {
 	';
 	if($type=='selectbox' || $type=='checkbox')
 	{
-		$msg = sprintf(__("%s",DOMAIN),$text);
+		$msg = sprintf(__("%s",'templatic'),$text);
 	}else
 	{
-		$msg = sprintf(__("%s",DOMAIN),$text);
+		$msg = sprintf(__("%s",'templatic'),$text);
 	}
-	$category_can_select_validation_msg = __("You cannot select more than ",DOMAIN); /* message used for while submitting a form with category selected greater than the number of category selection for particular price package. */ 
-	$category_can_select_validation_message = __(" categories with this package.",DOMAIN); /* message used for while submitting a form with category selected greater than the number of category selection for particular price package.*/ 
+	$category_can_select_validation_msg = __("You cannot select more than ",'templatic'); /* message used for while submitting a form with category selected greater than the number of category selection for particular price package. */ 
+	$category_can_select_validation_message = __(" categories with this package.",'templatic'); /* message used for while submitting a form with category selected greater than the number of category selection for particular price package.*/ 
 	if($type == 'multicheckbox' || $type=='checkbox' || $type=='radio' || $type=='post_categories' || $type=='upload')
 	{
 		$js_code .= '
@@ -83,7 +83,7 @@ for($i=0;$i<count($validation_info);$i++) {
 				    if($text !='' && $type=='upload'){
 					   $umsg = $text;
 					}else{
-					   $umsg = __("You are uploading invalid file type. Allowed file types are",DOMAIN)." : txt, pdf, doc, xls, csv, docx, xlsx, zip, rar";
+					   $umsg = __("You are uploading invalid file type. Allowed file types are",'templatic')." : txt, pdf, doc, xls, csv, docx, xlsx, zip, rar";
 					}
 				   $js_code .= 'jQuery("#'.$name.'_error").html("'.$umsg.'");
 				   return false;
@@ -164,7 +164,7 @@ for($i=0;$i<count($validation_info);$i++) {
 				if($text){
 					$emsg = $text;
 				}else{
-					$emsg = __("Please provide your email address",DOMAIN);
+					$emsg = __("Please provide your email address",'templatic');
 				}
 			
 				$js_code .= $name.'.addClass("error");
@@ -175,7 +175,7 @@ for($i=0;$i<count($validation_info);$i++) {
 					if($text){
 						$emsg = $text;
 					}else{
-						$emsg = __("Please provide your email address",DOMAIN);
+						$emsg = __("Please provide your email address",'templatic');
 					}
 					$js_code .= $name.'.addClass("error");
 					jQuery("#'.$espan.'").text("'.$emsg.'");
@@ -198,7 +198,7 @@ for($i=0;$i<count($validation_info);$i++) {
 					jQuery("#'.$espan.'").addClass("message_error2");					
 				return false;';
 				$js_code .= ' } else if(!phonereg.test(jQuery("#submit_form #'.$name.'").val()) && jQuery("#submit_form #'.$name.'").val()) { ';
-					$msg = __("Enter Valid Phone No.",DOMAIN);
+					$msg = __("Enter Valid Phone No.",'templatic');
 					$js_code .= $name.'.addClass("error");
 					jQuery("#'.$espan.'").text("'.$msg.'");
 					jQuery("#'.$espan.'").addClass("message_error2");					
@@ -220,7 +220,7 @@ for($i=0;$i<count($validation_info);$i++) {
 					jQuery("#'.$espan.'").addClass("message_error2");					
 				return false;';
 				$js_code .= ' } else if(jQuery("#submit_form #'.$name.'").val() && !digitreg.test(jQuery("#submit_form #'.$name.'").val()) && '.$is_required.') { ';
-					$msg = __("Values must be all numbers.",DOMAIN);
+					$msg = __("Values must be all numbers.",'templatic');
 					$js_code .= $name.'.addClass("error");
 					jQuery("#'.$espan.'").text("'.$msg.'");
 					jQuery("#'.$espan.'").addClass("message_error2");					
@@ -269,7 +269,7 @@ for($i=0;$i<count($validation_info);$i++) {
 				{
 					if("'.$msg.'" == "")
 					{
-						jQuery("#post_images_error").html("'.__("Please upload at least 1 image to the gallery !",DOMAIN).'");						
+						jQuery("#post_images_error").html("'.__("Please upload at least 1 image to the gallery !",'templatic').'");						
 						return false;
 					}
 					else
@@ -334,15 +334,15 @@ for($i=0;$i<count($validation_info);$i++) {
 			var max_value=jQuery("#submit_form #'.$name.'").attr("max");
 			if(parseInt(value) < parseInt(min_value)){	
 				jQuery("#'.$espan.'_range_type").remove();
-				jQuery("#submit_form #'.$name.'").after("<span id=\"'.$espan.'_range_type\" class=\"message_error2\">'.__('Please select a value that higher than',DOMAIN).' "+min_value+"</span>");				
+				jQuery("#submit_form #'.$name.'").after("<span id=\"'.$espan.'_range_type\" class=\"message_error2\">'.__('Please select a value that higher than','templatic').' "+min_value+"</span>");				
 				return false;
 			}else if(parseInt(value) > parseInt(max_value)){				
 				jQuery("#'.$espan.'_range_type").remove();
-				jQuery("#submit_form #'.$name.'").after("<span id=\"'.$espan.'_range_type\" class=\"message_error2\">'.__('Please select a value that lower than',DOMAIN).' "+max_value+"</span>");				
+				jQuery("#submit_form #'.$name.'").after("<span id=\"'.$espan.'_range_type\" class=\"message_error2\">'.__('Please select a value that lower than','templatic').' "+max_value+"</span>");				
 				return false;
 			}else if(isNaN(parseInt(value)) && value!=""){				
 				jQuery("#'.$espan.'_range_type").remove();
-				jQuery("#submit_form #'.$name.'").after("<span id=\"'.$espan.'_range_type\" class=\"message_error2\">'.__('Please enter a number',DOMAIN).'</span>");				
+				jQuery("#submit_form #'.$name.'").after("<span id=\"'.$espan.'_range_type\" class=\"message_error2\">'.__('Please enter a number','templatic').'</span>");				
 				return false;
 			}else{				
 				jQuery("#'.$espan.'_range_type").remove();
@@ -384,7 +384,7 @@ $js_code .= 'jQuery("#continue_submit_from").on("click",function (e)
 		{
 			if (!jQuery("input:radio[name=package_select]:checked").val())
 			 {
-				jQuery("#all_packages_error").html("'.__(PRICE_PACKAGE_ERROR,DOMAIN).'");
+				jQuery("#all_packages_error").html("'.__(PRICE_PACKAGE_ERROR,'templatic').'");
 				return false; /* add comment return false nothing add and directoly submit then only price package error will be shown*/
 			 }
 			else
@@ -399,7 +399,7 @@ $js_code .= 'jQuery("#continue_submit_from").on("click",function (e)
 	if(jQuery("#term_and_condition").length){		
 		if(!jQuery("#term_and_condition").attr("checked"))		
 		{
-			jQuery("#terms_error").html("'.__('Please accept Terms and Conditions.',DOMAIN).'");			
+			jQuery("#terms_error").html("'.__('Please accept Terms and Conditions.','templatic').'");			
 			return false; /* add comment return false nothing add and directoly submit then only term condition error will be shown*/
 		}else{
 			jQuery("#terms_error").html("");	
@@ -420,7 +420,7 @@ $js_code .= 'jQuery("#continue_submit_from").on("click",function (e)
 		}
 		else
 		{
-			jQuery("#common_error").html("'.__('Oops! Please make sure you have filled all the mandatory fields.',DOMAIN).'");
+			jQuery("#common_error").html("'.__('Oops! Please make sure you have filled all the mandatory fields.','templatic').'");
 			return false;
 		}';
 	}

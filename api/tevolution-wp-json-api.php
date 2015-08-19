@@ -220,9 +220,9 @@ class Tevolution_wp_json_api {
 				}
 				else
 				{
-					$read_more = __('Read more &raquo;',THEME_DOMAIN);
+					$read_more = __('Read more &raquo;','templatic');
 				}
-				$view_comment = __('View the entire comment',DOMAIN);
+				$view_comment = __('View the entire comment','templatic');
 				$html .= "<a class=\"comment_excerpt\" href=\"" . $permalink . "\" title=\"".$view_comment."\">";
 				$html .= "&nbsp;".$read_more;
 				$html .= "</a></div>";
@@ -280,12 +280,12 @@ class Tevolution_wp_json_api {
                         $html .= '<ul>';
                         foreach ($terms as $term) {	
                                 if($taxo !='' && $term->slug !=''){
-                                    $html .= "<li><a href=". get_term_link($term->slug, $taxo).">". __($term->name,DOMAIN)."</a></li>";
+                                    $html .= "<li><a href=". get_term_link($term->slug, $taxo).">". __($term->name,'templatic')."</a></li>";
                                 } 
                         }
                         $html .= '</ul>';
                 else:
-                        $html .= __('No Tag Available',DOMAIN);
+                        $html .= __('No Tag Available','templatic');
                 endif;
                 
                 $html .= '</div>';

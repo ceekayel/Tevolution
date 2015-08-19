@@ -112,23 +112,23 @@ function tevolution_post_upgrade_content()
 		}
 		
 		if(function_exists('icl_t')){
-			icl_register_string(DOMAIN,$mail_post_title,$mail_post_title);
-			$mail_post_title = icl_t(DOMAIN,$mail_post_title,$mail_post_title);
+			icl_register_string('templatic',$mail_post_title,$mail_post_title);
+			$mail_post_title = icl_t('templatic',$mail_post_title,$mail_post_title);
 		}else{
 			$mail_post_title = @$mail_post_title;
 		}
 		
 		if(!$email_subject){
-			$email_subject = __('A new post has been submitted on your site',DOMAIN);
+			$email_subject = __('A new post has been submitted on your site','templatic');
 		}
 		if($_REQUEST['pid']){
-			$email_subject = __(sprintf('%s updated of ID:#%s',$mail_post_title,$last_postid),DOMAIN);
+			$email_subject = __(sprintf('%s updated of ID:#%s',$mail_post_title,$last_postid),'templatic');
 		}
 		if(isset($upgrade_post['renew'])){
-			$email_subject = __(sprintf('%s renew of ID:#%s',$mail_post_title,$last_postid),DOMAIN);
+			$email_subject = __(sprintf('%s renew of ID:#%s',$mail_post_title,$last_postid),'templatic');
 		}
 		if(!$email_content){
-			$email_content = __('<p>Dear [#to_name#],</p><p>A new submission has been made on your site with the details below.</p><p>[#information_details#]</p><p>Thank You,<br/>[#site_name#]</p>',DOMAIN);
+			$email_content = __('<p>Dear [#to_name#],</p><p>A new submission has been made on your site with the details below.</p><p>[#information_details#]</p><p>Thank You,<br/>[#site_name#]</p>','templatic');
 		}
 		if($_REQUEST['pid'] ){
 			$email_content = __(sprintf('<p>Dear [#to_name#],</p>
@@ -159,25 +159,25 @@ function tevolution_post_upgrade_content()
 		}	
 		if(!$email_content_user)
 		{
-			$email_content_user = __("<p>Hello [#to_name#],</p><p>Your submission has been approved! You can see the listing here:</p><p>[#transaction_details#]</p><p>If you'll have any questions about this please send an email to [#admin_email#]</p><p>Thanks!,<br/>[#site_name#]</p>",DOMAIN);
+			$email_content_user = __("<p>Hello [#to_name#],</p><p>Your submission has been approved! You can see the listing here:</p><p>[#transaction_details#]</p><p>If you'll have any questions about this please send an email to [#admin_email#]</p><p>Thanks!,<br/>[#site_name#]</p>",'templatic');
 		}
 		if($_REQUEST['pid'])
 		{
-			$email_content_user = __(sprintf('<p>Dear [#to_name#],</p><p>Your %s has been updated by you . Here is the information about the %s:</p>[#information_details#]<br><p>[#site_name#]</p>',$mail_post_title,$mail_post_title),DOMAIN);
+			$email_content_user = __(sprintf('<p>Dear [#to_name#],</p><p>Your %s has been updated by you . Here is the information about the %s:</p>[#information_details#]<br><p>[#site_name#]</p>',$mail_post_title,$mail_post_title),'templatic');
 		}
 		if(isset($_SESSION['upgrade_post']['renew']))
 		{
-			$email_content_user = __(sprintf('<p>Dear [#to_name#],</p><p>Your %s has been renew by you . Here is the information about the %s:</p>[#information_details#]<br><p>[#site_name#]</p>',$mail_post_title,$mail_post_title),DOMAIN);
+			$email_content_user = __(sprintf('<p>Dear [#to_name#],</p><p>Your %s has been renew by you . Here is the information about the %s:</p>[#information_details#]<br><p>[#site_name#]</p>',$mail_post_title,$mail_post_title),'templatic');
 			
 		}	
-		$information_details = "<p>".__('ID',DOMAIN)." : ".$last_postid."</p>";
-		$information_details .= '<p>'.__('View more detail of',DOMAIN).' <a href="'.get_permalink($last_postid).'">'.stripslashes($my_post['post_title']).'</a></p>';
+		$information_details = "<p>".__('ID','templatic')." : ".$last_postid."</p>";
+		$information_details .= '<p>'.__('View more detail of','templatic').' <a href="'.get_permalink($last_postid).'">'.stripslashes($my_post['post_title']).'</a></p>';
 		global $payable_amount;
 		if($payable_amount > 0){
-			$information_details .= '<p>'.__('Payment Status: <b>Pending</b>',DOMAIN).'</p>';
-			$information_details .= '<p>'.__('Payment Method: <b>'.ucfirst(@$_POST['paymentmethod']).'</b>',DOMAIN).'</p>';
+			$information_details .= '<p>'.__('Payment Status: <b>Pending</b>','templatic').'</p>';
+			$information_details .= '<p>'.__('Payment Method: <b>'.ucfirst(@$_POST['paymentmethod']).'</b>','templatic').'</p>';
 		}else{
-			$information_details .= '<p>'.__('Payment Status: <b>Success</b>',DOMAIN).'</p>';
+			$information_details .= '<p>'.__('Payment Status: <b>Success</b>','templatic').'</p>';
 		}	
 		$post_type=get_post_meta($custom_fields['cur_post_id'],'submit_post_type',true);
 		$show_on_email=get_post_custom_fields_templ_plugin($post_type,$post_category,$post_tax);	

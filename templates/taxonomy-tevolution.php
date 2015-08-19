@@ -50,7 +50,7 @@ do_action('before_content');
      <section id="loop_taxonomy" class="index list">
      	<?php if (have_posts()) : 
 				while (have_posts()) : the_post(); ?>	
-                    	<aarticle class="post <?php templ_post_class();?> clearfix">  
+                    	<article class="post <?php templ_post_class();?> clearfix">  
                          	<?php do_action('tmpl_before_category_page_image');           /*do_action before the post image */
 									do_action('tmpl_category_page_image');
 									do_action('tmpl_after_category_page_image');           /*do action after the post image */?> 
@@ -74,7 +74,7 @@ do_action('before_content');
           	<?php endwhile;
 				wp_reset_query(); 
 			else:?>
-          	<p class='nodata_msg'><?php _e( 'Apologies, no results were found matching this search criteria.', DOMAIN ); ?></p>              
+          	<p class='nodata_msg'><?php _e( 'Apologies, no results were found matching this search criteria.', 'templatic' ); ?></p>              
           <?php endif;?>
      </section>
      <div id="listpagi">

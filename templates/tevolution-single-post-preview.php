@@ -50,12 +50,12 @@ $_REQUEST['imgarr'] = (isset($_REQUEST['imgarr']) && $_REQUEST['imgarr']!='')? e
 					<?php	
 						$post_description=ucfirst(str_replace('Post',$cur_post_type,'Post Description')); 
 						if(function_exists('icl_register_string')){
-							icl_register_string(DOMAIN,$post_description,$post_description);
+							icl_register_string('templatic',$post_description,$post_description);
 						}
 						if(function_exists('icl_t')){
-							$post_description1 = icl_t(DOMAIN,$post_description,$post_description);
+							$post_description1 = icl_t('templatic',$post_description,$post_description);
 						}else{
-							$post_description1 = __($post_description,DOMAIN); 
+							$post_description1 = __($post_description,'templatic'); 
 						}
 						echo $post_description1;
 					?>
@@ -71,6 +71,12 @@ $_REQUEST['imgarr'] = (isset($_REQUEST['imgarr']) && $_REQUEST['imgarr']!='')? e
 	do_action('templ_preview_page_file_upload');	/* Add action for preview file upload*/
 	
 	do_action('templ_preview_address_map');	/*Add action for display preview map */?>
+     <?php 
+	  /* Display selected category and listing tags */
+	  if(function_exists('directory_post_preview_categories_tags') ){				  
+			echo directory_post_preview_categories_tags($_REQUEST['category'],$_REQUEST['post_tags']);
+	  } 
+	  ?>
 </div>
 <!--End content part -->
 <script type="text/javascript" async >

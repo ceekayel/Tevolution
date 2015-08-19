@@ -22,22 +22,22 @@ include(TT_REGISTRATION_FOLDER_PATH."admin_user_custom_fields_class.php");	/* cl
 <div class="wrap">
      <div id="icon-edit" class="icon32 icon32-posts-post"><br/></div>
     	<h2>
-		<?php echo __('Manage user profile fields',DOMAIN);?>
-     	<a id="add_user_custom_fields"href="<?php echo site_url().'/wp-admin/admin.php?page=custom_setup&ctab=user_custom_fields&action=addnew';?>" title="<?php echo __('Add a field for users&rsquo; profile',DOMAIN);?>" name="btnviewlisting" class="add-new-h2" /><?php echo __('Add a new field',DOMAIN); ?></a>
+		<?php echo __('Manage user profile fields','templatic');?>
+     	<a id="add_user_custom_fields"href="<?php echo site_url().'/wp-admin/admin.php?page=custom_setup&ctab=user_custom_fields&action=addnew';?>" title="<?php echo __('Add a field for users&rsquo; profile','templatic');?>" name="btnviewlisting" class="add-new-h2" /><?php echo __('Add a new field','templatic'); ?></a>
      </h2>
      
-      <p class="tevolution_desc"><?php echo __('The fields you add/edit here will be displayed in user&rsquo;s dashboard and profile area. Using these fields, you can make users fill in custom information about themselves from the registration page you create.',DOMAIN);?></p>
+      <p class="tevolution_desc"><?php echo __('The fields you add/edit here will be displayed in user&rsquo;s dashboard and profile area. Using these fields, you can make users fill in custom information about themselves from the registration page you create.','templatic');?></p>
      
      <?php
      if(isset($_REQUEST['usermetamsg']) && $_REQUEST['usermetamsg']=='delsuccess')
      {
-          $message = __('Information Deleted successfully.',DOMAIN);	
+          $message = __('Information Deleted successfully.','templatic');	
      } 
 	if(isset($_REQUEST['usermetamsg']) && $_REQUEST['usermetamsg']=='usersuccess'){
           if($_REQUEST['msgtype']=='add-suc') {
-			$message = __('Custom user info field created successfully.',DOMAIN);
+			$message = __('Custom user info field created successfully.','templatic');
 		} else {
-			$message = __('Custom user info field updated successfully.',DOMAIN);
+			$message = __('Custom user info field updated successfully.','templatic');
 		}
      }
      

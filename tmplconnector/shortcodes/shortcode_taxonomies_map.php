@@ -117,11 +117,11 @@ function tevolution_all_list_map($atts ){
                <div class="iprelative">
                	<div id="map_canvas" style="width: 100%; height:<?php echo $_GET['h']; ?>; " class="map_canvas"></div>               
                     <div id="map_loading_div" style="width: 100%; height:<?php echo $_GET['h']-200; ?>px; display: none;"></div>                     
-                    <div id="map_marker_nofound"><?php echo '<p>';_e('Your selected category do not have any records yet at your current location.',DOMAIN);echo '</p>'; ?></div>     
+                    <div id="map_marker_nofound"><?php echo '<p>';_e('Your selected category do not have any records yet at your current location.','templatic');echo '</p>'; ?></div>     
                </div>             
               
                <form id="ajaxform" name="slider_search" class="pe_advsearch_form" action="javascript:void(0);"  onsubmit="return(new_googlemap_ajaxSearch());">
-                	<div class="paf_search"><input  type="text" class="" id="search_string" name="search_string" value="" placeholder="<?php _e('Title or Keyword',DOMAIN);?>" onclick="this.placeholder=''" onmouseover="this.placeholder='<?php _e('Title or Keyword',DOMAIN);?>'"/></div>
+                	<div class="paf_search"><input  type="text" class="" id="search_string" name="search_string" value="" placeholder="<?php _e('Title or Keyword','templatic');?>" onclick="this.placeholder=''" onmouseover="this.placeholder='<?php _e('Title or Keyword','templatic');?>'"/></div>
                
                <?php if($post_info):?>
                	<div class="paf_row map_post_type" id="toggle_postID" style="display:block;">
@@ -293,7 +293,7 @@ function taxonomies_googlemap_initialize(){
 						
 						$image_class=($post_image)?'map-image' :'';
 						$comment_count= count(get_comments(array('post_id' => $ID)));
-						$review=($comment_count ==1 )? __('review',DOMAIN):__('reviews',DOMAIN);	
+						$review=($comment_count ==1 )? __('review','templatic'):__('reviews','templatic');	
 						
 						if(($lat && $lng )&& !in_array($ID,$pids))
 						{ 	

@@ -89,17 +89,17 @@ li >img {
 .uploadfilebutton{ position:absolute;font-size:30px; cursor:pointer; z-index:2147483583; top:-10px; left:0; opacity:0; }
 </style>
 
-<?php $button_text = apply_filters('tmpl_image_uploader_text',__("Upload Image", DOMAIN)); ?>
+<?php $button_text = apply_filters('tmpl_image_uploader_text',__("Upload Image", 'templatic')); ?>
 	 <div class="clearfix image_gallery_description">
      <p class="add_tevolution_images hide-if-no-js">
 		<!-- Multi image uploader button -->
 		<div class="<?php echo $name; ?>-sm-preview"></div>
 			<div id="fancy-contact-form">
-			<div class="dz-default dz-message" ><span  id="fancy-<?php echo $name; ?>"><span><i class="fa fa-folder"></i> <?php _e("Upload Image", DOMAIN); ?></span></div><span id="status" class="message_error2 clearfix"></span></span></div>
+			<div class="dz-default dz-message" ><span  id="fancy-<?php echo $name; ?>"><span><i class="fa fa-folder"></i> <?php _e("Upload Image", 'templatic'); ?></span></div><span id="status" class="message_error2 clearfix"></span></span></div>
 			<input type="hidden" name="submitted" value="1">
        		<p class="max-upload-size">
 			<?php
-				_e( 'Maximum upload file size: ',DOMAIN);
+				_e( 'Maximum upload file size: ','templatic');
 				echo esc_html($templatic_image_size).'KB';
 			?>
             </p>
@@ -127,13 +127,13 @@ li >img {
 						jQuery('.ajax-file-upload-statusbar').css('display','none');
 						data = data+'';
 						if(data == 'error'){
-							jQuery('#post_images_error').html("<?php _e('Image can&rsquo;t be uploaded due to some error.',DOMAIN); ?>");
+							jQuery('#post_images_error').html("<?php _e('Image can&rsquo;t be uploaded due to some error.','templatic'); ?>");
 							jQuery('.ajax-file-upload-statusbar').css('display','none');
 							return false;
 						}
 						/*Image size validation*/
 						 if(data == 'LIMIT'){
-							status.text("<?php _e('Your image size must be less then',DOMAIN); echo " ".$templatic_image_size." "; _e('kilobytes',DOMAIN); ?>");
+							status.text("<?php _e('Your image size must be less then','templatic'); echo " ".$templatic_image_size." "; _e('kilobytes','templatic'); ?>");
 							jQuery('.ajax-file-upload-statusbar').hide();
 							return false;
 						 }
@@ -141,7 +141,7 @@ li >img {
 						/* Start Limit Code  */
 						if(data > 10 )
 						  {
-							status.text("<?php _e('You can upload maximum 10 images',DOMAIN); ?>");
+							status.text("<?php _e('You can upload maximum 10 images','templatic'); ?>");
 							return false;
 						  }
 						 
@@ -152,7 +152,7 @@ li >img {
 						limit = (data.split(",").length + counter) - 1;
 						if(parseFloat(limit) >= 10)
 						  {
-							status.text("<?php _e('You can upload maximum 10 images',DOMAIN); ?>");
+							status.text("<?php _e('You can upload maximum 10 images','templatic'); ?>");
 							return false;
 						  }
 						/* End Limit Code */

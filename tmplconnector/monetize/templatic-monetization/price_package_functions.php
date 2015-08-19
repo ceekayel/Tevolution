@@ -375,16 +375,16 @@ class monetization
             <?php global $post; 
 		  	$post_type = (get_post_meta($post->ID,'template_post_type',true)!="")? get_post_meta($post->ID,'template_post_type',true):get_post_meta($post->ID,'submit_post_type',true); ?>
 			<div class="form_row clearfix is_backend_featured" id="show_featured_option">
-				<label><strong><?php _e('Would you like to make this ',ADMINDOMAIN).$post_type; _e('featured?',ADMINDOMAIN); ?></strong></label>
+				<label><strong><?php _e('Would you like to make this ','templatic-admin').$post_type; _e('featured?','templatic-admin'); ?></strong></label>
 				<div class="feature_label">
-					<label><input type="checkbox" name="featured_h" id="featured_h" value="<?php echo $featured_h; ?>" onclick="featured_list(this.id)" <?php if(@$is_featured_h !="" && $is_featured_h =="h"){ echo "checked=checked"; } ?>/><?php _e(FEATURED_H,ADMINDOMAIN); ?> <span id="ftrhome"><?php if(isset($featured_h) && $featured_h !=""){ echo "(".fetch_currency_with_position($featured_h).")"; }else{ echo "(".fetch_currency_with_position('0').")"; } ?></span></label>
-					<label><input type="checkbox" name="featured_c" id="featured_c" value="0" onclick="featured_list(this.id)" <?php if(@$is_featured_c !="" && $is_featured_c =="c"){ echo "checked=checked"; } ?>/><?php _e(FEATURED_C,ADMINDOMAIN); ?><span id="ftrcat"><?php if(isset($featured_c) && $featured_c !=""){ echo "(".fetch_currency_with_position($featured_c).")"; }else{ echo "(".fetch_currency_with_position('0').")"; } ?></span></label>
+					<label><input type="checkbox" name="featured_h" id="featured_h" value="<?php echo $featured_h; ?>" onclick="featured_list(this.id)" <?php if(@$is_featured_h !="" && $is_featured_h =="h"){ echo "checked=checked"; } ?>/><?php _e(FEATURED_H,'templatic-admin'); ?> <span id="ftrhome"><?php if(isset($featured_h) && $featured_h !=""){ echo "(".fetch_currency_with_position($featured_h).")"; }else{ echo "(".fetch_currency_with_position('0').")"; } ?></span></label>
+					<label><input type="checkbox" name="featured_c" id="featured_c" value="0" onclick="featured_list(this.id)" <?php if(@$is_featured_c !="" && $is_featured_c =="c"){ echo "checked=checked"; } ?>/><?php _e(FEATURED_C,'templatic-admin'); ?><span id="ftrcat"><?php if(isset($featured_c) && $featured_c !=""){ echo "(".fetch_currency_with_position($featured_c).")"; }else{ echo "(".fetch_currency_with_position('0').")"; } ?></span></label>
 					<?php
 						if(is_plugin_active('thoughtful-comments/fv-thoughtful-comments.php')){
 							$author_moderate = get_post_meta($edit_id,'author_moderate',true);
 							$comment_mederation_amount = get_post_meta($price_select,'comment_mederation_amount',true);
 						?>
-							<label><input type="checkbox" name="author_can_moderate_comment" id="author_can_moderate_comment" value="0" onclick="featured_list(this.id)" <?php if(@$author_moderate !="" && $author_moderate =="1"){ echo "checked=checked"; } ?>/><?php _e(MODERATE_COMMENT,DOMAIN); ?><span id="ftrcomnt"><?php if(isset($author_moderate) && $author_moderate =="1"){ echo "(".fetch_currency_with_position($comment_mederation_amount).")"; }else{ echo "(".fetch_currency_with_position('0').")"; } ?></span></label>
+							<label><input type="checkbox" name="author_can_moderate_comment" id="author_can_moderate_comment" value="0" onclick="featured_list(this.id)" <?php if(@$author_moderate !="" && $author_moderate =="1"){ echo "checked=checked"; } ?>/><?php _e(MODERATE_COMMENT,'templatic'); ?><span id="ftrcomnt"><?php if(isset($author_moderate) && $author_moderate =="1"){ echo "(".fetch_currency_with_position($comment_mederation_amount).")"; }else{ echo "(".fetch_currency_with_position('0').")"; } ?></span></label>
 							<input type="hidden" name="author_moderate" id="author_moderate" value="0"/>
 						<?php	
 						}
@@ -394,18 +394,18 @@ class monetization
 					
 				</div>
 				<?php				
-					$msg_note = sprintf(__("An additional amount will be charged to make this %s featured. You have the option to feature your %s on home page or category page or both.",ADMINDOMAIN),$post_type,$post_type);
+					$msg_note = sprintf(__("An additional amount will be charged to make this %s featured. You have the option to feature your %s on home page or category page or both.",'templatic-admin'),$post_type,$post_type);
 					if(function_exists('icl_register_string')){
-						icl_register_string(ADMINDOMAIN,$msg_note,$msg_note);
+						icl_register_string('templatic-admin',$msg_note,$msg_note);
 					}
 					
 					if(function_exists('icl_t')){
-						$msg_note1 = icl_t(ADMINDOMAIN,$msg_note,$msg_note);
+						$msg_note1 = icl_t('templatic-admin',$msg_note,$msg_note);
 					}else{
-						$msg_note1 = __($msg_note,ADMINDOMAIN); 
+						$msg_note1 = __($msg_note,'templatic-admin'); 
 					}
 				?>
-				<span class="message_note"><?php _e($msg_note1,ADMINDOMAIN);?></span>
+				<span class="message_note"><?php _e($msg_note1,'templatic-admin');?></span>
 				<span id="category_span" class="message_error2"></span>
 			</div>
 			<!-- END - FETCH FEATURED POST PRICE -->
@@ -487,7 +487,7 @@ class monetization
                 <div class="clearfix" id="plan" >
                 <?php
 				if($div_id =='all_packages'){ ?>
-					<div class="sec_title"><h3 id="package_data"><?php _e('Select a Package',DOMAIN); ?></h3></div>
+					<div class="sec_title"><h3 id="package_data"><?php _e('Select a Package','templatic'); ?></h3></div>
 					<span class="message_error2" id="all_packages_error"></span>
 				<?php }		
 			/* FETCH ALL THE PACKAGE DATA FROM POST META TABLE */
@@ -1002,8 +1002,8 @@ class monetization
 		
 		
 		$package_post_type = explode(",",get_post_meta($package_id,'package_post_type',true));
-	
-		$package_limit_post=get_post_meta($package_id,'limit_no_post',true);/* get the price package limit number of post*/
+		$package_sub_id=get_user_meta($current_user->ID,'sub_id',true);/* get the user selected price package id*/
+		$package_limit_post=get_post_meta($package_sub_id,'limit_no_post',true);/* get the price package limit number of post*/
 		$user_have_pkg = get_post_meta($package_id,'package_type',true); 
 		$user_last_postid = $this->templ_get_packagetype_last_postid($current_user->ID,$post_type); /* User last post id*/
 		$user_have_days = $this->templ_days_for_packagetype($current_user->ID,$post_type); /* return alive days(numbers) of last selected package  */
@@ -1020,11 +1020,13 @@ class monetization
 			/*Only get the pay per subscription package id from postmeta */
 			$package_id_sql= "SELECT post_id from {$wpdb->prefix}postmeta where meta_key='package_type' AND meta_value=2";
 			/*Get the user last transaction  */
-			$transaction_status = $wpdb->get_results("SELECT status,package_id FROM $transaction_tabel where payforpackage=1 AND user_id=".$current_user->ID." AND package_id in(".$package_id_sql.") order by trans_id DESC LIMIT 1");
-			$trans_status=@$transaction_status[0]->status;
-			$trans_package_id=@$transaction_status[0]->package_id;
-			$post_types = explode(',',get_post_meta($package_id,'package_post_type',true)); 
-			if(in_array($post_type,$post_types)): $is_posttype_inpkg=1; else: $is_posttype_inpkg=0; endif; /* check is this taxonomy included in package or not*/
+			if($wpdb->query("SHOW TABLES LIKE '".$transaction_tabel."'")==1):
+				$transaction_status = $wpdb->get_results("SELECT status,package_id FROM $transaction_tabel where payforpackage=1 AND user_id=".$current_user->ID." AND package_id in(".$package_id_sql.") order by trans_id DESC LIMIT 1");
+				$trans_status=@$transaction_status[0]->status;
+				$trans_package_id=@$transaction_status[0]->package_id;
+				$post_types = explode(',',get_post_meta($package_id,'package_post_type',true)); 
+				if(in_array($post_type,$post_types)): $is_posttype_inpkg=1; else: $is_posttype_inpkg=0; endif; /* check is this taxonomy included in package or not*/
+			endif;	
 		}
 		$paypersubscription=0;
 		$data_price = '';
@@ -1072,7 +1074,8 @@ class monetization
 		
 		$post_query = null;
 		$post_query = new WP_Query($args);	
-                $post_meta_info = $post_query;	
+
+        $post_meta_info = $post_query;	
 		$i = 0;
 		/*loop to fetch the pay per listing package*/
 		if($post_meta_info->have_posts() || $paypersubscription==1){
@@ -1101,7 +1104,7 @@ class monetization
 			$PostTypeObject = get_post_type_object($post_type);
 			$_PostTypelabel = $PostTypeObject->labels->name;
 			
-			_e('Select your payment plan',DOMAIN); ?></span><span><i class="fa fa-caret-down"></i><i class="fa fa-caret-right"></i></span></a>
+			_e('Select your payment plan','templatic'); ?></span><span><i class="fa fa-caret-down"></i><i class="fa fa-caret-right"></i></span></a>
 			<div id="plan" class="content step-plan <?php echo $firs_tab_class; ?> clearfix">
 				<div id="packagesblock-wrap" class="block">
                 	<?php 
@@ -1109,27 +1112,27 @@ class monetization
 					if($paypersubscription==1):
 					?>
                     <div class="packageblock clearifx">
-                        <ul data-price="0" data-id="<?php echo $package_id; ?>"  <?php if(get_user_meta($current_user->ID,'upgrade',true) != 'upgrade') { ?> data-free="<?php echo get_post_meta($package_id,'subscription_days_free_trail',true); ?>"  <?php } ?> data-subscribed='1' data-type="2"  data-post="1" class="packagelistitems">
+                        <ul data-price="0" data-id="<?php echo $package_sub_id; ?>"  <?php if(get_user_meta($current_user->ID,'upgrade',true) != 'upgrade') { ?> data-free="<?php echo get_post_meta($package_id,'subscription_days_free_trail',true); ?>"  <?php } ?> data-subscribed='1' data-type="2"  data-post="1" class="packagelistitems">
                         <li>
                         <div class="col-md-3 col-sm-6">
                             <div class="panel panel-default text-center">
                             	<div class="panel-heading">
-	                                <h3><?php echo get_the_title($package_id); ?></h3>
+	                                <h3><?php echo get_the_title($package_sub_id); ?></h3>
                                 </div>
                                 <div class="panel-desc">
 	                                 <div class="panel-body">    
-                                     <?php _e('You have already subscribed to this package. ',DOMAIN);?>
+                                     <?php _e('You have already subscribed to this package. ','templatic');?>
                                     <p><?php 
-									echo sprintf(__('This package allows you to add %d listings, you have already added %d. You still have %d listings left in your package.',DOMAIN),$package_limit_post,$user_limit_post,$package_limit_post-$user_limit_post);?></p>
+									echo sprintf(__('This package allows you to add %d listings, you have already added %d. You still have %d listings left in your package.','templatic'),$package_limit_post,$user_limit_post,$package_limit_post-$user_limit_post);?></p>
                                      <?php
 									 		if(get_user_meta($current_user->ID,'package_free_submission',true) > 0 && !isset($_REQUEST['page']) && !isset($_REQUEST['pmethod']) && get_user_meta($current_user->ID,'package_free_submission_completed',true) != 'completed')
 										   	{
 											   ?>
-												<p class="margin_right panel-type price package_type"><?php echo '<label>'; _e('Number of free submissions: ',DOMAIN);echo '</label>'; echo '<span>'; echo get_user_meta($current_user->ID,'package_free_submission',true);_e(' Submitted '); echo  (get_post_meta($package_id,'subscription_days_free_trail',true) - get_user_meta($current_user->ID,'package_free_submission',true)); _e(' Left.'); echo '</span>'; ?> </p>
+												<p class="margin_right panel-type price package_type"><?php echo '<label>'; _e('Number of free submissions: ','templatic');echo '</label>'; echo '<span>'; echo get_user_meta($current_user->ID,'package_free_submission',true);_e(' Submitted '); echo  (get_post_meta($package_sub_id,'subscription_days_free_trail',true) - get_user_meta($current_user->ID,'package_free_submission',true)); _e(' Left.'); echo '</span>'; ?> </p>
 												<?php
 										   	}
 									 		/*condition to check submit listing within following days*/
-									 		if(get_post_meta($package_id,'days_for_no_post',true) > 0)
+									 		if(get_post_meta($package_sub_id,'days_for_no_post',true) > 0)
 										   	{
 												$current_date = strtotime(date('Y-m-d h:i:s'));	
 												$postid_str = $wpdb->get_results("select p.ID,t.payment_date,t.post_id from $wpdb->posts p,$transaction_tabel t where t.user_id=".$current_user->ID." AND (t.package_type is NULL OR t.package_type=0) group by t.trans_id order by t.trans_id ASC LIMIT 0,1");
@@ -1144,10 +1147,10 @@ class monetization
 												}
 												else
 												{
-													$days_left = get_post_meta($package_id,'days_for_no_post',true);
+													$days_left = get_post_meta($package_sub_id,'days_for_no_post',true);
 												}
 											   ?>
-												<p class="margin_right panel-type price package_type"><?php echo '<label>'; _e('Submit listing within following days: ',DOMAIN);echo '</label>'; echo '<span>'; echo $days_left; echo '</span>'; ?> </p>
+												<p class="margin_right panel-type price package_type"><?php echo '<label>'; _e('Submit listing within following days: ','templatic');echo '</label>'; echo '<span>'; echo $days_left; echo '</span>'; ?> </p>
 											   <?php
 										   }?>
                                     </div> <!-- panel-body -->
@@ -1155,11 +1158,11 @@ class monetization
 									if(in_array($post_type,$package_post_type) && get_user_meta($current_user->ID,'upgrade',true) != 'upgrade' && $subscription_days_free_trail >0  && $is_user_have_alivedays == 1)
 									{?>
                                         <div class="upgrade-button">
-                                          <!--  <a data-id="<?php echo $package_id; ?>" data-upgrade="upgrade"  class="btn btn-lg btn-primary button select-plan"><?php _e('Upgrade',DOMAIN); ?></a> -->
+                                          <!--  <a data-id="<?php echo $package_id; ?>" data-upgrade="upgrade"  class="btn btn-lg btn-primary button select-plan"><?php _e('Upgrade','templatic'); ?></a> -->
                                         </div>
                                     <?php } ?>
                                     <div class="pkg-button">
-                                       <a data-id="<?php echo $package_id; ?>"  class="btn button button-primary button-large select-plan"><?php _e('Select',DOMAIN); ?></a>                                             
+                                       <a data-id="<?php echo $package_sub_id; ?>"  class="btn button button-primary button-large select-plan"><?php _e('Select','templatic'); ?></a>                                             
                                     </div> <!-- list-group -->
                                 </div><!-- panel-desc -->
                             </div> <!-- panel panel-default -->         
@@ -1197,11 +1200,16 @@ class monetization
 	/* fetch featured option for particular price package selected while submitting listing */
 	function tmpl_fetch_price_package_featured_option($user_id='',$post_type='',$post_id='',$pkg_id='',$is_user_select_subscription_pkg='')
 	{
+		/* Set curent language in cookie */
+		if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
+			global  $sitepress;
+			$_COOKIE['_icl_current_language'] = $sitepress->get_current_language();
+		}
 		$package_selected = get_post($pkg_id);
 		if(isset($_REQUEST['pid']) && $_REQUEST['pid']!="" && !is_admin()){
 			$edit_id = $_REQUEST['pid'];
 		}
-		elseif(is_admin())
+		elseif(is_admin() && @$_REQUEST['action'] != 'tmpl_tevolution_submit_from_package_featured_option')
 		{
 			$edit_id = $post_id;
 		}
@@ -1261,15 +1269,15 @@ class monetization
 			{
 			?>
 				<div class="form_row clearfix" id="is_featured">
-					<?php if(($is_home_page_featured && !@$is_home_featured) || ($is_category_page_featured && !@$is_category_featured)){ ?><label><strong><?php _e('Would you like to make this ',DOMAIN).$post_type; _e('featured?',DOMAIN); ?></strong></label><?php } ?>
+					<?php if(($is_home_page_featured && !@$is_home_featured) || ($is_category_page_featured && !@$is_category_featured)){ ?><label><strong><?php _e('Would you like to make this ','templatic').$post_type; _e('featured?','templatic'); ?></strong></label><?php } ?>
 					<div class="feature_label">
 						<?php
 						if(!@$is_home_featured && $is_home_page_featured)
 						{?>
-							<label><input type="checkbox" <?php if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'edit' && $edit_is_home_page_featured == 'h' ){?>  checked="checked"  <?php if(!is_admin()){ ?>disabled="disabled" <?php } } elseif( $_SESSION['custom_fields']['featured_h']  != '') { ?>  checked="checked" <?php } ?> name="featured_h" id="featured_h" value="<?php echo apply_filters( 'formatted_tmpl_price', number_format( $featured_h, $num_decimals, $decimal_sep, $thousands_sep ), $amount, $num_decimals, $decimal_sep, $thousands_sep ); ?>" /><?php _e('Yes &sbquo; feature this listing on homepage.',DOMAIN); ?> <span id="ftrhome"><?php if(isset($featured_h) && $featured_h !=""){ echo "(".display_amount_with_currency_plugin($featured_h).")"; } ?></span></label>
+							<label><input type="checkbox" <?php if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'edit' && $edit_is_home_page_featured == 'h' ){?>  checked="checked"  <?php if(!is_admin()){ ?>disabled="disabled" <?php } } elseif( $_SESSION['custom_fields']['featured_h']  != '') { ?>  checked="checked" <?php } ?> name="featured_h" id="featured_h" value="<?php echo apply_filters( 'formatted_tmpl_price', number_format( $featured_h, $num_decimals, $decimal_sep, $thousands_sep ), $amount, $num_decimals, $decimal_sep, $thousands_sep ); ?>" /><?php _e('Yes &sbquo; feature this listing on homepage.','templatic'); ?> <span id="ftrhome"><?php if(isset($featured_h) && $featured_h !=""){ echo "(".display_amount_with_currency_plugin($featured_h).")"; } ?></span></label>
 					<?php }
 						if(!@$is_category_featured && $is_category_page_featured){?>
-							<label><input type="checkbox" <?php if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'edit' && $edit_is_cat_page_featured == 'c' ){?>  checked="checked"  <?php if(!is_admin()){ ?>disabled="disabled" <?php }  } elseif( $_SESSION['custom_fields']['featured_c']  != '') { ?>  checked="checked" <?php } ?> name="featured_c" id="featured_c" value="<?php echo apply_filters( 'formatted_tmpl_price', number_format( $featured_c, $num_decimals, $decimal_sep, $thousands_sep ), $amount, $num_decimals, $decimal_sep, $thousands_sep ); ?>" /><?php _e('Yes &sbquo; feature this listing on category page.',DOMAIN); ?><span id="ftrcat"><?php if(isset($featured_c) && $featured_c !=""){ echo "(".display_amount_with_currency_plugin($featured_c).")"; } ?></span></label>
+							<label><input type="checkbox" <?php if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'edit' && $edit_is_cat_page_featured == 'c' ){?>  checked="checked"  <?php if(!is_admin()){ ?>disabled="disabled" <?php }  } elseif( $_SESSION['custom_fields']['featured_c']  != '') { ?>  checked="checked" <?php } ?> name="featured_c" id="featured_c" value="<?php echo apply_filters( 'formatted_tmpl_price', number_format( $featured_c, $num_decimals, $decimal_sep, $thousands_sep ), $amount, $num_decimals, $decimal_sep, $thousands_sep ); ?>" /><?php _e('Yes &sbquo; feature this listing on category page.','templatic'); ?><span id="ftrcat"><?php if(isset($featured_c) && $featured_c !=""){ echo "(".display_amount_with_currency_plugin($featured_c).")"; } ?></span></label>
 					<?php }
 						if(is_plugin_active('thoughtful-comments/fv-thoughtful-comments.php')){
 							
@@ -1280,7 +1288,7 @@ class monetization
 							if(!$comment_mederation_amount){ $comment_mederation_amount =0; }
 							{
 							?>
-								<label><input type="checkbox" name="author_can_moderate_comment" id="author_can_moderate_comment" value="<?php echo $comment_mederation_amount; ?>" onclick="featured_list(this.id)" <?php if(@$_SESSION['custom_fields']['author_can_moderate_comment'] !=""){ echo "checked=checked"; } ?>/><?php echo ' ';_e(MODERATE_COMMENT,DOMAIN); ?><span id="ftrcomnt"><?php if(isset($author_can_moderate_comment) && $author_can_moderate_comment !=""){ echo "(".fetch_currency_with_position($comment_mederation_amount).")"; }else{ echo "(".fetch_currency_with_position('0').")"; } ?></span></label>
+								<label><input type="checkbox" name="author_can_moderate_comment" id="author_can_moderate_comment" value="<?php echo $comment_mederation_amount; ?>" onclick="featured_list(this.id)" <?php if(@$_SESSION['custom_fields']['author_can_moderate_comment'] !=""){ echo "checked=checked"; } ?>/><?php echo ' ';_e(MODERATE_COMMENT,'templatic'); ?><span id="ftrcomnt"><?php if(isset($author_can_moderate_comment) && $author_can_moderate_comment !=""){ echo "(".fetch_currency_with_position($comment_mederation_amount).")"; }else{ echo "(".fetch_currency_with_position('0').")"; } ?></span></label>
 								<input type="hidden" name="author_moderate" id="author_moderate" value="0"/>
 							<?php	
 							}
@@ -1305,12 +1313,12 @@ class monetization
 				$cat_price = $_SESSION['custom_fields']['all_cat_price'];
 				$package_price=get_post_meta($_REQUEST['pkg_id'],'package_amount',true);				
 			}
-			if(@$_REQUEST['front_end'] == 1 || @$_REQUEST['backandedit'] == 1 || (function_exists('is_price_package') && is_price_package($current_user->ID,$post_type,$post_id) <= 0))
+			if(@$_REQUEST['front_end'] == 1 || @$_REQUEST['backandedit'] == 1 || (function_exists('is_price_package') && is_price_package($current_user->ID,$post_type,$post_id) <= 0) || (isset($_REQUEST['pid']) && !empty($_REQUEST['pid']) && isset($_REQUEST['action']) && !empty($_REQUEST['action'])))
 			{
 			?>
 			<div id="price_package_price_list" class="form_row clearfix" style="display:none;">
             	<div class="form_cat">
-	               <span class="total_charges"><b><?php _e('Total Charges:',DOMAIN); echo ' '; ?></b></span>
+	               <span class="total_charges"><b><?php _e('Total Charges:','templatic'); echo ' '; ?></b></span>
 					<span id="before_cat_price_id"  <?php if($cat_price<=0):?> style="display:none;"<?php endif;?> ><?php if($position == '1'){ echo $currency; }else if($position == '2'){ echo $currency.'&nbsp;';}?></span>
 					<span id="cat_price" <?php if($cat_price<=0):?>style="display:none;"<?php endif;?> ><?php echo apply_filters( 'formatted_tmpl_price', number_format( $cat_price, $num_decimals, $decimal_sep, $thousands_sep ), $amount, $num_decimals, $decimal_sep, $thousands_sep );?></span>
 					<span id="cat_price_id" style="display:none;"><?php if($position == '3'){ echo $currency; }else if($position != 1 && $position != 2 && $position !=3){ echo '&nbsp;'.$currency; } ?>		</span>		
@@ -1391,12 +1399,12 @@ function tmpl_get_transaction_status($tid,$pid){
 	$trans_status = $wpdb->get_row("select status,payable_amt from $transection_db_table_name t where trans_id = '".$tid."' order by t.trans_id DESC");
 	$result = '';
 	if($trans_status->status == 0 && $trans_status->payable_amt>0){
-		$result = '<a id="p_status_'.$tid.'" onclick="change_transstatus('.$tid.','.$pid.')" style="color:#E66F00; font-weight:normal;"  href="javascript:void(0);">'.__('Pending',DOMAIN).'</a>';
+		$result = '<a id="p_status_'.$tid.'" onclick="change_transstatus('.$tid.','.$pid.')" style="color:#E66F00; font-weight:normal;"  href="javascript:void(0);">'.__('Pending','templatic').'</a>';
 	}else if($trans_status->status == 1){
-		$result = '<span style="color:green; font-weight:normal;">'.__('Approved',DOMAIN).'</span>';
+		$result = '<span style="color:green; font-weight:normal;">'.__('Approved','templatic').'</span>';
 	}
 	else if($trans_status->status == 2){
-		$result = '<span style="color:red; font-weight:normal;">'.__('Cancel',DOMAIN).'</span>';
+		$result = '<span style="color:red; font-weight:normal;">'.__('Cancel','templatic').'</span>';
 	}
 	else if($trans_status->status == 0 && $trans_status->payable_amt<=0){
 		$result = "-";
@@ -1414,38 +1422,38 @@ function fetch_payment_description($pid)
 	$payment_options = get_option('payment_method_'.$transsql_result->payment_method);
 	$payment_method_name = $payment_options['name'];
 	if($transsql_result->status){
-		$status = __("Approved",DOMAIN);
+		$status = __("Approved",'templatic');
 	}else{
-		$status = __("Pending",DOMAIN);
+		$status = __("Pending",'templatic');
 	}
 	
 	$decimals=get_option('tmpl_price_num_decimals');
 	$decimals=($decimals!='')?$decimals:2;
 	
-	echo "<li><p class='submit_info_label'>". __('Amount',DOMAIN) .": </p> <p class='submit_info_detail'> ".fetch_currency_with_symbol(number_format(@$transsql_result->payable_amt,$decimals,".",""))."</p></li>";
+	echo "<li><p class='submit_info_label'>". __('Amount','templatic') .": </p> <p class='submit_info_detail'> ".fetch_currency_with_symbol(number_format(@$transsql_result->payable_amt,$decimals,".",""))."</p></li>";
 	if($transsql_result->payment_method!="")
 	{
 		if(function_exists('icl_register_string')){
-			icl_register_string(DOMAIN,$payment_method_name,$payment_method_name);
+			icl_register_string('templatic',$payment_method_name,$payment_method_name);
 		}
 		
 		if(function_exists('icl_t')){
-			$payment_method_name = icl_t(DOMAIN,$payment_method_name,$payment_method_name);
+			$payment_method_name = icl_t('templatic',$payment_method_name,$payment_method_name);
 		}else{
-			$payment_method_name = __($payment_method_name,DOMAIN); 
+			$payment_method_name = __($payment_method_name,'templatic'); 
 		}
-		echo "<li><p class='submit_info_label'>". __('Payment Method',DOMAIN) .": </p> <p class='submit_info_detail'> ".@$payment_method_name."</p></li>";
+		echo "<li><p class='submit_info_label'>". __('Payment Method','templatic') .": </p> <p class='submit_info_detail'> ".@$payment_method_name."</p></li>";
 	}
 	if(function_exists('icl_register_string')){
-			icl_register_string(DOMAIN,$status,$status);
+			icl_register_string('templatic',$status,$status);
 		}
 		
 		if(function_exists('icl_t')){
-			$status = icl_t(DOMAIN,$status,$status);
+			$status = icl_t('templatic',$status,$status);
 		}else{
-			$status = __($status,DOMAIN); 
+			$status = __($status,'templatic'); 
 		}
-	echo "<li><p class='submit_info_label'>". __('Status',DOMAIN) .": </p> <p class='submit_info_detail'> ".$status."</p></li>";
+	echo "<li><p class='submit_info_label'>". __('Status','templatic') .": </p> <p class='submit_info_detail'> ".$status."</p></li>";
 }
 /*
 	Insert transaction detail in transaction table.
@@ -1503,7 +1511,7 @@ function insert_transaction_detail($paymentmethod='',$last_postid,$is_upgrade=0,
 	$transaction_insert = 'INSERT INTO '.$transection_db_table_name.' set 
 		post_id="'.$last_postid.'",
 		user_id = "'.$post_author.'",
-		post_title ="'.$post_title.'",
+		post_title ="'.strip_tags($post_title).'",
 		payment_method="'.$paymentmethod.'",
 		payable_amt="'.str_replace(',', '', $payable_amount).'",
 		payment_date="'.$pdate.'",
@@ -1571,26 +1579,26 @@ function tmpl_show_package_period($post_id)
 	
 	if(get_post_meta($post_id,'package_type',true) == 2)
 	{ ?>
-		<p class="panel-type price package_type"><?php echo '<label>'; _e('Package Type: ',DOMAIN); echo '</label>'; echo ' <span>'; _e('Subscription',DOMAIN); echo '</span>'; ?> </p>
-        <p class="panel-type price package_type"><?php echo '<label>'; _e('Listing duration: ',DOMAIN); echo '</label>'; echo ' <span>';  echo $tvalidity; _e(" days",DOMAIN); echo '</span>'; ?> </p>
-		<p class="margin_right panel-type price package_type"><?php echo '<label>'; _e('Number of listings included in the package: ',DOMAIN);echo '</label>'; echo '<span>'; echo get_post_meta($post_id,'limit_no_post',true); echo '</span>'; ?> </p>
+		<p class="panel-type price package_type"><?php echo '<label>'; _e('Package Type: ','templatic'); echo '</label>'; echo ' <span>'; _e('Subscription','templatic'); echo '</span>'; ?> </p>
+        <p class="panel-type price package_type"><?php echo '<label>'; _e('Listing duration: ','templatic'); echo '</label>'; echo ' <span>';  echo $tvalidity; _e(" days",'templatic'); echo '</span>'; ?> </p>
+		<p class="margin_right panel-type price package_type"><?php echo '<label>'; _e('Number of listings included in the package: ','templatic');echo '</label>'; echo '<span>'; echo get_post_meta($post_id,'limit_no_post',true); echo '</span>'; ?> </p>
        <?php  if(get_post_meta($post_id,'days_for_no_post',true) > 0)
 	   {
 			?>
-           	<p class="margin_right panel-type price package_type"><?php echo '<label>'; _e('Listings can be submitted within: ',DOMAIN);echo '</label>'; echo '<span>'; echo get_post_meta($post_id,'days_for_no_post',true); echo ' '; _e('days',DOMAIN); echo '</span>'; ?> </p>
+           	<p class="margin_right panel-type price package_type"><?php echo '<label>'; _e('Listings can be submitted within: ','templatic');echo '</label>'; echo '<span>'; echo get_post_meta($post_id,'days_for_no_post',true); echo ' '; _e('days','templatic'); echo '</span>'; ?> </p>
            <?php
 	   }
 	   if(get_post_meta($current_user->ID,'package_free_submission',true) > 0 && !isset($_REQUEST['page']) && !isset($_REQUEST['pmethod']) && get_user_meta($current_user->ID,'package_free_submission_completed',true) != 'completed' )
 	   {
 		   ?>
-           	<p class="margin_right panel-type price package_type"><?php echo '<label>'; _e('Number of free submissions: ',DOMAIN);echo '</label>'; echo '<span>'; echo get_post_meta($current_user->ID,'package_free_submission',true);_e(' Submitted '); echo  get_post_meta($post_id,'subscription_days_free_trail',true); _e(' Left.'); echo '</span>'; ?> </p>
+           	<p class="margin_right panel-type price package_type"><?php echo '<label>'; _e('Number of free submissions: ','templatic');echo '</label>'; echo '<span>'; echo get_post_meta($current_user->ID,'package_free_submission',true);_e(' Submitted '); echo  get_post_meta($post_id,'subscription_days_free_trail',true); _e(' Left.'); echo '</span>'; ?> </p>
             <?php
 	   }
 	} 
 	elseif(get_post_meta($post_id,'package_type',true) == 1)
 	{ 	?>
-		<p class="margin_right panel-type price package_type"><?php echo '<label>'; _e('Package Type: ',DOMAIN); echo '</label>'; echo '<span>'; _e('Single Submission',DOMAIN); echo '</span>'; ?> </p>
-        <p class="panel-type price package_type"><?php echo '<label>'; _e('Listing duration: ',DOMAIN); echo '</label>'; echo ' <span>';  echo $tvalidity; _e(" days",DOMAIN); echo '</span>'; ?> </p>
+		<p class="margin_right panel-type price package_type"><?php echo '<label>'; _e('Package Type: ','templatic'); echo '</label>'; echo '<span>'; _e('Single Submission','templatic'); echo '</span>'; ?> </p>
+        <p class="panel-type price package_type"><?php echo '<label>'; _e('Listing duration: ','templatic'); echo '</label>'; echo ' <span>';  echo $tvalidity; _e(" days",'templatic'); echo '</span>'; ?> </p>
        <?php
 	}
 	$package_billing_num = get_post_meta($post_id,'billing_num',true);
@@ -1600,33 +1608,33 @@ function tmpl_show_package_period($post_id)
 	$days_for_no_post =get_post_meta($post_id,'subscription_days_free_trail',true);
 	if(get_post_meta($post_id,'recurring',true)=='1')
 	{
-	echo '<p class=""><label>'; _e('Recurring period',DOMAIN); echo ':&nbsp;</label><span>'.get_post_meta($post_id,'billing_num',true) ."&nbsp;";
+	echo '<p class=""><label>'; _e('Recurring period','templatic'); echo ':&nbsp;</label><span>'.get_post_meta($post_id,'billing_num',true) ."&nbsp;";
 	if($package_billing_per == 'D')
 	{
-		if($package_billing_num==1){ _e('Day',DOMAIN); }else{ _e('Days',DOMAIN); }
+		if($package_billing_num==1){ _e('Day','templatic'); }else{ _e('Days','templatic'); }
 	}
 	elseif($package_billing_per == 'M')
 	{
-		if($package_billing_num==1){ _e('Month',DOMAIN); }else{ _e("Months",DOMAIN); }
+		if($package_billing_num==1){ _e('Month','templatic'); }else{ _e("Months",'templatic'); }
 	}
 	else
 	{
-		if($package_billing_num==1){ _e('Year',DOMAIN); }else{ _e('Years',DOMAIN); }
+		if($package_billing_num==1){ _e('Year','templatic'); }else{ _e('Years','templatic'); }
 	}
 	echo "</p>";
 	if($package_billing_cycle == '' || $package_billing_cycle == 0)
 	{
-		$package_billing_cycle = __('unlimited',DOMAIN);
+		$package_billing_cycle = __('unlimited','templatic');
 	}
-	echo '<p class=""><label>'; _e('Number of cycles',DOMAIN); echo ':&nbsp;</label><span>'.$package_billing_cycle."&nbsp;<p>";
+	echo '<p class=""><label>'; _e('Number of cycles','templatic'); echo ':&nbsp;</label><span>'.$package_billing_cycle."&nbsp;<p>";
 	}
 	if($first_free_trail_period==1 && !isset($_REQUEST['page']) && !isset($_REQUEST['pmethod'])){ 
 	?>
-	<p><?php _e('This price package will offer free trial period or plan to bill the first instalment of a recurring payment only for PayPal payment gateway.',DOMAIN);?></p>
+	<p><?php _e('This price package will offer free trial period or plan to bill the first instalment of a recurring payment only for PayPal payment gateway.','templatic');?></p>
 	<?php }
 	if($days_for_no_post>0 && !isset($_REQUEST['page']) && !isset($_REQUEST['pmethod']) && get_user_meta($current_user->ID,'package_free_submission_completed',true) != 'completed' ){ 
 	?>
-	<p class="margin_right"><?php echo '<label>'; _e('Number of free submissions: ',DOMAIN);echo '</label>'; echo '<span>'; echo $days_for_no_post; echo '</span>'; ?></p>
+	<p class="margin_right"><?php echo '<label>'; _e('Number of free submissions: ','templatic');echo '</label>'; echo '<span>'; echo $days_for_no_post; echo '</span>'; ?></p>
 	<?php }
 	
 	do_action('tmpl_after_success_price_package',$post_id);
@@ -1655,20 +1663,20 @@ function tmpl_show_package_included_featured_option($post_id)
 		$is_category_page_featured = get_post_meta($post_id,'is_category_page_featured',true);
 
 		
-		$is_home_featured_text = (get_post_meta($post_id,'is_home_featured',true))?__('Homepage',DOMAIN):__('Yes &sbquo; feature this listing on homepage',DOMAIN);
+		$is_home_featured_text = (get_post_meta($post_id,'is_home_featured',true))?__('Homepage','templatic'):__('Yes &sbquo; feature this listing on homepage','templatic');
 		
 		/*is price package amount includes the category page featured amount*/
 		$is_category_featured = get_post_meta($post_id,'is_category_featured',true); 
 	
-		$is_category_featured_text = (get_post_meta($post_id,'is_category_featured',true))?__('Category page',DOMAIN):__('Yes &sbquo; feature this listing on categorypage',DOMAIN);
+		$is_category_featured_text = (get_post_meta($post_id,'is_category_featured',true))?__('Category page','templatic'):__('Yes &sbquo; feature this listing on categorypage','templatic');
 		if($is_home_featured || $is_category_featured)
 		{
 			?>
-				<p><label><strong><?php _e('Listings submitted with this package will be automatically featured on: ',DOMAIN);?></strong></label>
+				<p><label><strong><?php _e('Listings submitted with this package will be automatically featured on: ','templatic');?></strong></label>
 				<?php
 				if($is_home_featured && $is_category_featured){
 				?>
-					<span><?php _e('Homepage and Category page',DOMAIN); ?> </span>
+					<span><?php _e('Homepage and Category page','templatic'); ?> </span>
 				<?php
 				}
 				
@@ -1689,17 +1697,17 @@ function tmpl_show_package_included_featured_option($post_id)
 		}else{
 			if((get_post_meta($post_id,'feature_amount',true) || get_post_meta($post_id,'feature_cat_amount',true)) && ($is_home_page_featured || $is_category_page_featured)){
 				echo '<p>';
-					echo '<strong>';_e('Listings submitted with this package will be featured on: ',DOMAIN);echo '</strong>';
+					echo '<strong>';_e('Listings submitted with this package will be featured on: ','templatic');echo '</strong>';
 				if($is_home_page_featured && !$is_home_featured){
-					_e('Homepage',DOMAIN);
+					_e('Homepage','templatic');
 					echo " (".fetch_currency_with_position(get_post_meta($post_id,'feature_amount',true));
-					if(get_post_meta($post_id,'home_page_alive_days',true)){ _e(" for ",DOMAIN);echo get_post_meta($post_id,'home_page_alive_days',true)." ";_e("days",DOMAIN); }
+					if(get_post_meta($post_id,'home_page_alive_days',true)){ _e(" for ",'templatic');echo get_post_meta($post_id,'home_page_alive_days',true)." ";_e("days",'templatic'); }
 					echo ") ";
 				}
 				if($is_category_page_featured && !$is_category_featured){
-					_e('Category page',DOMAIN);
+					_e('Category page','templatic');
 					echo " (".fetch_currency_with_position(get_post_meta($post_id,'feature_cat_amount',true));
-					if(get_post_meta($post_id,'cat_page_alive_days',true)){ _e(" for ",DOMAIN);echo get_post_meta($post_id,'cat_page_alive_days',true)." ";_e("days",DOMAIN); }
+					if(get_post_meta($post_id,'cat_page_alive_days',true)){ _e(" for ",'templatic');echo get_post_meta($post_id,'cat_page_alive_days',true)." ";_e("days",'templatic'); }
 					echo ")";
 				}
 			}
@@ -1832,7 +1840,7 @@ if(!function_exists('do_daily_schedule_featured_option'))
 				{
 					/*set home page featured option*/
 					if(get_post_meta($post->ID,'featured_h',true) != '')
-						update_post_meta($post->ID,'featured_h','');
+						update_post_meta($post->ID,'featured_h','n');
 					/*set featured_type option to category page featured if cat page featured alive days is not expired*/
 					if(get_post_meta($post->ID,'featured_c',true) == 'c')
 					{
@@ -1840,7 +1848,7 @@ if(!function_exists('do_daily_schedule_featured_option'))
 					}
 					else
 					{
-						update_post_meta($post->ID,'featured_type','');
+						update_post_meta($post->ID,'featured_type','none');
 					}
 				}
 				/*if the difference between of current date and package alive date is greater than category page alive days of tha price package for that particular post */
@@ -1849,7 +1857,7 @@ if(!function_exists('do_daily_schedule_featured_option'))
 				{
 					/*set category page featured option*/
 					if(get_post_meta($post->ID,'featured_c',true) != ''){
-						update_post_meta($post->ID,'featured_c','');
+						update_post_meta($post->ID,'featured_c','n');
 					}
 					/*set featured_type option to home page featured if home page featured alive days is not expired*/
 					if(get_post_meta($post->ID,'featured_h',true) == 'h')
@@ -1857,7 +1865,7 @@ if(!function_exists('do_daily_schedule_featured_option'))
 						update_post_meta($post->ID,'featured_type','h');
 					}else
 					{
-						update_post_meta($post->ID,'featured_type','');
+						update_post_meta($post->ID,'featured_type','none');
 					}
 				}
 			endwhile;
@@ -1891,7 +1899,9 @@ function tmpl_display_package_html($post,$post_type='')
 	$user_package = get_user_meta($current_user->ID,$post_type.'_package_select',true);
 	/*check selected package */
 	if($user_package){
-		$transaction_status = $wpdb->get_results("SELECT status,package_id FROM $transaction_table where payforpackage=1 AND user_id=".$current_user->ID." AND package_id =".$user_package." order by trans_id DESC LIMIT 1");
+		if($wpdb->query("SHOW TABLES LIKE '".$transaction_table."'")==1):
+			$transaction_status = $wpdb->get_results("SELECT status,package_id FROM $transaction_table where payforpackage=1 AND user_id=".$current_user->ID." AND package_id =".$user_package." order by trans_id DESC LIMIT 1");
+		endif;
 	}
 	$package_disable_class = '';
 	$trans_status=@$transaction_status[0]->status;
@@ -1917,7 +1927,7 @@ function tmpl_display_package_html($post,$post_type='')
 	
 	?>
   		<div class="packageblock clearifx <?php echo $package_disable_class; ?>">
-            <ul data-price="<?php echo get_post_meta($post->ID,'package_amount',true); ?>"  <?php if(get_user_meta($current_user->ID,'upgrade',true) != 'upgrade' && get_post_meta($post->ID,'subscription_days_free_trail',true) >  get_post_meta($current_user->ID,'package_free_submission',true) &&  get_user_meta($current_user->ID,'package_free_submission_completed',true) != 'completed' ) { ?> data-freetest="<?php echo get_post_meta($post->ID,'subscription_days_free_trail',true); ?>" <?php } ?> data-subscribed='0' data-id="<?php echo $post->ID; ?>" data-type="<?php echo get_post_meta($post->ID,'package_type',true); ?>" <?php if(get_post_meta($post->ID,'subscription_as_pay_post',true)) { ?> data-post="<?php echo get_post_meta($post->ID,'subscription_as_pay_post',true); ?>" <?php } ?> class="packagelistitems <?php echo $class; ?>" >
+            <ul data-price="<?php echo get_post_meta($post->ID,'package_amount',true); ?>"  <?php if(get_user_meta($current_user->ID,'upgrade',true) != 'upgrade' && get_post_meta($post->ID,'subscription_days_free_trail',true) >  get_post_meta($current_user->ID,'package_free_submission',true) &&  get_user_meta($current_user->ID,'package_free_submission_completed',true) != 'completed' ) { ?> data-free="<?php echo get_post_meta($post->ID,'subscription_days_free_trail',true); ?>" <?php } ?> data-subscribed='0' data-id="<?php echo $post->ID; ?>" data-type="<?php echo get_post_meta($post->ID,'package_type',true); ?>" <?php if(get_post_meta($post->ID,'subscription_as_pay_post',true)) { ?> data-post="<?php echo get_post_meta($post->ID,'subscription_as_pay_post',true); ?>" <?php } ?> class="packagelistitems <?php echo $class; ?>" >
                 <li>
                     <div class="col-md-3 col-sm-6">
                 		<div class="panel panel-default text-center">
@@ -1931,13 +1941,15 @@ function tmpl_display_package_html($post,$post_type='')
 									/*Only get the pay per subscription package id from postmeta */
 									$package_id_sql= "SELECT post_id from {$wpdb->prefix}postmeta where meta_key='package_type' AND meta_value=2";
 									/*Get the user last transaction  */
-									$transaction_status = $wpdb->get_results("SELECT status,package_id FROM $transaction_table where payforpackage=1 AND user_id=".$current_user->ID." AND package_id in(".$package_id_sql.") order by trans_id DESC LIMIT 1");
-									$trans_status=$transaction_status[0]->status;
-									$trans_package_id=$transaction_status[0]->package_id;
-									if(count($transaction_status)!=0 && $trans_status==0 && in_array($post_type,$package_post_type) ){				
-										$admin_email=get_option('admin_email');
-										echo sprintf(__('You have subscribed to this package but your transaction is not approved yet. Please %s contact%s the administrator of the site for more details.',DOMAIN),'<a style="position:relative;z-index:1;" href="mailto:'.$admin_email.'">','</a>');
-									}
+									if($wpdb->query("SHOW TABLES LIKE '".$transaction_table."'")==1):
+										$transaction_status = $wpdb->get_results("SELECT status,package_id FROM $transaction_table where payforpackage=1 AND user_id=".$current_user->ID." AND package_id in(".$package_id_sql.") order by trans_id DESC LIMIT 1");
+										$trans_status=$transaction_status[0]->status;
+										$trans_package_id=$transaction_status[0]->package_id;
+										if(count($transaction_status)!=0 && $trans_status==0 && in_array($post_type,$package_post_type) ){				
+											$admin_email=get_option('admin_email');
+											echo sprintf(__('You have subscribed to this package but your transaction is not approved yet. Please %s contact%s the administrator of the site for more details.','templatic'),'<a style="position:relative;z-index:1;" href="mailto:'.$admin_email.'">','</a>');
+										}
+									endif;	
 									
 									$post_types = explode(',',get_post_meta($package_id,'package_post_type',true)); 
 									if(in_array($post_type,$post_types)): $is_posttype_inpkg=1; else: $is_posttype_inpkg=0; endif; /* check is this taxonomy included in package or not*/
@@ -1946,7 +1958,7 @@ function tmpl_display_package_html($post,$post_type='')
 							?>
                   			<div class="panel-desc">
                         		<div class="panel-body">
-                                    <span class="panel-title price"><?php  echo "<label>"; _e('Price: ',DOMAIN); echo "</label><span>".display_amount_with_currency_plugin(get_post_meta($post->ID,'package_amount',true)); ?></span></span> 
+                                    <span class="panel-title price"><?php  echo "<label>"; _e('Price: ','templatic'); echo "</label><span>".display_amount_with_currency_plugin(get_post_meta($post->ID,'package_amount',true)); ?></span></span> 
                                     <span class="days">
                                         <?php 
                                             /*show particular price package period or days*/
@@ -1963,7 +1975,7 @@ function tmpl_display_package_html($post,$post_type='')
                                     </div> 
                                 </div> <!-- panel-body -->
                                 <div class="pkg-button">
-                                    <a data-id="<?php echo $post->ID; ?>"  class="btn btn-lg btn-primary button select-plan"><?php _e('Select',DOMAIN); ?></a>
+                                    <a data-id="<?php echo $post->ID; ?>"  class="btn btn-lg btn-primary button select-plan"><?php _e('Select','templatic'); ?></a>
                                 </div> <!-- list-group -->
                     		</div><!-- panel-desc -->
                			</div> <!-- panel panel-default -->         

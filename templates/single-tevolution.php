@@ -27,7 +27,7 @@ do_action('templ_before_container_breadcrumb'); /*do action for display the brad
 			  $display = (isset($tmpdata['user_verification_page']))?$tmpdata['user_verification_page']:array();
 			  $captcha_set = array();
 			  $captcha_dis = '';
-			  if(count($display) > 0){
+			  if(!empty($display)){
 				  foreach($display as $_display){
 					  if($_display == 'claim' || $_display == 'emaitofrd' || $_display == 'sendinquiry'){ 						 
 						 $captcha_dis = $_display;
@@ -62,7 +62,7 @@ do_action('templ_before_container_breadcrumb'); /*do action for display the brad
 			<?php do_action('templ_post_single_content');       /*do action for single post content */	?>
 			</div><!-- end .entry-content -->
 
-			<?php do_action('templ_after_post_content');        /* do action for after the post content. */?>
+			<ul class="send_inquiry"><?php do_action('templ_after_post_content');        /* do action for after the post content. */?></ul>
 			<!-- End Post Content -->
 
      		<!--Custom field collection do action -->

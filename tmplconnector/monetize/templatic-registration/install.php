@@ -15,19 +15,19 @@ global $wp_query,$wpdb,$wp_rewrite,$post;
 define('TEMPL_REGISTRATION_FOLDER_PATH',TEMPL_MONETIZE_FOLDER_PATH.'templatic-registration/');
 
 /* Registration module related constant variable */
-define('NEW_PW_TEXT',__('New Password',DOMAIN));
-define('CONFIRM_NEW_PW_TEXT',__('Confirm New Password',DOMAIN));
-define('EDIT_PROFILE_UPDATE_BUTTON',__('Update',DOMAIN));
-define('GET_NEW_PW_TEXT',__('Get New Password',DOMAIN));
-define('ABOUT_TEXT',__('About you',DOMAIN));
-define('YR_WEBSITE_TEXT',__('Your Website',DOMAIN));
-define('ABOUT_U_TEXT',__('Provide brief information about yourself',DOMAIN));
+define('NEW_PW_TEXT',__('New Password','templatic'));
+define('CONFIRM_NEW_PW_TEXT',__('Confirm New Password','templatic'));
+define('EDIT_PROFILE_UPDATE_BUTTON',__('Update','templatic'));
+define('GET_NEW_PW_TEXT',__('Get New Password','templatic'));
+define('ABOUT_TEXT',__('About you','templatic'));
+define('YR_WEBSITE_TEXT',__('Your Website','templatic'));
+define('ABOUT_U_TEXT',__('Provide brief information about yourself','templatic'));
 define('TEMPL_REGISTRATION_FOLDER',TEMPL_MONETIZE_FOLDER_PATH . "templatic-registration/");
 define('TEMPL_REGISTRATION_URI',TEMPL_MONETIZE_FOLDER_PATH. "templatic-registration/");
 define('TT_REGISTRATION_FOLDER_PATH',TEMPL_MONETIZE_FOLDER_PATH.'templatic-registration/');
 include_once(TEMPL_REGISTRATION_FOLDER.'registration_language.php');
 if(!defined('PLEASE_SELECT')) 
-	define('PLEASE_SELECT',__('Please Select',DOMAIN));
+	define('PLEASE_SELECT',__('Please Select','templatic'));
 /**--below are the main file which will work with registration -**/	
 
 if(is_admin() && strstr($_SERVER['REQUEST_URI'],'/wp-admin/' )){
@@ -62,16 +62,16 @@ function filter_my_theme_nav_bars($items, $args) {
 	if(in_array($args->theme_location,$theme_locations))
 	{
 		if($current_user->ID){
-			$loginlink = '<li class="tmpl-login' . ((is_home())? ' ' : '') . '"><a href="' .wp_logout_url(home_url()). '">' . __('Log out',DOMAIN) . '</a></li>'; 
+			$loginlink = '<li class="tmpl-login' . ((is_home())? ' ' : '') . '"><a href="' .wp_logout_url(home_url()). '">' . __('Log out','templatic') . '</a></li>'; 
 		}else{
-			$loginlink = '<li class="tmpl-login' . (($_REQUEST['ptype']=='login')? ' current_page_item' : '') . '" ><a data-reveal-id="tmpl_reg_login_container" href="javascript:void(0);" onClick="tmpl_login_frm();">' . __('Login',DOMAIN) . '</a></li>'; 
+			$loginlink = '<li class="tmpl-login' . (($_REQUEST['ptype']=='login')? ' current_page_item' : '') . '" ><a data-reveal-id="tmpl_reg_login_container" href="javascript:void(0);" onClick="tmpl_login_frm();">' . __('Login','templatic') . '</a></li>'; 
 		}
 		if($current_user->ID){
 			$reglink = '<li class="tmpl-login' . ((is_author())? ' current-menu-item ' : '') . '"><a href="' . get_author_posts_url($current_user->ID) . '">' . $current_user->display_name . '</a></li>'; 
 		}else{
 			$users_can_register = get_option('users_can_register');
 			if($users_can_register){				
-				$reglink = '<li class="tmpl-login' . (($_REQUEST['ptype']=='register')? ' current_page_item' : '') . '"><a data-reveal-id="tmpl_reg_login_container" href="javascript:void(0);" onClick="tmpl_registretion_frm();">' . __('Register',DOMAIN) . '</a></li>';
+				$reglink = '<li class="tmpl-login' . (($_REQUEST['ptype']=='register')? ' current_page_item' : '') . '"><a data-reveal-id="tmpl_reg_login_container" href="javascript:void(0);" onClick="tmpl_registretion_frm();">' . __('Register','templatic') . '</a></li>';
 				
 			}
 		}		
@@ -244,7 +244,7 @@ function fetch_user_registration_fields($validate,$user_id='',$form_name='')
         if($val['type']=='catdropdown')
         {
             $cat_args = array('name' => 'post_category', 'id' => 'post_category_0', 'selected' => $fval, 'class' => 'textfield', 'orderby' => 'name', 'echo' => '0', 'hierarchical' => 1, 'taxonomy'=>CUSTOM_CATEGORY_TYPE1);
-            $cat_args['show_option_none'] = __('Select Category',DOMAIN);
+            $cat_args['show_option_none'] = __('Select Category','templatic');
             $str .=wp_dropdown_categories(apply_filters('widget_categories_dropdown_args', $cat_args));
             if($val['is_require'])
             {
@@ -256,8 +256,8 @@ function fetch_user_registration_fields($validate,$user_id='',$form_name='')
 			 $option_values_arr = explode(',', $val['options']);
 			 $option_titles_arr = explode(',',$val['option_titles']);
 			 if (function_exists('icl_register_string')) {		
-				icl_register_string(DOMAIN, $val['option_titles'].'_'.$key,$val['option_titles']);	
-				$option_titles_arr = icl_t(DOMAIN, $val['option_titles'].'_'.$key,$val['option_titles']);
+				icl_register_string('templatic', $val['option_titles'].'_'.$key,$val['option_titles']);	
+				$option_titles_arr = icl_t('templatic', $val['option_titles'].'_'.$key,$val['option_titles']);
 		   }
             $str = '<select name="'.$key.'" '.$val['extra'].'>';
 			 $str .= '<option value="" >'.PLEASE_SELECT.'</option>';	
@@ -321,16 +321,16 @@ function fetch_user_registration_fields($validate,$user_id='',$form_name='')
 			$str = '<input name="'.$key.'" type="hidden" '.@$val['extra'].' '.@$uclass.' value="'.$fval.'" > ';
 			$str .='<div class="upload_box">
 						<div class="hide_drag_option_ie">
-							<p>'. __('You can drag &amp; drop images from your computer to this box.',DOMAIN).'</p>
-							<p>'. __('OR',DOMAIN).'</p>
+							<p>'. __('You can drag &amp; drop images from your computer to this box.','templatic').'</p>
+							<p>'. __('OR','templatic').'</p>
 						</div>
 						<div class="tmpl_single_uploader">
 		                	<div id="fancy-contact-form">
-							<div class="dz-default dz-message" ><span  id="fancy-'. $key.'"><span><i class="fa fa-folder"></i>'.__('Upload Image',DOMAIN).'</span></span></div>
+							<div class="dz-default dz-message" ><span  id="fancy-'. $key.'"><span><i class="fa fa-folder"></i>'.__('Upload Image','templatic').'</span></span></div>
 							<span  id="image-'.$key.'">';
 								
 								if(in_array($extention,$img_type))
-									$str .='<br/><img id="img_'.$key.'" src="'.$fval.'" border="0" class="company_logo" height="80" width="80" /><span class="ajax-file-upload-red" onclick="delete_image(\''.basename($fval).'\')">'.__('Delete',DOMAIN).'</span>';
+									$str .='<br/><img id="img_'.$key.'" src="'.$fval.'" border="0" class="company_logo" height="80" width="80" /><span class="ajax-file-upload-red" onclick="delete_image(\''.basename($fval).'\')">'.__('Delete','templatic').'</span>';
 							$str .='</span>
 							</div></div>';
 							?>
@@ -416,8 +416,8 @@ function fetch_user_registration_fields($validate,$user_id='',$form_name='')
             $options = $val['options'];
 		  $option_titles = $val['option_titles'];	
 		  if (function_exists('icl_register_string')) {		
-				icl_register_string(DOMAIN, $val['option_titles'].'_'.$key,$val['option_titles']);	
-				$option_titles = icl_t(DOMAIN, $val['option_titles'].'_'.$key,$val['option_titles']);
+				icl_register_string('templatic', $val['option_titles'].'_'.$key,$val['option_titles']);	
+				$option_titles = icl_t('templatic', $val['option_titles'].'_'.$key,$val['option_titles']);
 		   }
             if($options)
             {
@@ -444,8 +444,8 @@ function fetch_user_registration_fields($validate,$user_id='',$form_name='')
             $options = $val['options'];
 		  $option_titles = $val['option_titles'];		  
 		    if (function_exists('icl_register_string')) {		
-				icl_register_string(DOMAIN, $val['option_titles'].'_'.$key,$val['option_titles']);	
-				$option_titles = icl_t(DOMAIN, $val['option_titles'].'_'.$key,$val['option_titles']);
+				icl_register_string('templatic', $val['option_titles'].'_'.$key,$val['option_titles']);	
+				$option_titles = icl_t('templatic', $val['option_titles'].'_'.$key,$val['option_titles']);
 		   }
             if($options)
             {  
@@ -495,8 +495,8 @@ function fetch_user_registration_fields($validate,$user_id='',$form_name='')
         }
 	   
 	   if (function_exists('icl_register_string')) {		
-			icl_register_string(DOMAIN, $val['type'].'_'.$key,$val['label']);	
-			$val['label'] = icl_t(DOMAIN, $val['type'].'_'.$key,$val['label']);
+			icl_register_string('templatic', $val['type'].'_'.$key,$val['label']);	
+			$val['label'] = icl_t('templatic', $val['type'].'_'.$key,$val['label']);
 	   }
         if($val['is_require'] && !is_admin())
         {

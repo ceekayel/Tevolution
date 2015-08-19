@@ -47,7 +47,7 @@ if($cat_display == 'checkbox')
 		$onclick = "onclick=displaychk();";
 			
 	?>
-	<label><input type="checkbox" name="selectall" id="selectall"  <?php echo $onclick; ?> /><?php _e('Select All',DOMAIN);?></label>
+	<label><input type="checkbox" name="selectall" id="selectall"  <?php echo $onclick; ?> /><?php _e('Select All','templatic');?></label>
 	<ul id="<?php echo 'listingcategory'; ?>checklist" data-wp-lists="list:<?php echo $taxonomy; ?>" class="categorychecklist form_cat">
 		<?php 
 		/* check post type for display post id wise category in submit page */
@@ -69,7 +69,7 @@ if($cat_display=='select' || $cat_display=='multiselectbox')
 	$catinfo = templ_get_parent_categories($taxonomy);
 	if(count($catinfo) == 0)
 	{
-		echo '<span style="font-size:12px; color:red;">'.sprintf(__('You have not created any category for %s post type. So, this listing will be submited as uncategorized.',DOMAIN),$template_post_type).'</span>';
+		echo '<span style="font-size:12px; color:red;">'.sprintf(__('You have not created any category for %s post type. So, this listing will be submited as uncategorized.','templatic'),$template_post_type).'</span>';
 	}
 	$args = array('hierarchical' => true ,'hide_empty' => 0, 'orderby' => 'term_group');
 	$terms = templ_get_parent_categories($taxonomy);
@@ -79,7 +79,7 @@ if($cat_display=='select' || $cat_display=='multiselectbox')
 		if($cat_display == 'multiselectbox'){ $multiple =  "multiple=multiple"; }else{ $multiple=''; } /* multi select box */
 		$output .= '<select name="category[]" id="select_category" '.$multiple.'>';
 		
-		$output .= '<option value="">'.__('Select Category',DOMAIN).'</option>';
+		$output .= '<option value="">'.__('Select Category','templatic').'</option>';
 		foreach($terms as $term){	
 			$term_id = $term->term_id;
 			/* Check term id in include cart array if not in include cart array then continue loop  for display category price package wise set */

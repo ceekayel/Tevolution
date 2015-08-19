@@ -19,7 +19,17 @@ if(!function_exists('preview_address_google_map'))
 	
 	$google_map_customizer=get_option('google_map_customizer');/* store google map customizer required formate.*/
     ?>   
-    <script type="text/javascript" async >
+    <script type="text/javascript">
+	<?php if(!is_single())
+		{?>
+		var script = '<script type="text/javascript" src="http://google-maps-' +
+          'utility-library-v3.googlecode.com/svn/trunk/infobubble/src/infobubble';
+      if (document.location.search.indexOf('compiled') !== -1) {
+        script += '-compiled';
+      }
+      script += '.js"><' + '/script>';
+      document.write(script);
+	  <?php } ?>
 	/* <![CDATA[ */
 	var infoBubble;
 	var map ;
@@ -30,41 +40,38 @@ if(!function_exists('preview_address_google_map'))
 		var lat = <?php echo $latitute;?>;
 		var lng = <?php echo $longitute;?>;
 		var latLng = new google.maps.LatLng(<?php echo $latitute;?>, <?php echo $longitute;?>);
-		var isDraggable = jQuery(document).width() > 480 ? true : false;
+		//var isDraggable = jQuery(document).width() > 480 ? true : false;
 		var myOptions = {
-			zoom: 13,
-			draggable: isDraggable,
-			mapTypeId: google.maps.MapTypeId.<?php echo $map_type;?>,
-			center: latLng 
+			zoom: 8,
+			center: latLng,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
 		};
 		map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-		var styles = [<?php echo substr($google_map_customizer,0,-1);?>];			
-		map.setOptions({styles: styles});
 		
 		var myLatLng = new google.maps.LatLng(<?php echo $latitute;?>, <?php echo $longitute;?>);
-		var Marker = new google.maps.Marker({
+		var marker = new google.maps.Marker({
+			map: map,
 			position: myLatLng,
 			icon: '<?php echo apply_filters('tmpl_default_map_icon',TEMPL_PLUGIN_URL.'images/pin.png'); ?>',
-			map: map
-		});		
-		/*var content = '<?php echo $address;?>';
-			infowindow = new google.maps.InfoWindow({
-			content: content
+			draggable: true
 		});
+
+		 var contentString = '<?php echo $address;?>';
 		
-		google.maps.event.addListener(Marker, 'click', function() {
-			infowindow.open(map,Marker);
-		});*/
-			 
-                /* New infobundle */
-			 infoBubble = new InfoBubble({maxWidth:210,minWidth:210,minHeight:"auto",padding:0,content:'<?php echo $address;?>',borderRadius:0,borderWidth:0,borderColor:"none",overflow:"visible",backgroundColor:"#fff",
-			  });			
-			/*finish new infobundle*/
-			infoBubble.open(map, Marker); 
-                google.maps.event.addListener(Marker, 'click', function() {
-					infoBubble.open(map, Marker);
-				});
-			infoBubble.open(map, Marker);
+		infoBubble = new InfoBubble({
+		  content: contentString,
+		  maxWidth:210,minWidth:210,minHeight:"auto",padding:0,borderRadius:0,borderWidth:0,borderColor:"none",overflow:"visible",backgroundColor:"#fff",
+        });
+		
+		google.maps.event.addListener(marker, 'click', function() {
+			infoBubble.open(map,marker);
+		});
+		<?php if(!is_single())
+		{?>
+			infoBubble.open(map, marker);	
+	<?php } ?>
+	}
+	google.maps.event.addDomListener(window, 'load', initialize);
 			/*End*/
 		<?php if($street_map=='Street map'):?>
 			 panorama = new google.maps.StreetViewPanorama(document.getElementById('map_canvas'));	
@@ -73,7 +80,7 @@ if(!function_exists('preview_address_google_map'))
 		<?php endif;?>	
 			
 	
-	}
+	
 	
 	function processSVData(data, status) {		
 		if (status == google.maps.StreetViewStatus.OK) {
@@ -104,7 +111,7 @@ if(!function_exists('preview_address_google_map'))
 			alert('Street View data not found for this location.');
 		}
 	}
-	google.maps.event.addDomListener(window, 'load', initialize);
+	
 	/* ]]> */
     </script>
     <div class="map" id="map_canvas" style="width:100%; height:500px;" ></div>

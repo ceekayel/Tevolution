@@ -368,7 +368,7 @@ jQuery(document).ready(function(){
 	var home_featured_price = jQuery('#featured_h').val();
 	var category_price_set = 'false';
 	/*loop for category price calculation both for select box and for checkbox*/
-	jQuery(".category_label input[name^='category'], .category_label input[name='selectall'],.category_label select[name^='category']").live('change', function() {	
+	jQuery(".category_label input[name^='category'], .category_label input[name='selectall'],.category_label select[name^='category']").live('change', function() {
 		/* for all check box check or not */
 		jQuery("#submit_form input[name^='category']").change(function(){
 			var a = jQuery("#submit_form input[name='category[]']");
@@ -434,12 +434,15 @@ jQuery(document).ready(function(){
 					if(category_featured_price > 0 )
 					{
 						if(pkg_price <=0){
-							jQuery('#cat_price_add').css('display','block');	
+							if(jQuery('#pkg_price').text())
+								jQuery('#cat_price_add').css('display','block');	
 							jQuery('#cat_price_total_price').css('display','block');
 							jQuery('#result_price_equ').css('display','block');
 							jQuery('#currency_before_result_price').css('display','block');
 							jQuery('#result_price').css('display','block');
-							jQuery('#result_price').html((thousandseperator((final_cat_price+total_price).toFixed(num_decimals))).replace('.',decimal_sep).replace(' ',''));
+							console.log(final_cat_price+' == '+total_price+' == '+num_decimals);
+							if(!total_price){total_price = 0;}
+							jQuery('#result_price').html((thousandseperator((parseFloat(final_cat_price+total_price)).toFixed(num_decimals))).replace('.',decimal_sep).replace(' ',''));
 						}
 						if(edit == 1)
 						{
@@ -745,7 +748,16 @@ jQuery(document).ready(function(){
 		
 		if(isNaN(pkg_price))
 			pkg_price = 0;
-
+		/*set featured price to zero while edit */
+		if(jQuery('#featured_h').is(':disabled'))
+		{
+			home_featured_price = 0;
+		}
+		if(jQuery('#featured_c').is(':disabled'))
+		{
+			category_featured_price = 0;
+		}
+		
 		jQuery('#total_price').val(thousandseperator((parseFloat(pkg_price)+parseFloat(final_cat_price)+parseFloat(category_featured_price)+parseFloat(home_featured_price)).toFixed(num_decimals)).replace('.',decimal_sep).replace(' ',''));
 
 		

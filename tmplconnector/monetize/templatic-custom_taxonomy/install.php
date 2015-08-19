@@ -23,7 +23,7 @@ add_action('templatic_general_data_email', 'taxonomy_email_setting_data', 12);
 /* * -- coding to add sub menu under main menu--* */
 
 function templ_add_submenu_taxonomy() {
-          $menu_title = __('Custom Fields', ADMINDOMAIN);
+          $menu_title = __('Custom Fields', 'templatic-admin');
           global $taxonomy_screen_option;
 
           $taxonomy_screen_option = add_submenu_page('templatic_system_menu', $menu_title, $menu_title, 'administrator', 'custom_setup', 'add_custom_taxonomy');
@@ -39,7 +39,7 @@ function taxonomy_screen_options() {
           if (!is_object($screen) || $screen->id != $taxonomy_screen_option)
                     return;
 
-          $args = array('label' => __('Per Page', DOMAIN),
+          $args = array('label' => __('Per Page', 'templatic'),
                     'default' => 10,
                     'option' => 'taxonomy_per_page'
           );
@@ -56,7 +56,7 @@ function taxonomy_set_screen_option($status, $option, $value) {
 function add_custom_taxonomy() {
           do_action('tmpl_custom_setup_tabs');
 
-          $tab = $_REQUEST['ctab'];
+          $tab = isset($_REQUEST['ctab']) ? $_REQUEST['ctab'] : "";
           switch ($tab) {
                     case 'custom_setup':
 
@@ -100,7 +100,7 @@ function tmpl_custom_setup_tabs_fn() {
            * Apply filter for get the general setting tabs
            * if you want to create new main tab in general setting menu then use 'templatic_general_settings_tab' filter hook and pass the tabs arrya in filter hook function and return tabs array.
            */
-          $tabs = array('custom_fields' => __('Custom Fields', ADMINDOMAIN), 'user_custom_fields' => __('User Profile Fields', ADMINDOMAIN), 'custom_setup' => __('Post Types', ADMINDOMAIN));
+          $tabs = array('custom_fields' => __('Custom Fields', 'templatic-admin'), 'user_custom_fields' => __('User Profile Fields', 'templatic-admin'), 'custom_setup' => __('Post Types', 'templatic-admin'));
           @$tabs = apply_filters('templatic_custom_setup_tab', $tabs);
           echo '<div class="wrap"><div id="icon-options-general" class="icon32"><br></div>';
           ?>
@@ -148,7 +148,7 @@ function tmpl_custom_setup_tabs_fn() {
      function upload_admin_scripts() {
                wp_enqueue_script('media-upload');
                wp_enqueue_script('thickbox');
-               wp_register_script('my-upload', __(plugin_dir_url(__FILE__), DOMAIN) . '/upload-script.js', array('jquery', 'media-upload', 'thickbox'));
+               wp_register_script('my-upload', __(plugin_dir_url(__FILE__), 'templatic') . '/upload-script.js', array('jquery', 'media-upload', 'thickbox'));
                wp_enqueue_script('my-upload');
      }
 
@@ -180,8 +180,8 @@ function tmpl_custom_setup_tabs_fn() {
 							 	/* menu string trnalation with wpml for custom post type */
 							 	 foreach ($args[$key]['labels'] as $key1 => $_args1) {
 									 if(function_exists('icl_t')){
-										icl_register_string(DOMAIN,$_args1,$_args1);
-										$_args1 = icl_t(DOMAIN,$_args1,$_args1);
+										icl_register_string('templatic',$_args1,$_args1);
+										$_args1 = icl_t('templatic',$_args1,$_args1);
 									}else{
 										$_args1 = @$_args1;
 									}
@@ -208,7 +208,7 @@ function tmpl_custom_setup_tabs_fn() {
                $sql = "select trans_id from $transaction_table where 1=1 and post_id='" . $post->ID . "' AND (package_type is NULL OR package_type=0) order by trans_id DESC LIMIT 1";
                $trans_id = $wpdb->get_results($sql);
                if (!empty($trans_id) && $trans_id[0]->trans_id) {
-                         $actions['tran_id'] = __('Transaction ID:', DOMAIN) . ' <a href="' . site_url() . '/wp-admin/admin.php?page=transcation&action=edit&trans_id=' . $trans_id[0]->trans_id . '">' . $trans_id[0]->trans_id . '</a>';
+                         $actions['tran_id'] = __('Transaction ID:', 'templatic') . ' <a href="' . site_url() . '/wp-admin/admin.php?page=transcation&action=edit&trans_id=' . $trans_id[0]->trans_id . '">' . $trans_id[0]->trans_id . '</a>';
                }
                return $actions;
      }
@@ -228,18 +228,18 @@ function tmpl_custom_setup_tabs_fn() {
                                              $_name = @$args1[$_args["post_slug"]]['labels']['name'];
 
                                              if (!in_array($_args["post_slug"], array('listing', 'event')))
-                                                       register_sidebars(1, array('id' => 'after_' . $_args["labels"]["singular_name"] . '_header', 'name' => sprintf(__('%s Category Pages - Below Header', DOMAIN), ucfirst($_name)), 'description' => sprintf(__('Widgets placed here appear on the %s category page below the header part, (design supported after tevolution 2.2)', DOMAIN), $_name), 'before_widget' => '<div id="%1$s" class="widget %2$s">', 'after_widget' => '</div>', 'before_title' => '<h3 class="widget-title">', 'after_title' => '</h3>'));
+                                                       register_sidebars(1, array('id' => 'after_' . $_args["labels"]["singular_name"] . '_header', 'name' => sprintf(__('%s Category Pages - Below Header', 'templatic'), ucfirst($_name)), 'description' => sprintf(__('Widgets placed here appear on the %s category page below the header part, (design supported after tevolution 2.2)', 'templatic'), $_name), 'before_widget' => '<div id="%1$s" class="widget %2$s">', 'after_widget' => '</div>', 'before_title' => '<h3 class="widget-title">', 'after_title' => '</h3>'));
                                              /* Listing page Sider bar */
-                                             register_sidebars(1, array('id' => '' . $_args["labels"]["singular_name"] . '_listing_sidebar', 'name' => apply_filters('listing_page_sidebar_title', sprintf(__('%s Category Page Sidebar', DOMAIN), ucfirst($_name)), $_name), 'description' => sprintf(__('Display widgets in a sidebar on %s category pages.', DOMAIN), $_name), 'before_widget' => '<div id="%1$s" class="widget %2$s">', 'after_widget' => '</div>', 'before_title' => '<h3 class="widget-title">', 'after_title' => '</h3>'));
+                                             register_sidebars(1, array('id' => '' . $_args["labels"]["singular_name"] . '_listing_sidebar', 'name' => apply_filters('listing_page_sidebar_title', sprintf(__('%s Category Page Sidebar', 'templatic'), ucfirst($_name)), $_name), 'description' => sprintf(__('Display widgets in a sidebar on %s category pages.', 'templatic'), $_name), 'before_widget' => '<div id="%1$s" class="widget %2$s">', 'after_widget' => '</div>', 'before_title' => '<h3 class="widget-title">', 'after_title' => '</h3>'));
 
                                              /* Single post Type sider bar  */
-                                             register_sidebars(1, array('id' => '' . $_args["post_slug"] . '_detail_sidebar', 'name' => sprintf(__('%s Detail Page Sidebar', DOMAIN), ucfirst($_name)), 'description' => sprintf(__('Display widgets in a sidebar on single %s pages.', DOMAIN), $_name), 'before_widget' => '<div id="%1$s" class="widget %2$s">', 'after_widget' => '</div>', 'before_title' => '<h3 class="widget-title">', 'after_title' => '</h3>'));
+                                             register_sidebars(1, array('id' => '' . $_args["post_slug"] . '_detail_sidebar', 'name' => sprintf(__('%s Detail Page Sidebar', 'templatic'), ucfirst($_name)), 'description' => sprintf(__('Display widgets in a sidebar on single %s pages.', 'templatic'), $_name), 'before_widget' => '<div id="%1$s" class="widget %2$s">', 'after_widget' => '</div>', 'before_title' => '<h3 class="widget-title">', 'after_title' => '</h3>'));
 
                                              /* Single post Type sider bar  */
-                                             register_sidebars(1, array('id' => '' . $_args["post_slug"] . '_above_mobile_listing', 'name' => sprintf(__('%s Mobile Header', DOMAIN), ucfirst($_name)), 'description' => sprintf(__('Display widgets %s above pages.', DOMAIN), $_name), 'before_widget' => '<div id="%1$s" class="widget %2$s">', 'after_widget' => '</div>', 'before_title' => '<h3 class="widget-title">', 'after_title' => '</h3>'));
+                                             register_sidebars(1, array('id' => '' . $_args["post_slug"] . '_above_mobile_listing', 'name' => sprintf(__('%s Mobile Header', 'templatic'), ucfirst($_name)), 'description' => sprintf(__('Display widgets %s above pages.', 'templatic'), $_name), 'before_widget' => '<div id="%1$s" class="widget %2$s">', 'after_widget' => '</div>', 'before_title' => '<h3 class="widget-title">', 'after_title' => '</h3>'));
 
                                              /* Add post submit side bar */
-                                             register_sidebars(1, array('id' => 'add_' . $_args["post_slug"] . '_submit_sidebar', 'name' => sprintf(__('%s Add - Sidebar', DOMAIN), ucfirst($_name)), 'description' => sprintf(__('Display widgets in a sidebar that appears on %s submission pages.', DOMAIN), $_name), 'before_widget' => '<div id="%1$s" class="widget %2$s">', 'after_widget' => '</div>', 'before_title' => '<h3 class="widget-title">', 'after_title' => '</h3>'));
+                                             register_sidebars(1, array('id' => 'add_' . $_args["post_slug"] . '_submit_sidebar', 'name' => sprintf(__('%s Add - Sidebar', 'templatic'), ucfirst($_name)), 'description' => sprintf(__('Display widgets in a sidebar that appears on %s submission pages.', 'templatic'), $_name), 'before_widget' => '<div id="%1$s" class="widget %2$s">', 'after_widget' => '</div>', 'before_title' => '<h3 class="widget-title">', 'after_title' => '</h3>'));
 
                                              /* Add sidebar for listing page below header */
 
@@ -320,8 +320,8 @@ function tmpl_custom_setup_tabs_fn() {
 
 
                $columns1['cb'] = '<input type="checkbox" />';
-               $columns1['title'] = __('Title', DOMAIN);
-               $columns1['post_image'] = __('Image', DOMAIN);
+               $columns1['title'] = __('Title', 'templatic');
+               $columns1['post_image'] = __('Image', 'templatic');
 
                if (is_plugin_active('sitepress-multilingual-cms/sitepress.php')) {
                          if (function_exists('icl_get_languages')) {
@@ -342,8 +342,8 @@ function tmpl_custom_setup_tabs_fn() {
 
 
 
-               $columns1['categories_'] = __('Categories', DOMAIN);
-               $columns1['author'] = __('Author', DOMAIN);
+               $columns1['categories_'] = __('Categories', 'templatic');
+               $columns1['author'] = __('Author', 'templatic');
 
                $fld_columns = array();
                if ($fld_meta_info->have_posts()) {
@@ -360,9 +360,9 @@ function tmpl_custom_setup_tabs_fn() {
                $columns1 = apply_filters('tevolution_manage_edit-' . $post_type . '_columns', $columns1);
 
 
-               $columns1['price_package'] = __('Price package', DOMAIN);
-               $columns1['posted_on'] = __('Date', DOMAIN);
-               $columns1['tran_status'] = __('Transaction Status', DOMAIN);
+               $columns1['price_package'] = __('Price package', 'templatic');
+               $columns1['posted_on'] = __('Date', 'templatic');
+               $columns1['tran_status'] = __('Transaction Status', 'templatic');
                $columns = array_merge($columns1, $fld_columns);
 
                return apply_filters('tevolution_change_edit-' . $post_type . '_columns', $columns);
@@ -447,7 +447,7 @@ function tmpl_custom_setup_tabs_fn() {
                                              }
                                              echo implode(' , ', $templ_events);
                                    } else {
-                                             _e('Uncategorized', DOMAIN);
+                                             _e('Uncategorized', 'templatic');
                                    }
                                    break;
 
@@ -462,7 +462,7 @@ function tmpl_custom_setup_tabs_fn() {
                                              }
                                              echo implode(' , ', $templ_event_tags);
                                    } else {
-                                             _e('No Tags', DOMAIN);
+                                             _e('No Tags', 'templatic');
                                    }
 
                                    break;
@@ -518,22 +518,22 @@ function tmpl_custom_setup_tabs_fn() {
                                              /* Check for featured posts: start */
                                              $featured_type = get_post_meta($post_id, 'featured_type', true);
                                              if ('h' == $featured_type) {
-                                                       $featured_text = __("Home", ADMINDOMAIN);
+                                                       $featured_text = __("Home", 'templatic-admin');
                                              } elseif ('c' == $featured_type) {
-                                                       $featured_text = __("Category", ADMINDOMAIN);
+                                                       $featured_text = __("Category", 'templatic-admin');
                                              } elseif ('both' == $featured_type) {
-                                                       $featured_text = __("Home, Category", ADMINDOMAIN);
+                                                       $featured_text = __("Home, Category", 'templatic-admin');
                                              }
-                                             echo '<p>' . __('Package Name: ', ADMINDOMAIN) . '<a href="' . site_url() . '/wp-admin/admin.php?page=monetization&action=edit&package_id=' . $package_id . '&tab=packages" >' . $package_name . '</a></p>';
+                                             echo '<p>' . __('Package Name: ', 'templatic-admin') . '<a href="' . site_url() . '/wp-admin/admin.php?page=monetization&action=edit&package_id=' . $package_id . '&tab=packages" >' . $package_name . '</a></p>';
 
                                              if ($paid_amount >= 0) {
-                                                       echo '<p>' . __('Total Price: ', ADMINDOMAIN) . $paid_amount . '</p>';
+                                                       echo '<p>' . __('Total Price: ', 'templatic-admin') . $paid_amount . '</p>';
                                              }
                                              if ($featured_text != '-') {
-                                                       echo '<p>' . __('Featured: ', ADMINDOMAIN) . $featured_text . '</p>';
+                                                       echo '<p>' . __('Featured: ', 'templatic-admin') . $featured_text . '</p>';
                                              }
                                              if ($expired_date) {
-                                                       echo '<p>' . __('Exp Date: ', ADMINDOMAIN) . $expired_date . '</p>';
+                                                       echo '<p>' . __('Exp Date: ', 'templatic-admin') . $expired_date . '</p>';
                                              }
                                    } else {
                                              echo '-';
@@ -587,7 +587,7 @@ function tmpl_custom_setup_tabs_fn() {
                ?>
                <tr class="form-field">
                     <th scope="row" valign="top"><label for="cat_price"><?php
-                              echo __("Category Price", DOMAIN);
+                              echo __("Category Price", 'templatic');
                               echo ' (' . $currency_symbol . ')'
                               ?></label></th>
                     <td><input type="text"  name="cat_price" id="cat_price" value="<?php
@@ -595,7 +595,7 @@ function tmpl_custom_setup_tabs_fn() {
                                    echo $term_price;
                          }
                          ?>"  size="20"/>
-                         <p class="description"><?php echo sprintf(__('To change currency <a href="%sadmin.php?page=monetization&tab=payment_options" target= "_blank" >click here</a>', DOMAIN), admin_url()); ?>.</p>
+                         <p class="description"><?php echo sprintf(__('To change currency <a href="%sadmin.php?page=monetization&tab=payment_options" target= "_blank" >click here</a>', 'templatic'), admin_url()); ?>.</p>
                     </td>
                </tr>
                <?php
@@ -637,11 +637,11 @@ function tmpl_custom_setup_tabs_fn() {
                          $posts = $val['labels']['name'];
                          $columns = array(
                                    'cb' => '<input type="checkbox" />',
-                                   'name' => __('Name', DOMAIN),
-                                   'price' => __('Price', DOMAIN),
-                                   'description' => __('Description', DOMAIN),
-                                   'slug' => __('Slug', DOMAIN),
-                                   'posts' => __('Posts', DOMAIN)
+                                   'name' => __('Name', 'templatic'),
+                                   'price' => __('Price', 'templatic'),
+                                   'description' => __('Description', 'templatic'),
+                                   'slug' => __('Slug', 'templatic'),
+                                   'posts' => __('Posts', 'templatic')
                          );
                }
                return $columns;
@@ -708,8 +708,8 @@ function tmpl_custom_setup_tabs_fn() {
 
      function tmpl_more_setting($tabs) {
 
-               $tabs['email'] = __('Email Settings & Notifications', ADMINDOMAIN);
-               $tabs['custom_permalink'] = __('Permalink Settings', ADMINDOMAIN);
+               $tabs['email'] = __('Email Settings & Notifications', 'templatic-admin');
+               $tabs['custom_permalink'] = __('Permalink Settings', 'templatic-admin');
                return $tabs;
      }
 
@@ -723,13 +723,13 @@ function tmpl_custom_setup_tabs_fn() {
                          case 'email':
                                    ?>
                                    <tr class="post-submission">
-                                        <td><label for="package_type" class="form-textfield-label"><?php echo __('Submission notification to admin', ADMINDOMAIN); ?></label></td>
+                                        <td><label for="package_type" class="form-textfield-label"><?php echo __('Submission notification to admin', 'templatic-admin'); ?></label></td>
                                         <td>
-                                             <a href="javascript:void(0);" onclick="open_quick_edit('post-submission', 'edit-post-submission')"><?php echo __("Quick Edit", ADMINDOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="open_quick_edit('post-submission', 'edit-post-submission')"><?php echo __("Quick Edit", 'templatic-admin'); ?></a>
                                              | 
-                                             <a href="javascript:void(0);" onclick="reset_to_default('post_submited_success_email_subject', 'post_submited_success_email_content', 'post-submission');"><?php echo __("Reset", ADMINDOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="reset_to_default('post_submited_success_email_subject', 'post_submited_success_email_content', 'post-submission');"><?php echo __("Reset", 'templatic-admin'); ?></a>
                                              <span class="spinner" style="margin:0 18px 0;"></span>
-                                             <span class="qucik_reset"><?php echo __("Data reset", ADMINDOMAIN); ?></span>
+                                             <span class="qucik_reset"><?php echo __("Data reset", 'templatic-admin'); ?></span>
                                         </td>
                                    </tr>
                                    <tr class="edit-post-submission" style="display:none">
@@ -738,21 +738,21 @@ function tmpl_custom_setup_tabs_fn() {
                                              <table width="98%" class="tab-sub-table" align="left">
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <input type="text" name="post_submited_success_email_subject" id="post_submited_success_email_subject" value="<?php
                                                             if (isset($tmpdata['post_submited_success_email_subject'])) {
                                                                       echo stripslashes($tmpdata['post_submited_success_email_subject']);
                                                             } else {
-                                                                      _e('A new post has been submitted on your site', ADMINDOMAIN);
+                                                                      _e('A new post has been submitted on your site', 'templatic-admin');
                                                             }
                                                             ?>"/>
                                                        </td>
                                                   </tr>
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', DOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', 'templatic'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <?php
@@ -772,7 +772,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                             if ($tmpdata['post_submited_success_email_content'] != "") {
                                                                       $content = stripslashes($tmpdata['post_submited_success_email_content']);
                                                             } else {
-                                                                      $content = __('<p>Dear [#to_name#],</p><p>A new submission has been made on your site with the details below.</p><p>[#information_details#]</p><p>Thank You,<br/>[#site_name#]</p>', DOMAIN);
+                                                                      $content = __('<p>Dear [#to_name#],</p><p>A new submission has been made on your site with the details below.</p><p>[#information_details#]</p><p>Thank You,<br/>[#site_name#]</p>', 'templatic');
                                                             }
                                                             wp_editor($content, 'post_submited_success_email_content', $settings);
                                                             ?>
@@ -782,7 +782,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                        <td colspan="2">
                                                             <div class="buttons">
                                                                  <div class="inline_update">
-                                                                      <a class="button-primary save  quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", DOMAIN); ?></a>
+                                                                      <a class="button-primary save  quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic'); ?></a>
                                                                       <a class="button-secondary cancel" href="javascript:void(0);" onclick="open_quick_edit('edit-post-submission', 'post-submission')" accesskey="c">Cancel</a>
                                                                       <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                  </div>
@@ -793,13 +793,13 @@ function tmpl_custom_setup_tabs_fn() {
                                         </td>
                                    </tr>
                                    <tr class="user-post-submission alternate">
-                                        <td><label for="package_type" class="form-textfield-label"><?php echo __('Submission notification to user', ADMINDOMAIN); ?></label></td>
+                                        <td><label for="package_type" class="form-textfield-label"><?php echo __('Submission notification to user', 'templatic-admin'); ?></label></td>
                                         <td>
-                                             <a href="javascript:void(0);" onclick="open_quick_edit('user-post-submission', 'user-edit-post-submission')"><?php echo __("Quick Edit", ADMINDOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="open_quick_edit('user-post-submission', 'user-edit-post-submission')"><?php echo __("Quick Edit", 'templatic-admin'); ?></a>
                                              | 
-                                             <a href="javascript:void(0);" onclick="reset_to_default('user_post_submited_success_email_subject', 'user_post_submited_success_email_content', 'user-post-submission');"><?php echo __("Reset", ADMINDOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="reset_to_default('user_post_submited_success_email_subject', 'user_post_submited_success_email_content', 'user-post-submission');"><?php echo __("Reset", 'templatic-admin'); ?></a>
                                              <span class="spinner" style="margin:0 18px 0;"></span>
-                                             <span class="qucik_reset"><?php echo __("Data reset", ADMINDOMAIN); ?></span>
+                                             <span class="qucik_reset"><?php echo __("Data reset", 'templatic-admin'); ?></span>
                                         </td>
                                    </tr>
                                    <tr class="user-edit-post-submission alternate" style="display:none">
@@ -808,21 +808,21 @@ function tmpl_custom_setup_tabs_fn() {
                                              <table width="98%" class="tab-sub-table" align="left">
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <input type="text" name="user_post_submited_success_email_subject" id="user_post_submited_success_email_subject" value="<?php
                                                             if (isset($tmpdata['user_post_submited_success_email_subject'])) {
                                                                       echo stripslashes($tmpdata['user_post_submited_success_email_subject']);
                                                             } else {
-                                                                      _e('Details about the listing you have submitted on [#site_title#]', ADMINDOMAIN);
+                                                                      _e('Details about the listing you have submitted on [#site_title#]', 'templatic-admin');
                                                             }
                                                             ?>"/>
                                                        </td>
                                                   </tr>
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', DOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', 'templatic'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <?php
@@ -842,7 +842,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                             if ($tmpdata['user_post_submited_success_email_content'] != "") {
                                                                       $content = stripslashes($tmpdata['user_post_submited_success_email_content']);
                                                             } else {
-                                                                      $content = __('<p>Howdy [#to_name#],</p><p>You have submitted a new listing. Here are some details about it</p><p>[#information_details#]</p><p>Thank You,<br/>[#site_name#]</p>', DOMAIN);
+                                                                      $content = __('<p>Howdy [#to_name#],</p><p>You have submitted a new listing. Here are some details about it</p><p>[#information_details#]</p><p>Thank You,<br/>[#site_name#]</p>', 'templatic');
                                                             }
                                                             wp_editor($content, 'user_post_submited_success_email_content', $settings);
                                                             ?>
@@ -852,7 +852,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                        <td colspan="2">
                                                             <div class="buttons">
                                                                  <div class="inline_update">
-                                                                      <a class="button-primary save  quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", DOMAIN); ?></a>
+                                                                      <a class="button-primary save  quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic'); ?></a>
                                                                       <a class="button-secondary cancel" href="javascript:void(0);" onclick="open_quick_edit('user-edit-post-submission', 'user-post-submission')" accesskey="c">Cancel</a>
                                                                       <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                  </div>
@@ -863,14 +863,14 @@ function tmpl_custom_setup_tabs_fn() {
                                         </td>
                                    </tr>
                                    <tr class="payment-success-client">
-                                        <td><label class="form-textfield-label"><?php echo __(' Successful payment notification to user', DOMAIN); ?></label></td>
+                                        <td><label class="form-textfield-label"><?php echo __(' Successful payment notification to user', 'templatic'); ?></label></td>
 
                                         <td>
-                                             <a href="javascript:void(0);" onclick="open_quick_edit('payment-success-client', 'edit-payment-success-client')"><?php echo __("Quick Edit", DOMAIN); ?></a> 
+                                             <a href="javascript:void(0);" onclick="open_quick_edit('payment-success-client', 'edit-payment-success-client')"><?php echo __("Quick Edit", 'templatic'); ?></a> 
                                              | 
-                                             <a href="javascript:void(0);" onclick="reset_to_default('payment_success_email_subject_to_client', 'payment_success_email_content_to_client', 'payment-success-client');"><?php echo __("Reset", DOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="reset_to_default('payment_success_email_subject_to_client', 'payment_success_email_content_to_client', 'payment-success-client');"><?php echo __("Reset", 'templatic'); ?></a>
                                              <span class="spinner" style="margin:0 18px 0;"></span>
-                                             <span class="qucik_reset"><?php echo __("Data reset", DOMAIN); ?></span>
+                                             <span class="qucik_reset"><?php echo __("Data reset", 'templatic'); ?></span>
                                         </td>
                                    </tr>
                                    <tr class="edit-payment-success-client alternate" style="display:none">
@@ -879,21 +879,21 @@ function tmpl_custom_setup_tabs_fn() {
                                              <table width="98%" align="left" class="tab-sub-table">
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', DOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', 'templatic'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <input type="text" name="payment_success_email_subject_to_client" id="payment_success_email_subject_to_client" value="<?php
                                                             if (isset($tmpdata['payment_success_email_subject_to_client'])) {
                                                                       echo $tmpdata['payment_success_email_subject_to_client'];
                                                             } else {
-                                                                      echo __('Thank you for your submission!', DOMAIN);
+                                                                      echo __('Thank you for your submission!', 'templatic');
                                                             }
                                                             ?>"/>
                                                        </td>
                                                   </tr>
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', DOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', 'templatic'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <?php
@@ -913,7 +913,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                             if ($tmpdata['payment_success_email_content_to_client'] != "") {
                                                                       $content = stripslashes($tmpdata['payment_success_email_content_to_client']);
                                                             } else {
-                                                                      $content = __("<p>Hello [#to_name#],</p><p>Your submission has been approved! You can see the listing here:</p><p>[#transaction_details#]</p><p>If you'll have any questions about this please send an email to [#admin_email#]</p><p>Thanks!,<br/>[#site_name#]</p>", DOMAIN);
+                                                                      $content = __("<p>Hello [#to_name#],</p><p>Your submission has been approved! You can see the listing here:</p><p>[#transaction_details#]</p><p>If you'll have any questions about this please send an email to [#admin_email#]</p><p>Thanks!,<br/>[#site_name#]</p>", 'templatic');
                                                             }
                                                             wp_editor($content, 'payment_success_email_content_to_client', $settings);
                                                             ?>
@@ -924,7 +924,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                             <div class="buttons">
                                                                  <div class="inline_update">
 
-                                                                      <a class="button-primary save alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", DOMAIN); ?></a>
+                                                                      <a class="button-primary save alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic'); ?></a>
                                                                       <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-payment-success-client', 'payment-success-client')" accesskey="c">Cancel</a>
                                                                       <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                  </div>
@@ -935,14 +935,14 @@ function tmpl_custom_setup_tabs_fn() {
                                         </td>
                                    </tr>
                                    <tr class="payment-success-admin alternate">
-                                        <td><label class="form-textfield-label"><?php echo __('Successful payment notification to admin', DOMAIN); ?></label></td>
+                                        <td><label class="form-textfield-label"><?php echo __('Successful payment notification to admin', 'templatic'); ?></label></td>
 
                                         <td>
-                                             <a href="javascript:void(0);" onclick="open_quick_edit('payment-success-admin', 'edit-payment-success-admin')"><?php echo __("Quick Edit", DOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="open_quick_edit('payment-success-admin', 'edit-payment-success-admin')"><?php echo __("Quick Edit", 'templatic'); ?></a>
                                              | 
-                                             <a href="javascript:void(0);" onclick="reset_to_default('payment_success_email_subject_to_admin', 'payment_success_email_content_to_admin', 'payment-success-admin');"><?php echo __("Reset", DOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="reset_to_default('payment_success_email_subject_to_admin', 'payment_success_email_content_to_admin', 'payment-success-admin');"><?php echo __("Reset", 'templatic'); ?></a>
                                              <span class="spinner" style="margin:0 18px 0;"></span>
-                                             <span class="qucik_reset"><?php echo __("Data reset", DOMAIN); ?></span>
+                                             <span class="qucik_reset"><?php echo __("Data reset", 'templatic'); ?></span>
                                         </td>
                                    </tr>
                                    <tr class="edit-payment-success-admin alternate" style="display:none">
@@ -951,21 +951,21 @@ function tmpl_custom_setup_tabs_fn() {
                                              <table width="98%" align="left" class="tab-sub-table">
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <input type="text" name="payment_success_email_subject_to_admin" id="payment_success_email_subject_to_admin" value="<?php
                                                             if (isset($tmpdata['payment_success_email_subject_to_admin'])) {
                                                                       echo $tmpdata['payment_success_email_subject_to_admin'];
                                                             } else {
-                                                                      echo __('You have received a payment', DOMAIN);
+                                                                      echo __('You have received a payment', 'templatic');
                                                             }
                                                             ?>"/>
                                                        </td>
                                                   </tr>
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <?php
@@ -985,7 +985,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                             if ($tmpdata['payment_success_email_content_to_admin'] != "") {
                                                                       $content = stripslashes($tmpdata['payment_success_email_content_to_admin']);
                                                             } else {
-                                                                      $content = __("<p>Howdy [#to_name#],</p><p>You have received a payment of [#payable_amt#] on [#site_name#]. Details are available below</p><p>[#transaction_details#]</p><p>Thanks,<br/>[#site_name#]</p>", DOMAIN);
+                                                                      $content = __("<p>Howdy [#to_name#],</p><p>You have received a payment of [#payable_amt#] on [#site_name#]. Details are available below</p><p>[#transaction_details#]</p><p>Thanks,<br/>[#site_name#]</p>", 'templatic');
                                                             }
                                                             wp_editor($content, 'payment_success_email_content_to_admin', $settings);
                                                             ?>
@@ -995,7 +995,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                        <td colspan="2">
                                                             <div class="buttons">
                                                                  <div class="inline_update">
-                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", ADMINDOMAIN); ?></a>
+                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic-admin'); ?></a>
                                                                       <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-payment-success-admin', 'payment-success-admin')" accesskey="c">Cancel</a>
                                                                       <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                  </div>
@@ -1008,14 +1008,14 @@ function tmpl_custom_setup_tabs_fn() {
 
 
                                    <tr class="pre-payment-success-admin">
-                                        <td><label class="form-textfield-label"><?php echo __('PreBank transfer notification to admin', ADMINDOMAIN); ?></label></td>
+                                        <td><label class="form-textfield-label"><?php echo __('PreBank transfer notification to admin', 'templatic-admin'); ?></label></td>
 
                                         <td>
-                                             <a href="javascript:void(0);" onclick="open_quick_edit('pre-payment-success-admin', 'edit-pre-payment-success-admin')"><?php echo __("Quick Edit", ADMINDOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="open_quick_edit('pre-payment-success-admin', 'edit-pre-payment-success-admin')"><?php echo __("Quick Edit", 'templatic-admin'); ?></a>
                                              | 
-                                             <a href="javascript:void(0);" onclick="reset_to_default('pre_payment_success_email_subject_to_admin', 'pre_payment_success_email_content_to_admin', 'pre-payment-success-admin');"><?php echo __("Reset", DOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="reset_to_default('pre_payment_success_email_subject_to_admin', 'pre_payment_success_email_content_to_admin', 'pre-payment-success-admin');"><?php echo __("Reset", 'templatic'); ?></a>
                                              <span class="spinner" style="margin:0 18px 0;"></span>
-                                             <span class="qucik_reset"><?php echo __("Data reset", ADMINDOMAIN); ?></span>
+                                             <span class="qucik_reset"><?php echo __("Data reset", 'templatic-admin'); ?></span>
                                         </td>
                                    </tr>
                                    <tr class="edit-pre-payment-success-admin" style="display:none">
@@ -1024,21 +1024,21 @@ function tmpl_custom_setup_tabs_fn() {
                                              <table width="98%" align="left" class="tab-sub-table">
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <input type="text" name="pre_payment_success_email_subject_to_admin" id="pre_payment_success_email_subject_to_admin" value="<?php
                                                             if (isset($tmpdata['pre_payment_success_email_subject_to_admin'])) {
                                                                       echo $tmpdata['pre_payment_success_email_subject_to_admin'];
                                                             } else {
-                                                                      _e('Submission pending payment', DOMAIN);
+                                                                      _e('Submission pending payment', 'templatic');
                                                             }
                                                             ?>"/>
                                                        </td>
                                                   </tr>
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <?php
@@ -1058,7 +1058,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                             if ($tmpdata['pre_payment_success_email_content_to_admin'] != "") {
                                                                       $content = stripslashes($tmpdata['pre_payment_success_email_content_to_admin']);
                                                             } else {
-                                                                      $content = __("<p>Dear [#to_name#],</p><p>A payment from username [#user_login#] is now pending on a submission or subscription to one of your plans.</p><p>[#transaction_details#]</p><p>Thanks!<br/>[#site_name#]</p>", ADMINDOMAIN);
+                                                                      $content = __("<p>Dear [#to_name#],</p><p>A payment from username [#user_login#] is now pending on a submission or subscription to one of your plans.</p><p>[#transaction_details#]</p><p>Thanks!<br/>[#site_name#]</p>", 'templatic-admin');
                                                             }
                                                             wp_editor($content, 'pre_payment_success_email_content_to_admin', $settings);
                                                             ?>
@@ -1068,8 +1068,8 @@ function tmpl_custom_setup_tabs_fn() {
                                                        <td colspan="2">
                                                             <div class="buttons">
                                                                  <div class="inline_update">
-                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", ADMINDOMAIN); ?></a>
-                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-pre-payment-success-admin', 'pre-payment-success-admin')" accesskey="c"><?php echo __("Cancel", ADMINDOMAIN); ?></a>
+                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic-admin'); ?></a>
+                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-pre-payment-success-admin', 'pre-payment-success-admin')" accesskey="c"><?php echo __("Cancel", 'templatic-admin'); ?></a>
                                                                       <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                  </div>
                                                             </div>	
@@ -1081,14 +1081,14 @@ function tmpl_custom_setup_tabs_fn() {
 
 
                                    <tr class="contact-us alternate">
-                                        <td><label class="form-textfield-label"><?php echo __('Contact us form message', ADMINDOMAIN); ?></label></td>
+                                        <td><label class="form-textfield-label"><?php echo __('Contact us form message', 'templatic-admin'); ?></label></td>
 
                                         <td>
-                                             <a href="javascript:void(0);" onclick="open_quick_edit('contact-us', 'edit-contact-us')"><?php echo __("Quick Edit", ADMINDOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="open_quick_edit('contact-us', 'edit-contact-us')"><?php echo __("Quick Edit", 'templatic-admin'); ?></a>
                                              | 
-                                             <a href="javascript:void(0);" onclick="reset_to_default('contact_us_email_content', 'contact_us_email_content', 'contact-us');"><?php echo __("Reset", DOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="reset_to_default('contact_us_email_content', 'contact_us_email_content', 'contact-us');"><?php echo __("Reset", 'templatic'); ?></a>
                                              <span class="spinner" style="margin:0 18px 0;"></span>
-                                             <span class="qucik_reset"><?php echo __("Data reset", ADMINDOMAIN); ?></span>
+                                             <span class="qucik_reset"><?php echo __("Data reset", 'templatic-admin'); ?></span>
                                         </td>
                                    </tr>
                                    <tr class="edit-contact-us" style="display:none">
@@ -1098,7 +1098,7 @@ function tmpl_custom_setup_tabs_fn() {
 
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <?php
@@ -1118,7 +1118,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                             if ($tmpdata['contact_us_email_content'] != "") {
                                                                       $content = stripslashes($tmpdata['contact_us_email_content']);
                                                             } else {
-                                                                      $content = __("<p>Dear [#to_name#] ,</p><p>You have an inquiry message. Here are the details</p><p> Name: [#user_name#] </p> <p> Email: [#user_email#] </p> <p> Message: [#user_message#] </p>", ADMINDOMAIN);
+                                                                      $content = __("<p>Dear [#to_name#] ,</p><p>You have an inquiry message. Here are the details</p><p> Name: [#user_name#] </p> <p> Email: [#user_email#] </p> <p> Message: [#user_message#] </p>", 'templatic-admin');
                                                             }
                                                             wp_editor($content, 'contact_us_email_content', $settings);
                                                             ?>
@@ -1128,8 +1128,8 @@ function tmpl_custom_setup_tabs_fn() {
                                                        <td colspan="2">
                                                             <div class="buttons">
                                                                  <div class="inline_update">
-                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", ADMINDOMAIN); ?></a>
-                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-contact-us', 'contact-us')" accesskey="c"><?php echo __("Cancel", ADMINDOMAIN); ?></a>
+                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic-admin'); ?></a>
+                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-contact-us', 'contact-us')" accesskey="c"><?php echo __("Cancel", 'templatic-admin'); ?></a>
                                                                       <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                  </div>
                                                             </div>	
@@ -1140,14 +1140,14 @@ function tmpl_custom_setup_tabs_fn() {
                                    </tr>
 
                                    <tr class="admin-post-upgrade">
-                                        <td><label class="form-textfield-label"><?php echo __('Post upgrade notification to admin', ADMINDOMAIN); ?></label></td>
+                                        <td><label class="form-textfield-label"><?php echo __('Post upgrade notification to admin', 'templatic-admin'); ?></label></td>
 
                                         <td>
-                                             <a href="javascript:void(0);" onclick="open_quick_edit('admin-post-upgrade', 'edit-admin-post-upgrade')"><?php echo __("Quick Edit", ADMINDOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="open_quick_edit('admin-post-upgrade', 'edit-admin-post-upgrade')"><?php echo __("Quick Edit", 'templatic-admin'); ?></a>
                                              | 
-                                             <a href="javascript:void(0);" onclick="reset_to_default('admin_post_upgrade_email_subject', 'admin_post_upgrade_email_content', 'admin-post-upgrade');"><?php echo __("Reset", DOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="reset_to_default('admin_post_upgrade_email_subject', 'admin_post_upgrade_email_content', 'admin-post-upgrade');"><?php echo __("Reset", 'templatic'); ?></a>
                                              <span class="spinner" style="margin:0 18px 0;"></span>
-                                             <span class="qucik_reset"><?php echo __("Data reset", ADMINDOMAIN); ?></span>
+                                             <span class="qucik_reset"><?php echo __("Data reset", 'templatic-admin'); ?></span>
                                         </td>
                                    </tr>
                                    <tr class="edit-admin-post-upgrade" style="display:none">
@@ -1156,21 +1156,21 @@ function tmpl_custom_setup_tabs_fn() {
                                              <table width="98%" align="left" class="tab-sub-table">
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <input type="text" name="admin_post_upgrade_email_subject" id="admin_post_upgrade_email_subject" value="<?php
                                                             if (isset($tmpdata['admin_post_upgrade_email_subject'])) {
                                                                       echo $tmpdata['admin_post_upgrade_email_subject'];
                                                             } else {
-                                                                      _e('A New Upgrade Request', DOMAIN);
+                                                                      _e('A New Upgrade Request', 'templatic');
                                                             }
                                                             ?>"/>
                                                        </td>
                                                   </tr>
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <?php
@@ -1190,7 +1190,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                             if ($tmpdata['admin_post_upgrade_email_content'] != "") {
                                                                       $content = stripslashes($tmpdata['admin_post_upgrade_email_content']);
                                                             } else {
-                                                                      $content = __("<p>Howdy [#to_name#],</p><p>A new upgrade request has been submitted to your site.</p><p>Here are some details about it.</p><p>[#information_details#]</p><p>Thank You,<br/>[#site_name#]</p>", ADMINDOMAIN);
+                                                                      $content = __("<p>Howdy [#to_name#],</p><p>A new upgrade request has been submitted to your site.</p><p>Here are some details about it.</p><p>[#information_details#]</p><p>Thank You,<br/>[#site_name#]</p>", 'templatic-admin');
                                                             }
                                                             wp_editor($content, 'admin_post_upgrade_email_content', $settings);
                                                             ?>
@@ -1200,8 +1200,8 @@ function tmpl_custom_setup_tabs_fn() {
                                                        <td colspan="2">
                                                             <div class="buttons">
                                                                  <div class="inline_update">
-                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", ADMINDOMAIN); ?></a>
-                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-admin-post-upgrade', 'admin-post-upgrade')" accesskey="c"><?php echo __("Cancel", ADMINDOMAIN); ?></a>
+                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic-admin'); ?></a>
+                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-admin-post-upgrade', 'admin-post-upgrade')" accesskey="c"><?php echo __("Cancel", 'templatic-admin'); ?></a>
                                                                       <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                  </div>
                                                             </div>	
@@ -1212,14 +1212,14 @@ function tmpl_custom_setup_tabs_fn() {
                                    </tr>
 
                                    <tr class="client-post-upgrade alternate">
-                                        <td><label class="form-textfield-label"><?php echo __('Post upgrade notification to user', ADMINDOMAIN); ?></label></td>
+                                        <td><label class="form-textfield-label"><?php echo __('Post upgrade notification to user', 'templatic-admin'); ?></label></td>
 
                                         <td>
-                                             <a href="javascript:void(0);" onclick="open_quick_edit('client-post-upgrade', 'edit-client-post-upgrade')"><?php echo __("Quick Edit", ADMINDOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="open_quick_edit('client-post-upgrade', 'edit-client-post-upgrade')"><?php echo __("Quick Edit", 'templatic-admin'); ?></a>
                                              | 
-                                             <a href="javascript:void(0);" onclick="reset_to_default('client_post_upgrade_email_subject', 'client_post_upgrade_email_content', 'client-post-upgrade');"><?php echo __("Reset", DOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="reset_to_default('client_post_upgrade_email_subject', 'client_post_upgrade_email_content', 'client-post-upgrade');"><?php echo __("Reset", 'templatic'); ?></a>
                                              <span class="spinner" style="margin:0 18px 0;"></span>
-                                             <span class="qucik_reset"><?php echo __("Data reset", ADMINDOMAIN); ?></span>
+                                             <span class="qucik_reset"><?php echo __("Data reset", 'templatic-admin'); ?></span>
                                         </td>
                                    </tr>
                                    <tr class="edit-client-post-upgrade" style="display:none">
@@ -1228,21 +1228,21 @@ function tmpl_custom_setup_tabs_fn() {
                                              <table width="98%" align="left" class="tab-sub-table">
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <input type="text" name="client_post_upgrade_email_subject" id="client_post_upgrade_email_subject" value="<?php
                                                             if (isset($tmpdata['client_post_upgrade_email_subject'])) {
                                                                       echo $tmpdata['client_post_upgrade_email_subject'];
                                                             } else {
-                                                                      _e('Payment Pending For Upgrade Request: #[#post_id#]', DOMAIN);
+                                                                      _e('Payment Pending For Upgrade Request: #[#post_id#]', 'templatic');
                                                             }
                                                             ?>"/>
                                                        </td>
                                                   </tr>
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <?php
@@ -1262,7 +1262,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                             if ($tmpdata['client_post_upgrade_email_content'] != "") {
                                                                       $content = stripslashes($tmpdata['client_post_upgrade_email_content']);
                                                             } else {
-                                                                      $content = __("<p>Dear [#to_name#],</p><p>Your [#post_type_name#] has been updated by you . Here is the information about the [#post_type_name#]:</p>[#information_details#]<br><p>[#site_name#]</p>", ADMINDOMAIN);
+                                                                      $content = __("<p>Dear [#to_name#],</p><p>Your [#post_type_name#] has been updated by you . Here is the information about the [#post_type_name#]:</p>[#information_details#]<br><p>[#site_name#]</p>", 'templatic-admin');
                                                             }
                                                             wp_editor($content, 'client_post_upgrade_email_content', $settings);
                                                             ?>
@@ -1272,8 +1272,8 @@ function tmpl_custom_setup_tabs_fn() {
                                                        <td colspan="2">
                                                             <div class="buttons">
                                                                  <div class="inline_update">
-                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", ADMINDOMAIN); ?></a>
-                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-client-post-upgrade', 'client-post-upgrade')" accesskey="c"><?php echo __("Cancel", ADMINDOMAIN); ?></a>
+                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic-admin'); ?></a>
+                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-client-post-upgrade', 'client-post-upgrade')" accesskey="c"><?php echo __("Cancel", 'templatic-admin'); ?></a>
                                                                       <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                  </div>
                                                             </div>	
@@ -1284,14 +1284,14 @@ function tmpl_custom_setup_tabs_fn() {
                                    </tr>
 
                                    <tr class="reset-password">
-                                        <td><label class="form-textfield-label"><?php echo __('Password reset', ADMINDOMAIN); ?></label></td>
+                                        <td><label class="form-textfield-label"><?php echo __('Password reset', 'templatic-admin'); ?></label></td>
 
                                         <td>
-                                             <a href="javascript:void(0);" onclick="open_quick_edit('reset-password', 'edit-reset-password')"><?php echo __("Quick Edit", ADMINDOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="open_quick_edit('reset-password', 'edit-reset-password')"><?php echo __("Quick Edit", 'templatic-admin'); ?></a>
                                              | 
-                                             <a href="javascript:void(0);" onclick="reset_to_default('reset_password_subject', 'reset_password_content', 'reset-password');"><?php echo __("Reset", DOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="reset_to_default('reset_password_subject', 'reset_password_content', 'reset-password');"><?php echo __("Reset", 'templatic'); ?></a>
                                              <span class="spinner" style="margin:0 18px 0;"></span>
-                                             <span class="qucik_reset"><?php echo __("Data reset", ADMINDOMAIN); ?></span>
+                                             <span class="qucik_reset"><?php echo __("Data reset", 'templatic-admin'); ?></span>
                                         </td>
                                    </tr>
                                    <tr class="edit-reset-password" style="display:none">
@@ -1300,21 +1300,21 @@ function tmpl_custom_setup_tabs_fn() {
                                              <table width="98%" align="left" class="tab-sub-table">
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <input type="text" name="reset_password_subject" id="reset_password_subject" value="<?php
                                                             if (isset($tmpdata['reset_password_subject'])) {
                                                                       echo $tmpdata['reset_password_subject'];
                                                             } else {
-                                                                      _e('[#site_title#] Your new password', DOMAIN);
+                                                                      _e('[#site_title#] Your new password', 'templatic');
                                                             }
                                                             ?>"/>
                                                        </td>
                                                   </tr>
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <?php
@@ -1334,7 +1334,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                             if ($tmpdata['reset_password_content'] != "") {
                                                                       $content = stripslashes($tmpdata['reset_password_content']);
                                                             } else {
-                                                                      $content = __("<p>Hi [#to_name#],</p><p>Here is the new password you have requested for your account [#user_email#].</p><p> Login URL: [#login_url#] </p><p>User name: [#user_login#]</p> <p> Password: [#user_password#]</p><p>You may change this password in your profile once you login with the new password above.</p><p>Thanks <br/> [#site_title#] </p>", ADMINDOMAIN);
+                                                                      $content = __("<p>Hi [#to_name#],</p><p>Here is the new password you have requested for your account [#user_email#].</p><p> Login URL: [#login_url#] </p><p>User name: [#user_login#]</p> <p> Password: [#user_password#]</p><p>You may change this password in your profile once you login with the new password above.</p><p>Thanks <br/> [#site_title#] </p>", 'templatic-admin');
                                                             }
                                                             wp_editor($content, 'reset_password_content', $settings);
                                                             ?>
@@ -1344,8 +1344,8 @@ function tmpl_custom_setup_tabs_fn() {
                                                        <td colspan="2">
                                                             <div class="buttons">
                                                                  <div class="inline_update">
-                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", ADMINDOMAIN); ?></a>
-                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-reset-password', 'reset-password')" accesskey="c"><?php echo __("Cancel", ADMINDOMAIN); ?></a>
+                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic-admin'); ?></a>
+                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-reset-password', 'reset-password')" accesskey="c"><?php echo __("Cancel", 'templatic-admin'); ?></a>
                                                                       <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                  </div>
                                                             </div>	
@@ -1358,14 +1358,14 @@ function tmpl_custom_setup_tabs_fn() {
 
 
                                    <tr class="claim-ownership alternate">
-                                        <td><label class="form-textfield-label"><?php echo __('Claim Ownership', ADMINDOMAIN); ?></label></td>
+                                        <td><label class="form-textfield-label"><?php echo __('Claim Ownership', 'templatic-admin'); ?></label></td>
 
                                         <td>
-                                             <a href="javascript:void(0);" onclick="open_quick_edit('claim-ownership', 'edit-claim-ownership')"><?php echo __("Quick Edit", ADMINDOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="open_quick_edit('claim-ownership', 'edit-claim-ownership')"><?php echo __("Quick Edit", 'templatic-admin'); ?></a>
                                              | 
-                                             <a href="javascript:void(0);" onclick="reset_to_default('claim_ownership_subject', 'claim_ownership_content', 'claim-ownership');"><?php echo __("Reset", DOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="reset_to_default('claim_ownership_subject', 'claim_ownership_content', 'claim-ownership');"><?php echo __("Reset", 'templatic'); ?></a>
                                              <span class="spinner" style="margin:0 18px 0;"></span>
-                                             <span class="qucik_reset"><?php echo __("Data reset", ADMINDOMAIN); ?></span>
+                                             <span class="qucik_reset"><?php echo __("Data reset", 'templatic-admin'); ?></span>
                                         </td>
                                    </tr>
                                    <tr class="edit-claim-ownership" style="display:none">
@@ -1374,21 +1374,21 @@ function tmpl_custom_setup_tabs_fn() {
                                              <table width="98%" align="left" class="tab-sub-table">
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <input type="text" name="claim_ownership_subject" id="claim_ownership_subject" value="<?php
                                                             if (isset($tmpdata['claim_ownership_subject'])) {
                                                                       echo $tmpdata['claim_ownership_subject'];
                                                             } else {
-                                                                      _e('New Claim Submitted', DOMAIN);
+                                                                      _e('New Claim Submitted', 'templatic');
                                                             }
                                                             ?>"/>
                                                        </td>
                                                   </tr>
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <?php
@@ -1408,7 +1408,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                             if ($tmpdata['claim_ownership_content'] != "") {
                                                                       $content = stripslashes($tmpdata['claim_ownership_content']);
                                                             } else {
-                                                                      $content = __("<p>Dear admin,</p><p>[#claim_name#] has submitted a claim for the post below.</p><p>[#message#]</p><p>Link: [#post_title#]</p><p>From:  [#your_name#]</p><p>Email: [#claim_email#]<p>Phone Number: [#your_number#]</p>", ADMINDOMAIN);
+                                                                      $content = __("<p>Dear admin,</p><p>[#claim_name#] has submitted a claim for the post below.</p><p>[#message#]</p><p>Link: [#post_title#]</p><p>From:  [#your_name#]</p><p>Email: [#claim_email#]<p>Phone Number: [#your_number#]</p>", 'templatic-admin');
                                                             }
                                                             wp_editor($content, 'claim_ownership_content', $settings);
                                                             ?>
@@ -1418,8 +1418,8 @@ function tmpl_custom_setup_tabs_fn() {
                                                        <td colspan="2">
                                                             <div class="buttons">
                                                                  <div class="inline_update">
-                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", ADMINDOMAIN); ?></a>
-                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-claim-ownership', 'claim-ownership')" accesskey="c"><?php echo __("Cancel", ADMINDOMAIN); ?></a>
+                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic-admin'); ?></a>
+                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-claim-ownership', 'claim-ownership')" accesskey="c"><?php echo __("Cancel", 'templatic-admin'); ?></a>
                                                                       <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                  </div>
                                                             </div>	
@@ -1430,14 +1430,14 @@ function tmpl_custom_setup_tabs_fn() {
                                    </tr>
 
                                    <tr class="listing-expiration">
-                                        <td><label class="form-textfield-label"><?php echo __('Listing expiration notification to user', ADMINDOMAIN); ?></label></td>
+                                        <td><label class="form-textfield-label"><?php echo __('Listing expiration notification to user', 'templatic-admin'); ?></label></td>
 
                                         <td>
-                                             <a href="javascript:void(0);" onclick="open_quick_edit('listing-expiration', 'edit-listing-expiration')"><?php echo __("Quick Edit", ADMINDOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="open_quick_edit('listing-expiration', 'edit-listing-expiration')"><?php echo __("Quick Edit", 'templatic-admin'); ?></a>
                                              | 
-                                             <a href="javascript:void(0);" onclick="reset_to_default('listing_expiration_subject', 'listing_expiration_content', 'listing-expiration');"><?php echo __("Reset", DOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="reset_to_default('listing_expiration_subject', 'listing_expiration_content', 'listing-expiration');"><?php echo __("Reset", 'templatic'); ?></a>
                                              <span class="spinner" style="margin:0 18px 0;"></span>
-                                             <span class="qucik_reset"><?php echo __("Data reset", ADMINDOMAIN); ?></span>
+                                             <span class="qucik_reset"><?php echo __("Data reset", 'templatic-admin'); ?></span>
                                         </td>
                                    </tr>
                                    <tr class="edit-listing-expiration" style="display:none">
@@ -1446,21 +1446,21 @@ function tmpl_custom_setup_tabs_fn() {
                                              <table width="98%" align="left" class="tab-sub-table">
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <input type="text" name="listing_expiration_subject" id="listing_expiration_subject" value="<?php
                                                             if (isset($tmpdata['listing_expiration_subject'])) {
                                                                       echo $tmpdata['listing_expiration_subject'];
                                                             } else {
-                                                                      _e('Listing expiration Notification', DOMAIN);
+                                                                      _e('Listing expiration Notification', 'templatic');
                                                             }
                                                             ?>"/>
                                                        </td>
                                                   </tr>
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <?php
@@ -1481,7 +1481,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                                       $content = stripslashes($tmpdata['listing_expiration_content']);
                                                             } else {
 
-                                                                      $content = __("<p>Dear [#user_login#],<p><p>Your listing -<b>[#post_title#]</b> posted on [#post_date#] and paid on [#transection_date#] for [#alivedays#] days.</p><p>Is going to expire in [#days_left#] day(s). Once the listing expires, it will no longer appear on the site.</p><p> In case you wish to renew this listing, please login to your member area on our site and renew it as soon as it expires. You can login on the following link [#site_login_url_link#].</p><p>Your login ID is <b>[#user_login#]</b> and Email ID is <b>[#user_email#]</b>.</p><p>Thank you,<br />[#site_name#].</p>", ADMINDOMAIN);
+                                                                      $content = __("<p>Dear [#user_login#],<p><p>Your listing -<b>[#post_title#]</b> posted on [#post_date#] and paid on [#transection_date#] for [#alivedays#] days.</p><p>Is going to expire in [#days_left#] day(s). Once the listing expires, it will no longer appear on the site.</p><p> In case you wish to renew this listing, please login to your member area on our site and renew it as soon as it expires. You can login on the following link [#site_login_url_link#].</p><p>Your login ID is <b>[#user_login#]</b> and Email ID is <b>[#user_email#]</b>.</p><p>Thank you,<br />[#site_name#].</p>", 'templatic-admin');
                                                             }
 
                                                             wp_editor($content, 'listing_expiration_content', $settings);
@@ -1492,8 +1492,8 @@ function tmpl_custom_setup_tabs_fn() {
                                                        <td colspan="2">
                                                             <div class="buttons">
                                                                  <div class="inline_update">
-                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", ADMINDOMAIN); ?></a>
-                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-listing-expiration', 'listing-expiration')" accesskey="c"><?php echo __("Cancel", ADMINDOMAIN); ?></a>
+                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic-admin'); ?></a>
+                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-listing-expiration', 'listing-expiration')" accesskey="c"><?php echo __("Cancel", 'templatic-admin'); ?></a>
                                                                       <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                  </div>
                                                             </div>	
@@ -1504,14 +1504,14 @@ function tmpl_custom_setup_tabs_fn() {
                                    </tr>
 
                                    <tr class="payment-cancelled alternate">
-                                        <td><label class="form-textfield-label"><?php echo __('Cancelled payment notification to user ', ADMINDOMAIN); ?></label></td>
+                                        <td><label class="form-textfield-label"><?php echo __('Cancelled payment notification to user ', 'templatic-admin'); ?></label></td>
 
                                         <td>
-                                             <a href="javascript:void(0);" onclick="open_quick_edit('payment-cancelled', 'edit-payment-cancelled')"><?php echo __("Quick Edit", ADMINDOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="open_quick_edit('payment-cancelled', 'edit-payment-cancelled')"><?php echo __("Quick Edit", 'templatic-admin'); ?></a>
                                              | 
-                                             <a href="javascript:void(0);" onclick="reset_to_default('payment_cancelled_subject', 'payment_cancelled_content', 'payment-cancelled');"><?php echo __("Reset", DOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="reset_to_default('payment_cancelled_subject', 'payment_cancelled_content', 'payment-cancelled');"><?php echo __("Reset", 'templatic'); ?></a>
                                              <span class="spinner" style="margin:0 18px 0;"></span>
-                                             <span class="qucik_reset"><?php echo __("Data reset", ADMINDOMAIN); ?></span>
+                                             <span class="qucik_reset"><?php echo __("Data reset", 'templatic-admin'); ?></span>
                                         </td>
                                    </tr>
                                    <tr class="edit-payment-cancelled " style="display:none">
@@ -1520,21 +1520,21 @@ function tmpl_custom_setup_tabs_fn() {
                                              <table width="98%" align="left" class="tab-sub-table">
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <input type="text" name="payment_cancelled_subject" id="payment_cancelled_subject" value="<?php
                                                             if (isset($tmpdata['payment_cancelled_subject'])) {
                                                                       echo $tmpdata['payment_cancelled_subject'];
                                                             } else {
-                                                                      _e('Payment Cancelled', DOMAIN);
+                                                                      _e('Payment Cancelled', 'templatic');
                                                             }
                                                             ?>"/>
                                                        </td>
                                                   </tr>
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <?php
@@ -1554,7 +1554,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                             if ($tmpdata['payment_cancelled_content'] != "") {
                                                                       $content = stripslashes($tmpdata['payment_cancelled_content']);
                                                             } else {
-                                                                      $content = __("[#post_type#] has been cancelled with transaction id [#transection_id#]", ADMINDOMAIN);
+                                                                      $content = __("[#post_type#] has been cancelled with transaction id [#transection_id#]", 'templatic-admin');
                                                             }
                                                             wp_editor($content, 'payment_cancelled_content', $settings);
                                                             ?>
@@ -1564,8 +1564,8 @@ function tmpl_custom_setup_tabs_fn() {
                                                        <td colspan="2">
                                                             <div class="buttons">
                                                                  <div class="inline_update">
-                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", ADMINDOMAIN); ?></a>
-                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-payment-cancelled', 'payment-cancelled')" accesskey="c"><?php echo __("Cancel", ADMINDOMAIN); ?></a>
+                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic-admin'); ?></a>
+                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-payment-cancelled', 'payment-cancelled')" accesskey="c"><?php echo __("Cancel", 'templatic-admin'); ?></a>
                                                                       <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                  </div>
                                                             </div>	
@@ -1576,14 +1576,14 @@ function tmpl_custom_setup_tabs_fn() {
                                    </tr>
 
                                    <tr class="update-listing-notification">
-                                        <td><label class="form-textfield-label"><?php echo __('Listing updated notification to user', ADMINDOMAIN); ?></label></td>
+                                        <td><label class="form-textfield-label"><?php echo __('Listing updated notification to user', 'templatic-admin'); ?></label></td>
 
                                         <td>
-                                             <a href="javascript:void(0);" onclick="open_quick_edit('update-listing-notification', 'edit-update-listing-notification')"><?php echo __("Quick Edit", ADMINDOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="open_quick_edit('update-listing-notification', 'edit-update-listing-notification')"><?php echo __("Quick Edit", 'templatic-admin'); ?></a>
                                              | 
-                                             <a href="javascript:void(0);" onclick="reset_to_default('update_listing_notification_subject', 'update_listing_notification_content', 'update-listing-notification');"><?php echo __("Reset", DOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="reset_to_default('update_listing_notification_subject', 'update_listing_notification_content', 'update-listing-notification');"><?php echo __("Reset", 'templatic'); ?></a>
                                              <span class="spinner" style="margin:0 18px 0;"></span>
-                                             <span class="qucik_reset"><?php echo __("Data reset", ADMINDOMAIN); ?></span>
+                                             <span class="qucik_reset"><?php echo __("Data reset", 'templatic-admin'); ?></span>
                                         </td>
                                    </tr>
                                    <tr class="edit-update-listing-notification" style="display:none">
@@ -1592,21 +1592,21 @@ function tmpl_custom_setup_tabs_fn() {
                                              <table width="98%" align="left" class="tab-sub-table">
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <input type="text" name="update_listing_notification_subject" id="update_listing_notification_subject" value="<?php
                                                             if (isset($tmpdata['update_listing_notification_subject'])) {
                                                                       echo $tmpdata['update_listing_notification_subject'];
                                                             } else {
-                                                                      _e('[#post_type#] ID #[#submition_Id#] has been updated', DOMAIN);
+                                                                      _e('[#post_type#] ID #[#submition_Id#] has been updated', 'templatic');
                                                             }
                                                             ?>"/>
                                                        </td>
                                                   </tr>
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <?php
@@ -1626,7 +1626,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                             if ($tmpdata['update_listing_notification_content'] != "") {
                                                                       $content = stripslashes($tmpdata['update_listing_notification_content']);
                                                             } else {
-                                                                      $content = __("<p>Dear [#to_name#],</p><p>[#post_type#] ID #[#submition_Id#] has been updated on your site.</p><p>You can review it again by clicking on its title in this email or through your admin dashboard.</p>[#information_details#]<br><p>[#site_name#]</p>", ADMINDOMAIN);
+                                                                      $content = __("<p>Dear [#to_name#],</p><p>[#post_type#] ID #[#submition_Id#] has been updated on your site.</p><p>You can review it again by clicking on its title in this email or through your admin dashboard.</p>[#information_details#]<br><p>[#site_name#]</p>", 'templatic-admin');
                                                             }
                                                             wp_editor($content, 'update_listing_notification_content', $settings);
                                                             ?>
@@ -1636,8 +1636,8 @@ function tmpl_custom_setup_tabs_fn() {
                                                        <td colspan="2">
                                                             <div class="buttons">
                                                                  <div class="inline_update">
-                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", ADMINDOMAIN); ?></a>
-                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-update-listing-notification', 'update-listing-notification')" accesskey="c"><?php echo __("Cancel", ADMINDOMAIN); ?></a>
+                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic-admin'); ?></a>
+                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-update-listing-notification', 'update-listing-notification')" accesskey="c"><?php echo __("Cancel", 'templatic-admin'); ?></a>
                                                                       <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                  </div>
                                                             </div>	
@@ -1648,14 +1648,14 @@ function tmpl_custom_setup_tabs_fn() {
                                    </tr>
 
                                    <tr class="renew-listing-notification alternate">
-                                        <td><label class="form-textfield-label"><?php echo __('Listing renewal notification to user', ADMINDOMAIN); ?></label></td>
+                                        <td><label class="form-textfield-label"><?php echo __('Listing renewal notification to user', 'templatic-admin'); ?></label></td>
 
                                         <td>
-                                             <a href="javascript:void(0);" onclick="open_quick_edit('renew-listing-notification', 'edit-renew-listing-notification')"><?php echo __("Quick Edit", ADMINDOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="open_quick_edit('renew-listing-notification', 'edit-renew-listing-notification')"><?php echo __("Quick Edit", 'templatic-admin'); ?></a>
                                              | 
-                                             <a href="javascript:void(0);" onclick="reset_to_default('renew_listing_notification_subject', 'renew_listing_notification_content', 'renew-listing-notification');"><?php echo __("Reset", DOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="reset_to_default('renew_listing_notification_subject', 'renew_listing_notification_content', 'renew-listing-notification');"><?php echo __("Reset", 'templatic'); ?></a>
                                              <span class="spinner" style="margin:0 18px 0;"></span>
-                                             <span class="qucik_reset"><?php echo __("Data reset", ADMINDOMAIN); ?></span>
+                                             <span class="qucik_reset"><?php echo __("Data reset", 'templatic-admin'); ?></span>
                                         </td>
                                    </tr>
                                    <tr class="edit-renew-listing-notification" style="display:none">
@@ -1664,21 +1664,21 @@ function tmpl_custom_setup_tabs_fn() {
                                              <table width="98%" align="left" class="tab-sub-table">
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <input type="text" name="renew_listing_notification_subject" id="renew_listing_notification_subject" value="<?php
                                                             if (isset($tmpdata['renew_listing_notification_subject'])) {
                                                                       echo $tmpdata['renew_listing_notification_subject'];
                                                             } else {
-                                                                      _e('[#post_type#] renew of ID:#[#submition_Id#]', DOMAIN);
+                                                                      _e('[#post_type#] renew of ID:#[#submition_Id#]', 'templatic');
                                                             }
                                                             ?>"/>
                                                        </td>
                                                   </tr>
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <?php
@@ -1698,7 +1698,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                             if ($tmpdata['renew_listing_notification_content'] != "") {
                                                                       $content = stripslashes($tmpdata['renew_listing_notification_content']);
                                                             } else {
-                                                                      $content = __("<p>Dear [#to_name#],</p><p>Your [#post_type#] has been renewed by you . Here is the information about the [#post_type#]:</p><p>[#information_details#]</p><p>[#site_name#]</p>", ADMINDOMAIN);
+                                                                      $content = __("<p>Dear [#to_name#],</p><p>Your [#post_type#] has been renewed by you . Here is the information about the [#post_type#]:</p><p>[#information_details#]</p><p>[#site_name#]</p>", 'templatic-admin');
                                                             }
                                                             wp_editor($content, 'renew_listing_notification_content', $settings);
                                                             ?>
@@ -1708,8 +1708,8 @@ function tmpl_custom_setup_tabs_fn() {
                                                        <td colspan="2">
                                                             <div class="buttons">
                                                                  <div class="inline_update">
-                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", ADMINDOMAIN); ?></a>
-                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-renew-listing-notification', 'renew-listing-notification')" accesskey="c"><?php echo __("Cancel", ADMINDOMAIN); ?></a>
+                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic-admin'); ?></a>
+                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-renew-listing-notification', 'renew-listing-notification')" accesskey="c"><?php echo __("Cancel", 'templatic-admin'); ?></a>
                                                                       <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                  </div>
                                                             </div>	
@@ -1720,37 +1720,37 @@ function tmpl_custom_setup_tabs_fn() {
                                    </tr>
 
                                    <tr class="pending-listing-notification">
-                                        <td><label class="form-textfield-label"><?php echo __('Pending listing notification to admin', ADMINDOMAIN); ?></label></td>
+                                        <td><label class="form-textfield-label"><?php echo __('Pending listing notification to admin', 'templatic-admin'); ?></label></td>
 
                                         <td>
-                                             <a href="javascript:void(0);" onclick="open_quick_edit('pending-listing-notification', 'edit-pending-listing-notification')"><?php echo __("Quick Edit", ADMINDOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="open_quick_edit('pending-listing-notification', 'edit-pending-listing-notification')"><?php echo __("Quick Edit", 'templatic-admin'); ?></a>
                                              | 
-                                             <a href="javascript:void(0);" onclick="reset_to_default('pending_listing_notification_subject', 'pending_listing_notification_content', 'pending-listing-notification');"><?php echo __("Reset", DOMAIN); ?></a>
+                                             <a href="javascript:void(0);" onclick="reset_to_default('pending_listing_notification_subject', 'pending_listing_notification_content', 'pending-listing-notification');"><?php echo __("Reset", 'templatic'); ?></a>
                                              <span class="spinner" style="margin:0 18px 0;"></span>
-                                             <span class="qucik_reset"><?php echo __("Data reset", ADMINDOMAIN); ?></span>
+                                             <span class="qucik_reset"><?php echo __("Data reset", 'templatic-admin'); ?></span>
                                         </td>
                                    </tr>
                                    <tr class="edit-pending-listing-notification" style="display:none">
                                         <td width="100%" colspan="2">
-                                             <h4 class="edit-sub-title"><?php echo __("Quick Edit", ADMINDOMAIN); ?></h4>
+                                             <h4 class="edit-sub-title"><?php echo __("Quick Edit", 'templatic-admin'); ?></h4>
                                              <table width="98%" align="left" class="tab-sub-table">
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Subject', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <input type="text" name="pending_listing_notification_subject" id="pending_listing_notification_subject" value="<?php
                                                             if (isset($tmpdata['pending_listing_notification_subject'])) {
                                                                       echo $tmpdata['pending_listing_notification_subject'];
                                                             } else {
-                                                                      _e('Listing payment not confirmed', DOMAIN);
+                                                                      _e('Listing payment not confirmed', 'templatic');
                                                             }
                                                             ?>"/>
                                                        </td>
                                                   </tr>
                                                   <tr>
                                                        <td style="line-height:10px">
-                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', ADMINDOMAIN); ?></label>
+                                                            <label class="form-textfield-label sub-title"><?php echo __('Message', 'templatic-admin'); ?></label>
                                                        </td>
                                                        <td width="90%" style="line-height:10px">
                                                             <?php
@@ -1770,7 +1770,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                             if ($tmpdata['pending_listing_notification_content'] != "") {
                                                                       $content = stripslashes($tmpdata['pending_listing_notification_content']);
                                                             } else {
-                                                                      $content = __("<p>Hi [#to_name#],<br />A listing request on the below details has been rejected.<p>[#transaction_details#]</p>Please try again later.<br />Thanks you.<br />[#site_name#]</p>", ADMINDOMAIN);
+                                                                      $content = __("<p>Hi [#to_name#],<br />A listing request on the below details has been rejected.<p>[#transaction_details#]</p>Please try again later.<br />Thanks you.<br />[#site_name#]</p>", 'templatic-admin');
                                                             }
                                                             wp_editor($content, 'pending_listing_notification_content', $settings);
                                                             ?>
@@ -1780,8 +1780,8 @@ function tmpl_custom_setup_tabs_fn() {
                                                        <td colspan="2">
                                                             <div class="buttons">
                                                                  <div class="inline_update">
-                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", ADMINDOMAIN); ?></a>
-                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-pending-listing-notification', 'pending-listing-notification')" accesskey="c"><?php echo __("Cancel", ADMINDOMAIN); ?></a>
+                                                                      <a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic-admin'); ?></a>
+                                                                      <a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-pending-listing-notification', 'pending-listing-notification')" accesskey="c"><?php echo __("Cancel", 'templatic-admin'); ?></a>
                                                                       <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                  </div>
                                                             </div>	
@@ -1803,39 +1803,39 @@ function tmpl_custom_setup_tabs_fn() {
 
                               <div id="notifications_settings" class="tmpl-email-settings">
 
-                                   <div class="tevo_sub_title" style="padding-top: 10px;"><?php echo __('Notification Content Settings', ADMINDOMAIN); ?></div>
-                                   <p class="tevolution_desc"><?php echo __('These are the messages that appear on your site after certain actions (like content submissions).', ADMINDOMAIN) ?></p>
+                                   <div class="tevo_sub_title" style="padding-top: 10px;"><?php echo __('Notification Content Settings', 'templatic-admin'); ?></div>
+                                   <p class="tevolution_desc"><?php echo __('These are the messages that appear on your site after certain actions (like content submissions).', 'templatic-admin') ?></p>
 
                                    <table  class="widefat post email-wide-table email-settings">
                                         <thead>
                                              <tr>
                                                   <th class="first-th">
-                                                       <label for="notification_title" class="form-textfield-label"><?php echo __('Notification Title', ADMINDOMAIN); ?></label>
+                                                       <label for="notification_title" class="form-textfield-label"><?php echo __('Notification Title', 'templatic-admin'); ?></label>
                                                   </th>
 
                                                   <th class="last-th">
-                                                       <label for="msg_desc" class="form-textfield-label"><?php echo __('Actions', ADMINDOMAIN); ?></label>
+                                                       <label for="msg_desc" class="form-textfield-label"><?php echo __('Actions', 'templatic-admin'); ?></label>
                                                   </th>
                                              </tr>
                                         </thead>
                                         <tbody>
                                              <tr class="post-submission-not alternate">
-                                                  <td><label class="form-textfield-label"><?php echo __('Successful post submission message', ADMINDOMAIN); ?></label></td>
+                                                  <td><label class="form-textfield-label"><?php echo __('Successful post submission message', 'templatic-admin'); ?></label></td>
 
-                                                  <td><a href="javascript:void(0);" onclick="open_quick_edit('post-submission-not', 'edit-post-submission-not')"><?php echo __("Quick Edit", ADMINDOMAIN); ?></a> 
+                                                  <td><a href="javascript:void(0);" onclick="open_quick_edit('post-submission-not', 'edit-post-submission-not')"><?php echo __("Quick Edit", 'templatic-admin'); ?></a> 
                                                        | 
-                                                       <a href="javascript:void(0);" onclick="reset_to_default('', 'post_added_success_msg_content', 'post-submission-not');"><?php echo __("Reset", ADMINDOMAIN); ?></a>
+                                                       <a href="javascript:void(0);" onclick="reset_to_default('', 'post_added_success_msg_content', 'post-submission-not');"><?php echo __("Reset", 'templatic-admin'); ?></a>
                                                        <span class="spinner" style="margin:0 18px 0;"></span>
-                                                       <span class="qucik_reset"><?php echo __("Data reset", ADMINDOMAIN); ?></span>
+                                                       <span class="qucik_reset"><?php echo __("Data reset", 'templatic-admin'); ?></span>
                                                   </td>
                                              </tr>
                                              <tr class="edit-post-submission-not" style="display:none">
                                                   <td width="100%" colspan="2">
-                                                       <h4 class="edit-sub-title"><?php echo __("Quick Edit", ADMINDOMAIN); ?></h4>
+                                                       <h4 class="edit-sub-title"><?php echo __("Quick Edit", 'templatic-admin'); ?></h4>
                                                        <table width="98%" align="left" class="tab-sub-table">
                                                             <tr>
                                                                  <td style="line-height:10px">
-                                                                      <label class="form-textfield-label sub-title"><?php echo __('Message', ADMINDOMAIN); ?></label>
+                                                                      <label class="form-textfield-label sub-title"><?php echo __('Message', 'templatic-admin'); ?></label>
                                                                  </td>
                                                                  <td width="90%" style="line-height:10px">
                                                                       <?php
@@ -1855,7 +1855,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                                       if ($tmpdata['post_added_success_msg_content'] != "") {
                                                                                 $content = stripslashes($tmpdata['post_added_success_msg_content']);
                                                                       } else {
-                                                                                $content = '<p>' . __("Thank you! We have successfully received the submitted information.", ADMINDOMAIN) . '</p><p>[#submited_information_link#]</p><p>' . __("Thanks!", ADMINDOMAIN) . '<br/> [#site_name#].</p>';
+                                                                                $content = '<p>' . __("Thank you! We have successfully received the submitted information.", 'templatic-admin') . '</p><p>[#submited_information_link#]</p><p>' . __("Thanks!", 'templatic-admin') . '<br/> [#site_name#].</p>';
                                                                       }
                                                                       wp_editor($content, 'post_added_success_msg_content', $settings);
                                                                       ?>
@@ -1865,8 +1865,8 @@ function tmpl_custom_setup_tabs_fn() {
                                                                  <td colspan="2">
                                                                       <div class="buttons">
                                                                            <div class="inline_update">
-                                                                                <a class="button-primary save alignleft  quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", ADMINDOMAIN); ?></a>
-                                                                                <a class="button-secondary alignright cancel " href="javascript:void(0);" onclick="open_quick_edit('edit-post-submission-not', 'post-submission-not')" accesskey="c"><?php echo __('Cancel', ADMINDOMAIN); ?></a>
+                                                                                <a class="button-primary save alignleft  quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic-admin'); ?></a>
+                                                                                <a class="button-secondary alignright cancel " href="javascript:void(0);" onclick="open_quick_edit('edit-post-submission-not', 'post-submission-not')" accesskey="c"><?php echo __('Cancel', 'templatic-admin'); ?></a>
                                                                                 <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                            </div>
                                                                       </div>	
@@ -1876,22 +1876,22 @@ function tmpl_custom_setup_tabs_fn() {
                                                   </td>
                                              </tr>
                                              <tr class="payment-successful">
-                                                  <td><label class="form-textfield-label"><?php echo __('Payment successfully received message', ADMINDOMAIN); ?></label></td>
+                                                  <td><label class="form-textfield-label"><?php echo __('Payment successfully received message', 'templatic-admin'); ?></label></td>
 
-                                                  <td><a href="javascript:void(0);" onclick="open_quick_edit('payment-successful', 'edit-payment-successful')"><?php echo __("Quick Edit", ADMINDOMAIN); ?></a> 
+                                                  <td><a href="javascript:void(0);" onclick="open_quick_edit('payment-successful', 'edit-payment-successful')"><?php echo __("Quick Edit", 'templatic-admin'); ?></a> 
                                                        | 
-                                                       <a href="javascript:void(0);" onclick="reset_to_default('', 'post_payment_success_msg_content', 'payment-successful');"><?php echo __("Reset", ADMINDOMAIN); ?></a>
+                                                       <a href="javascript:void(0);" onclick="reset_to_default('', 'post_payment_success_msg_content', 'payment-successful');"><?php echo __("Reset", 'templatic-admin'); ?></a>
                                                        <span class="spinner" style="margin:0 18px 0;"></span>
-                                                       <span class="qucik_reset"><?php echo __("Data reset", ADMINDOMAIN); ?></span>
+                                                       <span class="qucik_reset"><?php echo __("Data reset", 'templatic-admin'); ?></span>
                                                   </td>
                                              </tr>
                                              <tr class="edit-payment-successful" style="display:none">
                                                   <td width="100%" colspan="2">
-                                                       <h4 class="edit-sub-title"><?php echo __("Quick Edit", ADMINDOMAIN); ?></h4>
+                                                       <h4 class="edit-sub-title"><?php echo __("Quick Edit", 'templatic-admin'); ?></h4>
                                                        <table width="98%" align="left" class="tab-sub-table">
                                                             <tr>
                                                                  <td style="line-height:10px">
-                                                                      <label class="form-textfield-label sub-title"><?php echo __("Message", ADMINDOMAIN); ?></label>
+                                                                      <label class="form-textfield-label sub-title"><?php echo __("Message", 'templatic-admin'); ?></label>
                                                                  </td>
                                                                  <td width="90%" style="line-height:10px">
                                                                       <?php
@@ -1911,7 +1911,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                                       if ($tmpdata['post_payment_success_msg_content'] != "") {
                                                                                 $content = stripslashes($tmpdata['post_payment_success_msg_content']);
                                                                       } else {
-                                                                                $content = '<h4>' . __("Your payment has been successfully received. The submitted content is now published.", ADMINDOMAIN) . '</h4><p><a href="[#submited_information_link#]" >' . __("View your submitted information", ADMINDOMAIN) . '</a></p><h5>' . __("Thank you for participating at", ADMINDOMAIN) . ' [#site_name#].</h5>';
+                                                                                $content = '<h4>' . __("Your payment has been successfully received. The submitted content is now published.", 'templatic-admin') . '</h4><p><a href="[#submited_information_link#]" >' . __("View your submitted information", 'templatic-admin') . '</a></p><h5>' . __("Thank you for participating at", 'templatic-admin') . ' [#site_name#].</h5>';
                                                                       }
                                                                       wp_editor($content, 'post_payment_success_msg_content', $settings);
                                                                       ?>
@@ -1921,8 +1921,8 @@ function tmpl_custom_setup_tabs_fn() {
                                                                  <td colspan="2">
                                                                       <div class="buttons">
                                                                            <div class="inline_update">
-                                                                                <a class="button-primary save  quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", ADMINDOMAIN); ?></a>
-                                                                                <a class="button-secondary cancel " href="javascript:void(0);" onclick="open_quick_edit('edit-payment-successful', 'payment-successful')" accesskey="c"><?php echo __("Cancel", ADMINDOMAIN); ?></a>
+                                                                                <a class="button-primary save  quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic-admin'); ?></a>
+                                                                                <a class="button-secondary cancel " href="javascript:void(0);" onclick="open_quick_edit('edit-payment-successful', 'payment-successful')" accesskey="c"><?php echo __("Cancel", 'templatic-admin'); ?></a>
                                                                                 <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                            </div>
                                                                       </div>	
@@ -1932,22 +1932,22 @@ function tmpl_custom_setup_tabs_fn() {
                                                   </td>
                                              </tr>
                                              <tr class="payment-cancel alternate">
-                                                  <td><label class="form-textfield-label"><?php echo __('Payment cancelled message', ADMINDOMAIN); ?></label></td>
+                                                  <td><label class="form-textfield-label"><?php echo __('Payment cancelled message', 'templatic-admin'); ?></label></td>
 
-                                                  <td><a href="javascript:void(0);" onclick="open_quick_edit('payment-cancel', 'edit-payment-cancel')"><?php echo __("Quick Edit", ADMINDOMAIN); ?></a> 
+                                                  <td><a href="javascript:void(0);" onclick="open_quick_edit('payment-cancel', 'edit-payment-cancel')"><?php echo __("Quick Edit", 'templatic-admin'); ?></a> 
                                                        | 
-                                                       <a href="javascript:void(0);" onclick="reset_to_default('', 'post_payment_cancel_msg_content', 'payment-cancel');"><?php echo __("Reset", ADMINDOMAIN); ?></a>
+                                                       <a href="javascript:void(0);" onclick="reset_to_default('', 'post_payment_cancel_msg_content', 'payment-cancel');"><?php echo __("Reset", 'templatic-admin'); ?></a>
                                                        <span class="spinner" style="margin:0 18px 0;"></span>
-                                                       <span class="qucik_reset"><?php echo __("Data reset", ADMINDOMAIN); ?></span>
+                                                       <span class="qucik_reset"><?php echo __("Data reset", 'templatic-admin'); ?></span>
                                                   </td>
                                              </tr>
                                              <tr class="edit-payment-cancel alternate" style="display:none">
                                                   <td width="100%" colspan="2">
-                                                       <h4 class="edit-sub-title"><?php echo __("Quick Edit", ADMINDOMAIN); ?></h4>
+                                                       <h4 class="edit-sub-title"><?php echo __("Quick Edit", 'templatic-admin'); ?></h4>
                                                        <table width="98%" align="left" class="tab-sub-table">
                                                             <tr>
                                                                  <td style="line-height:10px">
-                                                                      <label class="form-textfield-label sub-title"><?php echo __('Message', ADMINDOMAIN); ?></label>
+                                                                      <label class="form-textfield-label sub-title"><?php echo __('Message', 'templatic-admin'); ?></label>
                                                                  </td>
                                                                  <td width="90%" style="line-height:10px">
                                                                       <?php
@@ -1977,8 +1977,8 @@ function tmpl_custom_setup_tabs_fn() {
                                                                  <td colspan="2">
                                                                       <div class="buttons">
                                                                            <div class="inline_update">
-                                                                                <a class="button-primary save  quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", ADMINDOMAIN); ?></a>
-                                                                                <a class="button-secondary cancel" href="javascript:void(0);" onclick="open_quick_edit('edit-payment-cancel', 'payment-cancel')" accesskey="c"><?php echo __("Cancel", ADMINDOMAIN); ?></a>
+                                                                                <a class="button-primary save  quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic-admin'); ?></a>
+                                                                                <a class="button-secondary cancel" href="javascript:void(0);" onclick="open_quick_edit('edit-payment-cancel', 'payment-cancel')" accesskey="c"><?php echo __("Cancel", 'templatic-admin'); ?></a>
                                                                                 <span class="save_error" style="display:none"></span><span class="spinner"></span>
                                                                            </div>
                                                                       </div>	
@@ -1988,22 +1988,22 @@ function tmpl_custom_setup_tabs_fn() {
                                                   </td>
                                              </tr>
                                              <tr class="prebank-transfer">
-                                                  <td><label class="form-textfield-label"><?php echo __('PreBank transfer success message', ADMINDOMAIN); ?></label></td>
+                                                  <td><label class="form-textfield-label"><?php echo __('PreBank transfer success message', 'templatic-admin'); ?></label></td>
 
-                                                  <td><a href="javascript:void(0);" onclick="open_quick_edit('prebank-transfer', 'edit-prebank-transfer')"><?php echo __("Quick Edit", ADMINDOMAIN); ?></a> 
+                                                  <td><a href="javascript:void(0);" onclick="open_quick_edit('prebank-transfer', 'edit-prebank-transfer')"><?php echo __("Quick Edit", 'templatic-admin'); ?></a> 
                                                        | 
-                                                       <a href="javascript:void(0);" onclick="reset_to_default('', 'post_pre_bank_trasfer_msg_content', 'prebank-transfer');"><?php echo __("Reset", ADMINDOMAIN); ?></a>
+                                                       <a href="javascript:void(0);" onclick="reset_to_default('', 'post_pre_bank_trasfer_msg_content', 'prebank-transfer');"><?php echo __("Reset", 'templatic-admin'); ?></a>
                                                        <span class="spinner" style="margin:0 18px 0;"></span>
-                                                       <span class="qucik_reset"><?php echo __("Data reset", ADMINDOMAIN); ?></span>
+                                                       <span class="qucik_reset"><?php echo __("Data reset", 'templatic-admin'); ?></span>
                                                   </td>
                                              </tr>
                                              <tr class="edit-prebank-transfer" style="display:none">
                                                   <td width="100%" colspan="2">
-                                                       <h4 class="edit-sub-title"><?php echo __("Quick Edit", ADMINDOMAIN); ?></h4>
+                                                       <h4 class="edit-sub-title"><?php echo __("Quick Edit", 'templatic-admin'); ?></h4>
                                                        <table width="98%" align="left" class="tab-sub-table">
                                                             <tr>
                                                                  <td style="line-height:10px">
-                                                                      <label class="form-textfield-label sub-title"><?php echo __("Message", ADMINDOMAIN); ?></label>
+                                                                      <label class="form-textfield-label sub-title"><?php echo __("Message", 'templatic-admin'); ?></label>
                                                                  </td>
                                                                  <td width="90%" style="line-height:10px">
                                                                       <?php
@@ -2023,7 +2023,7 @@ function tmpl_custom_setup_tabs_fn() {
                                                                       if ($tmpdata['post_pre_bank_trasfer_msg_content'] != "") {
                                                                                 $content = stripslashes($tmpdata['post_pre_bank_trasfer_msg_content']);
                                                                       } else {
-                                                                                $content = '<p>' . __("To complete the transaction please transfer ", ADMINDOMAIN) . ' <b>[#payable_amt#] </b> ' . __("to our bank account on the details below.", ADMINDOMAIN) . '</p><p>' . __("Bank Name:", ADMINDOMAIN) . ' <b>[#bank_name#]</b></p><p>' . __("Account Number:", ADMINDOMAIN) . ' <b>[#account_number#]</b></p><p>' . __("Please include the following number as the reference", ADMINDOMAIN) . '[#submition_Id#]</p><p>[#submited_information_link#] </p><p>' . __("Thank you!", ADMINDOMAIN) . '<br/>[#site_name#]</p>';
+                                                                                $content = '<p>' . __("To complete the transaction please transfer ", 'templatic-admin') . ' <b>[#payable_amt#] </b> ' . __("to our bank account on the details below.", 'templatic-admin') . '</p><p>' . __("Bank Name:", 'templatic-admin') . ' <b>[#bank_name#]</b></p><p>' . __("Account Number:", 'templatic-admin') . ' <b>[#account_number#]</b></p><p>' . __("Please include the following number as the reference", 'templatic-admin') . '[#submition_Id#]</p><p>[#submited_information_link#] </p><p>' . __("Thank you!", 'templatic-admin') . '<br/>[#site_name#]</p>';
                                                                       }
                                                                       wp_editor($content, 'post_pre_bank_trasfer_msg_content', $settings);
                                                                       ?>
@@ -2033,8 +2033,8 @@ function tmpl_custom_setup_tabs_fn() {
                                                                  <td colspan="2">
                                                                       <div class="buttons">
                                                                            <div class="inline_update">
-                                                                                <a class="button-primary save quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", ADMINDOMAIN); ?></a>
-                                                                                <a class="button-secondary cancel " href="javascript:void(0);" onclick="open_quick_edit('edit-prebank-transfer', 'prebank-transfer')" accesskey="c"><?php echo __('Cancel', ADMINDOMAIN); ?></a>
+                                                                                <a class="button-primary save quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes", 'templatic-admin'); ?></a>
+                                                                                <a class="button-secondary cancel " href="javascript:void(0);" onclick="open_quick_edit('edit-prebank-transfer', 'prebank-transfer')" accesskey="c"><?php echo __('Cancel', 'templatic-admin'); ?></a>
                                                                                 <span class="save_error" style="display:none"></span>
                                                                                 <span class="spinner"></span>
                                                                            </div>

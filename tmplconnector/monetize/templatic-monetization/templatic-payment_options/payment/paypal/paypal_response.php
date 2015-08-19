@@ -2,7 +2,7 @@
 /*
  * send response to paypal as from submit form
  */
-global $trans_id;
+global $trans_id,$wpdb;
 define('PAYPAL_MSG',__('Processing for PayPal, Please wait ....',DOMAIN));
 $paymentOpts = templatic_get_payment_options($_REQUEST['paymentmethod']);
 /* get all settings in pay pal */
@@ -64,6 +64,15 @@ if($_REQUEST['page'] == 'upgradenow' || $_REQUEST['post_viewer_package']){
 else{
 	$price_package_id=get_post_meta($last_postid,'package_select',true);
 }
+
+/* if subscription package is done then show package name in paypal's item name */
+if($post_title == 'Username'){
+	/* get transaction details for getting package id */
+	$trans_detail = $wpdb->get_row("SELECT * FROM ".$wpdb->prefix."transactions WHERE trans_id =".$trans_id);
+	/* get package name from package id */
+	$post_title = get_the_title( $trans_detail->package_id );
+}
+
 
 $package_amount=get_post_meta($price_package_id,'package_amount',true);
 $validity=get_post_meta($price_package_id,'validity',true);

@@ -34,7 +34,7 @@ if(isset($_POST['action']) && $_POST['action']=='user_profile')
 		update_user_meta($user_id, 'description', trim($description));	
 		$user_name=(get_user_meta($user_id,'first_name',true))? get_user_meta($user_id,'first_name',true): $userName;
 		
-		echo '<p class="success_msg"> '.__('Hi ',DOMAIN).' <a href="'.get_author_posts_url($user_id).'">'.$user_name.'</a>, '.__('Your profile is updated successfully.',DOMAIN).' </p>';
+		echo '<p class="success_msg"> '.__('Hi ','templatic').' <a href="'.get_author_posts_url($user_id).'">'.$user_name.'</a>, '.__('Your profile is updated successfully.','templatic').' </p>';
 		
 	}
 }
@@ -46,13 +46,13 @@ if(isset($_POST['action']) && $_POST['action']=='changepwd')
 		$user_data=array('ID'=>$user_id, 'user_pass'   => $_POST['new_passwd'],);
 		wp_update_user($user_data) ;
 		
-		echo '<p class="success_msg"> '.__('Password changed successfully. Please login with your new password.',DOMAIN).' </p>';
+		echo '<p class="success_msg"> '.__('Password changed successfully. Please login with your new password.','templatic').' </p>';
 		$_SESSION['update_password']='1';		
 		wp_logout(); 
 		wp_redirect(get_tevolution_login_permalink());
 		
 	}else{
-		echo '<p class="error_msg"> '.__(PW_NO_MATCH_MSG,DOMAIN).' </p>';
+		echo '<p class="error_msg"> '.__(PW_NO_MATCH_MSG,'templatic').' </p>';
 	}
 }
 global $submit_form_validation_id;
@@ -84,8 +84,8 @@ remove_filter( 'the_content', 'wpautop' , 12);
           
           <?php do_action('templ_profile_form_end');?>
           
-          <input type="submit" name="update" value="<?php _e("Update",DOMAIN);?>" class="b_registernow btn_update_profile update-btn" />               
-          <input type="button" name="Cancel" value="<?php _e("Cancel",DOMAIN); ?>" class="b_registernow cancel-btn" onclick="window.location.href='<?php echo get_author_posts_url($current_user->ID);?>'"/>          
+          <input type="submit" name="update" value="<?php _e("Update",'templatic');?>" class="b_registernow btn_update_profile update-btn" />               
+          <input type="button" name="Cancel" value="<?php _e("Cancel",'templatic'); ?>" class="b_registernow cancel-btn" onclick="window.location.href='<?php echo get_author_posts_url($current_user->ID);?>'"/>          
      </form>
      <!--end user profile form -->
    	<!--Change password form -->
@@ -93,19 +93,19 @@ remove_filter( 'the_content', 'wpautop' , 12);
           <input type="hidden" name="action"  value="changepwd"/>
           <input type="hidden" name="user_id" value="<?php echo get_current_user_id();?>" />
           <?php if(isset($message1)) { ?>
-               <div class="sucess_msg"> <?php _e('Password changed successfully. Please login with your new password.',DOMAIN); ?> </div>          
+               <div class="sucess_msg"> <?php _e('Password changed successfully. Please login with your new password.','templatic'); ?> </div>          
           <?php } ?>
-          <h3> <?php echo __(CHANGE_PW_TEXT,DOMAIN); ?> </h3>
+          <h3> <?php echo __(CHANGE_PW_TEXT,'templatic'); ?> </h3>
           <div class="form_row clearfix">
-               <label><?php _e('New Password',DOMAIN); ?> <span class="indicates">*</span></label>   
+               <label><?php _e('New Password','templatic'); ?> <span class="indicates">*</span></label>   
                <input type="password" name="new_passwd" id="new_passwd"  class="textfield" />
           </div>
           <div class="form_row clearfix ">
-               <label><?php _e('Confirm New Password',DOMAIN); ?> <span class="indicates">*</span></label>
+               <label><?php _e('Confirm New Password','templatic'); ?> <span class="indicates">*</span></label>
                <input type="password" name="cnew_passwd" id="cnew_passwd"  class="textfield" />
           </div>
-          <input type="submit" name="update" value="<?php _e("Update",DOMAIN);?>" class="b_registernow btn_update_profile update-btn" onclick="return chk_form_pw();" />          
-          <input type="button" name="Cancel" value="<?php _e("Cancel",DOMAIN); ?>" class="b_registernow cancel-btn" onclick="window.location.href='<?php echo get_author_posts_url($current_user->ID);?>'"/>
+          <input type="submit" name="update" value="<?php _e("Update",'templatic');?>" class="b_registernow btn_update_profile update-btn" onclick="return chk_form_pw();" />          
+          <input type="button" name="Cancel" value="<?php _e("Cancel",'templatic'); ?>" class="b_registernow cancel-btn" onclick="window.location.href='<?php echo get_author_posts_url($current_user->ID);?>'"/>
      </form>
      <!-- end change password form -->
 </div>   
@@ -115,31 +115,31 @@ remove_filter( 'the_content', 'wpautop' , 12);
      {
           if(document.getElementById('new_passwd').value == '')
           {
-               alert("<?php _e('Please enter New Password',DOMAIN) ?>");
+               alert("<?php _e('Please enter New Password','templatic') ?>");
                document.getElementById('new_passwd').focus();
                return false;
           }
           if(document.getElementById('new_passwd').value.length < 4 )
           {
-               alert("<?php _e('Please enter New Password minimum 5 chars',DOMAIN) ?>");
+               alert("<?php _e('Please enter New Password minimum 5 chars','templatic') ?>");
                document.getElementById('new_passwd').focus();
                return false;
           }
           if(document.getElementById('cnew_passwd').value == '')
           {
-               alert("<?php _e('Please enter Confirm New Password',DOMAIN) ?>");
+               alert("<?php _e('Please enter Confirm New Password','templatic') ?>");
                document.getElementById('cnew_passwd').focus();
                return false;
           }
           if(document.getElementById('cnew_passwd').value.length < 4 )
           {
-               alert("<?php _e('Please enter Confirm New Password minimum 5 chars',DOMAIN) ?>");
+               alert("<?php _e('Please enter Confirm New Password minimum 5 chars','templatic') ?>");
                document.getElementById('cnew_passwd').focus();
                return false;
           }
           if(document.getElementById('new_passwd').value != document.getElementById('cnew_passwd').value)
           {
-               alert("<?php _e('New Password and Confirm New Password should be same',DOMAIN) ?>");
+               alert("<?php _e('New Password and Confirm New Password should be same','templatic') ?>");
                document.getElementById('cnew_passwd').focus();
                return false;
           }

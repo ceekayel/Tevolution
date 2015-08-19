@@ -4,7 +4,8 @@ if(isset($_POST["settings-submit"]) && $_POST["settings-submit"] == 'Y' )
 	templatic_save_settings();
 	$url_parameters = isset($_GET['tab'])? 'updated=true&tab='.$_GET['tab'] : 'updated=true';
 	$sub_url_parameters = isset($_GET['sub_tab'])? '&sub_tab='.$_GET['sub_tab'] : '';
-	echo "<script>location.href='".admin_url('admin.php?page=templatic_settings&'.$url_parameters.$sub_url_parameters.'')."'</script>";
+	$map_url_parameters = isset($_GET['map_tab'])? '&map_tab='.$_GET['map_tab'] : '';
+	echo "<script>location.href='".admin_url('admin.php?page=templatic_settings&'.$url_parameters.$sub_url_parameters.$map_url_parameters.'')."'</script>";
 
 }
 
@@ -101,7 +102,7 @@ function templatic_save_settings() {
 add_filter('templatic_general_settings_tab', 'general_setting',10); 
 function general_setting($tabs ) {
 	
-	$tabs['general']=__('General Settings',DOMAIN);
+	$tabs['general']=__('General Settings','templatic');
 	return $tabs;
 }
 
@@ -120,42 +121,42 @@ function email_setting_data($column)
 			<thead>
 				<tr>
 					<th class="first-th">
-						<label for="email_type" class="form-textfield-label"><?php echo __('Email Templates',ADMINDOMAIN); ?></label>
+						<label for="email_type" class="form-textfield-label"><?php echo __('Email Templates','templatic-admin'); ?></label>
 					</th>
 					
 					<th class="last-th">
-						<label for="email_desc" class="form-textfield-label"><?php echo __('Actions',ADMINDOMAIN); ?></label>
+						<label for="email_desc" class="form-textfield-label"><?php echo __('Actions','templatic-admin'); ?></label>
 					</th>
 				</tr>
 				</thead>
 				<tr class="email-to-friend alternate">
 					<td>
-					<label class="form-textfield-label"><?php echo __('Send to friend',ADMINDOMAIN); ?></label>
+					<label class="form-textfield-label"><?php echo __('Send to friend','templatic-admin'); ?></label>
 					</td>
 					
 					<td>
-					<a href="javascript:void(0);" title="email-to-friend,edit-email-to-friend" onclick="open_quick_edit('email-to-friend','edit-email-to-friend')"><?php echo __("Quick Edit",ADMINDOMAIN);?></a> 
+					<a href="javascript:void(0);" title="email-to-friend,edit-email-to-friend" onclick="open_quick_edit('email-to-friend','edit-email-to-friend')"><?php echo __("Quick Edit",'templatic-admin');?></a> 
 					| 
-					<a href="javascript:void(0);" onclick="reset_to_default('mail_friend_sub','mail_friend_description','email-to-friend');"><?php echo __("Reset",ADMINDOMAIN);?></a>
+					<a href="javascript:void(0);" onclick="reset_to_default('mail_friend_sub','mail_friend_description','email-to-friend');"><?php echo __("Reset",'templatic-admin');?></a>
 					<span class="spinner" style="margin:2px 18px 0;"></span>
-					<span class="qucik_reset"><?php echo __("Data reset",ADMINDOMAIN);?></span>
+					<span class="qucik_reset"><?php echo __("Data reset",'templatic-admin');?></span>
 					</td>
 				</tr>
 				<tr class="edit-email-to-friend alternate" style="display:none">
 					<td width="100%" colspan="2">
-						<h4 class="edit-sub-title"><?php echo __("Quick Edit",ADMINDOMAIN);?></h4>
+						<h4 class="edit-sub-title"><?php echo __("Quick Edit",'templatic-admin');?></h4>
 						<table width="98%" align="left" class="tab-sub-table">
 							<tr>
 								<td style="line-height:10px">
-									<label class="form-textfield-label sub-title"><?php echo __('Subject',ADMINDOMAIN); ?></label>
+									<label class="form-textfield-label sub-title"><?php echo __('Subject','templatic-admin'); ?></label>
 								</td>
 								<td width="90%" style="line-height:10px">
-									<input type="text" name="mail_friend_sub" id="mail_friend_sub" value="<?php if(isset($tmpdata['mail_friend_sub'])){echo stripslashes($tmpdata['mail_friend_sub']);}else{ echo __('Check out this post',ADMINDOMAIN);} ?>"/>
+									<input type="text" name="mail_friend_sub" id="mail_friend_sub" value="<?php if(isset($tmpdata['mail_friend_sub'])){echo stripslashes($tmpdata['mail_friend_sub']);}else{ echo __('Check out this post','templatic-admin');} ?>"/>
 								</td>
 							</tr>
 							<tr>
 								<td style="line-height:10px">
-									<label class="form-textfield-label sub-title"><?php echo __('Message',ADMINDOMAIN); ?></label>
+									<label class="form-textfield-label sub-title"><?php echo __('Message','templatic-admin'); ?></label>
 								</td>
 								<td width="90%" style="line-height:10px">
 									<?php
@@ -186,8 +187,8 @@ function email_setting_data($column)
 								<td colspan="2">
 									<div class="buttons">
 										<div class="inline_update">
-										<a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes",ADMINDOMAIN);?></a>
-										<a class="button-secondary alignright cancel " href="javascript:void(0);" onclick="open_quick_edit('edit-email-to-friend','email-to-friend')" accesskey="c"><?php echo __('Cancel',ADMINDOMAIN);?></a>
+										<a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes",'templatic-admin');?></a>
+										<a class="button-secondary alignright cancel " href="javascript:void(0);" onclick="open_quick_edit('edit-email-to-friend','email-to-friend')" accesskey="c"><?php echo __('Cancel','templatic-admin');?></a>
 										<span class="save_error" style="display:none"></span><span class="spinner"></span>
 										</div>
 									</div>	
@@ -197,23 +198,23 @@ function email_setting_data($column)
 					</td>
 				</tr>
 				<tr class="inquiry-email">
-					<td><label class="form-textfield-label"><?php echo __('Inquiry email',ADMINDOMAIN); ?></label></td>
+					<td><label class="form-textfield-label"><?php echo __('Inquiry email','templatic-admin'); ?></label></td>
 					
 					<td>
-						<a href="javascript:void(0);" onclick="open_quick_edit('inquiry-email','edit-inquiry-email')"><?php echo __("Quick Edit",ADMINDOMAIN);?></a>
+						<a href="javascript:void(0);" onclick="open_quick_edit('inquiry-email','edit-inquiry-email')"><?php echo __("Quick Edit",'templatic-admin');?></a>
 						|
-						<a href="javascript:void(0);" onclick="reset_to_default('send_inquirey_email_sub','send_inquirey_email_description','inquiry-email');"><?php echo __("Reset",ADMINDOMAIN);?></a>
+						<a href="javascript:void(0);" onclick="reset_to_default('send_inquirey_email_sub','send_inquirey_email_description','inquiry-email');"><?php echo __("Reset",'templatic-admin');?></a>
 						<span class="spinner" style="margin:2px 18px 0;"></span>
-						<span class="qucik_reset"><?php echo __("Data reset",ADMINDOMAIN);?></span>
+						<span class="qucik_reset"><?php echo __("Data reset",'templatic-admin');?></span>
 					</td>
 				</tr>
 				<tr class="edit-inquiry-email" style="display:none">
 					<td width="100%" colspan="3">
-						<h4 class="edit-sub-title"><?php echo __("Quick Edit",ADMINDOMAIN);?></h4>
+						<h4 class="edit-sub-title"><?php echo __("Quick Edit",'templatic-admin');?></h4>
 						<table width="98%" align="left" class="tab-sub-table">
 							<tr>
 								<td style="line-height:10px">
-									<label class="form-textfield-label sub-title"><?php echo __('Subject',ADMINDOMAIN); ?></label>
+									<label class="form-textfield-label sub-title"><?php echo __('Subject','templatic-admin'); ?></label>
 								</td>
 								<td width="90%" style="line-height:10px">
 									<input type="text" name="send_inquirey_email_sub" id="send_inquirey_email_sub" value="<?php if(isset($tmpdata['send_inquirey_email_sub'])){echo stripslashes($tmpdata['send_inquirey_email_sub']);}else{echo 'Inquiry email';} ?>"/>
@@ -221,7 +222,7 @@ function email_setting_data($column)
 							</tr>
 							<tr>
 								<td style="line-height:10px">
-									<label class="form-textfield-label sub-title"><?php echo __('Message',ADMINDOMAIN); ?></label>
+									<label class="form-textfield-label sub-title"><?php echo __('Message','templatic-admin'); ?></label>
 								</td>
 								<td width="90%" style="line-height:10px">
 									<?php
@@ -241,7 +242,7 @@ function email_setting_data($column)
 									if($tmpdata['send_inquirey_email_description'] != ""){
 										$content = stripslashes($tmpdata['send_inquirey_email_description']);
 									}else{
-										$content = '<p>Hello [#to_name#],</p><p>'.__('This is an inquiry regarding the following post',DOMAIN).': <b>[#post_title#]</b></p><p><b>'.__('Subject',DOMAIN).': [#frnd_subject#]</b></p><p>'.__('Link',DOMAIN).' : <b>[#post_title#]</b> </p><p>'.__('Contact number',DOMAIN).' : [#contact#]</p><p>[#frnd_comments#]</p><p>'.__('Thank you',DOMAIN).',<br />[#your_name#]</p>';
+										$content = '<p>Hello [#to_name#],</p><p>'.__('This is an inquiry regarding the following post','templatic').': <b>[#post_title#]</b></p><p><b>'.__('Subject','templatic').': [#frnd_subject#]</b></p><p>'.__('Link','templatic').' : <b>[#post_title#]</b> </p><p>'.__('Contact number','templatic').' : [#contact#]</p><p>[#frnd_comments#]</p><p>'.__('Thank you','templatic').',<br />[#your_name#]</p>';
 									}
 									wp_editor( $content, 'send_inquirey_email_description', $settings);
 								?>
@@ -250,8 +251,8 @@ function email_setting_data($column)
 							<tr>
 								<td colspan="2">
 									<div class="buttons">
-									<div class="inline_update"><a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes",ADMINDOMAIN);?></a></div>
-										<div><a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-inquiry-email','inquiry-email')" accesskey="c"><?php echo __('Cancel',ADMINDOMAIN);?></a>
+									<div class="inline_update"><a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes",'templatic-admin');?></a></div>
+										<div><a class="button-secondary cancel alignright" href="javascript:void(0);" onclick="open_quick_edit('edit-inquiry-email','inquiry-email')" accesskey="c"><?php echo __('Cancel','templatic-admin');?></a>
 										<span class="save_error" style="display:none"></span><span class="spinner"></span>
 										</div>
 										
@@ -273,7 +274,7 @@ function email_setting_data($column)
 echo '<div class="wrap"><div id="icon-options-general" class="icon32"><br></div>'; 
 
 ?>
-<h2><?php echo __('Tevolution Settings',ADMINDOMAIN);?></h2>
+<h2><?php echo __('Tevolution Settings','templatic-admin');?></h2>
 <h2 class="nav-tab-wrapper">
 <?php
 $i=0;
@@ -291,11 +292,13 @@ echo '</h2>';
 
 
 /* Display the message */
-if(isset($_REQUEST['updated']) && $_REQUEST['updated'] == 'true' ): ?>
+do_action('action_before_success_message');
+if((isset($_REQUEST['updated']) && $_REQUEST['updated'] == 'true') && (!isset($_REQUEST['map_tab'])) ): ?>
 	<div class="act_success updated" id="message">
-		<p><?php echo __("<strong>Record updated successfully</strong>",ADMINDOMAIN); ?> .</p>
+		<p><?php echo __("<strong>Record updated successfully</strong>",'templatic-admin'); ?> .</p>
 	</div>
-<?php endif; ?>
+<?php endif; 
+do_action('action_after_success_message');?>
 <!--Finish the display message-->
 
 <div class="templatic_settings">
@@ -304,8 +307,8 @@ if(isset($_REQUEST['updated']) && $_REQUEST['updated'] == 'true' ): ?>
 	if(isset($_REQUEST['tab']) && $_REQUEST['tab'] =='email' ){
 		$frm_id = "email_setting_form";  ?>
 		<p class="tevolution_desc">
-			<?php echo __('Use this section to manage outgoing emails and content messages generated by Tevolution. The outgoing ("From") email address can be changed from WordPress ',ADMINDOMAIN);?>
-			<a href="<?php echo admin_url('options-general.php');?>"><?php echo __("General Settings",ADMINDOMAIN);?></a>
+			<?php echo __('Use this section to manage outgoing emails and content messages generated by Tevolution. The outgoing ("From") email address can be changed from WordPress ','templatic-admin');?>
+			<a href="<?php echo admin_url('options-general.php');?>"><?php echo __("General Settings",'templatic-admin');?></a>
 		</p>
 	<?php
 	}else{
@@ -320,8 +323,8 @@ if(isset($_REQUEST['updated']) && $_REQUEST['updated'] == 'true' ): ?>
 		?>
 		<div class="wp-filter tev-sub-menu" >
 			<ul id="tev_email_settings" class="filter-links">
-				<li class="active"><a id="email_settings" href="javascript:void(0);" class="current"><?php echo __('Emails',ADMINDOMAIN); ?></a></li>
-				<li><a id="notifications_settings" href="javascript:void(0);"><?php echo __('Notifications',ADMINDOMAIN); ?></a></li>
+				<li class="active"><a id="email_settings" href="javascript:void(0);" class="current"><?php echo __('Emails','templatic-admin'); ?></a></li>
+				<li><a id="notifications_settings" href="javascript:void(0);"><?php echo __('Notifications','templatic-admin'); ?></a></li>
 			</ul>
 		</div>
 		<!-- Email settings start -->
@@ -333,21 +336,21 @@ if(isset($_REQUEST['updated']) && $_REQUEST['updated'] == 'true' ): ?>
 			
 			<table>						
 				<tr>
-					<th><label><?php echo __('Outgoing Emails Method',ADMINDOMAIN);?></label></th>
+					<th><label><?php echo __('Outgoing Emails Method','templatic-admin');?></label></th>
 					<td>
-						<div class="input_wrap"> <label for="php_mail"><input type="radio" id="php_mail" name="php_mail" value="php_mail" <?php if(isset($tmpdata['php_mail']) && $tmpdata['php_mail'] == 'php_mail'){?>checked="checked"<?php }?> />&nbsp;<?php echo __('PHP - mail()',ADMINDOMAIN);?></label>&nbsp;&nbsp;&nbsp;&nbsp;
-						<label for="wp_smtp"><input type="radio" id="wp_smtp" name="php_mail" <?php if(isset($tmpdata['php_mail']) && $tmpdata['php_mail'] == 'wp_smtp'){?> checked="checked"<?php }?> value="wp_smtp" />&nbsp;<?php echo __('WordPress - wp_mail()',ADMINDOMAIN);?>
+						<div class="input_wrap"> <label for="php_mail"><input type="radio" id="php_mail" name="php_mail" value="php_mail" <?php if(isset($tmpdata['php_mail']) && $tmpdata['php_mail'] == 'php_mail'){?>checked="checked"<?php }?> />&nbsp;<?php echo __('PHP - mail()','templatic-admin');?></label>&nbsp;&nbsp;&nbsp;&nbsp;
+						<label for="wp_smtp"><input type="radio" id="wp_smtp" name="php_mail" <?php if(isset($tmpdata['php_mail']) && $tmpdata['php_mail'] == 'wp_smtp'){?> checked="checked"<?php }?> value="wp_smtp" />&nbsp;<?php echo __('WordPress - wp_mail()','templatic-admin');?>
 						</label></div>
-					   <p class="description"><?php echo __("Tevolution uses mail() by default. Change the setting to wp_mail() only if you're using a third-party plugin for modifying outgoing emails.",ADMINDOMAIN); ?></p>
+					   <p class="description"><?php echo __("Tevolution uses mail() by default. Change the setting to wp_mail() only if you're using a third-party plugin for modifying outgoing emails.",'templatic-admin'); ?></p>
 					</td>
 				</tr>
 			</table>
 
 			 <table >	
 				<tr>
-					<th><label><?php echo __('Detail Page Forms',ADMINDOMAIN);?></label></th>
+					<th><label><?php echo __('Detail Page Forms','templatic-admin');?></label></th>
 					<td>
-					<div class="input_wrap"> <label for="send_to_frnd"><input type="checkbox" id="send_to_frnd" name="send_to_frnd" value="send_to_frnd" <?php if(isset($tmpdata['send_to_frnd']) && $tmpdata['send_to_frnd'] == 'send_to_frnd'){?>checked="checked"<?php }?> />&nbsp;<?php echo __('Send to Friend',ADMINDOMAIN);?></label>&nbsp;&nbsp;&nbsp;&nbsp;<br/><label for="send_inquiry"><input type="checkbox" id="send_inquiry" name="send_inquiry" <?php if(isset($tmpdata['send_inquiry']) && $tmpdata['send_inquiry'] == 'send_inquiry'){?> checked="checked"<?php }?> value="send_inquiry" /><?php echo __('Send Inquiry',ADMINDOMAIN);?>
+					<div class="input_wrap"> <label for="send_to_frnd"><input type="checkbox" id="send_to_frnd" name="send_to_frnd" value="send_to_frnd" <?php if(isset($tmpdata['send_to_frnd']) && $tmpdata['send_to_frnd'] == 'send_to_frnd'){?>checked="checked"<?php }?> />&nbsp;<?php echo __('Send to Friend','templatic-admin');?></label>&nbsp;&nbsp;&nbsp;&nbsp;<br/><label for="send_inquiry"><input type="checkbox" id="send_inquiry" name="send_inquiry" <?php if(isset($tmpdata['send_inquiry']) && $tmpdata['send_inquiry'] == 'send_inquiry'){?> checked="checked"<?php }?> value="send_inquiry" /><?php echo __('Send Inquiry','templatic-admin');?>
 					</label>
 					</div>
 				</td>
@@ -356,7 +359,7 @@ if(isset($_REQUEST['updated']) && $_REQUEST['updated'] == 'true' ): ?>
                 <tr>
 				<td colspan="2">
 					<p style="clear: both;" class="submit">
-				  <input type="submit" value="<?php echo __('Save All Settings',ADMINDOMAIN);?>" class="button button-primary button-hero" name="Submit">
+				  <input type="submit" value="<?php echo __('Save All Settings','templatic-admin');?>" class="button button-primary button-hero" name="Submit">
 				  <input type="hidden" value="Y" name="settings-submit">
 				</p>
 				</td>

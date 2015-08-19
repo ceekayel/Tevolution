@@ -179,7 +179,7 @@ function detail_fields_colletion()
 							if($post->post_name!='post_excerpt' && $post->post_name!='post_content' && $post->post_name!='post_title' && $post->post_name!='post_images' && $post->post_name!='post_category')
 							{
 								if($_heading_type == "[#taxonomy_name#]"){
-									echo "<li><h2 class='custom_field_title'>";_e(ucfirst($PostTypeLabelName),DOMAIN);echo ' '; _e("Information",DOMAIN);echo "</h2></li>";
+									echo "<li><h2 class='custom_field_title'>";_e(ucfirst($PostTypeLabelName),'templatic');echo ' '; _e("Information",'templatic');echo "</h2></li>";
 								}else{
 									echo "<li><h2 class='custom_field_title'>".$_heading_type."</h2></li>";  
 								}	
@@ -219,7 +219,7 @@ function detail_fields_colletion()
 								 {
 									 if(get_post_meta($post->ID,'ctype',true) == 'upload')
 									 {
-									 	echo "<li class='".$style_class."'><p class='tevolution_field_title label'>".$post->post_title." : </p> <p class='tevolution_field_title'> ".__('Click here to download File',ADMINDOMAIN)." <a href=".get_post_meta($single_pos_id,$post->post_name,true).">".__('Download',ADMINDOMAIN)."</a></p></li>";
+									 	echo "<li class='".$style_class."'><p class='tevolution_field_title label'>".$post->post_title." : </p> <p class='tevolution_field_title'> ".__('Click here to download File','templatic-admin')." <a href=".get_post_meta($single_pos_id,$post->post_name,true).">".__('Download','templatic-admin')."</a></p></li>";
 									 }
 									 else
 									 {
@@ -236,7 +236,7 @@ function detail_fields_colletion()
                                         <div class="twelve columns">
                                              <div class="title_space">
                                                  <div class="title-container">
-                                                     <h1><?php _e('Post Excerpt',DOMAIN);?></h1>
+                                                     <h1><?php _e('Post Excerpt','templatic');?></h1>
                                                      <div class="clearfix"></div>
                                                  </div>
                                                  <?php echo $suc_post_excerpt;?>
@@ -305,13 +305,13 @@ function detail_fields_colletion()
 					$CustomFieldHeading = apply_filters('CustomFieldsHeadingTitle',POST_DETAIL);
 					
 					if(function_exists('icl_register_string')){
-						icl_register_string(DOMAIN,$CustomFieldHeading,$CustomFieldHeading);
+						icl_register_string('templatic',$CustomFieldHeading,$CustomFieldHeading);
 					}
 					
 					if(function_exists('icl_t')){
-						$CustomFieldHeading1 = icl_t(DOMAIN,$CustomFieldHeading,$CustomFieldHeading);
+						$CustomFieldHeading1 = icl_t('templatic',$CustomFieldHeading,$CustomFieldHeading);
 					}else{
-						$CustomFieldHeading1 = __($CustomFieldHeading,DOMAIN); 
+						$CustomFieldHeading1 = __($CustomFieldHeading,'templatic'); 
 					}
 					echo '<h3>'.$CustomFieldHeading1.'</h3>';
 				
@@ -380,7 +380,7 @@ function detail_fields_colletion()
                 <div class="twelve columns">
                      <div class="title_space">
                          <div class="title-container">
-                             <h1><?php _e('Post Description', DOMAIN);?></h1>
+                             <h1><?php _e('Post Description', 'templatic');?></h1>
                           </div>
                          <?php echo $suc_post_con;?>
                      </div>
@@ -398,9 +398,9 @@ function detail_fields_colletion()
 				<div class="row">
 					<div class="title_space">
 						<div class="title-container">
-							<h1><?php _e('Map',DOMAIN); ?></h1>
+							<h1><?php _e('Map','templatic'); ?></h1>
 						</div>
-						<p><strong><?php _e('Location',DOMAIN); echo ": ".$add_str;?></strong></p>
+						<p><strong><?php _e('Location','templatic'); echo ": ".$add_str;?></strong></p>
 					</div>
 					<div id="gmap" class="graybox img-pad">
 						<?php 						
@@ -485,17 +485,17 @@ function single_post_image_gallery()
                 <div class="title-container">
                     <h2>
 						<?php 
-							/*_e(MORE_PHOTOS.' '.$single_gallery_post_type,DOMAIN) */
-							$msg = __("More Photos of",DOMAIN).' '.$single_gallery_post_type;
+							/*_e(MORE_PHOTOS.' '.$single_gallery_post_type,'templatic') */
+							$msg = __("More Photos of",'templatic').' '.$single_gallery_post_type;
 							if(function_exists('icl_register_string')){
-								icl_register_string(DOMAIN,$msg,$msg);
+								icl_register_string('templatic',$msg,$msg);
 							}
 							if(function_exists('icl_t')){
-								$message1 = icl_t(DOMAIN,$msg,$msg);
+								$message1 = icl_t('templatic',$msg,$msg);
 							}else{
-								$message1 = __($msg,DOMAIN); 
+								$message1 = __($msg,'templatic'); 
 							}
-							echo __($message1,DOMAIN);
+							echo __($message1,'templatic');
 						?>
 					</h2>
                  </div>
@@ -599,15 +599,15 @@ function related_post_by_categories()
 	$posttype_obj = get_post_type_object($post->post_type);
 	$type_post = "";
 	if($postcount > 1 ){
-		$type_post = __("Entries",DOMAIN);
+		$type_post = __("Entries",'templatic');
 	}else{
-		$type_post = __("Entry",DOMAIN);
+		$type_post = __("Entry",'templatic');
 	}
 	$post_lable = ($posttype_obj->labels->menu_name) ? $posttype_obj->labels->menu_name : $type_post;
 	if( $my_query->have_posts() ) :
 	 ?>
      <div class="realated_post clearfix">  
-    	 <h3><span><?php _e("Related",DOMAIN); echo "&nbsp;".$post_lable;?></span></h3>
+    	 <h3><span><?php _e("Related",'templatic'); echo "&nbsp;".$post_lable;?></span></h3>
 		 <ul class="related_post_grid_view clearfix">
          <?php	   
 		  while ( $my_query->have_posts() ) : $my_query->the_post();		
@@ -666,7 +666,7 @@ function related_post_by_categories()
      <?php
 	wp_reset_query();
 	else:
-   		/*echo apply_filters('related_post_not_found',sprintf(__('No Related %s found.',DOMAIN),$post->post_type));   //uncomment if you want to show this message.*/
+   		/*echo apply_filters('related_post_not_found',sprintf(__('No Related %s found.','templatic'),$post->post_type));   //uncomment if you want to show this message.*/
 	endif;
 }
 /* EOF - related posts */
@@ -678,7 +678,7 @@ function the_breadcrumb() {
 	if (!is_home()) {
 		echo '<div class="breadcrumb"><a href="';
 		echo get_option('home');
-		echo '">'.__('Home',DOMAIN);
+		echo '">'.__('Home','templatic');
 		echo "</a>";
 		if (is_category() || is_single() || is_archive()) {
 			the_category('title_li=');
@@ -709,13 +709,13 @@ if(!strstr($_SERVER['REQUEST_URI'],'/wp-admin/') && (!isset($_REQUEST['slider_se
 */
 function single_post_pagination()
 {
-	global $post;	
+	global $post;
 	?>
-    <div class="pos_navigation clearfix">
-        <div class="post_left fl"><?php previous_post_link('%link','<i class="fa fa-angle-left"></i>  %title') ?></div>
-        <div class="post_right fr"><?php next_post_link('%link','%title <i class="fa fa-angle-right"></i>' ) ?></div>
-    </div>
-    <?php
+		<div class="pos_navigation clearfix">
+			<div class="post_left fl"><?php previous_post_link('%link','<i class="fa fa-angle-left"></i>  %title') ?></div>
+			<div class="post_right fr"><?php next_post_link('%link','%title <i class="fa fa-angle-right"></i>' ) ?></div>
+		</div>
+	<?php
 }
 
 /*
@@ -724,73 +724,74 @@ function single_post_pagination()
 add_action('templ_the_taxonomies','category_post_categories_tags'); 
 function category_post_categories_tags()
 {
-	/* global $post;		
-	the_taxonomies(array('before'=>'<p class="bottom_line"><span class="i_category">','sep'=>'</span>&nbsp;&nbsp;<span class="i_tag">','after'=>'</span></p>')); */
-	global $wp_query, $post,$htmlvar_name;
-	/* get all the custom fields which select as " Show field on listing page" from back end */	
-	
-	
-	$taxonomies = get_object_taxonomies( (object) array( 'post_type' => $post->post_type,'public'   => true, '_builtin' => true ));	
-	$terms = get_the_terms($post->ID, $taxonomies[0]);
-	$sep = ",";
-	$i = 0;
-	$taxonomy_category='';
-	if(!empty($terms)){
-		foreach($terms as $term)
+	if(get_post_type() != 'post'){	
+		/* global $post;		
+		the_taxonomies(array('before'=>'<p class="bottom_line"><span class="i_category">','sep'=>'</span>&nbsp;&nbsp;<span class="i_tag">','after'=>'</span></p>')); */
+		global $wp_query, $post,$htmlvar_name;
+		/* get all the custom fields which select as " Show field on listing page" from back end */	
+		
+		$taxonomies = get_object_taxonomies( (object) array( 'post_type' => $post->post_type,'public'   => true, '_builtin' => true ));	
+		$terms = get_the_terms($post->ID, $taxonomies[0]);
+		$sep = ",";
+		$i = 0;
+		$taxonomy_category='';
+		if(!empty($terms)){
+			foreach($terms as $term)
+			{
+				
+				if($i == ( count($terms) - 1))
+				{
+					$sep = '';
+				}
+				elseif($i == ( count($terms) - 2))
+				{
+					$sep = __(' and ','templatic');
+				}
+				$term_link = get_term_link( $term, $taxonomies[0] );
+				if( is_wp_error( $term_link ) )
+					continue;
+				$taxonomy_category .= '&nbsp;<a href="' . $term_link . '">' . $term->name . '</a>'.$sep; 
+				$i++;
+			}
+		}
+		if(!empty($terms) && (!empty($htmlvar_name['basic_inf']['category']) || !empty($htmlvar_name['category'])))
+		{
+			echo '<p class="bottom_line"><span class="i_category">';
+			echo apply_filters('tmpl_taxonomy_title'.get_post_type(),"<span>".__('Posted In','templatic'))."</span>"; echo " ".$taxonomy_category;
+			echo '</span></p>';
+		}
+		global $post;
+		$taxonomies = get_object_taxonomies( (object) array( 'post_type' => $post->post_type,'public'   => true, '_builtin' => true ));	
+		
+		$tag_terms = get_the_terms($post->ID, $taxonomies[1]);
+		$sep = ",";
+		$i = 0;
+		$taxonomy_tag ='';
+		if($tag_terms){
+		foreach($tag_terms as $term)
 		{
 			
-			if($i == ( count($terms) - 1))
+			if($i == ( count($tag_terms) - 1))
 			{
 				$sep = '';
 			}
-			elseif($i == ( count($terms) - 2))
+			elseif($i == ( count($tag_terms) - 2))
 			{
-				$sep = __(' and ',DOMAIN);
+				$sep = __(' and ','templatic');
 			}
-			$term_link = get_term_link( $term, $taxonomies[0] );
+			$term_link = get_term_link( $term, $taxonomies[1] );
 			if( is_wp_error( $term_link ) )
 				continue;
-			$taxonomy_category .= '&nbsp;<a href="' . $term_link . '">' . $term->name . '</a>'.$sep; 
+			$taxonomy_tag .= '<a href="' . $term_link . '">' . $term->name . '</a>'.$sep; 
 			$i++;
 		}
-	}
-	if(!empty($terms) && (!empty($htmlvar_name['basic_inf']['category']) || !empty($htmlvar_name['category'])))
-	{
-		echo '<p class="bottom_line"><span class="i_category">';
-		echo apply_filters('tmpl_taxonomy_title'.get_post_type(),"<span>".__('Posted In',DOMAIN))."</span>"; echo " ".$taxonomy_category;
-		echo '</span></p>';
-	}
-	global $post;
-	$taxonomies = get_object_taxonomies( (object) array( 'post_type' => $post->post_type,'public'   => true, '_builtin' => true ));	
-	
-	$tag_terms = get_the_terms($post->ID, $taxonomies[1]);
-	$sep = ",";
-	$i = 0;
-	$taxonomy_tag ='';
-	if($tag_terms){
-	foreach($tag_terms as $term)
-	{
-		
-		if($i == ( count($tag_terms) - 1))
-		{
-			$sep = '';
 		}
-		elseif($i == ( count($tag_terms) - 2))
+		if(!empty($tag_terms) && (!empty($htmlvar_name['basic_inf']['post_tags']) || !empty($htmlvar_name['post_tags'])))
 		{
-			$sep = __(' and ',DOMAIN);
+			echo '<p class="bottom_line"><span class="i_category">';
+			_e(apply_filters('tmpl_tags_title_'.get_post_type(),'Tagged In'),'templatic'); echo " ".$taxonomy_tag;
+			echo '</span></p>';
 		}
-		$term_link = get_term_link( $term, $taxonomies[1] );
-		if( is_wp_error( $term_link ) )
-			continue;
-		$taxonomy_tag .= '<a href="' . $term_link . '">' . $term->name . '</a>'.$sep; 
-		$i++;
-	}
-	}
-	if(!empty($tag_terms) && (!empty($htmlvar_name['basic_inf']['category']) || !empty($htmlvar_name['category'])))
-	{
-		echo '<p class="bottom_line"><span class="i_category">';
-		_e(apply_filters('tmpl_tags_title_'.get_post_type(),'Tagged In'),DOMAIN); echo " ".$taxonomy_tag;
-		echo '</span></p>';
 	}
 }
 
@@ -827,7 +828,7 @@ function single_post_categories_tags()
 	}
 	}
 	if(isset($taxonomy_category) && $taxonomy_category!=''){
-		_e('Tagged In',DOMAIN); echo " ".$taxonomy_category;
+		_e('Tagged In','templatic'); echo " ".$taxonomy_category;
 	}else{
 		echo " ";
 	}
@@ -844,11 +845,11 @@ function post_info()
 	$write_comments='';
 	if ( comments_open() ) {
 		if ( $num_comments == 0 ) {
-			$comments = __('No Comments',DOMAIN);
+			$comments = __('No Comments','templatic');
 		} elseif ( $num_comments > 1 ) {
-			$comments = $num_comments .' '. __('Comments',DOMAIN);
+			$comments = $num_comments .' '. __('Comments','templatic');
 		} else {
-			$comments = __('1 Comment',THEME_DOMAIN);
+			$comments = __('1 Comment','templatic');
 		}
 		$write_comments = '<a href="' . get_comments_link() .'">'. $comments.'</a>';
 	}
@@ -859,11 +860,11 @@ function post_info()
 		if ( !current_user_can( $post_type->cap->edit_post, get_the_ID() ) ){
 			$edit = '';
 		}else{
-			$edit = '<span class="post_edit"><a class="post-edit-link" href="' . esc_url( get_edit_post_link( get_the_ID() ) ) . '" title="' . sprintf( esc_attr__( 'Edit %1$s', THEME_DOMAIN ), $post_type->labels->singular_name ) . '">' . __( 'Edit', THEME_DOMAIN ) . '</a></span>';
+			$edit = '<span class="post_edit"><a class="post-edit-link" href="' . esc_url( get_edit_post_link( get_the_ID() ) ) . '" title="' . sprintf( esc_attr__( 'Edit %1$s', 'templatic' ), $post_type->labels->singular_name ) . '">' . __( 'Edit', 'templatic' ) . '</a></span>';
 		}	
-		$author = __('Published by',THEME_DOMAIN).' <span class="author vcard"><a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '" title="' . esc_attr( get_the_author_meta( 'display_name' ) ) . '">' . get_the_author_meta( 'display_name' ) . '</a></span>';
-		$published = __('On',THEME_DOMAIN).' <abbr class="published" title="' . sprintf( get_the_time( esc_attr__( get_option('date_format')) ) ) . '">' . sprintf( get_the_time( esc_attr__( get_option('date_format')) ) ) . '</abbr>';
-	    echo sprintf(__('%s %s %s %s',THEME_DOMAIN),$author,$published,$write_comments,$edit);
+		$author = __('Published by','templatic').' <span class="author vcard"><a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '" title="' . esc_attr( get_the_author_meta( 'display_name' ) ) . '">' . get_the_author_meta( 'display_name' ) . '</a></span>';
+		$published = __('On','templatic').' <abbr class="published" title="' . sprintf( get_the_time( esc_attr__( get_option('date_format')) ) ) . '">' . sprintf( get_the_time( esc_attr__( get_option('date_format')) ) ) . '</abbr>';
+	    echo sprintf(__('%s %s %s %s','templatic'),$author,$published,$write_comments,$edit);
         ?>
     </div>
     <?php		
@@ -879,7 +880,7 @@ function tmpl_category_page_image()
 	global $post;		
 	if ( has_post_thumbnail()):
 		echo '<a href="'.get_permalink().'" class="event_img">';
-		if($featured){echo '<span class="featured_tag">'.__('Featured',EDOMAIN).'</span>';}
+		if($featured){echo '<span class="featured_tag">'.__('Featured111',EDOMAIN).'</span>';}
 		the_post_thumbnail('event-listing-image'); 
 		echo '</a>';
 	else:
@@ -952,10 +953,21 @@ function templ_featured_ordering(){
 	global $wp_query;
 	
 		add_filter('posts_orderby', 'feature_filter_order');
-	
+		add_filter('posts_where','tmpl_sort_by_character');
 		add_filter('pre_get_posts', 'home_page_feature_listing');
 		add_filter('posts_orderby', 'home_page_feature_listing_orderby');
 
+}
+
+/*
+ * search by alphabetical
+ */
+function tmpl_sort_by_character($where){
+	global $wpdb,$wp_query;	
+	if(isset($_REQUEST['sortby']) && $_REQUEST['sortby']!=''){
+		$where .= "  AND $wpdb->posts.post_title like '".$_REQUEST['sortby']."%'";
+	}
+	return $where;
 }
 
 /* featured posts filter for listing page */
@@ -975,7 +987,7 @@ function feature_filter_order($orderby)
 		}
 		elseif (isset($_REQUEST['tevolution_sortby']) && $_REQUEST['tevolution_sortby'] == 'date_asc' )
 		{
-			$orderby = "$wpdb->posts.post_date DESC,(select distinct $wpdb->postmeta.meta_value from $wpdb->postmeta where $wpdb->postmeta.post_id=$wpdb->posts.ID and $wpdb->postmeta.meta_key = 'featured_c' AND $wpdb->postmeta.meta_value = 'c') DESC";
+			$orderby = "$wpdb->posts.post_date ASC,(select distinct $wpdb->postmeta.meta_value from $wpdb->postmeta where $wpdb->postmeta.post_id=$wpdb->posts.ID and $wpdb->postmeta.meta_key = 'featured_c' AND $wpdb->postmeta.meta_value = 'c') DESC";
 		}
 		elseif (isset($_REQUEST['tevolution_sortby']) && $_REQUEST['tevolution_sortby'] == 'date_desc' )
 		{
@@ -990,9 +1002,8 @@ function feature_filter_order($orderby)
 		}elseif(isset($_REQUEST['tevolution_sortby']) && $_REQUEST['tevolution_sortby'] == 'rating' )
 		{
 
-			$orderby = " (select avg(rt.rating_rating) as rating_counter from $rating_table_name as rt where rt.comment_id in (select cm.comment_ID from $wpdb->comments cm where cm.comment_post_ID=$wpdb->posts.ID and cm.comment_approved=1)) desc, comment_count desc";
-		}
-		else
+			$orderby = " (select distinct $wpdb->postmeta.meta_value from $wpdb->postmeta where $wpdb->postmeta.post_id = $wpdb->posts.ID and $wpdb->postmeta.meta_key like \"average_rating\") DESC,(select distinct $wpdb->postmeta.meta_value from $wpdb->postmeta where $wpdb->postmeta.post_id=$wpdb->posts.ID and $wpdb->postmeta.meta_key = 'featured_c' AND $wpdb->postmeta.meta_value = 'c') DESC";
+		}else
 		{
 			$orderby = " (SELECT DISTINCT $wpdb->postmeta.meta_value from $wpdb->postmeta where ($wpdb->posts.ID = $wpdb->postmeta.post_id) AND $wpdb->postmeta.meta_key = 'featured_c' AND $wpdb->postmeta.meta_value = 'c') DESC,$wpdb->posts.post_date DESC";
 		}
@@ -1008,7 +1019,7 @@ function home_page_feature_listing( &$query)
 	else:
 		$post_type='';
 	endif;
-	if(is_home() || @is_front_page()){
+	if((is_home() || @is_front_page() || get_option('show_on_front') == 'posts') && !is_page()){
 		$tmpdata = get_option('templatic_settings');
 		$home_listing_type_value = @$tmpdata['home_listing_type_value'];
 		
@@ -1169,14 +1180,14 @@ function tmpl_archives_sorting_opt(){
 			<?php if(function_exists('tmpl_wp_is_mobile') && tmpl_wp_is_mobile()){ 
 				$templatic_settings['category_googlemap_widget']; if(isset($templatic_settings['category_googlemap_widget']) && $templatic_settings['category_googlemap_widget']=='yes'){
 				?>
-				<li><a class='switcher last listview  <?php if($templatic_settings['default_page_view']=="listview"){echo 'active';}?>' id='listview' href='#'><?php _e('LIST VIEW',DIR_DOMAIN);?></a></li>
-				<li><a class='map_icon <?php if($templatic_settings['default_page_view']=="mapview"){echo 'active';}?>' id='locations_map' href='#'><?php _e('MAP',DIR_DOMAIN);?></a></li>
+				<li><a class='switcher last listview  <?php if($templatic_settings['default_page_view']=="listview"){echo 'active';}?>' id='listview' href='#'><?php _e('LIST VIEW','templatic');?></a></li>
+				<li><a class='map_icon <?php if($templatic_settings['default_page_view']=="mapview"){echo 'active';}?>' id='locations_map' href='#'><?php _e('MAP','templatic');?></a></li>
 			<?php }	
 			}else{ ?>
-				<li><a class='switcher first gridview <?php if($templatic_settings['default_page_view']=="gridview"){echo 'active';}?>' id='gridview' href='#'><?php _e('GRID VIEW',DIR_DOMAIN);?></a></li>
-				<li><a class='switcher last listview  <?php if($templatic_settings['default_page_view']=="listview"){echo 'active';}?>' id='listview' href='#'><?php _e('LIST VIEW',DIR_DOMAIN);?></a></li>
+				<li><a class='switcher first gridview <?php if($templatic_settings['default_page_view']=="gridview"){echo 'active';}?>' id='gridview' href='#'><?php _e('GRID VIEW','templatic');?></a></li>
+				<li><a class='switcher last listview  <?php if($templatic_settings['default_page_view']=="listview"){echo 'active';}?>' id='listview' href='#'><?php _e('LIST VIEW','templatic');?></a></li>
 				<?php $templatic_settings['category_googlemap_widget']; if(isset($templatic_settings['category_googlemap_widget']) && $templatic_settings['category_googlemap_widget']=='yes'):?> 
-				<li><a class='map_icon <?php if($templatic_settings['default_page_view']=="mapview"){echo 'active';}?>' id='locations_map' href='#'><?php _e('MAP',DIR_DOMAIN);?></a></li>
+				<li><a class='map_icon <?php if($templatic_settings['default_page_view']=="mapview"){echo 'active';}?>' id='locations_map' href='#'><?php _e('MAP','templatic');?></a></li>
 				<?php endif;
 			}
 			?>
@@ -1194,7 +1205,7 @@ function tmpl_archives_sorting_opt(){
 		/* take "directory" as a post type if additional post type is detected */
 		$exclude_arr = apply_filters('exclude_sorting_posttypes',array('event','property','classified'));
 		if(!in_array(get_post_type(),$exclude_arr)){
-			$sort_post_type_name = 'directory';
+			$sort_post_type_name = 'tevolution';
 		}	
 		else{	
 			$sort_post_type_name = get_post_type();
@@ -1207,53 +1218,53 @@ function tmpl_archives_sorting_opt(){
 		<div class="tev_sorting_option">
 			<form action="<?php if(function_exists('tmpl_directory_full_url')){ echo tmpl_directory_full_url('directory'); } ?>" method="get" id="<?php echo $sort_post_type.'_sortby_frm'; ?>" name="<?php echo $sort_post_type.'_sortby_frm'; ?>">
                <select name="<?php echo $sort_post_type_name.'_sortby'; ?>" id="<?php echo $sort_post_type_name.'_sortby'; ?>" onchange="sort_as_set(this.value)" class="tev_options_sel">
-				<option <?php if(!$sel_sort_by){ echo $sel_class; } ?>><?php _e('Sort By',DOMAIN); ?></option>
+				<option <?php if(!$sel_sort_by){ echo $sel_class; } ?>><?php _e('Sort By','templatic'); ?></option>
 				<?php
 					do_action('tmpl_before_sortby_title_alphabetical');
 					if(!empty($templatic_settings['sorting_option']) && in_array('title_alphabetical',$templatic_settings['sorting_option'])):?>
-						<option value="alphabetical" <?php if($sel_sort_by =='alphabetical'){ echo $sel_class; } ?>><?php _e('Alphabetical',DIR_DOMAIN);?></option>
+						<option value="alphabetical" <?php if($sel_sort_by =='alphabetical'){ echo $sel_class; } ?>><?php _e('Alphabetical','templatic');?></option>
 				<?php endif;
 					do_action('tmpl_after_sortby_title_alphabetical');
 					
 					do_action('tmpl_before_sortby_title_asc');
 					if(!empty($templatic_settings['sorting_option']) && in_array('title_asc',$templatic_settings['sorting_option'])):?>
-						<option value="title_asc" <?php if($sel_sort_by =='title_asc'){ echo $sel_class; } ?>><?php _e('Title Ascending',DIR_DOMAIN);?></option>
+						<option value="title_asc" <?php if($sel_sort_by =='title_asc'){ echo $sel_class; } ?>><?php _e('Title Ascending','templatic');?></option>
 				<?php endif;
 					do_action('tmpl_after_sortby_title_asc');
 					
 					do_action('tmpl_before_sortby_title_desc');
 					if(!empty($templatic_settings['sorting_option']) && in_array('title_desc',$templatic_settings['sorting_option'])):?>
-						<option value="title_desc" <?php if($sel_sort_by =='title_desc'){ echo $sel_class; } ?>><?php _e('Title Descending',DIR_DOMAIN);?></option>
+						<option value="title_desc" <?php if($sel_sort_by =='title_desc'){ echo $sel_class; } ?>><?php _e('Title Descending','templatic');?></option>
 				<?php endif;
 					do_action('tmpl_after_sortby_title_desc');
 				
 					do_action('tmpl_before_sortby_date_asc');
 					if(!empty($templatic_settings['sorting_option']) && in_array('date_asc',$templatic_settings['sorting_option'])):?>
-						<option value="date_asc" <?php if($sel_sort_by =='date_asc'){ echo $sel_class; } ?>><?php _e('Publish Date Ascending',DIR_DOMAIN);?></option>
+						<option value="date_asc" <?php if($sel_sort_by =='date_asc'){ echo $sel_class; } ?>><?php _e('Publish Date Ascending','templatic');?></option>
 				<?php endif;
 					do_action('tmpl_after_sortby_date_asc');
 					
 					do_action('tmpl_before_date_desc');
 					if(!empty($templatic_settings['sorting_option']) && in_array('date_desc',$templatic_settings['sorting_option'])):?>
-						<option value="date_desc" <?php if($sel_sort_by =='date_desc'){ echo $sel_class; } ?>><?php _e('Publish Date Descending',DIR_DOMAIN);?></option>
+						<option value="date_desc" <?php if($sel_sort_by =='date_desc'){ echo $sel_class; } ?>><?php _e('Publish Date Descending','templatic');?></option>
 				<?php endif;
 					do_action('tmpl_after_sortby_date_desc');
 					
 					do_action('tmpl_before_sortby_reviews');
 					if(!empty($templatic_settings['sorting_option']) && in_array('reviews',$templatic_settings['sorting_option'])):?>
-						<option value="reviews" <?php if($sel_sort_by =='reviews'){ echo $sel_class; } ?>><?php _e('Reviews',DIR_DOMAIN);?></option>
+						<option value="reviews" <?php if($sel_sort_by =='reviews'){ echo $sel_class; } ?>><?php _e('Reviews','templatic');?></option>
 				<?php endif;
 					do_action('tmpl_after_sortby_reviews');
 					
 					do_action('tmpl_before_sortby_rating');
 					if(!empty($templatic_settings['sorting_option']) && in_array('rating',$templatic_settings['sorting_option'])):?>
-						<option value="rating" <?php if($sel_sort_by =='rating'){ echo $sel_class; } ?>><?php _e('Rating',DIR_DOMAIN);?></option>
+						<option value="rating" <?php if($sel_sort_by =='rating'){ echo $sel_class; } ?>><?php _e('Rating','templatic');?></option>
 				<?php endif;
 					do_action('tmpl_after_sortby_rating');
 					
 					do_action('tmpl_before_sortby_random');
 					if(!empty($templatic_settings['sorting_option']) && in_array('random',$templatic_settings['sorting_option'])):?>
-						<option value="random" <?php if($sel_sort_by =='random'){ echo $sel_class; } ?>><?php _e('Random',DIR_DOMAIN);?></option>
+						<option value="random" <?php if($sel_sort_by =='random'){ echo $sel_class; } ?>><?php _e('Random','templatic');?></option>
 				<?php endif;
 					do_action('tmpl_after_sortby_random');
 					?>             
@@ -1276,19 +1287,19 @@ function tmpl_archives_sorting_opt(){
 	if(isset($_REQUEST['alpha_sort_post_type']) && $_REQUEST['alpha_sort_post_type'] != '')
 		$sort_post_type = $_REQUEST['alpha_sort_post_type'];
 	if(!in_array($sort_post_type,$exclude_arr))
-		$sort_post_type = 'directory';
+		$sort_post_type = 'tevolution';
 	else	
 		$sort_post_type = $sort_post_type;
-	if(!$sort_post_type){ $sort_post_type="directory"; }
+	if(!$sort_post_type){ $sort_post_type="tevolution"; }
 	if((isset($_REQUEST[$sort_post_type.'_sortby']) && $_REQUEST[$sort_post_type.'_sortby']=='alphabetical') || (isset($_SESSION['alphabetical']) && $_SESSION['alphabetical']==1)):
 	
-	$alphabets = array(__('A',DIR_DOMAIN),__('B',DIR_DOMAIN),__('C',DIR_DOMAIN),__('D',DIR_DOMAIN),__('E',DIR_DOMAIN),__('F',DIR_DOMAIN),__('G',DIR_DOMAIN),__('H',DIR_DOMAIN),__('I',DIR_DOMAIN),__('J',DIR_DOMAIN),__('K',DIR_DOMAIN),__('L',DIR_DOMAIN),__('M',DIR_DOMAIN),__('N',DIR_DOMAIN),__('O',DIR_DOMAIN),__('P',DIR_DOMAIN),__('Q',DIR_DOMAIN),__('R',DIR_DOMAIN),__('S',DIR_DOMAIN),__('T',DIR_DOMAIN),__('U',DIR_DOMAIN),__('V',DIR_DOMAIN),__('W',DIR_DOMAIN),__('X',DIR_DOMAIN),__('Y',DIR_DOMAIN),__('Z',DIR_DOMAIN));
+	$alphabets = array(__('A','templatic'),__('B','templatic'),__('C','templatic'),__('D','templatic'),__('E','templatic'),__('F','templatic'),__('G','templatic'),__('H','templatic'),__('I','templatic'),__('J','templatic'),__('K','templatic'),__('L','templatic'),__('M','templatic'),__('N','templatic'),__('O','templatic'),__('P','templatic'),__('Q','templatic'),__('R','templatic'),__('S','templatic'),__('T','templatic'),__('U','templatic'),__('V','templatic'),__('W','templatic'),__('X','templatic'),__('Y','templatic'),__('Z','templatic'));
 	/*show all result when we click on all in alphabetical sort order*/
 	$all = str_replace('?sortby='.$_REQUEST['sortby'].'&','/?',$url_glue);
 	?>
     <div id="directory_sort_order_alphabetical" class="sort_order_alphabetical">
 	    <ul>
-			<li class="<?php echo (!isset($_REQUEST['sortby']))?'active':''?>"><a href="<?php echo remove_query_arg('sortby',$permalink.$all.$sort_post_type.'_sortby=alphabetical');?>"><?php _e('All',DIR_DOMAIN);?></a></li>
+			<li class="<?php echo (!isset($_REQUEST['sortby']))?'active':''?>"><a href="<?php echo remove_query_arg('sortby',$permalink.$all.$sort_post_type.'_sortby=alphabetical');?>"><?php _e('All','templatic');?></a></li>
 			<?php
 			foreach($alphabets as &$value){ 
 				$key = $value;
@@ -1313,7 +1324,7 @@ function sorting_option_of_listing()
 			$addons_posttype = tmpl_addon_name(); /* all tevolution addons' post type as key and folter name as a value */
 			$exclude_arr = apply_filters('exclude_sorting_posttypes',array('event','property','classified'));
 			if(!in_array($current_post_type, $exclude_arr)){
-				$sort_post_type = 'directory';
+				$sort_post_type = 'tevolution';
 			}else{
 				$sort_post_type = $current_post_type;
 			}
@@ -1472,12 +1483,12 @@ if(!function_exists('print_excerpt')){
 	function print_excerpt($length) { // Max excerpt length. Length is set in characters
 		global $post;
                 $length = ($length =='')? '50' : $length;
-		$tmpdata = get_option('supreme_theme_settings');
+		$tmpdata = get_option('directory_theme_settings');
 		$morelink = @$tmpdata['templatic_excerpt_link'];
-		if($morelink!="")
-			$morelink=sprintf(__('<a href="%s" class="more">%s</a>','supreme'),get_permalink(),$morelink);
+		if(!empty($morelink))
+			$morelink =sprintf(__('<a href="%s" class="more moretag">%s</a>','templatic'),get_permalink(),$morelink);
 		else
-			$morelink=sprintf(__('<a href="%s" class="more">Read More...</a>','supreme'),get_permalink());
+			$morelink ='<a class="moretag" href="'.get_permalink().'" class="more">'.__('Read more').'...</a>';
 		
 		$text = $post->post_excerpt;
 		if ($text =='') {
@@ -1488,12 +1499,13 @@ if(!function_exists('print_excerpt')){
 		$text = strip_shortcodes($text); // optional, recommended
 		$text = strip_tags($text); // use ' $text = strip_tags($text,'<p><a>'); ' if you want to keep some tags
 
-		$text = substr($text,0,$length);		
+		$text = wp_trim_words($text,$length); /* shows perticular words */
 		if(reverse_strrchr($text, '.', 1)){
-			$excerpt = reverse_strrchr($text, '.', 1)." ".sprintf(__('%s','supreme'),$morelink);
+			$excerpt = reverse_strrchr($text, '.', 1)." ".sprintf(__('%s','templatic'),$morelink);
 		}else{
-			$excerpt = $text." ".sprintf(__('%s','supreme'),$morelink);
+			$excerpt = $text." ".sprintf(__('%s','templatic'),$morelink);
 		}
+		
 		if( $excerpt ) {
 			echo apply_filters('the_excerpt',$excerpt);
 		} else {

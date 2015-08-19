@@ -17,7 +17,7 @@ for ($i = 0; $i < count($user_validation_info); $i++) {
           $name = $user_validation_info[$i]['name'];
           $espan = $user_validation_info[$i]['espan'];
           $type = $user_validation_info[$i]['type'];
-          $text = html_entity_decode(__($user_validation_info[$i]['text'], DOMAIN), ENT_COMPAT, 'utf-8');
+          $text = html_entity_decode(__($user_validation_info[$i]['text'], 'templatic'), ENT_COMPAT, 'utf-8');
 
           $js_code .= '
           var ' . $name . ' = jQuery("#' . $submit_form_validation_id . ' #' . $name . '"); 
@@ -26,9 +26,9 @@ for ($i = 0; $i < count($user_validation_info); $i++) {
           var ' . $espan . ' = jQuery("#' . $submit_form_validation_id . ' #' . $espan . '"); 
           ';
           if ($type == 'select' || $type == 'checkbox' || $type == 'multicheckbox' || $type == 'catcheckbox') {
-                    $msg = html_entity_decode(__('Please Select ', DOMAIN) . $text, ENT_COMPAT, 'utf-8');
+                    $msg = html_entity_decode(__('Please Select ', 'templatic') . $text, ENT_COMPAT, 'utf-8');
           } else {
-                    $msg = html_entity_decode(__('Please Enter ', DOMAIN) . $text, ENT_COMPAT, 'utf-8');
+                    $msg = html_entity_decode(__('Please Enter ', 'templatic') . $text, ENT_COMPAT, 'utf-8');
           }
 
           if ($type == 'multicheckbox' || $type == 'catcheckbox' || $type == 'radio') {
@@ -140,14 +140,14 @@ for ($i = 0; $i < count($user_validation_info); $i++) {
                                         var a = jQuery("#' . $submit_form_validation_id . ' #' . $name . '").val();
                                         var emailReg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                                         if(jQuery("#' . $submit_form_validation_id . ' #' . $name . '").val() == "") { ';
-                              $msg = html_entity_decode(__("Please provide your email address", DOMAIN), ENT_COMPAT, 'utf-8');
+                              $msg = html_entity_decode(__("Please provide your email address", 'templatic'), ENT_COMPAT, 'utf-8');
                               $js_code .= $name . '.addClass("error");
                                                   ' . $espan . '.text("' . $msg . '");
                                                   ' . $espan . '.addClass("message_error2");
                                         return false;';
 
                               $js_code .= ' } else if(!emailReg.test(jQuery("#' . $submit_form_validation_id . ' #' . $name . '").val().replace(/\s+$/,""))) { ';
-                              $msg = html_entity_decode(__("Please enter a valid email address", DOMAIN), ENT_COMPAT, 'utf-8');
+                              $msg = html_entity_decode(__("Please enter a valid email address", 'templatic'), ENT_COMPAT, 'utf-8');
                               $js_code .= $name . '.addClass("error");
                                                   ' . $espan . '.text("' . $msg . '");
                                                   /*check available_tick exist or not*/
@@ -178,7 +178,7 @@ for ($i = 0; $i < count($user_validation_info); $i++) {
                               $js_code .= '
                               if(jQuery("#' . $submit_form_validation_id . ' #' . $name . '").length && jQuery("#' . $submit_form_validation_id . ' #' . $name . '").val().match(/\ /)){ ';
                               $js_code .= $name . '.addClass("error");
-                                                  ' . $espan . '.text("' . __("Usernames should not contain space.", DOMAIN) . '");
+                                                  ' . $espan . '.text("' . __("Usernames should not contain space.", 'templatic') . '");
                                                   ' . $espan . '.addClass("message_error2");
                                                   return false;
                                         }         
@@ -193,7 +193,7 @@ for ($i = 0; $i < count($user_validation_info); $i++) {
 						
                                         }else if(userLength < 4 ){ ';
                               $js_code .= $name . '.addClass("error");
-                                                  ' . $espan . '.text("' . __("The username must be at least 4 characters long", DOMAIN) . '");
+                                                  ' . $espan . '.text("' . __("The username must be at least 4 characters long", 'templatic') . '");
                                                   ' . $espan . '.addClass("message_error2");
                                                   return false;
                                         }else
@@ -215,7 +215,7 @@ for ($i = 0; $i < count($user_validation_info); $i++) {
                     }
                     if ($name == 'pwd') {
                               if (jQuery("#pwd") . val() != jQuery("#cpwd") . val()) {
-                                        $msg = html_entity_decode(__("Password could not be match", DOMAIN), ENT_COMPAT, 'utf-8');
+                                        $msg = html_entity_decode(__("Password could not be match", 'templatic'), ENT_COMPAT, 'utf-8');
                                         $js_code .= $name . '.addClass("error");
                                                   ' . $espan . '.text("' . $msg . '");
                                                   ' . $espan . '.addClass("message_error2");
@@ -257,7 +257,7 @@ $js_code .='var pwd = jQuery("#pwd");
 			
                               {
                                         pwd.addClass("error");
-                                        pwd_error.text("' . __('Please enter password', DOMAIN) . '");
+                                        pwd_error.text("' . __('Please enter password', 'templatic') . '");
                                         pwd_error.addClass("message_error2");
                                         return false;
                               }
@@ -280,12 +280,12 @@ $js_code .='var pwd = jQuery("#pwd");
 			
                               {
                                         cpwd.addClass("error");
-                                        cpwd_error.text("' . __('Please enter confirm password', DOMAIN) . '");
+                                        cpwd_error.text("' . __('Please enter confirm password', 'templatic') . '");
                                         cpwd_error.addClass("message_error2");
                                         return false;
                               } else if(jQuery("#cpwd").val() != jQuery("#pwd").val()) {
                                         cpwd.addClass("error");
-                                        cpwd_error.text("' . __('Please confirm your password', DOMAIN) . '");
+                                        cpwd_error.text("' . __('Please confirm your password', 'templatic') . '");
                                         cpwd_error.addClass("message_error2");
                                         return false;
                               }

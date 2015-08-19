@@ -104,7 +104,7 @@ if(isset($_POST['Verify']) && $_POST['Verify'] !=''){
 			 'cookies' => array()
 		);
 	$warnning_message='';
-	$response = wp_remote_get('http://templatic.net/api/verification/index.php',$arg );
+	$response = wp_remote_get('http://templatic.com/members/login_api.php',$arg );
 
 	if(!is_wp_error( $response ) ) {
 		update_option('templatic_licence_key',$response['body']);
@@ -142,7 +142,7 @@ if(strstr($templatic_licence_key,'is_supreme') && get_option('templatic_licence_
 	add_action('tevolution_error_message','tevolution_key_is_verified');
 }
 function tevolution_error_message_host(){
-	echo "<span>".__("WP HTTP Error: couldn't connect to host.",ADMINDOMAIN)."</span>";
+	echo "<span>".__("WP HTTP Error: couldn't connect to host.",'templatic-admin')."</span>";
 }
 /*
 * show error message if tevolution licence key is correct
@@ -162,7 +162,7 @@ function tevolution_error_message_error($message){
 			}
 		echo "</span>";
 	}
-	echo "<p>".__('If you need help with this, please ',ADMINDOMAIN). "<a href='http://templatic.com/contact/'>" .__('contact us',ADMINDOMAIN) . "</a> ". __('and we will help you.',ADMINDOMAIN). "</p>";
+	echo "<p>".__('If you need help with this, please ','templatic-admin'). "<a href='http://templatic.com/contact/'>" .__('contact us','templatic-admin') . "</a> ". __('and we will help you.','templatic-admin'). "</p>";
 }
 /* 
 * tevolution licence key success message 
@@ -187,18 +187,13 @@ function tevolution_licensekey_popupbox(){
 			<div id="boxes" class="licensekey_boxes">
 				<div style="top:0px; left: 551.5px; display: none;" id="dialog" class="window">
                     	<span class="close"><a href="#" class="close"><span class="dashicons dashicons-no close-btn"></span></a></span>
-					<h2><?php echo __('Verify your product license',ADMINDOMAIN); ?></h2>
+					<h2><?php echo __('Verify your product license','templatic-admin'); ?></h2>
                          <form action="<?php /* echo site_url()."/wp-admin/admin.php?page=templatic_system_menu"; */ ?>" name="" method="post">
                          <div class="inside">
-                                <?php
-                               $templatic_licence_key = get_option('templatic_licence_key');
-                               if(get_option('templatic_licence_key_') =='' && !$_POST){
-                               ?>
-                                   <p><?php echo __('You should be able to get your product license key from',ADMINDOMAIN) . '<a href="http://templatic.com/members/member">'. __(' Templatic Member Area',ADMINDOMAIN).'</a>. ' . __("Here's how a",ADMINDOMAIN).'<a href="http://templatic.com/docs/tevolution-guide/">'. __(' guide',ADMINDOMAIN) . '</a> ' . __('if you need some help with this.',ADMINDOMAIN); ?></p>
-                                <?php } ?>
+                                   <p><?php echo __('You should be able to get your product license key from','templatic-admin') . '<a href="http://templatic.com/members/member">'. __(' Templatic Member Area','templatic-admin').'</a>. ' . __("Here's how a",'templatic-admin').'<a href="http://templatic.com/docs/tevolution-guide/">'. __(' guide','templatic-admin') . '</a> ' . __('if you need some help with this.','templatic-admin'); ?></p>
                                 <div id="licence_fields">
                                    <input type="password" name="licencekey" id="licencekey" value="<?php echo get_option('templatic_licence_key_'); ?>" size="30" max-length="36" PLACEHOLDER="templatic.com purchase code"/>
-                                   <input type="submit" accesskey="p" value="<?php echo __('Verify',ADMINDOMAIN);?>" class="button button-primary button-large" id="Verify" name="Verify">
+                                   <input type="submit" accesskey="p" value="<?php echo __('Verify','templatic-admin');?>" class="button button-primary button-large" id="Verify" name="Verify">
                                    <?php do_action('tevolution_error_message'); ?>
                                 </div>
                          </div>
@@ -227,23 +222,23 @@ function tmpl_overview_box()
 		$dummydata_title = '';
 		/* help links */
 		$menu_msg1=$dummydata_title=$dummy_theme_message='';
-		$menu_msg1 .= "<ul><li><a href='".site_url("/wp-admin/user-new.php")."'>".__('Add listing agents',ADMINDOMAIN)."</a></li>";
-		$menu_msg1 .= "<li><a href='".site_url("/wp-admin/admin.php?page=monetization&action=add_package&tab=packages")."'>".__("Set pricing options",ADMINDOMAIN)."</a></li>";
-		$menu_msg1 .= "<li><a href='".site_url("/wp-admin/admin.php?page=monetization&tab=payment_options")."'>".__('Setup payment types',ADMINDOMAIN)."</a></li></ul>";
+		$menu_msg1 .= "<ul><li><a href='".site_url("/wp-admin/user-new.php")."'>".__('Add listing agents','templatic-admin')."</a></li>";
+		$menu_msg1 .= "<li><a href='".site_url("/wp-admin/admin.php?page=monetization&action=add_package&tab=packages")."'>".__("Set pricing options",'templatic-admin')."</a></li>";
+		$menu_msg1 .= "<li><a href='".site_url("/wp-admin/admin.php?page=monetization&tab=payment_options")."'>".__('Setup payment types','templatic-admin')."</a></li></ul>";
 
-		$menu_msg2 = "<ul><li><a href='".site_url("/wp-admin/admin.php?page=templatic_settings#listing_page_settings")."'>".__('Setup category page',ADMINDOMAIN)."</a> and <a href='".site_url("/wp-admin/admin.php?page=templatic_settings#detail_page_settings")."'>".__('detail page',ADMINDOMAIN)."</a></li>";
-		$menu_msg2 .= "<li><a href='".site_url("/wp-admin/admin.php?page=templatic_settings#registration_page_setup")."'>".__('Setup registration',ADMINDOMAIN)."</a> and <a href='".site_url("/wp-admin/admin.php?page=templatic_settings#submit_page_settings")."'>".__('submission page',ADMINDOMAIN)."</a></li>";
+		$menu_msg2 = "<ul><li><a href='".site_url("/wp-admin/admin.php?page=templatic_settings#listing_page_settings")."'>".__('Setup category page','templatic-admin')."</a> and <a href='".site_url("/wp-admin/admin.php?page=templatic_settings#detail_page_settings")."'>".__('detail page','templatic-admin')."</a></li>";
+		$menu_msg2 .= "<li><a href='".site_url("/wp-admin/admin.php?page=templatic_settings#registration_page_setup")."'>".__('Setup registration','templatic-admin')."</a> and <a href='".site_url("/wp-admin/admin.php?page=templatic_settings#submit_page_settings")."'>".__('submission page','templatic-admin')."</a></li>";
 		
-		$menu_msg2 .= "<li><a href='".site_url("/wp-admin/admin.php?page=templatic_settings&tab=email")."'>".__('Manage and customize emails',ADMINDOMAIN)."</a></li></ul>";
+		$menu_msg2 .= "<li><a href='".site_url("/wp-admin/admin.php?page=templatic_settings&tab=email")."'>".__('Manage and customize emails','templatic-admin')."</a></li></ul>";
 		
-		$menu_msg3 = "<ul><li><a href='".site_url("/wp-admin/widgets.php")."'>Manage Widgets </a>,  <a href='".site_url("/wp-admin/customize.php")."'>".__('Add your logo',ADMINDOMAIN)." </a></li>";
-		$menu_msg3 .= "<li><a href='".site_url("/wp-admin/customize.php")."'>".__('Change site colors',ADMINDOMAIN)." </a></li>";
-		$menu_msg3 .= "<li><a href='".site_url("/wp-admin/nav-menus.php?action=edit")."'>".__('Manage menu navigation',ADMINDOMAIN)."</a></li>";
+		$menu_msg3 = "<ul><li><a href='".site_url("/wp-admin/widgets.php")."'>Manage Widgets </a>,  <a href='".site_url("/wp-admin/customize.php")."'>".__('Add your logo','templatic-admin')." </a></li>";
+		$menu_msg3 .= "<li><a href='".site_url("/wp-admin/customize.php")."'>".__('Change site colors','templatic-admin')." </a></li>";
+		$menu_msg3 .= "<li><a href='".site_url("/wp-admin/nav-menus.php?action=edit")."'>".__('Manage menu navigation','templatic-admin')."</a></li>";
 		
 		$my_theme = wp_get_theme();
 		$theme_name = $my_theme->get( 'Name' );
 		$version = $my_theme->get( 'Version' );
-		$dummydata_title .= '<h3 class="twp-act-msg">'.sprintf (__('Thank you. %s is now activated.',ADMINDOMAIN),'Tevolution').'</h3>';
+		$dummydata_title .= '<h3 class="twp-act-msg">'.sprintf (__('Thank you. %s is now activated.','templatic-admin'),'Tevolution').'</h3>';
 		
 		$dummydata_title .=apply_filters('tevoluton_overviewbox_datacontent','');
 		/* theme message */	
@@ -260,10 +255,10 @@ function tmpl_overview_box()
 			
 			$dummy_data_msg .= $dummy_theme_message;
 			
-			$dummy_data_msg .='<div class="wrapper_templatic_auto_install_col3"><div class="templatic_auto_install_col3"><h4>'.__('Next Steps',ADMINDOMAIN).'</h4>'.$menu_msg1.'</div>';
-			$dummy_data_msg .='<div class="templatic_auto_install_col3"><h4>'.__('Advance Options',ADMINDOMAIN).'</h4>'.$menu_msg2.'</div>';
-			$dummy_data_msg .='<div class="templatic_auto_install_col3"><h4>'.__('Customize Your Website',ADMINDOMAIN).'</h4>'.$menu_msg3.'</div></div>';
-			$dummy_data_msg .='<div class="ref-tev-msg">'.__('Please refer to &quot;Tevolution&quot; and other sections on the left side menu for more of the advanced options.',ADMINDOMAIN).'</div>';
+			$dummy_data_msg .='<div class="wrapper_templatic_auto_install_col3"><div class="templatic_auto_install_col3"><h4>'.__('Next Steps','templatic-admin').'</h4>'.$menu_msg1.'</div>';
+			$dummy_data_msg .='<div class="templatic_auto_install_col3"><h4>'.__('Advance Options','templatic-admin').'</h4>'.$menu_msg2.'</div>';
+			$dummy_data_msg .='<div class="templatic_auto_install_col3"><h4>'.__('Customize Your Website','templatic-admin').'</h4>'.$menu_msg3.'</div></div>';
+			$dummy_data_msg .='<div class="ref-tev-msg">'.__('Please refer to &quot;Tevolution&quot; and other sections on the left side menu for more of the advanced options.','templatic-admin').'</div>';
 			$dummy_data_msg .= $dummy_nstallation_link;
 			
 		}else{
@@ -274,10 +269,10 @@ function tmpl_overview_box()
 			
 			$dummy_data_msg .= $dummy_theme_message;
 			
-			$dummy_data_msg .='<div class="wrapper_templatic_auto_install_col3"><div class="templatic_auto_install_col3"><h4>'.__('Next Steps',ADMINDOMAIN).'</h4>'.$menu_msg1.'</div>';
-			$dummy_data_msg .='<div class="templatic_auto_install_col3"><h4>'.__('Advance Options',ADMINDOMAIN).'</h4>'.$menu_msg2.'</div>';
-			$dummy_data_msg .='<div class="templatic_auto_install_col3"><h4>'.__('Customize Your Website',ADMINDOMAIN).'</h4>'.$menu_msg3.'</div></div>';
-			$dummy_data_msg .='<div class="ref-tev-msg">'.__('Please refer to &quot;Tevolution&quot; and other sections on the left side menu for more of the advanced options.',ADMINDOMAIN).'</div>';
+			$dummy_data_msg .='<div class="wrapper_templatic_auto_install_col3"><div class="templatic_auto_install_col3"><h4>'.__('Next Steps','templatic-admin').'</h4>'.$menu_msg1.'</div>';
+			$dummy_data_msg .='<div class="templatic_auto_install_col3"><h4>'.__('Advance Options','templatic-admin').'</h4>'.$menu_msg2.'</div>';
+			$dummy_data_msg .='<div class="templatic_auto_install_col3"><h4>'.__('Customize Your Website','templatic-admin').'</h4>'.$menu_msg3.'</div></div>';
+			$dummy_data_msg .='<div class="ref-tev-msg">'.__('Please refer to &quot;Tevolution&quot; and other sections on the left side menu for more of the advanced options.','templatic-admin').'</div>';
 			$dummy_data_msg .= $dummy_nstallation_link;
 		}
 		
@@ -507,8 +502,8 @@ function tevolution_comment_status_meta_box($post) {
 ?>
 <input name="advanced_view" type="hidden" value="1" />
 <p class="meta-options">
-	<label for="comment_status" class="selectit"><input name="comment_status" type="checkbox" id="comment_status" value="open" <?php checked($post->comment_status, 'open'); ?> /> <?php echo __( 'Allow reviews.',ADMINDOMAIN ) ?></label><br />
-	<label for="ping_status" class="selectit"><input name="ping_status" type="checkbox" id="ping_status" value="open" <?php checked($post->ping_status, 'open'); ?> /> <?php printf( __( 'Allow <a href="%s" target="_blank">trackbacks and pingbacks</a> on this page.' ,ADMINDOMAIN), __( 'http://codex.wordpress.org/Introduction_to_Blogging#Managing_Comments' ,ADMINDOMAIN) ); ?></label>
+	<label for="comment_status" class="selectit"><input name="comment_status" type="checkbox" id="comment_status" value="open" <?php checked($post->comment_status, 'open'); ?> /> <?php echo __( 'Allow reviews.','templatic-admin' ) ?></label><br />
+	<label for="ping_status" class="selectit"><input name="ping_status" type="checkbox" id="ping_status" value="open" <?php checked($post->ping_status, 'open'); ?> /> <?php printf( __( 'Allow <a href="%s" target="_blank">trackbacks and pingbacks</a> on this page.' ,'templatic-admin'), __( 'http://codex.wordpress.org/Introduction_to_Blogging#Managing_Comments' ,'templatic-admin') ); ?></label>
 	<?php do_action('post_comment_status_meta_box-options', $post); ?>
 </p>
 <?php
@@ -520,13 +515,13 @@ function tevolution_comment_meta_box( $post ) {
 	global $wpdb;
 	wp_nonce_field( 'get-comments', 'add_comment_nonce', false );
 	?>
-	<p class="hide-if-no-js" id="add-new-comment"><a href="#commentstatusdiv" onclick="commentReply.addcomment(<?php echo $post->ID; ?>);return false;"><?php echo __('Add reviews',ADMINDOMAIN); ?></a></p>
+	<p class="hide-if-no-js" id="add-new-comment"><a href="#commentstatusdiv" onclick="commentReply.addcomment(<?php echo $post->ID; ?>);return false;"><?php echo __('Add reviews','templatic-admin'); ?></a></p>
 	<?php
 	$total = get_comments( array( 'post_id' => $post->ID, 'number' => 1, 'count' => true ) );
 	$wp_list_table = _get_list_table('WP_Post_Comments_List_Table');
 	$wp_list_table->display( true );
 	if ( 1 > $total ) {
-		echo '<p id="no-comments">' . __('No reviews yet.', ADMINDOMAIN) . '</p>';
+		echo '<p id="no-comments">' . __('No reviews yet.', 'templatic-admin') . '</p>';
 	} else {
 		$hidden = get_hidden_meta_boxes( get_current_screen() );
 		if ( ! in_array('commentsdiv', $hidden) ) {
@@ -535,7 +530,7 @@ function tevolution_comment_meta_box( $post ) {
 			<?php
 		}
 		?>
-		<p class="hide-if-no-js" id="show-comments"><a href="#commentstatusdiv" onclick="commentsBox.get(<?php echo $total; ?>);return false;"><?php echo __('Show reviews',ADMINDOMAIN); ?></a> <span class="spinner"></span></p>
+		<p class="hide-if-no-js" id="show-comments"><a href="#commentstatusdiv" onclick="commentsBox.get(<?php echo $total; ?>);return false;"><?php echo __('Show reviews','templatic-admin'); ?></a> <span class="spinner"></span></p>
 		<?php
 	}
 	wp_comment_trashnotice();
@@ -563,11 +558,11 @@ if(!function_exists('tmpl_taxonomy_meta_box')){
 			foreach($custom_post_types as $post_type => $value){
 				if($posttype==$post_type){
 				    	remove_meta_box('commentstatusdiv', $post_type, 'normal');
-						add_meta_box('commentstatusdiv', __('Review Settings', ADMINDOMAIN), 'tevolution_comment_status_meta_box', $post_type, 'normal', 'low');
+						add_meta_box('commentstatusdiv', __('Review Settings', 'templatic-admin'), 'tevolution_comment_status_meta_box', $post_type, 'normal', 'low');
 					
 					if ( ( 'publish' == get_post_status( @$_REQUEST['post'] ) || 'private' == get_post_status( @$_REQUEST['post'] ) ) && post_type_supports($post_type, 'comments') ){
 						remove_meta_box('commentsdiv', $post_type, 'normal');
-						add_meta_box('commentsdiv', __('Reviews',ADMINDOMAIN), 'tevolution_comment_meta_box', $post_type, 'normal', 'low');
+						add_meta_box('commentsdiv', __('Reviews','templatic-admin'), 'tevolution_comment_meta_box', $post_type, 'normal', 'low');
 					}
 					
 					add_filter('posts_join', 'custom_field_posts_where_filter');
@@ -577,9 +572,9 @@ if(!function_exists('tmpl_taxonomy_meta_box')){
 					$new_menu_name = $new_post_type_obj->labels->menu_name;
 					
 					foreach($heading_type as $key=>$val){
-						$meta_name=(tmplCompFld($val)==tmplCompFld('[#taxonomy_name#]'))? sprintf(__('Basic Informations',ADMINDOMAIN),$new_menu_name) : sprintf(__('%1$s ',ADMINDOMAIN),$val);
+						$meta_name=(tmplCompFld($val)==tmplCompFld('[#taxonomy_name#]'))? sprintf(__('Basic Informations','templatic-admin'),$new_menu_name) : sprintf(__('%1$s ','templatic-admin'),$val);
 						
-						if(tmplCompFld($val)== tmplCompFld('Label of Field')){ $meta_name =  __('Other Information',ADMINDOMAIN); }
+						if(tmplCompFld($val)== tmplCompFld('Label of Field')){ $meta_name =  __('Other Information','templatic-admin'); }
 						$val = apply_filters('tmpl_show_heading_inbackend',$val);
 						$pt_metaboxes = get_post_admin_custom_fields_templ_plugin($post_type,'','admin_side',$val);
 						
@@ -614,10 +609,10 @@ if(!function_exists('tmpl_taxonomy_meta_box')){
 							$package_query = new WP_Query($pargs); /* Show price package box only when - price packages are available for that post type in backend */
 							if(count($package_query->posts) != 0)
 							{
-								add_meta_box('tmpl-settings-price-package',__('Price Packages',ADMINDOMAIN),'tevolution_featured_list_fn',$post_type,'normal','high',array( 'post_types' => $post_type));			}
+								add_meta_box('tmpl-settings-price-package',__('Price Packages','templatic-admin'),'tevolution_featured_list_fn',$post_type,'normal','high',array( 'post_types' => $post_type));			}
 					
 					if($post_type!='admanager'){
-						add_meta_box( 'tmpl-settings-image-gallery', __( 'Image Gallery', ADMINDOMAIN ), 'tevolution_images_box', $post_type, 'side','',$post );
+						add_meta_box( 'tmpl-settings-image-gallery', __( 'Image Gallery', 'templatic-admin' ), 'tevolution_images_box', $post_type, 'side','',$post );
 					}
 				}
 				
@@ -681,7 +676,7 @@ function tevolution_images_box($post){
 					echo '<li class="image" data-attachment_id="' . $image['id'] . '">
 							' . wp_get_attachment_image( $image['id'], 'thumbnail' ) . '
 							<ul class="actions">
-								<li><a href="#" id="'.$image['id'].'" class="delete" title="' . __( 'Delete image', DOMAIN ) . '"><i class="dashicons dashicons-no"></i></a></li>
+								<li><a href="#" id="'.$image['id'].'" class="delete" title="' . __( 'Delete image', 'templatic' ) . '"><i class="dashicons dashicons-no"></i></a></li>
 							</ul>
 						</li>';
 					$image_gallery.=$image['id'].',';	
@@ -693,9 +688,9 @@ function tevolution_images_box($post){
 	</div>
      <div class="clearfix image_gallery_description">
      <p class="add_tevolution_images hide-if-no-js">
-		<a href="#"><?php echo __( 'Add images gallery', ADMINDOMAIN ); ?></a>
+		<a href="#"><?php echo __( 'Add images gallery', 'templatic-admin' ); ?></a>
 	 </p>
-     <p class="description"><?php echo __('<b>Note:</b> You cannot directly select the images from the media library, instead you have to upload a new image.',ADMINDOMAIN);?></p>
+     <p class="description"><?php echo __('<b>Note:</b> You cannot directly select the images from the media library, instead you have to upload a new image.','templatic-admin');?></p>
      </div>
 	<script type="text/javascript" async >
 		jQuery(document).ready(function($){
@@ -715,9 +710,9 @@ function tevolution_images_box($post){
 				/* Create the media frame.  */
 				image_gallery_frame = wp.media.frames.downloadable_file = wp.media({
 					/* Set the title of the modal.  */
-					title: '<?php echo __( 'Add images gallery', ADMINDOMAIN ); ?>',
+					title: '<?php echo __( 'Add images gallery', 'templatic-admin' ); ?>',
 					button: {
-						text: '<?php echo __( 'Add to gallery', ADMINDOMAIN ); ?>',
+						text: '<?php echo __( 'Add to gallery', 'templatic-admin' ); ?>',
 					},
 					multiple: true
 				});
@@ -732,7 +727,7 @@ function tevolution_images_box($post){
 								<li class="image" data-attachment_id="' + attachment.id + '">\
 									<img src="' + attachment.url + '" />\
 									<ul class="actions">\
-										<li><a href="#" class="delete" title="<?php echo __( 'Delete image', ADMINDOMAIN ); ?>"><i class="fa fa-times"></i></a></li>\
+										<li><a href="#" class="delete" title="<?php echo __( 'Delete image', 'templatic-admin' ); ?>"><i class="fa fa-times"></i></a></li>\
 									</ul>\
 								</li>');
 						}
@@ -1253,8 +1248,8 @@ function tevolution_custom_meta_box_content($post, $metabox ) {
 						echo  '<td><input id="'. $pt_metabox["name"] .'" type="hidden" size="36" name="'.$pt_metabox["name"].'" value="'.$pt_metaboxvalue.'" />';
 		                ?><div class="upload_box">
 							<div class="hide_drag_option_ie">
-                                <p><?php echo __('You can drag &amp; drop images from your computer to this box.',DOMAIN); ?></p>
-                                <p><?php echo __('OR',DOMAIN); ?></p>
+                                <p><?php echo __('You can drag &amp; drop images from your computer to this box.','templatic'); ?></p>
+                                <p><?php echo __('OR','templatic'); ?></p>
                              </div>
                              <?php 
 						echo '<div class="tmpl_single_uploader">';
@@ -1264,7 +1259,7 @@ function tevolution_custom_meta_box_content($post, $metabox ) {
 						
 		                	<div id="<?php echo $pt_metabox["name"]; ?>"></div>
 							<div id="fancy-contact-form">
-							<div class="dz-default dz-message" ><span  id="fancy-<?php echo $pt_metabox["name"]; ?>"><span><i class="fa fa-folder"></i>  <?php _e('Upload Image',DOMAIN); ?></span></span></div>
+							<div class="dz-default dz-message" ><span  id="fancy-<?php echo $pt_metabox["name"]; ?>"><span><i class="fa fa-folder"></i>  <?php _e('Upload Image','templatic'); ?></span></span></div>
 							<span class="default-img-uploaded" id="image-<?php echo $pt_metabox["name"]; ?>">
 							<?php
 								$dirinfo = wp_upload_dir();
@@ -1274,7 +1269,7 @@ function tevolution_custom_meta_box_content($post, $metabox ) {
 								$img_type = array('png','gif','jpg','jpeg','ico');
 								if(in_array($extention,$img_type))
 									echo '<br/><img id="img_'.$pt_metabox["name"].'" src="'.get_post_meta($post->ID,$pt_metabox["name"], $single = true).'" border="0" class="company_logo" height="140" width="140" />';
-							?><?php if($pt_metaboxvalue != ''){?><span class="ajax-file-upload-red" onclick="delete_image('<?php echo basename($pt_metaboxvalue);?>','<?php echo $pt_metabox["name"]; ?>')"><?php echo __('Delete',ADMINDOMAIN); ?></span> <?php } ?></span>
+							?><?php if($pt_metaboxvalue != ''){?><span class="ajax-file-upload-red" onclick="delete_image('<?php echo basename($pt_metaboxvalue);?>','<?php echo $pt_metabox["name"]; ?>')"><?php echo __('Delete','templatic-admin'); ?></span> <?php } ?></span>
 							</div>
 						<script type="text/javascript" async>
 							var image_thumb_src = '<?php echo  $wp_upload_dir['url'];?>/';
@@ -1381,7 +1376,7 @@ function tevolution_custom_meta_box_content($post, $metabox ) {
 		echo "</tbody>";
 		echo "</table>";
 	}else{
-		echo __("No custom fields was inserted for this post type.",ADMINDOMAIN)."<a href='".site_url('wp-admin/admin.php?page=custom_setup&ctab=custom_fields')."'> ".__('Click Here',ADMINDOMAIN)." </a> ".__('to add fields for this post.',ADMINDOMAIN);
+		echo __("No custom fields was inserted for this post type.",'templatic-admin')."<a href='".site_url('wp-admin/admin.php?page=custom_setup&ctab=custom_fields')."'> ".__('Click Here','templatic-admin')." </a> ".__('to add fields for this post.','templatic-admin');
 	}
 }
 }
@@ -1424,7 +1419,7 @@ function tevolution_featured_list_fn($post_id){
 	echo "<table id='tvolution_price_package_fields' class='form-table'>";
 	echo "<tbody>";
 	echo '<tr>';
-	echo  '<th valign="top"><label for="alive_days">'.__('Price Package',ADMINDOMAIN).'</label></th>';
+	echo  '<th valign="top"><label for="alive_days">'.__('Price Package','templatic-admin').'</label></th>';
 	echo  '<td>';
 	$taxonomies = get_object_taxonomies( (object) array( 'post_type' => $post->post_type,'public'   => true, '_builtin' => true ));				
 	$post_categories = get_the_terms( $post_id ,$taxonomies[0]);
@@ -1479,7 +1474,7 @@ function tmpl_htmlvar_name_validation(){
 					data:"action=check_htmlvar_name&htmlvar_name="+htmlvar_name+"&page=custom_setup&is_ajax=1",
 					success:function(results) {
 						if(jQuery("#tmpl_html_error").length <= 0 && results == 'yes'){
-							jQuery("#htmlvar_name").after('<p id="tmpl_html_error" class="error">'+'<?php echo __('This variable name already exists, please enter a unique name.',DOMAIN); ?>'+'</p>');
+							jQuery("#htmlvar_name").after('<p id="tmpl_html_error" class="error">'+'<?php echo __('This variable name already exists, please enter a unique name.','templatic'); ?>'+'</p>');
 							jQuery('#html_var_name').addClass('form-invalid');
 							var flag = 0;
 							jQuery("#tmpl_html_error").after('<input type="hidden" name="is_valid_html" id="is_valid_html" value="yes" />');
@@ -1561,7 +1556,7 @@ function tevolution_transaction_msg_fn()
 				if($orderinfo->payment_method != '' && $orderinfo->payment_method != '-')
 					$payment_type = $orderinfo->payment_method;
 				else
-					$payment_type = __('Free',DOMAIN);
+					$payment_type = __('Free','templatic');
 	
 				$payment_date =  date_i18n(get_option('date_format'),strtotime($orderinfo->payment_date));
 				if(isset($_REQUEST['ostatus']) && @$_REQUEST['ostatus']!='')
@@ -1630,12 +1625,12 @@ function tevolution_transaction_msg_fn()
 				$post_type_mail = $productinfo->post_type;
 				$transaction_details="";
 				$transaction_details .= "-------------------------------------------------- <br/>\r\n";
-				$transaction_details .= __('Payment Details for',ADMINDOMAIN).": ".$post_name."<br/>\r\n";
+				$transaction_details .= __('Payment Details for','templatic-admin').": ".$post_name."<br/>\r\n";
 				$transaction_details .= "-------------------------------------------------- <br/>\r\n";
-				$transaction_details .= __('Package Name',ADMINDOMAIN).": ".$package_name->post_title."<br/>\r\n";
-				$transaction_details .= __('Status',ADMINDOMAIN).": ".$payment_status."<br/>\r\n";
-				$transaction_details .= __('Type',ADMINDOMAIN).": $payment_type <br/>\r\n";
-				$transaction_details .= __('Date',ADMINDOMAIN).": $payment_date <br/>\r\n";
+				$transaction_details .= __('Package Name','templatic-admin').": ".$package_name->post_title."<br/>\r\n";
+				$transaction_details .= __('Status','templatic-admin').": ".$payment_status."<br/>\r\n";
+				$transaction_details .= __('Type','templatic-admin').": $payment_type <br/>\r\n";
+				$transaction_details .= __('Date','templatic-admin').": $payment_date <br/>\r\n";
 				$transaction_details .= "-------------------------------------------------- <br/>\r\n";
 				$transaction_details = $transaction_details;
 				if((isset($_REQUEST['action']) && $_REQUEST['action'] == 'confirm' ) || (isset($_REQUEST['action2']) && $_REQUEST['action2'] == 'confirm' ))
@@ -1643,11 +1638,11 @@ function tevolution_transaction_msg_fn()
 					$subject = apply_filters('payment_success_email_subject_to_admin',$tmpdata['payment_success_email_subject_to_admin'],$orderinfo);
 					if(!$subject)
 					{
-						$subject = __("You have received a payment",ADMINDOMAIN);
+						$subject = __("You have received a payment",'templatic-admin');
 					}
 					$content = apply_filters('payment_success_email_content_to_admin',$tmpdata['payment_success_email_content_to_admin'],$orderinfo);
 					if(!$content){
-						$content = __("<p>Howdy [#to_name#],</p><p>A post has been approved of [#payable_amt#] on [#site_name#].",ADMINDOMAIN).' '.__('Details are available below',ADMINDOMAIN).'</p><p>[#transaction_details#]</p><p>'.__('Thanks,',ADMINDOMAIN).'<br/>[#site_name#]</p>';
+						$content = __("<p>Howdy [#to_name#],</p><p>A post has been approved of [#payable_amt#] on [#site_name#].",'templatic-admin').' '.__('Details are available below','templatic-admin').'</p><p>[#transaction_details#]</p><p>'.__('Thanks,','templatic-admin').'<br/>[#site_name#]</p>';
 					}
 				}
 				if((isset($_REQUEST['action']) && $_REQUEST['action'] == 'pending' ) || (isset($_REQUEST['action2']) && $_REQUEST['action2'] == 'pending' ))
@@ -1655,12 +1650,12 @@ function tevolution_transaction_msg_fn()
 					$subject = apply_filters('pending_listing_notification_subject',$tmpdata['pending_listing_notification_subject'],$orderinfo);
 					if(!$subject)
 					{
-						$subject = __("Listing payment not confirmed",ADMINDOMAIN);
+						$subject = __("Listing payment not confirmed",'templatic-admin');
 					}
 					$content = apply_filters('pending_listing_notification_content',$tmpdata['pending_listing_notification_content'],$orderinfo);
 					if(!$content)
 					{
-						$content = __("<p>Hi [#to_name#],<br />A listing request on the below details has been rejected.<p>[#transaction_details#]</p>Please try again later.<br />Thanks you.<br />[#site_name#]</p>",ADMINDOMAIN);
+						$content = __("<p>Hi [#to_name#],<br />A listing request on the below details has been rejected.<p>[#transaction_details#]</p>Please try again later.<br />Thanks you.<br />[#site_name#]</p>",'templatic-admin');
 					}
 				}
 				$store_name = '<a href="'.site_url().'">'.get_option('blogname').'</a>';
@@ -1683,21 +1678,21 @@ function tevolution_transaction_msg_fn()
 					$user_email = $userInfo->user_email;
 				
 				$transaction_details ="";
-				$transaction_details .= __('Information Submitted URL',ADMINDOMAIN)." <br/>\r\n";
+				$transaction_details .= __('Information Submitted URL','templatic-admin')." <br/>\r\n";
 				$transaction_details .= "-------------------------------------------------- <br/>\r\n";
 				$transaction_details .= "  $post_title <br/>\r\n";
-				$transaction_details = __($transaction_details,ADMINDOMAIN);
+				$transaction_details = __($transaction_details,'templatic-admin');
 				if((isset($_REQUEST['action']) && $_REQUEST['action'] == 'confirm' ) || (isset($_REQUEST['action2']) && $_REQUEST['action2'] == 'confirm' ))
 				{
 					$subject = apply_filters('tmpl_success_email_subject',$tmpdata['payment_success_email_subject_to_client'],$orderinfo);
 					if(!$subject)
 					{
-						$subject = __("Thank you for your submission!",ADMINDOMAIN);
+						$subject = __("Thank you for your submission!",'templatic-admin');
 					}
 					$content = apply_filters('tmpl_success_email_content_to_client',$tmpdata['payment_success_email_content_to_client'],$orderinfo);
 					if(!$content)
 					{
-						$content = __("<p>Hello [#to_name#],</p><p>Your submission has been approved! You can see the listing here:</p><p>[#transaction_details#]</p><p>If you'll have any questions about this please send an email to [#admin_email#]</p><p>Thanks!,<br/>[#site_name#]</p>",ADMINDOMAIN);
+						$content = __("<p>Hello [#to_name#],</p><p>Your submission has been approved! You can see the listing here:</p><p>[#transaction_details#]</p><p>If you'll have any questions about this please send an email to [#admin_email#]</p><p>Thanks!,<br/>[#site_name#]</p>",'templatic-admin');
 					}
 				}
 				if((isset($_REQUEST['action']) && $_REQUEST['action'] == 'pending' ) || (isset($_REQUEST['action2']) && $_REQUEST['action2'] == 'pending' ))
@@ -1705,12 +1700,12 @@ function tevolution_transaction_msg_fn()
 					$subject = apply_filters('pending_listing_notification_subject',$tmpdata['pending_listing_notification_subject'],$orderinfo);
 					if(!$subject)
 					{
-						$subject = __("Listing payment not confirmed",ADMINDOMAIN);
+						$subject = __("Listing payment not confirmed",'templatic-admin');
 					}
 					$content = apply_filters('pending_listing_notification_content',$tmpdata['pending_listing_notification_content'],$orderinfo);
 					if(!$content)
 					{
-						$content = __("<p>Hi [#to_name#],<br />A listing request on the below details has been rejected.<p>[#transaction_details#]</p>Please try again later.<br />Thanks you.<br />[#site_name#]</p>",ADMINDOMAIN);
+						$content = __("<p>Hi [#to_name#],<br />A listing request on the below details has been rejected.<p>[#transaction_details#]</p>Please try again later.<br />Thanks you.<br />[#site_name#]</p>",'templatic-admin');
 					}
 				}
 				if((isset($_REQUEST['action']) && $_REQUEST['action'] == 'cancel' ) || (isset($_REQUEST['action2']) && $_REQUEST['action2'] == 'cancel' ))
@@ -1718,12 +1713,12 @@ function tevolution_transaction_msg_fn()
 					$subject = apply_filters('tmpl_payment_cancelled_subject',$tmpdata['payment_cancelled_subject']);
 					if(!$subject)
 					{
-						$subject = __("Payment Cancelled",ADMINDOMAIN);
+						$subject = __("Payment Cancelled",'templatic-admin');
 					}
 					$content = apply_filters('tmpl_payment_cancelled_content',$tmpdata['payment_cancelled_content']);
 					if(!$content)
 					{
-						$content = __("<p>[#post_type#] has been cancelled with transaction id [#transection_id#]</p>",ADMINDOMAIN);
+						$content = __("<p>[#post_type#] has been cancelled with transaction id [#transection_id#]</p>",'templatic-admin');
 					}
 				}
 				$store_name = '<a href="'.site_url().'">'.get_option('blogname').'</a>';
@@ -1757,15 +1752,20 @@ function tevolution_transaction_msg_fn()
 				$package_type = get_post_meta($sql->package_id,'package_type',true);
 				if($package_type == 2){
 					$subscribe_post = $wpdb->get_results("SELECT * FROM $users_packageperlist WHERE user_id=".$cur_user_id." AND package_id=".$package_id." AND status=1 AND subscriber_id LIKE '".$subscriber_id."'");
+					
 					foreach($subscribe_post as $key=>$subscribe_post_object)
 					{
 						/* Update post */
 						$my_post = array();
 						$my_post['ID'] = $subscribe_post_object->post_id;
 						$my_post['post_status'] = 'draft';
-						
+						$post_type = get_post_type($subscribe_post_object->post_id);
 						/* Update the post into the database */
 						wp_update_post( $my_post );
+						/* delete user details while delete the transaction */
+						update_user_meta($subscribe_post_object->user_id,'sub_id','');
+						update_user_meta($subscribe_post_object->user_id,'package_selected','');
+						update_user_meta($subscribe_post_object->user_id,$post_type.'_list_of_post',0);
 					}
 				}
 			}

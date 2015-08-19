@@ -8,7 +8,7 @@ header('Content-Disposition: inline; filename="transaction.csv"');
 require("../../../../../../wp-load.php");
 session_start();
 global $wpdb,$current_user,$transection_db_table_name,$qry_string;
-echo __("Title,Payment package,Paid On,Billing Name,Payment Method,Amount",ADMINDOMAIN)."\r\n";
+echo __("Title,Payment package,Paid On,Billing Name,Payment Method,Amount",'templatic-admin')."\r\n";
 $transinfo = $wpdb->get_results($_SESSION['query_string']);
 $totamt=0;
 if($transinfo)
@@ -31,6 +31,6 @@ echo " , , , ,Total Amount :, ".fetch_currency_with_position($totamt)."\r\n";
 
 }else
 {
-echo __("No record available",ADMINDOMAIN);
+echo __("No record available",'templatic-admin');
 
 }?>

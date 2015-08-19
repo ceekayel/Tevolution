@@ -63,7 +63,7 @@ function display_custom_category_name($custom_metaboxes,$session_variable,$taxon
 		{ 
 		 ?>
 		 <div class="form_row clearfix categories_selected">
-			<label><?php echo __('Category',DOMAIN); ?></label>
+			<label><?php echo __('Category','templatic'); ?></label>
              <div class="category_label">
 			 <?php 			
 				 for($i=0;$i<count($session_variable);$i++)
@@ -98,7 +98,7 @@ function display_custom_category_name($custom_metaboxes,$session_variable,$taxon
 		}
 			if(!isset($_REQUEST['pid']) || (isset($_REQUEST['renew']) && $_REQUEST['renew'] == 1)){
 			?>
-			  <a href="<?php echo $gobacklink; ?>" class="btn_input_normal fl" ><?php _e('Go back and edit',DOMAIN);?></a>
+			  <a href="<?php echo $gobacklink; ?>" class="btn_input_normal fl" ><?php _e('Go back and edit','templatic');?></a>
 			<?php } ?>
 		
 		</div>   	
@@ -219,7 +219,7 @@ function display_usermeta_fields($user_meta_array)
 	if($val['type']=='catdropdown')
 	{
 		$cat_args = array('name' => 'post_category', 'id' => 'post_category_0', 'selected' => $fval, 'class' => 'textfield', 'orderby' => 'name', 'echo' => '0', 'hierarchical' => 1, 'taxonomy'=>CUSTOM_CATEGORY_TYPE1);
-		$cat_args['show_option_none'] = __('Select Category',DOMAIN);
+		$cat_args['show_option_none'] = __('Select Category','templatic');
 		$str .=wp_dropdown_categories(apply_filters('widget_categories_dropdown_args', $cat_args));
 		if($val['is_require'])
 		{
@@ -354,8 +354,8 @@ function display_usermeta_fields($user_meta_array)
 	}
 	
 	if (function_exists('icl_register_string')) {		
-			icl_register_string(DOMAIN, $val['type'].'_'.$key,$val['label']);	
-			$val['label'] = icl_t(DOMAIN, $val['type'].'_'.$key,$val['label']);
+			icl_register_string('templatic', $val['type'].'_'.$key,$val['label']);	
+			$val['label'] = icl_t('templatic', $val['type'].'_'.$key,$val['label']);
 	   }
 	if($val['is_require'])
 	{
@@ -870,109 +870,110 @@ function do_daily_schedule_expire_session(){
 	$table_name = $table_prefix . "post_expire_session";
 	$transection_db_table_name = $wpdb->prefix.'transactions'; 
 	$current_date = date_i18n('Y-m-d',strtotime(date('Y-m-d')));	
-	
-	$today_executed = $wpdb->get_var("select session_id from $table_name where execute_date='".$current_date."'");	
-	if($today_executed && $today_executed>0){
-		/* if one time execution in a day is done then do nothing */
-	}else{ 
-			$tmpdata = get_option('templatic_settings');
-			$listing_email_notification = @$tmpdata['listing_email_notification'];
-			if($listing_email_notification != ""){
-				$number_of_grace_days = $listing_email_notification;
-				$postid_str = $wpdb->get_results("select p.ID,p.post_author,p.post_date, p.post_title,t.payment_date,t.post_id from $wpdb->posts p,$transection_db_table_name t where p.ID = t.post_id and p.post_status='publish' AND (t.package_type is NULL OR t.package_type=0) and datediff('".$current_date."',date_format(t.payment_date,'%Y-%m-%d')) = (select meta_value from $wpdb->postmeta pm where post_id=p.ID  and meta_key='alive_days')-$number_of_grace_days ");
-				foreach($postid_str as $postid_str_obj)
-				{
-					$ID = $postid_str_obj->ID;
-					/*fetch current date*/
-					$current_day = strtotime(date('Y-m-d h:i:s'));
-					/*fetch payment date*/
-					$payment_date = strtotime($postid_str_obj->payment_date);
-					/*fetch post alive days*/
-					$alive_days = get_post_meta($ID,'alive_days',true);
-					/*fetch post package id*/
-					$package_select = get_post_meta($ID,'package_select',true);
-					/*check package is recurring or not*/
-					$recurring = get_post_meta($package_select,'recurring',true);
-					/*fetch billing cycle for recurring price package*/
-					$billing_cycle = get_post_meta($package_select,'billing_cycle',true);
-					
-					$seconds_diff = $current_day - $payment_date;
-					/*day difference between current date and post date*/
-					$post_day = floor($seconds_diff/3600/24);
-					/*fetch package type for particular post*/
-					$package_type = get_post_meta($package_select,'package_type',true);
-					
-					/*fetch post date*/
-					$publish_date = strtotime(get_post_meta($ID,'publish_date',true));
-					
-					$recurring_seconds_diff = $current_day - $publish_date;
-					/*day difference between current date and post date*/
-					$recurring_post_day = floor($recurring_seconds_diff/3600/24);
-					
-					/*if current post is recurring than does not send mail to user until price package gets expired*/
-					if(@$recurring == 1 && $post_day <= (($alive_days *  $billing_cycle )-$number_of_grace_days) && $package_type == 2 )
-					{
-						continue;
-					}
-					if(@$recurring == 1 && $recurring_post_day < (($alive_days *  $billing_cycle )-$number_of_grace_days) && $package_type == 1 )
-					{
-						continue;
-					}
-					$paid_date = $wpdb->get_var("select payment_date from $transection_db_table_name t where post_id = '".$ID."' AND (t.package_type is NULL OR t.package_type=0) order by t.trans_id DESC"); /* change it to calculate expired day as per transactions */
-					$auth_id = $postid_str_obj->post_author;
-					$post_author = $postid_str_obj->post_author;
-					$post_date = date_i18n(get_option('date_format'),strtotime($postid_str_obj->post_date));
-					$paid_on = date_i18n(get_option('date_format'),strtotime($paid_date));
-					$post_title = $postid_str_obj->post_title;
-					$userinfo = $wpdb->get_results("select user_email,display_name,user_login from $wpdb->users where ID=\"$auth_id\"");
-					
-					do_action('tmpl_post_expired_beforemail',$postid_str_obj);
-					
-					$user_email = $userinfo[0]->user_email;
-					$display_name = $userinfo[0]->display_name;
-					$user_login = $userinfo[0]->user_login;
-					
-					$fromEmail = get_site_emailId_plugin();
-					$fromEmailName = get_site_emailName_plugin();
-					$store_name = '<a href="'.home_url().'">'.get_option('blogname').'</a>';
-					$alivedays = get_post_meta($ID,'alive_days',true);
-					$productlink = get_permalink($ID);
-					$loginurl = get_tevolution_login_permalink();
-					$siteurl = home_url();
-					$client_message = $tmpdata['listing_expiration_content'];
-					if(!$client_message)
-					{
-						$client_message ="<p>Dear [#user_login#],<p><p>Your listing -<b>[#post_title#]</b> posted on [#post_date#] and paid on [#transection_date#] for [#alivedays#] days.</p><p>Is going to expire in [#days_left#] day(s). Once the listing expires, it will no longer appear on the site.</p><p> In case you wish to renew this listing, please login to your member area on our site and renew it as soon as it expires. You can login on the following link [#site_login_url_link#].</p><p>Your login ID is <b>[#user_login#]</b> and Email ID is <b>[#user_email#]</b>.</p><p>Thank you,<br />[#site_name#].</p>";
-					}
-					$search_array = array('[#user_login#]','[#post_link#]','[#post_title#]','[#post_date#]','[#transection_date#]','[#alivedays#]','[#days_left#]','[#site_login_url_link#]','[#user_login#]','[#user_email#]','[#site_name#]');
-					$replace_array = array($display_name,$productlink,$post_title,$post_date,$paid_on,$alivedays,$number_of_grace_days,$loginurl,$user_login,$user_email,$store_name);
-					$client_message=str_replace($search_array,$replace_array,$client_message);
-					$subject = $tmpdata['listing_expiration_subject'];
-					if(!$subject)
-					{
-						$subject = "Listing expiration Notification";
-					}
-					templ_send_email($fromEmail,$fromEmailName,$user_email,$display_name,$subject,stripslashes($client_message),$extra='');
-					do_action('tmpl_post_expired_aftermail');
-				}
-			}			
-			
-			$postid_str = $wpdb->get_var("select group_concat(p.ID),t.payment_date,t.post_id from $wpdb->posts p,$transection_db_table_name t where  p.ID = t.post_id and p.post_status='publish'  and datediff('".$current_date."',date_format(t.payment_date,'%Y-%m-%d')) = (select meta_value from $wpdb->postmeta pm where post_id=p.ID  and meta_key='alive_days')");
-	
-			if($postid_str)
-			{
+	if($wpdb->query("SHOW TABLES LIKE '".$table_name."'")==1):
+		$today_executed = $wpdb->get_var("select session_id from $table_name where execute_date='".$current_date."'");	
+		if($today_executed && $today_executed>0){
+			/* if one time execution in a day is done then do nothing */
+		}else{ 
 				$tmpdata = get_option('templatic_settings');
-				$listing_ex_status = $tmpdata['post_listing_ex_status'];
-				if($listing_ex_status=='')
-				{
-					$listing_ex_status = 'draft';
-				}
-				$wpdb->query("update $wpdb->posts set post_status=\"$listing_ex_status\" where ID in ($postid_str)");
-			}
-	
-			$wpdb->query("insert into $table_name (execute_date,is_run) values ('".$current_date."','1')");
+				$listing_email_notification = @$tmpdata['listing_email_notification'];
+				if($listing_email_notification != ""){
+					$number_of_grace_days = $listing_email_notification;
+					$postid_str = $wpdb->get_results("select p.ID,p.post_author,p.post_date, p.post_title,t.payment_date,t.post_id from $wpdb->posts p,$transection_db_table_name t where p.ID = t.post_id and p.post_status='publish' AND (t.package_type is NULL OR t.package_type=0) and datediff('".$current_date."',date_format(t.payment_date,'%Y-%m-%d')) = (select meta_value from $wpdb->postmeta pm where post_id=p.ID  and meta_key='alive_days')-$number_of_grace_days ");
+					foreach($postid_str as $postid_str_obj)
+					{
+						$ID = $postid_str_obj->ID;
+						/*fetch current date*/
+						$current_day = strtotime(date('Y-m-d h:i:s'));
+						/*fetch payment date*/
+						$payment_date = strtotime($postid_str_obj->payment_date);
+						/*fetch post alive days*/
+						$alive_days = get_post_meta($ID,'alive_days',true);
+						/*fetch post package id*/
+						$package_select = get_post_meta($ID,'package_select',true);
+						/*check package is recurring or not*/
+						$recurring = get_post_meta($package_select,'recurring',true);
+						/*fetch billing cycle for recurring price package*/
+						$billing_cycle = get_post_meta($package_select,'billing_cycle',true);
+						
+						$seconds_diff = $current_day - $payment_date;
+						/*day difference between current date and post date*/
+						$post_day = floor($seconds_diff/3600/24);
+						/*fetch package type for particular post*/
+						$package_type = get_post_meta($package_select,'package_type',true);
+						
+						/*fetch post date*/
+						$publish_date = strtotime(get_post_meta($ID,'publish_date',true));
+						
+						$recurring_seconds_diff = $current_day - $publish_date;
+						/*day difference between current date and post date*/
+						$recurring_post_day = floor($recurring_seconds_diff/3600/24);
+						
+						/*if current post is recurring than does not send mail to user until price package gets expired*/
+						if(@$recurring == 1 && $post_day <= (($alive_days *  $billing_cycle )-$number_of_grace_days) && $package_type == 2 )
+						{
+							continue;
+						}
+						if(@$recurring == 1 && $recurring_post_day < (($alive_days *  $billing_cycle )-$number_of_grace_days) && $package_type == 1 )
+						{
+							continue;
+						}
+						$paid_date = $wpdb->get_var("select payment_date from $transection_db_table_name t where post_id = '".$ID."' AND (t.package_type is NULL OR t.package_type=0) order by t.trans_id DESC"); /* change it to calculate expired day as per transactions */
+						$auth_id = $postid_str_obj->post_author;
+						$post_author = $postid_str_obj->post_author;
+						$post_date = date_i18n(get_option('date_format'),strtotime($postid_str_obj->post_date));
+						$paid_on = date_i18n(get_option('date_format'),strtotime($paid_date));
+						$post_title = $postid_str_obj->post_title;
+						$userinfo = $wpdb->get_results("select user_email,display_name,user_login from $wpdb->users where ID=\"$auth_id\"");
+						
+						do_action('tmpl_post_expired_beforemail',$postid_str_obj);
+						
+						$user_email = $userinfo[0]->user_email;
+						$display_name = $userinfo[0]->display_name;
+						$user_login = $userinfo[0]->user_login;
+						
+						$fromEmail = get_site_emailId_plugin();
+						$fromEmailName = get_site_emailName_plugin();
+						$store_name = '<a href="'.home_url().'">'.get_option('blogname').'</a>';
+						$alivedays = get_post_meta($ID,'alive_days',true);
+						$productlink = get_permalink($ID);
+						$loginurl = get_tevolution_login_permalink();
+						$siteurl = home_url();
+						$client_message = $tmpdata['listing_expiration_content'];
+						if(!$client_message)
+						{
+							$client_message ="<p>Dear [#user_login#],<p><p>Your listing -<b>[#post_title#]</b> posted on [#post_date#] and paid on [#transection_date#] for [#alivedays#] days.</p><p>Is going to expire in [#days_left#] day(s). Once the listing expires, it will no longer appear on the site.</p><p> In case you wish to renew this listing, please login to your member area on our site and renew it as soon as it expires. You can login on the following link [#site_login_url_link#].</p><p>Your login ID is <b>[#user_login#]</b> and Email ID is <b>[#user_email#]</b>.</p><p>Thank you,<br />[#site_name#].</p>";
+						}
+						$search_array = array('[#user_login#]','[#post_link#]','[#post_title#]','[#post_date#]','[#transection_date#]','[#alivedays#]','[#days_left#]','[#site_login_url_link#]','[#user_login#]','[#user_email#]','[#site_name#]');
+						$replace_array = array($user_login,$productlink,$post_title,$post_date,$paid_on,$alivedays,$number_of_grace_days,$loginurl,$user_login,$user_email,$store_name);
+						$client_message=str_replace($search_array,$replace_array,$client_message);
+						$subject = $tmpdata['listing_expiration_subject'];
+						if(!$subject)
+						{
+							$subject = "Listing expiration Notification";
+						}
+						templ_send_email($fromEmail,$fromEmailName,$user_email,$display_name,$subject,stripslashes($client_message),$extra='');
+						do_action('tmpl_post_expired_aftermail');
+					}
+				}			
+				
+				$postid_str = $wpdb->get_var("select group_concat(p.ID),t.payment_date,t.post_id from $wpdb->posts p,$transection_db_table_name t where  p.ID = t.post_id and p.post_status='publish'  and datediff('".$current_date."',date_format(t.payment_date,'%Y-%m-%d')) = (select DISTINCT meta_value from $wpdb->postmeta pm where post_id=p.ID  and meta_key='alive_days')");
 		
-	}
+				if($postid_str)
+				{
+					$tmpdata = get_option('templatic_settings');
+					$listing_ex_status = $tmpdata['post_listing_ex_status'];
+					if($listing_ex_status=='')
+					{
+						$listing_ex_status = 'draft';
+					}
+					$wpdb->query("update $wpdb->posts set post_status=\"$listing_ex_status\" where ID in ($postid_str)");
+				}
+		
+				$wpdb->query("insert into $table_name (execute_date,is_run) values ('".$current_date."','1')");
+			
+		}
+	endif;
 }
 add_action( 'wp_footer', 'do_daily_schedule_expire_session' );
 add_action( 'init', 'tevolution_daily_schedule_expire_session' );
@@ -1047,7 +1048,10 @@ function tevolution_submition_success_msg_fn(){
 	}
 	
 	if($paidamount !='')
+	{
+		$paidamount = str_replace(",", "", $paidamount);
 		$paid_amount = display_amount_with_currency_plugin($paidamount);
+	}
 	
 	
 	$permalink = get_permalink($_REQUEST['pid']);
@@ -1065,7 +1069,7 @@ function tevolution_submition_success_msg_fn(){
 		$suc_post = get_post($_REQUEST['pid']);
 	}
 	if($post_default_status == 'publish' && $post_status == 'publish'){
-		$post_link = "<a href='".get_permalink($_REQUEST['pid'])."'>".__("Click here",DOMAIN)."</a> ".__('for a preview of the submitted content.',DOMAIN);
+		$post_link = "<a href='".get_permalink($_REQUEST['pid'])."'>".__("Click here",'templatic')."</a> ".__('for a preview of the submitted content.','templatic');
 	}else{
 		$post_link = '';
 	}
@@ -1094,31 +1098,31 @@ function tevolution_submition_success_msg_fn(){
 	{
 		$filecontent = stripslashes($theme_settings['post_added_success_msg_content']);
 		if (function_exists('icl_register_string')) {
-			$filecontent = icl_t(DOMAIN, 'post_added_success_msg_content',$filecontent);
+			$filecontent = icl_t('templatic', 'post_added_success_msg_content',$filecontent);
 		}
 		if(!$filecontent){
-			$filecontent = '<p class="sucess_msg_prop">'.__('Submission received successfully, thank you for listing with us.',DOMAIN).'</p>[#submited_information_link#]';
+			$filecontent = '<p class="sucess_msg_prop">'.__('Submission received successfully, thank you for listing with us.','templatic').'</p>[#submited_information_link#]';
 		}
 		
 	}
 	elseif($_REQUEST['action']=='edit' && !isset($_REQUEST['upgrade'])){
-		$filecontent = '<p class="sucess_msg_prop">'.sprintf(__('Thank you for submitting your %s at our site, your %s request has been updated successfully.',DOMAIN),$suc_post->post_type,$suc_post->post_type).'</p><p>[#submited_information_link#]</p>';
+		$filecontent = '<p class="sucess_msg_prop">'.sprintf(__('Thank you for submitting your %s at our site, your %s request has been updated successfully.','templatic'),$suc_post->post_type,$suc_post->post_type).'</p><p>[#submited_information_link#]</p>';
 	}elseif($paymentmethod == 'prebanktransfer' && $_REQUEST['action']!='edit'){
 		if (function_exists('icl_register_string')) 
 		{
-			$filecontent = icl_t(DOMAIN, 'post_pre_bank_trasfer_msg_content',$theme_settings['post_pre_bank_trasfer_msg_content']);
+			$filecontent = icl_t('templatic', 'post_pre_bank_trasfer_msg_content',$theme_settings['post_pre_bank_trasfer_msg_content']);
 		}
 		else
 		{
 			$filecontent .= stripslashes($theme_settings['post_pre_bank_trasfer_msg_content']);
 		}		
 		if(!stripslashes($theme_settings['post_pre_bank_trasfer_msg_content'])){
-			$filecontent .= '<p>'.__("To complete the transaction, please transfer the amount of ",DOMAIN).' <b>[#payable_amt#] </b> ';
-			$filecontent .=__("to our bank account on the details below.",DOMAIN).'</p>';
-			$filecontent .='<p>'.__("Bank Name:",DOMAIN).' <b>[#bank_name#]</b></p><p>';
-			$filecontent .=__("Account Number:",DOMAIN).' <b>[#account_number#]</b></p><p>';
-			$filecontent .=__("Please include the number ",DOMAIN).'<b> [#submition_Id#]</b>'. __(" as the reference for the transaction.",DOMAIN) .'</p><p>[#submited_information_link#] </p><p>';
-			$filecontent .=__("Thank you!",DOMAIN).'<br/>[#site_name#].</p>';
+			$filecontent .= '<p>'.__("To complete the transaction, please transfer the amount of ",'templatic').' <b>[#payable_amt#] </b> ';
+			$filecontent .=__("to our bank account on the details below.",'templatic').'</p>';
+			$filecontent .='<p>'.__("Bank Name:",'templatic').' <b>[#bank_name#]</b></p><p>';
+			$filecontent .=__("Account Number:",'templatic').' <b>[#account_number#]</b></p><p>';
+			$filecontent .=__("Please include the number ",'templatic').'<b> [#submition_Id#]</b>'. __(" as the reference for the transaction.",'templatic') .'</p><p>[#submited_information_link#] </p><p>';
+			$filecontent .=__("Thank you!",'templatic').'<br/>[#site_name#].</p>';
 			
 			$user_limit_post=get_user_meta($current_user->ID,$post_type.'_list_of_post',true); /*get the user wise limit post count on price package select*/
 			if(!$user_limit_post)	
@@ -1128,16 +1132,16 @@ function tevolution_submition_success_msg_fn(){
 			$user_have_days = $monetization->templ_days_for_packagetype($current_user->ID,$post_type); /* return alive days(numbers) of last selected package  */
 			$is_user_have_alivedays = $monetization->is_user_have_alivedays($current_user->ID,$post_type); /* return user have an alive days or not true/false */
 			$is_user_package_have_alivedays = $monetization->is_user_package_have_alivedays($current_user->ID,$post_type,$package_id); /* return user have an alive days or not true/false */
-			/*$filecontent .= '<p class="sucess_msg_prop">'.__('You have successfully subscribed to a membership package.Here are the details,',DOMAIN).'</p>'; */
+			/*$filecontent .= '<p class="sucess_msg_prop">'.__('You have successfully subscribed to a membership package.Here are the details,','templatic').'</p>'; */
 			
 		}
 	}else{		
 		$filecontent = stripslashes($theme_settings['post_added_success_msg_content']);
 		if (function_exists('icl_register_string')) {
-			$filecontent = icl_t(DOMAIN, 'post_added_success_msg_content',$filecontent);
+			$filecontent = icl_t('templatic', 'post_added_success_msg_content',$filecontent);
 		}
 		if(!$filecontent){
-			$filecontent = __(POST_SUCCESS_MSG,DOMAIN);
+			$filecontent = __(POST_SUCCESS_MSG,'templatic');
 		}
 	}
 	tmpl_show_succes_page_info($current_user->ID,$post_type,$package_id,$payment_method_name);
@@ -1145,7 +1149,7 @@ function tevolution_submition_success_msg_fn(){
 		$submit_form_package_url = '';
 		$tevolution_post_type = tevolution_get_post_type();
 		$submit_form_package_url='<ul>';
-		$submit_form_package_url .= '<li class="sucess_msg_prop">'.'<a class="button" target="_blank" href="'.get_author_posts_url($current_user->ID).'">'.__('Your Profile',DOMAIN).'</a></li>';
+		$submit_form_package_url .= '<li class="sucess_msg_prop">'.'<a class="button" target="_blank" href="'.get_author_posts_url($current_user->ID).'">'.__('Your Profile','templatic').'</a></li>';
 		foreach($tevolution_post_type as $post_type)
 		{
 			if($post_type != 'admanager')
@@ -1205,9 +1209,17 @@ function tevolution_show_term_and_condition()
              <input name="term_and_condition" id="term_and_condition" value="" type="checkbox" class="chexkbox" onclick="hide_error()"/>
             <label for="term_and_condition">&nbsp;
              <?php if(isset($tmpdata['term_condition_content']) && $tmpdata['term_condition_content']!=''){
-                    echo stripslashes($tmpdata['term_condition_content']); 
+				 	 if (function_exists('icl_register_string')){
+						icl_register_string('templatic', 'term_condition',stripslashes($tmpdata['term_condition_content']));
+						$term_condition = icl_t('templatic', 'term_condition',stripslashes($tmpdata['term_condition_content']));
+						echo stripslashes($term_condition); 
+				   }
+				   else
+				   {
+	                   echo stripslashes($tmpdata['term_condition_content']); 
+				   }
              }else{
-                _e('Accept Terms and Conditions.',DOMAIN);
+                _e('Accept Terms and Conditions.','templatic');
              }?></label>
              <span class="error message_error2" id="terms_error"></span>
         </div>            
@@ -1223,7 +1235,7 @@ function tevolution_submition_success_post_submited_content()
 	?>
      <!-- Short Detail of post -->
 	<div class="submit_info_section sis_on_submitinfo">
-		<h3><?php _e(POST_DETAIL,DOMAIN);?></h3>
+		<h3><?php _e(POST_DETAIL,'templatic');?></h3>
 	</div>
     <div class="submited_info">
 	<?php
@@ -1276,7 +1288,7 @@ function tevolution_submition_success_post_submited_content()
 		  {
 			echo "<div class='grid02 rc_rightcol clearfix'>";
 			echo "<ul class='list'>";
-			printf( __( '<li><p class="submit_info_label">'.__('Title',DOMAIN).':</p> <p class="submit_info_detail"> %s </p></li>', DOMAIN ),  stripslashes($suc_post->post_title)  ); 
+			printf( __( '<li><p class="submit_info_label">'.__('Title','templatic').':</p> <p class="submit_info_detail"> %s </p></li>', 'templatic' ),  stripslashes($suc_post->post_title)  ); 
 			
 			while ($post_meta_info->have_posts()) : $post_meta_info->the_post();
 				$post->post_name=get_post_meta(get_the_ID(),'htmlvar_name',true);
@@ -1385,7 +1397,7 @@ function tevolution_submition_success_post_submited_content()
 						 {
 						   if(get_post_meta($post->ID,'ctype',true) == 'upload')
 							{
-							  echo "<li><p class='submit_info_label'>".stripslashes($post->post_title).": </p> <p class='submit_info_detail'>".__('Click here to download File',ADMINDOMAIN)."<a href=".get_post_meta($_REQUEST['pid'],$post->post_name,true).">Download</a></p></li>";
+							  echo "<li><p class='submit_info_label'>".stripslashes($post->post_title).": </p> <p class='submit_info_detail'>".__('Click here to download File','templatic-admin')."<a href=".get_post_meta($_REQUEST['pid'],$post->post_name,true).">Download</a></p></li>";
 							}
 						   else
 							{
@@ -1438,21 +1450,21 @@ function tevolution_submition_success_post_submited_content()
 					}
 					$package_type = get_post_meta($package_name->ID,'package_type',true);
 					if($package_type  ==2){
-						$pkg_type = __('Subscription',DOMAIN); 
+						$pkg_type = __('Subscription','templatic'); 
 					}else{ 
-						$pkg_type = __('Single Submission',DOMAIN); 
+						$pkg_type = __('Single Submission','templatic'); 
 					} ?>
-					<li><p class="submit_info_label"><?php _e('Package Type',DOMAIN);?>: </p> <p class="submit_info_detail"> <?php echo $pkg_type;?></p></li>
+					<li><p class="submit_info_label"><?php _e('Package Type','templatic');?>: </p> <p class="submit_info_detail"> <?php echo $pkg_type;?></p></li>
 				 
 		<?php
 			}
 			if(get_post_meta($_REQUEST['pid'],'alive_days',true))
 			{
-				 echo "<li><p class='submit_info_label'>"; _e('Validity',DOMAIN); echo ": </p> <p class='submit_info_detail'> ".get_post_meta($_REQUEST['pid'],'alive_days',true).' '; _e('Days',DOMAIN); echo "</p></li>";
+				 echo "<li><p class='submit_info_label'>"; _e('Validity','templatic'); echo ": </p> <p class='submit_info_detail'> ".get_post_meta($_REQUEST['pid'],'alive_days',true).' '; _e('Days','templatic'); echo "</p></li>";
 			}
 			if(get_user_meta($suc_post->post_author,'list_of_post',true))
 			{
-				 echo "<li><p class='submit_info_label'>"; _e('Number of Posts',DOMAIN).": </p> <p class='submit_info_detail'> ".get_user_meta($suc_post->post_author,'list_of_post',true)."</p></li>";
+				 echo "<li><p class='submit_info_label'>"; _e('Number of Posts','templatic').": </p> <p class='submit_info_detail'> ".get_user_meta($suc_post->post_author,'list_of_post',true)."</p></li>";
 			}
 			if(get_post_meta(get_post_meta($_REQUEST['pid'],'package_select',true),'recurring',true))
 			{
@@ -1460,7 +1472,7 @@ function tevolution_submition_success_post_submited_content()
 				//print_r($package_name);
 				
 				$package_amount = get_post_meta($package_name->ID,'package_amount',true);
-				 echo "<li><p class='submit_info_label'>"; _e('Recurring Charges',DOMAIN).": </p>";
+				 echo "<li><p class='submit_info_label'>"; _e('Recurring Charges','templatic').": </p>";
 			
 				 echo "<p class='submit_info_detail'> ".fetch_currency_with_symbol($package_amount)."</p></li>";
 			}
@@ -1476,7 +1488,7 @@ function tevolution_submition_success_post_submited_content()
 	<?php if(isset($suc_post_con)): ?>
 			  <div class="title_space">
 				 <div class="submit_info_section">
-					<h3><?php _e('Post Description', DOMAIN);?></h3>
+					<h3><?php _e('Post Description', 'templatic');?></h3>
 				 </div>
 				 <p><?php echo nl2br($suc_post_con); ?></p>
 			  </div>
@@ -1485,7 +1497,7 @@ function tevolution_submition_success_post_submited_content()
 	if(isset($suc_post_excerpt)): ?>
 				<div class="title_space">
 					<div class="submit_info_section">
-						<h3><?php _e('Post Excerpt',DOMAIN);?></h3>
+						<h3><?php _e('Post Excerpt','templatic');?></h3>
 					</div>
 					<p><?php echo nl2br($suc_post_excerpt); ?></p>
 				</div>
@@ -1496,9 +1508,9 @@ function tevolution_submition_success_post_submited_content()
 	?>
 			<div class="title_space">
 				<div class="submit_info_section">
-					<h3><?php _e('Map',DOMAIN); ?></h3>
+					<h3><?php _e('Map','templatic'); ?></h3>
 				</div>
-				<p><strong><?php _e('Location',DOMAIN); echo ": "; echo $add_str;?></strong></p>
+				<p><strong><?php _e('Location','templatic'); echo ": "; echo $add_str;?></strong></p>
 			</div>
 			<div id="gmap" class="graybox img-pad">
 				<?php if($geo_longitude &&  $geo_latitude): 
@@ -1515,14 +1527,13 @@ function tevolution_submition_success_post_submited_content()
 						require_once (TEMPL_MONETIZE_FOLDER_PATH . 'templatic-custom_fields/preview_map.php');
 						$retstr ="";
 						$link = get_permalink($_REQUEST['pid']);
-						$retstr .= "<div class=\"google-map-info map-image\"><div class=map-inner-wrapper><div class=map-item-info><div class=map-item-img><a href=\"$link\"><img src=\"$pimg\" width=\"150\" height=\"150\" alt=\"\" /></a></div>";
+						$retstr .= "<div class=\"map_infobubble map_popup\"><div class=\"google-map-info map-image\"><div class=map-inner-wrapper><div class=map-item-info><div class=map-item-img><a href=\"$link\"><img src=\"$pimg\" width=\"150\" height=\"150\" alt=\"\" /></a></div>";
                               $retstr .= "<h6><a href=\'".get_permalink($_REQUEST['pid'])."\' class=\"ptitle\" ><span>$title</span></a></h6>";
                               if($address){$retstr .= "<p class=address>$address</p>";}
 						if($contact){$retstr .= '<p class=contact>'.$contact.'</p>';}
 						if($website){$retstr .= '<p class=website><a href= '.$website.'>'.$website.'</a></p>';}
-						$retstr .= "</div></div></div>";
-						
-						
+						$retstr .= "</div></div></div></div>";
+
 						preview_address_google_map_plugin($geo_latitude,$geo_longitude,$retstr,$map_view);
 					  else:
 				?>
@@ -1560,7 +1571,7 @@ function callback_on_footer_fn(){ ?>
 		var is_safari = navigator.userAgent.indexOf("Safari") > -1;
 		if ((is_chrome)&&(is_safari)) {is_safari=false;}
 		if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
-			jQuery("#safari_error").html("<?php _e("Safari will allow you to upload only one image, so we suggest you use some other browser.",DOMAIN);?>");
+			jQuery("#safari_error").html("<?php _e("Safari will allow you to upload only one image, so we suggest you use some other browser.",'templatic');?>");
 		}
 	</script>
 <?php }
@@ -1634,10 +1645,10 @@ function tevolution_post_detail_after_singular()
 				if($_htmlvar_name['type'] == 'multicheckbox' && get_post_meta($post->ID,$key,true) !=''):
 					if($r==0){
 						 if( $mainkey == '[#taxonomy_name#]' ){
-						 	echo '<h3>'.ucfirst($post_type).' ';_e("Information",DOMAIN);echo '</h3>';
+						 	echo '<h3>'.ucfirst($post_type).' ';_e("Information",'templatic');echo '</h3>';
 							$r++;
 						 }else{
-						 	echo '<h3>';_e($mainkey,DOMAIN);echo '</h3>';
+						 	echo '<h3>';_e($mainkey,'templatic');echo '</h3>';
 							$r++;
 						 }
 					}
@@ -1646,24 +1657,24 @@ function tevolution_post_detail_after_singular()
 	               <?php elseif($_htmlvar_name['type']=='upload' && get_post_meta($post->ID,$key,true) !=''):
 						if($r==0){
 							 if( $mainkey == '[#taxonomy_name#]' ){
-							 	echo '<h3>'.ucfirst($PostTypeLabelName).' ';_e("Information",DOMAIN);echo '</h3>';
+							 	echo '<h3>'.ucfirst($PostTypeLabelName).' ';_e("Information",'templatic');echo '</h3>';
 								$r++;
 							 }else{
-							 	echo '<h3>';_e($mainkey,DOMAIN);echo '</h3>';
+							 	echo '<h3>';_e($mainkey,'templatic');echo '</h3>';
 								$r++;
 							 }
 						}
 			?>
-               	 		<li><label><?php echo $_htmlvar_name['label']; ?> </label>: <span> <?php echo __('Click here to download File',ADMINDOMAIN); ?> <a href="<?php echo stripslashes(get_post_meta($post->ID,$key,true)); ?>">Download</a></span></li>
+               	 		<li><label><?php echo $_htmlvar_name['label']; ?> </label>: <span> <?php echo __('Click here to download File','templatic-admin'); ?> <a href="<?php echo stripslashes(get_post_meta($post->ID,$key,true)); ?>">Download</a></span></li>
 			<?php else: 
 					/* else start */					
 					if(get_post_meta($post->ID,$key,true) !=''):
 						if($r==0){
 							 if( $mainkey == '[#taxonomy_name#]' ){
-							 	echo '<h3>'.ucfirst($PostTypeLabelName).' ';_e("Information",DOMAIN);echo '</h3>';
+							 	echo '<h3>'.ucfirst($PostTypeLabelName).' ';_e("Information",'templatic');echo '</h3>';
 								$r++;
 							 }else{
-							 	echo '<h3>';_e($mainkey,DOMAIN);echo '</h3>';
+							 	echo '<h3>';_e($mainkey,'templatic');echo '</h3>';
 								$r++;
 							 }
 						}
@@ -1896,7 +1907,7 @@ function tmpl_get_single_page_customfields_details($post_type,$heading='',$headi
 /*
  * detail page show categories and tags 
  */
-define('TMPL_CATEGORY_LABEL', __('Posted In ',DOMAIN));
+define('TMPL_CATEGORY_LABEL', __('Posted In ','templatic'));
 function tmpl_get_the_posttype_taxonomies($label,$tax,$title = TMPL_CATEGORY_LABEL)
 {
 	global $post;
@@ -1914,7 +1925,7 @@ function tmpl_get_the_posttype_taxonomies($label,$tax,$title = TMPL_CATEGORY_LAB
 		}
 		elseif($i == ( count($terms) - 2))
 		{
-			$sep = __(' and ',DIR_DOMAIN);
+			$sep = __(' and ','templatic');
 		}
 		$term_link = get_term_link( $term, $taxonomies[0] );
 		if( is_wp_error( $term_link ) )
@@ -1925,7 +1936,7 @@ function tmpl_get_the_posttype_taxonomies($label,$tax,$title = TMPL_CATEGORY_LAB
 	if(!empty($terms))
 	{
 		$category_html = '<p class="bottom_line"><span class="i_category"><span>';
-		$category_html .=  __('Posted In',DOMAIN).' '.$taxonomy_category;
+		$category_html .=  __('Posted In','templatic').' '.$taxonomy_category;
 		$category_html.= '</span></span></p>';
 	}
 	return $category_html;
@@ -1934,7 +1945,7 @@ function tmpl_get_the_posttype_taxonomies($label,$tax,$title = TMPL_CATEGORY_LAB
 /*
  * detail page show tags
  */
-define('TMPL_TAGS_LABEL', __('Tagged In ',DOMAIN));
+define('TMPL_TAGS_LABEL', __('Tagged In ','templatic'));
 function tmpl_get_the_posttype_tags($label,$taxtag,$title = TMPL_TAGS_LABEL)
 {	
 	global $post;
@@ -1953,7 +1964,7 @@ function tmpl_get_the_posttype_tags($label,$taxtag,$title = TMPL_TAGS_LABEL)
 			}
 			elseif($i == ( count($terms) - 2))
 			{
-				$sep = __(' and ',DIR_DOMAIN);
+				$sep = __(' and ','templatic');
 			}
 			$term_link = get_term_link( $term, $taxonomies[0] );
 			if( is_wp_error( $term_link ) )
@@ -1965,7 +1976,7 @@ function tmpl_get_the_posttype_tags($label,$taxtag,$title = TMPL_TAGS_LABEL)
 	if(!empty($terms))
 	{
 		$tag_html = '<p class="bottom_line"><span class="i_category">';
-		$tag_html .= __('Tagged In',DOMAIN).' '.$taxonomy_category;
+		$tag_html .= __('Tagged In','templatic').' '.$taxonomy_category;
 		$tag_html.= '</span></p>';
 	}
 	return $tag_html;
@@ -1998,21 +2009,21 @@ function tmpl_get_search_criteria()
 		    {
 				$taxonomies = get_object_taxonomies( (object) array( 'post_type' => $_REQUEST['post_type'],'public'   => true, '_builtin' => true ));
 				echo '<label>';
-				_e('Category: ',THEME_DOMAIN);
+				_e('Category: ','templatic');
 				echo '</label>';
 			    echo tmpl_get_the_category_by_ID($_REQUEST['category'],$taxonomies[0]).', '; 
 			}
 			if(isset($_REQUEST['tag_s']) && !empty($_REQUEST['tag_s']))
 			{
 				echo '<label>';
-				_e('Tags: ',THEME_DOMAIN);
+				_e('Tags: ','templatic');
 				echo '</label>';
 				echo $_REQUEST['tag_s'].', ';
 			} 
 			if(isset($_REQUEST['articleauthor']) && !empty($_REQUEST['articleauthor']))
 			{
 				echo '<label>';
-				_e('Author: ',THEME_DOMAIN);
+				_e('Author: ','templatic');
 				echo '</label>';
 				echo $_REQUEST['articleauthor'].', ';
 			}
@@ -2020,7 +2031,7 @@ function tmpl_get_search_criteria()
 			if(isset($_REQUEST['min_price']) && !empty($_REQUEST['min_price']))
 			{
 				echo '<label>';
-				_e('Min Price: ',THEME_DOMAIN);
+				_e('Min Price: ','templatic');
 				echo '</label>';
 				echo $_REQUEST['min_price'].', ';
 			}
@@ -2028,7 +2039,7 @@ function tmpl_get_search_criteria()
 			if(isset($_REQUEST['max_price']) && !empty($_REQUEST['max_price']))
 			{
 				echo '<label>';
-				_e('Max Price: ',THEME_DOMAIN);
+				_e('Max Price: ','templatic');
 				echo '</label>';
 				echo $_REQUEST['max_price'].', ';
 			}
@@ -2189,7 +2200,7 @@ function tmpl_show_succes_page_info($user_id='',$post_type,$package_id,$paymentm
 	
 	$package_limit_post=get_post_meta($package_id,'limit_no_post',true);/* get the price package limit number of post*/
 	if(@$package_id)
-		echo sprintf(__('You have subscribed to the %s package.',DOMAIN),'<b>'.get_the_title($package_id).'</b>');
+		echo sprintf(__('You have subscribed to the %s package.','templatic'),'<b>'.get_the_title($package_id).'</b>');
 	
 	if(isset($_REQUEST['pid']) && $_REQUEST['pid'] != '')
 	{
@@ -2203,7 +2214,7 @@ function tmpl_show_succes_page_info($user_id='',$post_type,$package_id,$paymentm
 	echo  '<div class="days">';
 	if(!isset($_REQUEST['action_edit']))
 	{
-		echo  '<p><label>'; _e('Charges: ',DOMAIN);echo  '</label><span>'; echo display_amount_with_currency_plugin($payable_amount);echo ' ';
+		echo  '<p><label>'; _e('Charges: ','templatic');echo  '</label><span>'; echo display_amount_with_currency_plugin($payable_amount);echo ' ';
 	}
 	/*show particular price package period or days*/
 	if(@$package_id)
@@ -2212,9 +2223,9 @@ function tmpl_show_succes_page_info($user_id='',$post_type,$package_id,$paymentm
 		echo  '</span>'; 
 	if($paymentmethod == '')
 	{
-		$paymentmethod = __('Free',DOMAIN);
+		$paymentmethod = __('Free','templatic');
 	}
-	echo '<p class="panel-type price payment_method"><label>'; _e('Payment Method: ',DOMAIN); echo '</label>'; echo '<span>'; echo ucfirst($paymentmethod); echo '</span> </p>';
+	echo '<p class="panel-type price payment_method"><label>'; _e('Payment Method: ','templatic'); echo '</label>'; echo '<span>'; echo ucfirst($paymentmethod); echo '</span> </p>';
 	echo '</div>';
 
 	
@@ -2238,7 +2249,7 @@ function tmpl_dashboard_favourites_tab(){
 	
 	if($current_user->ID == $curauth->ID){
 		echo "<li role='presentational' class='tab-title ".$class."'><a class='author_post_tab ' href='".esc_url(get_author_posts_url($current_user->ID).'?sort=favourites&custom_post=all')."'>";
-		echo _e('My Favorites',DOMAIN);
+		echo _e('My Favorites','templatic');
 		echo "</a></li>";
 	}
 	
@@ -2294,12 +2305,13 @@ add_action('wp_head','tevolution_licence_message');
 function tevolution_licence_message(){
 	if(!is_admin() && !strstr($_SERVER['REQUEST_URI'],'wp-admin/')){
 		$templatic_licence_key = get_option('templatic_licence_key');
-		if(strstr($templatic_licence_key,'error_message') || !get_option('templatic_licence_key_')){
+		if(strstr($templatic_licence_key,'error_message') || !get_option('templatic_licence_key_'))
+		{
 			if(!get_option('templatic_licence_key_'))
 			{
-				echo "<h2>".__('Your copy of Tevolution hasn&#32;t been verified yet. To verify the plugin and unlock the site please <a href="'.admin_url( 'admin.php?page=templatic_system_menu').'" style="color:red;">click here</a> to verify your licence key',DOMAIN)."</h2>";
+				echo "<h2 style='align-items: center;bottom: 0;display: flex;font-size: 24px;justify-content: center;position: absolute;text-align: center;top: 0;width: 100%;'>".__('Your copy of Templatic product hasn\'t been verified yet. To verify the product and unlock the site please <a href="'.admin_url( 'admin.php?page=templatic_system_menu').'" style="color:red;"> click here </a> to verify your licence key','templatic')."</h2>";
 			}else{
-				echo "<h2>".__('You are not allowed to run this site, because of invalid licence key. <a href="'.admin_url( 'admin.php?page=templatic_system_menu').'">click here</a> to verify your valid licence key',DOMAIN)."</h2>";
+				echo "<h2>".__('You are not allowed to run this site, because of invalid licence key. <a href="'.admin_url( 'admin.php?page=templatic_system_menu').'">click here</a> to verify your valid licence key','templatic')."</h2>";
 			}
 			die;
 		}
@@ -2341,7 +2353,7 @@ if(!function_exists('tevolution_dir_popupfrms')){
 					e.g. add_filter('tmpl_sent_to_frd_link','');
 				*/
 				do_action('tmpl_before_send_tofrd');
-				$send_to_frnd=	apply_filters('tmpl_sent_to_frd_link','<a class="small_btn tmpl_mail_friend" data-reveal-id="tmpl_send_to_frd" href="javascript:void(0);" id="send_friend_id"  title="'.__('Mail to a friend',DOMAIN).'" >'. __('Send to friend',DOMAIN).'</a>');				
+				$send_to_frnd=	apply_filters('tmpl_sent_to_frd_link','<a class="small_btn tmpl_mail_friend" data-reveal-id="tmpl_send_to_frd" href="javascript:void(0);" id="send_friend_id"  title="'.__('Mail to a friend','templatic').'" >'. __('Send to friend','templatic').'</a>');				
 				
 				add_action('wp_footer','send_email_to_friend',10);
 				echo "<li>".$send_to_frnd.'</li>';
@@ -2356,9 +2368,9 @@ if(!function_exists('tevolution_dir_popupfrms')){
 					e.g. add_filter('tmpl_send_inquiry_link','');
 				*/
 				do_action('tmpl_before_send_inquiry');
-				$send_inquiry=	apply_filters('tmpl_send_inquiry_link','<a class="small_btn tmpl_mail_friend" data-reveal-id="tmpl_send_inquiry"  href="javascript:void(0)" title="'.__('Send Inquiry',DOMAIN).'" id="send_inquiry_id" >'.__('Send inquiry',DOMAIN).'</a>');
+				$send_inquiry=	apply_filters('tmpl_send_inquiry_link','<a class="small_btn tmpl_mail_friend" data-reveal-id="tmpl_send_inquiry"  href="javascript:void(0)" title="'.__('Send Inquiry','templatic').'" id="send_inquiry_id" >'.__('Send inquiry','templatic').'</a>');
 				add_action('wp_footer','send_inquiry');		
-				echo '<li class="send_inquiry">'.$send_inquiry.'</li>';
+				echo '<li>'.$send_inquiry.'</li>';
 			} 
 		
 			/* Add to favourites */

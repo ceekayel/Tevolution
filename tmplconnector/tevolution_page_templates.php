@@ -205,7 +205,7 @@ function tevolution_get_archive_page_template($archive_template)
 	}
 	return $archive_template;
 }
-//add_filter( "archive_template", "tevolution_get_archive_page_template");
+add_filter( "archive_template", "tevolution_get_archive_page_template");
 /*
  * Apply filter for taxonomy page 
  * Function name: get_taxonomy_product_post_type_template
@@ -238,7 +238,7 @@ function tevolution_get_taxonomy_page_template($taxonomy_template)
 	}
 	return $taxonomy_template;
 }
-//add_filter( "taxonomy_template", "tevolution_get_taxonomy_page_template",11) ;
+add_filter( "taxonomy_template", "tevolution_get_taxonomy_page_template",11) ;
 /*
  * Apply filter for taxonomy page for tags 
  * Function name: get_tevolution_tag_page_template
@@ -271,7 +271,7 @@ function tevolution_get_tag_page_template($tags_template)
 	}
 	return $tags_template;
 }
-//add_filter( "taxonomy_template", "tevolution_get_tag_page_template",11) ;
+add_filter( "taxonomy_template", "tevolution_get_tag_page_template",11) ;
 /*
  * Apply filter for single template page
  * Function name: get_tevolution_single_template
@@ -299,7 +299,7 @@ function tevolution_get_single_template($single_template)
 	}	
 	return $single_template;
 }
-//add_filter( "single_template", "tevolution_get_single_template",11) ;
+add_filter( "single_template", "tevolution_get_single_template",11) ;
 /*Start function for required single custom post type template */
 /*
  * Function Name: tevolution_post_title
@@ -331,19 +331,19 @@ function tevolution_post_single_content()
 	}	
 	$post_type_object = get_post_type_object(get_post_type());
     $post_type_label = $post_type_object->labels->name;
-	$post_description=str_replace('Post',$post_type_label, __('Post Description',DOMAIN));
+	$post_description=str_replace('Post',$post_type_label, __('Post Description','templatic'));
 	$post_description = apply_filters('custom_post_type_desscription_title',$post_description,$post_type_label);
 	
 	if($post->post_content!='')  {
 	if(function_exists('tmpl_wp_is_mobile') && !tmpl_wp_is_mobile()){
 	if(function_exists('icl_t')){
-		icl_register_string(DOMAIN,$post_type_label,$post_type_label);
-		$post_type_label = icl_t(DOMAIN,$post_type_label,$post_type_label);
+		icl_register_string('templatic',$post_type_label,$post_type_label);
+		$post_type_label = icl_t('templatic',$post_type_label,$post_type_label);
 	}else{
 		$post_type_label = @$post_type_label;
 	}
 	?>
-		<h2><?php echo $post_type_label.' ';_e('Description',DOMAIN);?></h2>
+		<h2><?php echo $post_type_label.' ';_e('Description','templatic');?></h2>
 	<?php }?>
 	<div class="entry-content frontend-entry-content <?php if($is_edit==1):?>editblock<?php endif;?>">
     	<?php the_content();?>
@@ -419,13 +419,13 @@ function limited_content($content_length = 250, $content_more) {
 	global $post;
 	$tmpdata = get_option('templatic_settings');
 	if(function_exists('icl_t')){
-		icl_register_string(DOMAIN,$tmpdata['excerpt_continue'],$tmpdata['excerpt_continue']);
-		$link = icl_t(DOMAIN,$tmpdata['excerpt_continue'],$tmpdata['excerpt_continue']);
+		icl_register_string('templatic',$tmpdata['excerpt_continue'],$tmpdata['excerpt_continue']);
+		$link = icl_t('templatic',$tmpdata['excerpt_continue'],$tmpdata['excerpt_continue']);
 	}else{
 		$link = @$tmpdata['excerpt_continue'];
 	}
 
-	$more_link_text =($tmpdata['excerpt_continue']!='')? $tmpdata['excerpt_continue']: __('Read More',DOMAIN);
+	$more_link_text =($tmpdata['excerpt_continue']!='')? $tmpdata['excerpt_continue']: __('Read More','templatic');
 	$content = get_the_content();
 	$excerpt_more='... <a class="moretag" href="'. get_permalink($post->ID) . '">'.$more_link_text.'</a>';
 	$content= wp_trim_words( $content, $content_length, $excerpt_more );
@@ -447,8 +447,8 @@ function tevolution_excerpt_more($more) {
 		$tmpdata = get_option('templatic_settings');
 
 		if(function_exists('icl_t')){
-			icl_register_string(DOMAIN,$tmpdata['excerpt_continue'],$tmpdata['excerpt_continue']);
-			$link = icl_t(DOMAIN,$tmpdata['excerpt_continue'],$tmpdata['excerpt_continue']);
+			icl_register_string('templatic',$tmpdata['excerpt_continue'],$tmpdata['excerpt_continue']);
+			$link = icl_t('templatic',$tmpdata['excerpt_continue'],$tmpdata['excerpt_continue']);
 		}else{
 			$link = @$tmpdata['excerpt_continue'];
 		}
@@ -464,15 +464,15 @@ function tevolution_excerpt_more($more) {
 
 		$tmpdata = get_option($prefx.'_theme_settings');
 		if(function_exists('icl_t')){
-			icl_register_string(DOMAIN,@$tmpdata['templatic_excerpt_link'],@$tmpdata['templatic_excerpt_link']);
-			$link = icl_t(DOMAIN,@$tmpdata['templatic_excerpt_link'],@$tmpdata['templatic_excerpt_link']);
+			icl_register_string('templatic',@$tmpdata['templatic_excerpt_link'],@$tmpdata['templatic_excerpt_link']);
+			$link = icl_t('templatic',@$tmpdata['templatic_excerpt_link'],@$tmpdata['templatic_excerpt_link']);
 		}else{
 			$link = (isset($tmpdata['templatic_excerpt_link']))?$tmpdata['templatic_excerpt_link'] : '';
 		}
 		if(isset($tmpdata['templatic_excerpt_link']) && $tmpdata['templatic_excerpt_link']){
 			return '... <a class="moretag" href="'. get_permalink($post->ID) . '">'.$link.'</a>';
 		}else{
-			return '... <a class="moretag" href="'. get_permalink($post->ID) . '">'.__('Read more &raquo;',DOMAIN).'</a>';
+			return '... <a class="moretag" href="'. get_permalink($post->ID) . '">'.__('Read more &raquo;','templatic').'</a>';
 		}
 	}
 }
@@ -535,7 +535,7 @@ function tmpl_tevolution_single_preview_page($slug,$name){
 	$directoy_plugin_path=plugin_dir_path(dirname( dirname(__FILE__ )));
 	$event_plugin_path=plugin_dir_path(dirname( dirname(__FILE__) ));
 	$property_plugin_path=plugin_dir_path(dirname(dirname( __FILE__ )));
-
+	$addons_posttype = tmpl_addon_name();
 	$custom_post_type = apply_filters('tmpl_single_preview_post_type',tevolution_get_post_type());
 	/* Get the tevolution post type*/
 	$post_types =$_REQUEST['submit_post_type'];	
@@ -558,8 +558,9 @@ function tmpl_tevolution_single_preview_page($slug,$name){
 		$single_preview = $property_plugin_path. "Tevolution-RealEstate/templates/{$slug}-{$name}.php";
 		include($single_preview);
 
-	}else if(in_array($post_types,$custom_post_type)  && in_array($post_types,$custom_post_type) && $post_types!='event'){
-		$addons_posttype = tmpl_addon_name();
+	}else if(in_array($post_types,$custom_post_type)  && in_array($post_types,$custom_post_type) && $post_types!='event' && file_exists(WP_PLUGIN_DIR. "/Tevolution-".$addons_posttype[$post_types]."/templates/{$slug}-{$name}.php")){  
+		
+		
 		if(file_exists( WP_PLUGIN_DIR."/Tevolution-".$addons_posttype[$post_types]."/templates/{$slug}-{$name}.php"))
 			$single_preview = WP_PLUGIN_DIR."/Tevolution-".$addons_posttype[$post_types]."/templates/{$slug}-{$name}.php";
 		else{
@@ -568,10 +569,10 @@ function tmpl_tevolution_single_preview_page($slug,$name){
 		include($single_preview);
 
 	}else if(in_array($post_types,$custom_post_type) || $post_types == 'post'){
-
+	
 		/*apply filters for change the tevolution post type search template parth as per post type */
 		$single_preview = apply_filters('get_tevolution_single_preview',TEVOLUTION_PAGE_TEMPLATES_DIR. "templates/tevolution-single-post-preview.php",$slug,$name);
 		include($single_preview);
-	}	
+	}
 }
 ?>

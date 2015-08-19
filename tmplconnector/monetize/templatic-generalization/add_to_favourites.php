@@ -1,5 +1,5 @@
 <?php
-define('REMOVE_FAVOURITE_TEXT',__('Added',DOMAIN));
+define('REMOVE_FAVOURITE_TEXT',__('Added','templatic'));
 /* This function would add properly to favorite listing and store the value in wp_usermeta table user_favorite field */
 function add_to_favorite($post_id,$language='')
 {
@@ -12,7 +12,7 @@ function add_to_favorite($post_id,$language='')
 	$user_meta_data = get_user_meta($current_user->ID,'user_favourite_post',true);
 	$user_meta_data[]=$post_id;
 	update_user_meta($current_user->ID, 'user_favourite_post', $user_meta_data);
-	echo '<a href="javascript:void(0);" class="removefromfav added" data-id='.$post_id.' onclick="javascript:addToFavourite(\''.$post_id.'\',\'remove\');"><i class="fa fa-heart"></i>'.__('Added',DOMAIN).'</a>';
+	echo '<a href="javascript:void(0);" class="removefromfav added" data-id='.$post_id.' onclick="javascript:addToFavourite(\''.$post_id.'\',\'remove\');"><i class="fa fa-heart"></i>'.__('Added','templatic').'</a>';
 	
 }
 /* This function would remove the favorited property earlier */
@@ -41,7 +41,7 @@ function remove_from_favorite($post_id,$language='')
 	}
 	update_user_meta($current_user->ID, 'user_favourite_post', $user_meta_data); 	
 	echo '<a class="addtofav removed" href="javascript:void(0);" data-id='.$post_id.'  onclick="javascript:addToFavourite(\''.$post_id.'\',\'add\');"><i class="fa fa-heart-o"></i>';
-	_e('Add to favorites',DOMAIN); 
+	_e('Add to favorites','templatic'); 
 	echo '</a>';
 }
 /*
@@ -52,13 +52,13 @@ function tevolution_favourite_html($user_id='',$post='')
 	if(function_exists('tmpl_wp_is_mobile') && !tmpl_wp_is_mobile()){
 		global $current_user,$post;
 		$post_id = $post->ID;
-		$add_to_favorite = __('Add to favorites',DOMAIN);
-		$added = __('Added',DOMAIN);
+		$add_to_favorite = __('Add to favorites','templatic');
+		$added = __('Added','templatic');
 		if(function_exists('icl_register_string')){
-			icl_register_string(DOMAIN,'tevolution'.$add_to_favorite,$add_to_favorite);
-			$add_to_favorite = icl_t(DOMAIN,'tevolution'.$add_to_favorite,$add_to_favorite);
-			icl_register_string(DOMAIN,'tevolution'.$added,$added);
-			$added = icl_t(DOMAIN,'tevolution'.$added,$added);
+			icl_register_string('templatic','tevolution'.$add_to_favorite,$add_to_favorite);
+			$add_to_favorite = icl_t('templatic','tevolution'.$add_to_favorite,$add_to_favorite);
+			icl_register_string('templatic','tevolution'.$added,$added);
+			$added = icl_t('templatic','tevolution'.$added,$added);
 		}
 		$user_meta_data = get_user_meta($current_user->ID,'user_favourite_post',true);
 		if($post->post_type !='post'){

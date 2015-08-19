@@ -47,7 +47,7 @@ function fetch_claims()
 	echo "<table class='widefat'>
 	<thead>
 	<tr>
-		<th style='width:30%;'>".__('Claim On',DOMAIN)."</th>
+		<th style='width:30%;'>".__('Claim On','templatic')."</th>
 		<th style='width:30%;'>".CLAIMER_TEXT."</th>
 		<th>".STATUS."</th>
 		<th>".ACTION_TEXT."</th>
@@ -73,7 +73,7 @@ function fetch_claims()
 			?>
                <tr>
                     <td>
-                    	<?php echo $claim_post_id;?>&nbsp;<a href="<?php echo site_url().'/wp-admin/post.php?post='.$post_id.'&action=edit';?>" title="<?php echo VIEW_CLAIM; ?>"><?php __('By',ADMINDOMAIN); ?><?php echo $post_title?></a>
+                    	<?php echo $claim_post_id;?>&nbsp;<a href="<?php echo site_url().'/wp-admin/post.php?post='.$post_id.'&action=edit';?>" title="<?php echo VIEW_CLAIM; ?>"><?php __('By','templatic-admin'); ?><?php echo $post_title?></a>
                     </td>
                     <td><?php echo $claimer_name;?>: <?php echo $claimer_email;?></td>                    
                	<?php if($status == 'approved' && get_post_meta($post_id,'is_verified',true) == 1) :?>
@@ -84,7 +84,7 @@ function fetch_claims()
                     	<td id="unapproved"><?php echo PENDING; ?></td>
                     <?php endif;?>
                     <td>
-                    	<a href="#TB_inline?width=600&height=600&inlineId=claimed_win_<?php echo $claim_post_id;?>" id="claimed_w_<?php echo $claim_post_id;?>" class="thickbox" title="<?php echo __('View claim details',ADMINDOMAIN);  ?>"><i class="fa fa-info"></i></a>&nbsp;&nbsp;
+                    	<a href="#TB_inline?width=600&height=600&inlineId=claimed_win_<?php echo $claim_post_id;?>" id="claimed_w_<?php echo $claim_post_id;?>" class="thickbox" title="<?php echo __('View claim details','templatic-admin');  ?>"><i class="fa fa-info"></i></a>&nbsp;&nbsp;
 						<?php if($status == 'approved' && get_post_meta($post_id,'is_verified',true) == 1){ ?>
 							<a href="<?php echo site_url().'/wp-admin/post.php?post='.$post_id.'&action=edit&decline=yes&clid='.$claim_post_id;?>" title="<?php echo DECLINE_CLAIM; ?>"><i class="fa fa-close"></i></a>&nbsp;&nbsp;
 						<?php }else{ ?>
@@ -96,27 +96,27 @@ function fetch_claims()
 
 			<div id="claimed_win_<?php echo $claim_post_id; ?>" class="clm_cls" style="display:none;width:400px; height:400px;">
 				
-				<h2><?php echo __('Author Details',ADMINDOMAIN); ?></h2>
+				<h2><?php echo __('Author Details','templatic-admin'); ?></h2>
 				<p class="tev_description">
-					<?php echo  "<strong>".__('Name',ADMINDOMAIN)."</strong>"; echo ": ".$auth_data->display_name; ?>
+					<?php echo  "<strong>".__('Name','templatic-admin')."</strong>"; echo ": ".$auth_data->display_name; ?>
 				</p>
 				<p class="tev_description">
-					<?php echo  "<strong>".__('Email',ADMINDOMAIN)."</strong>"; echo ": ".$auth_data->user_email; ?>
+					<?php echo  "<strong>".__('Email','templatic-admin')."</strong>"; echo ": ".$auth_data->user_email; ?>
 				</p>
 				
 				
-				<h2><?php echo __('Claimer Details',ADMINDOMAIN); ?></h2>
+				<h2><?php echo __('Claimer Details','templatic-admin'); ?></h2>
 				<p class="tev_description">
-					<?php echo "<strong>".__('Name',ADMINDOMAIN)."</strong>"; echo ": ".$data['claimer_name']; ?>
+					<?php echo "<strong>".__('Name','templatic-admin')."</strong>"; echo ": ".$data['claimer_name']; ?>
 				</p>
 				<p class="tev_description">
-					<?php echo "<strong>".__('Email',ADMINDOMAIN)."</strong>"; echo ": ".$data['claimer_email']; ?>
+					<?php echo "<strong>".__('Email','templatic-admin')."</strong>"; echo ": ".$data['claimer_email']; ?>
 				</p>
 				<p class="tev_description">
-					<?php echo "<strong>".__('Conatct No.',ADMINDOMAIN)."</strong>"; echo ": ".$data['claimer_contact']; ?>
+					<?php echo "<strong>".__('Conatct No.','templatic-admin')."</strong>"; echo ": ".$data['claimer_contact']; ?>
 				</p>
 				<p class="tev_description">
-					<?php echo "<strong>".__('Message',ADMINDOMAIN)."</strong>"; echo ": ".$data['claim_msg']; ?>
+					<?php echo "<strong>".__('Message','templatic-admin')."</strong>"; echo ": ".$data['claim_msg']; ?>
 				</p>
 				<?php do_action('tmpl_extra_claiming_details',$data); ?>
 			</div>
@@ -377,7 +377,7 @@ function fetch_meta_options()
 		global $post;
 	
 		$post_id = $data['post_id'];
-		echo "<p>".__('1 user has claimed for this post.',ADMINDOMAIN)."</p>";
+		echo "<p>".__('1 user has claimed for this post.','templatic-admin')."</p>";
 		?>
 		
 		<a href="<?php echo site_url().'/wp-admin/post.php?post='.$_REQUEST['post'].'&action=edit&verified=no&clid='.$clid;?>" title="<?php echo REMOVE_CLAIM_REQUEST; ?>"><?php echo REMOVE_CLAIM_REQUEST; ?></a>
@@ -392,8 +392,8 @@ function fetch_meta_options()
 		if(count($post_claim_id) == '')
 		{ 
 			echo "<p>" . NO_CLAIM . "</p>"; ?>
-			<a href="<?php echo site_url().'/wp-admin/post.php?post='.$post->ID.'&verify=self&action=edit&verified=yes&sclid=1&user='.$current_user->ID;?>" title="<?php echo __('Set as verify',ADMINDOMAIN); ?>" class="verify_this">
-					<strong><?php echo __('Self Verify',ADMINDOMAIN); ?></strong>
+			<a href="<?php echo site_url().'/wp-admin/post.php?post='.$post->ID.'&verify=self&action=edit&verified=yes&sclid=1&user='.$current_user->ID;?>" title="<?php echo __('Set as verify','templatic-admin'); ?>" class="verify_this">
+					<strong><?php echo __('Self Verify','templatic-admin'); ?></strong>
 			</a>
 			<?php
 			do_action('tmpl_extra_claim_details');
@@ -402,9 +402,9 @@ function fetch_meta_options()
 		{
 			/* condition to display the count of claims in metabox */
 			if(count($post_claim_id) == 1) :
-				echo "<p>" . count($post_claim_id). " ".__('user has claimed for this post.',DOMAIN)."</p>";
+				echo "<p>" . count($post_claim_id). " ".__('user has claimed for this post.','templatic')."</p>";
 			else :
-				echo "<p>" . count($post_claim_id). " ".__('users have claimed for this post.',DOMAIN)."</p>";
+				echo "<p>" . count($post_claim_id). " ".__('users have claimed for this post.','templatic')."</p>";
 			endif;
 			?>
           
@@ -481,24 +481,24 @@ function add_verified_user($clid)
 		$user_login = $user_info->user_login;		
 		/* $user_pass = $user_info->user_pass; */
 		$post_url_link = '<a href="'.$_REQUEST['link_url1'].'">'.$post_title.'</a>';
-		$email_subject = __("Claim verified for - ",DOMAIN).$post_title;
+		$email_subject = __("Claim verified for - ",'templatic').$post_title;
 		$fromEmail = get_option('admin_email');
 		$fromEmailName = stripslashes(get_option('blogname'));			
 		
-		$msg = '<p>'.__('Dear',DOMAIN).$user_login.',</p>';
-		$msg .= '<p>'.__('The Claim for the',DOMAIN).' <a href="'.get_permalink($_REQUEST['post']).'">'.$post_title.'</a>'.__(' has been verified.',DOMAIN).'</p>';
+		$msg = '<p>'.__('Dear','templatic').$user_login.',</p>';
+		$msg .= '<p>'.__('The Claim for the','templatic').' <a href="'.get_permalink($_REQUEST['post']).'">'.$post_title.'</a>'.__(' has been verified.','templatic').'</p>';
 		if( $user_has_flag == 0 ){
-			$msg .= '<p>'.__('You can login with the following credentials :',DOMAIN). '</p>';
-			$msg .= '<p>'.__('Username:',DOMAIN).' [#user_login#]</p>';
-			$msg .= '<p>'.__('Password:',DOMAIN).' [#user_password#]</p>';
-			$msg .= "<p>".__("You can login from [#site_login_url#] or copy this link and paste it to your browser's address bar: ",DOMAIN)."[#site_login_url_link#]</p>";
+			$msg .= '<p>'.__('You can login with the following credentials :','templatic'). '</p>';
+			$msg .= '<p>'.__('Username:','templatic').' [#user_login#]</p>';
+			$msg .= '<p>'.__('Password:','templatic').' [#user_password#]</p>';
+			$msg .= "<p>".__("You can login from [#site_login_url#] or copy this link and paste it to your browser's address bar: ",'templatic')."[#site_login_url_link#]</p>";
 		}
-		$msg .= '<p>'.__('Thanks,',DOMAIN).'<br/> [#site_name#] </p>';
+		$msg .= '<p>'.__('Thanks,','templatic').'<br/> [#site_name#] </p>';
 		$client_message =  $msg;
 		$subject = $email_subject;
 		$yourname_link = $yourname;
 		if(function_exists('get_tevolution_login_permalink')){
-			$store_login = '<a href="'.get_tevolution_login_permalink().'">'.__('Click Login',DOMAIN).'</a>';
+			$store_login = '<a href="'.get_tevolution_login_permalink().'">'.__('Click Login','templatic').'</a>';
 			$store_login_link = get_tevolution_login_permalink();
 		}else{
 			$store_login='';
@@ -568,11 +568,11 @@ function insert_claim_ownership_data($post_details)
 			/*check the response is valid or not*/
 			if (!$responde_encode->success)
 			{
-				echo "<script>alert("._e('Your claim for this post has been sent successfully.',DOMAIN).");</script>";
+				echo "<script>alert("._e('Your claim for this post has been sent successfully.','templatic').");</script>";
 			}
 			else
 			{
-				echo "<script>alert(".__('Invalid captcha. Please try again.',DOMAIN).")</script>";
+				echo "<script>alert(".__('Invalid captcha. Please try again.','templatic').")</script>";
 				return false;	
 			}	 
 		}
@@ -625,21 +625,21 @@ function insert_claim_ownership_data($post_details)
 		
 		if(@$email_subject == '' )
 		{
-			$email_subject = __("New Claim Submitted",ADMINDOMAIN);
+			$email_subject = __("New Claim Submitted",'templatic-admin');
 		}
 		
 		$subject_search_array = array('[#post_id#]');
 		$subject_replace_array = array($post_id);
 		if(@$claim=='')
 		{
-			$claim =  __('<p>Dear admin,</p><p>[#claim_name#] has submitted a claim for the post below.</p><p>[#message#]</p><p>Link: [#post_title#]</p><p>From:  [#your_name#]</p><p>Email: [#claim_email#]<p>Phone Number: [#your_number#]</p>',ADMINDOMAIN);
+			$claim =  __('<p>Dear admin,</p><p>[#claim_name#] has submitted a claim for the post below.</p><p>[#message#]</p><p>Link: [#post_title#]</p><p>From:  [#your_name#]</p><p>Email: [#claim_email#]<p>Phone Number: [#your_number#]</p>','templatic-admin');
 		}
 		$filecontent_arr1 = $claim;
 		$filecontent_arr2 = $filecontent_arr1;
 		$client_message = $filecontent_arr2;
 		$subject = $email_subject;
 		$post_url_link = '<a href="'.$_REQUEST['link_url'].'">'.$post_title.'</a>';
-		$yourname_link = __($yourname,DOMAIN);
+		$yourname_link = __($yourname,'templatic');
 		$search_array = array('[#to_name#]','[#post_title#]','[#message#]','[#your_name#]','[#your_number#]','[#post_url_link#]');
 		$replace_array = array($to_name,$post_title,$message,$yourname_link,$your_number,$post_url_link);
 		$client_message = str_replace($search_array,$replace_array,$client_message);		
@@ -679,10 +679,10 @@ function tmpl_claim_ownership(){
 						$user_ip = $data['claimer_ip']; /* FETCH IP ADDRESS OF CLAIMED POST */
 						if($current_ip == $user_ip && $user_ip != '')
 						{ ?>
-							<p class="claimed"><?php _e(ALREADY_CLAIMED,DOMAIN); ?></p>
+							<p class="claimed"><?php _e(apply_filters('tmpl_already_claimed_text','Already Claimed'),'templatic'); ?></p>
 						<?php 
 						}else{?>					
-						<a href="javascript:void(0)" id="trigger_id" title="<?php _e('Claim For This',DOMAIN); echo " ".ucfirst($post->post_type);?>" data-reveal-id="tmpl_claim_listing" class="i_claim c_sendtofriend" ><?php _e('Claim Ownership',DOMAIN);;?></a>
+						<a href="javascript:void(0)" id="trigger_id" title="<?php _e('Claim For This','templatic'); echo " ".ucfirst($post->post_type);?>" data-reveal-id="tmpl_claim_listing" class="i_claim c_sendtofriend" ><?php _e(apply_filters('tmpl_claiming_text','Claim Ownership'),'templatic');?></a>
 						<?php
 							add_action('wp_footer','tevolution_claim_form'); /* action for footer to include claim listing form   */
 						?>
@@ -692,7 +692,7 @@ function tmpl_claim_ownership(){
 			}else{ 
 				add_action('wp_footer','tevolution_claim_form'); /* action for footer to include claim listing form */
 				?>			
-				<a href="javascript:void(0)" id="trigger_id" title="<?php _e('Claim For This Listing',DOMAIN); ?>" data-reveal-id="tmpl_claim_listing" class="i_claim c_sendtofriend"><?php _e('Claim Ownership',DOMAIN);;?></a>
+				<a href="javascript:void(0)" id="trigger_id" title="<?php _e('Claim For This Listing','templatic'); ?>" data-reveal-id="tmpl_claim_listing" class="i_claim c_sendtofriend"><?php _e(apply_filters('tmpl_claiming_text','Claim Ownership'),'templatic');?></a>
 				<?php
 			}
 		}
@@ -729,7 +729,7 @@ function tevolution_claimowner_ship(){
 			{
 				echo '1';
 				exit;
-				echo "<script>alert(".__('Invalid captcha. Please try again.',DOMAIN).");</script>";
+				echo "<script>alert(".__('Invalid captcha. Please try again.','templatic').");</script>";
 				return false;	
 			}	 
 		}
@@ -783,11 +783,11 @@ function tevolution_claimowner_ship(){
 		$site_name = '<a href="'.site_url().'">'.get_option('blogname').'</a>';
 		if(@$email_content == '')
 		{
-			$email_subject = __("New Claim Submitted",ADMINDOMAIN);
+			$email_subject = __("New Claim Submitted",'templatic-admin');
 		}
 		if(@$email_content == '')
 		{
-				$email_content = __('<p>Dear admin,</p><br/><p> [#claim_name#] has claimed for this post</p><p>[#message#]</p><p>Link: [#post_title#]</p><p>From: [#your_name#]</p><p>Email: [#claim_email#]<p>Phone Number: [#your_number#]</p>',ADMINDOMAIN);		
+				$email_content = __('<p>Dear admin,</p><br/><p> [#claim_name#] has claimed for this post</p><p>[#message#]</p><p>Link: [#post_title#]</p><p>From: [#your_name#]</p><p>Email: [#claim_email#]<p>Phone Number: [#your_number#]</p>','templatic-admin');		
 		}
 		$post_url_link = '<a href="'.get_permalink($claim_post_id).'">'.$post_title.'</a>';
 		$subject_search_array = array('[#post_title#]');
@@ -795,13 +795,13 @@ function tevolution_claimowner_ship(){
 		$email_subject = str_replace($subject_search_array,$subject_replace_array,$email_subject);
 		$subject = $email_subject;
 		
-		$yourname_link = __($yourname,DOMAIN);
+		$yourname_link = __($yourname,'templatic');
 		$search_array = array('[#claim_name#]','[#to_name#]','[#post_title#]','[#message#]','[#your_name#]','[#your_number#]','[#post_url_link#]','[#claim_email#]');
 		$replace_array = array($yourname,$to_name,$post_url_link,$message,$yourname_link,$your_number,$post_url_link,$youremail);
 		$client_message = str_replace($search_array,$replace_array,$email_content);
 		
 		/* call a mail function */
-		_e('Your claim for this post has been sent successfully.',DOMAIN);
+		_e('Your claim for this post has been sent successfully.','templatic');
 		templ_send_email($youremail,$yourname,$to_email,$to_name,$subject,$client_message,$extra='');
 		exit;
 			
@@ -873,7 +873,7 @@ function tevolution_claimowner_ship(){
 			
 			<?php
 			$action = '';
-			$action .='<a href="#TB_inline?width=600&height=600&inlineId=claimed_details_'.$clid.'" id="claimed_'.$clid.'" class="thickbox" title="'.__('View claim details',ADMINDOMAIN).'"><i class="fa fa-info"></i></a> &nbsp;&nbsp;';
+			$action .='<a href="#TB_inline?width=600&height=600&inlineId=claimed_details_'.$clid.'" id="claimed_'.$clid.'" class="thickbox" title="'.__('View claim details','templatic-admin').'"><i class="fa fa-info"></i></a> &nbsp;&nbsp;';
 			if($status == 'Verified' && get_post_meta($post_id,'is_verified',true) == 1){ 
 				$action .='<a href='.site_url().'/wp-admin/post.php?post='.$post_id.'&action=edit&decline=yes&clid='.$clid.' title='.DECLINE_CLAIM.'><i class="fa fa-close"></i></a>&nbsp;&nbsp;';
 			}else{
@@ -892,27 +892,27 @@ function tevolution_claimowner_ship(){
 				'action' 	=> $action
 				);?>
 				<div id="claimed_details_<?php echo $clid; ?>" style="display:none;width:400px; height:400px;">
-					<h2><?php echo __('Author Details',ADMINDOMAIN); ?></h2>
+					<h2><?php echo __('Author Details','templatic-admin'); ?></h2>
 					<p class="tev_description">
-						<?php echo  "<strong>".__('Name',ADMINDOMAIN)."</strong>"; echo ": ".$auth_data->display_name; ?>
+						<?php echo  "<strong>".__('Name','templatic-admin')."</strong>"; echo ": ".$auth_data->display_name; ?>
 					</p>
 					<p class="tev_description">
-						<?php echo  "<strong>".__('Email',ADMINDOMAIN)."</strong>"; echo ": ".$auth_data->user_email; ?>
+						<?php echo  "<strong>".__('Email','templatic-admin')."</strong>"; echo ": ".$auth_data->user_email; ?>
 					</p>
 					
 					
-					<h2><?php echo __('Claimer Details',ADMINDOMAIN); ?></h2>
+					<h2><?php echo __('Claimer Details','templatic-admin'); ?></h2>
 					<p class="tev_description">
-						<?php echo "<strong>".__('Name',ADMINDOMAIN)."</strong>"; echo ": ".$_posttaxonomy['claimer_name']; ?>
+						<?php echo "<strong>".__('Name','templatic-admin')."</strong>"; echo ": ".$_posttaxonomy['claimer_name']; ?>
 					</p>
 					<p class="tev_description">
-						<?php echo "<strong>".__('Email',ADMINDOMAIN)."</strong>"; echo ": ".$_posttaxonomy['claimer_email']; ?>
+						<?php echo "<strong>".__('Email','templatic-admin')."</strong>"; echo ": ".$_posttaxonomy['claimer_email']; ?>
 					</p>
 					<p class="tev_description">
-						<?php echo "<strong>".__('Conatct No.',ADMINDOMAIN)."</strong>"; echo ": ".$_posttaxonomy['claimer_contact']; ?>
+						<?php echo "<strong>".__('Conatct No.','templatic-admin')."</strong>"; echo ": ".$_posttaxonomy['claimer_contact']; ?>
 					</p>
 					<p class="tev_description">
-						<?php echo "<strong>".__('Message',ADMINDOMAIN)."</strong>"; echo ": ".$_posttaxonomy['claim_msg']; ?>
+						<?php echo "<strong>".__('Message','templatic-admin')."</strong>"; echo ": ".$_posttaxonomy['claim_msg']; ?>
 					</p>
 					<?php do_action('tmpl_extra_claiming_details',$_posttaxonomy); ?>
 				</div>
@@ -944,12 +944,12 @@ function tevolution_claimowner_ship(){
 		{
 			$columns = array(
 				'cb' => '<input type="checkbox" />',
-				'post_id' => __('ID',ADMINDOMAIN),
-				'post_title' => __('Claim On',ADMINDOMAIN),
-				'claimant' => __('Claimant',ADMINDOMAIN),
-				'claim_date' => __('Date',ADMINDOMAIN),
-				'status' => __('Status',ADMINDOMAIN),
-				'action' => __('Action',ADMINDOMAIN)
+				'post_id' => __('ID','templatic-admin'),
+				'post_title' => __('Claim On','templatic-admin'),
+				'claimant' => __('Claimant','templatic-admin'),
+				'claim_date' => __('Date','templatic-admin'),
+				'status' => __('Status','templatic-admin'),
+				'action' => __('Action','templatic-admin')
 				);
 			return $columns;
 		}
@@ -1064,7 +1064,7 @@ function tmpl_after_title_returns(){
 	global $post;
 	if(get_post_meta($post->ID,'is_verified',true) == 1){
 	?>
-		<span  data-tooltip aria-haspopup="true" data-options="disable_for_touch:true" class="fa-stack has-tip tip-right" title="<?php echo __('Verified',DOMAIN);?>"><i class="fa fa-certificate fa-stack-2x"></i><i class="fa fa-check fa-stack-1x"></i></span>
+		<span  data-tooltip aria-haspopup="true" data-options="disable_for_touch:true" class="fa-stack has-tip tip-right" title="<?php echo __('Verified','templatic');?>"><i class="fa fa-certificate fa-stack-2x"></i><i class="fa fa-check fa-stack-1x"></i></span>
 	<?php } 
 }
 ?>

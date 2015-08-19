@@ -212,10 +212,10 @@ function display_custom_post_field_plugin($custom_metaboxes,$session_variable,$p
 			$PostTypeObject = get_post_type_object($post_type);
 			$_PostTypeName = $PostTypeObject->labels->name;
 			if(function_exists('icl_register_string')){
-				icl_register_string(DOMAIN,$_PostTypeName.'submit',$_PostTypeName);
-				$_PostTypeName =icl_t(DOMAIN,$_PostTypeName.'submit',$_PostTypeName);
+				icl_register_string('templatic',$_PostTypeName.'submit',$_PostTypeName);
+				$_PostTypeName =icl_t('templatic',$_PostTypeName.'submit',$_PostTypeName);
 			}			
-			$_PostTypeName = $_PostTypeName . ' ' . __('Information',DOMAIN);
+			$_PostTypeName = $_PostTypeName . ' ' . __('Information','templatic');
 			if($heading == '[#taxonomy_name#]' && $_custom_metaboxes)
 			{
 				$heading='';			
@@ -225,12 +225,12 @@ function display_custom_post_field_plugin($custom_metaboxes,$session_variable,$p
 			{
 				if($_custom_metaboxes){
 					if(function_exists('icl_register_string')){
-						icl_register_string(DOMAIN,$heading,$heading);
+						icl_register_string('templatic',$heading,$heading);
 					}
 					if(function_exists('icl_t')){
-						$heading = icl_t(DOMAIN,$heading,$heading);
+						$heading = icl_t('templatic',$heading,$heading);
 					}else{
-						$heading = sprintf(__("%s",DOMAIN),$heading);
+						$heading = sprintf(__("%s",'templatic'),$heading);
 					}					
 				}
 				$heading_desc=$_custom_metaboxes['basic_inf']['desc'];
@@ -258,23 +258,23 @@ function display_custom_post_field_plugin($custom_metaboxes,$session_variable,$p
 			/*set the post category , post title, post content, post image and post expert replace as per post type*/
 			if($htmlvar_name=="category")
 			{
-				$site_title=str_replace('Post Category',__('Category',DOMAIN),$site_title);
+				$site_title=str_replace('Post Category',__('Category','templatic'),$site_title);
 			}
 			if($htmlvar_name=="post_title")
 			{
-				$site_title=str_replace('Post Title',__('Title',DOMAIN),$site_title);
+				$site_title=str_replace('Post Title',__('Title','templatic'),$site_title);
 			}
 			if($htmlvar_name=="post_content")
 			{
-				$site_title=str_replace('Post Content',ucfirst($post_type)." ".__('Description',DOMAIN),$site_title);
+				$site_title=str_replace('Post Content',ucfirst($post_type)." ".__('Description','templatic'),$site_title);
 			}
 			if($htmlvar_name=="post_excerpt")
 			{
-				$site_title=str_replace('Post Excerpt',ucfirst($post_type)." ".__('description in two lines (will be shown on listing pages)',DOMAIN),$site_title);
+				$site_title=str_replace('Post Excerpt',ucfirst($post_type)." ".__('description in two lines (will be shown on listing pages)','templatic'),$site_title);
 			}
 			if($htmlvar_name=="post_images")
 			{
-				$site_title=str_replace('Post Images',__('Images',DOMAIN),$site_title);
+				$site_title=str_replace('Post Images',__('Images','templatic'),$site_title);
 			}
 			/*finish post type wise replace post category, post title, post content, post expert, post images*/
 			$admin_desc = $val['desc'];
@@ -592,7 +592,7 @@ function display_custom_post_field_plugin($custom_metaboxes,$session_variable,$p
 				
 				do_action('tmpl_custom_fields_'.$name.'_before'); ?>
                 <select name="<?php echo $name;?>" id="<?php echo $name;?>" class="textfield textfield_x <?php echo $style_class;?>" <?php echo $extra_parameter;?>>
-					<option value=""><?php _e("Please Select",DOMAIN);?></option>
+					<option value=""><?php _e("Please Select",'templatic');?></option>
 					<?php if($option_values){
 						/*$option_values_arr = explode(',',$option_values);*/
 						$option_title = ($val['option_title']) ? $val['option_title'] : $val['option_values'];
@@ -602,7 +602,6 @@ function display_custom_post_field_plugin($custom_metaboxes,$session_variable,$p
 						for($i=0;$i<count($option_values_arr);$i++)
 						{
 							$selcted = '';
-							echo trim($value) .'=='. trim($option_values_arr[$i]);
 							if($val['is_require'] == 1 && empty($default_value) && empty($value))
 							{
 								if($i==0 && trim($value)==''){ $selcted='selected="selected"';}	
@@ -625,8 +624,8 @@ function display_custom_post_field_plugin($custom_metaboxes,$session_variable,$p
 				<!-- html for image upload for submit form front end -->
 				<div class="upload_box <?php echo apply_filters('tmpl_cf_img_uploder_class',''); ?>">
                  <div class="hide_drag_option_ie">
-					<p><?php _e('You can drag &amp; drop images from your computer to this box.',DOMAIN); ?></p>
-					<p><?php _e('OR',DOMAIN); ?></p>
+					<p><?php _e('You can drag &amp; drop images from your computer to this box.','templatic'); ?></p>
+					<p><?php _e('OR','templatic'); ?></p>
                  </div>
 					<?php
 					echo '<div class="tmpl_single_uploader">';
@@ -638,7 +637,7 @@ function display_custom_post_field_plugin($custom_metaboxes,$session_variable,$p
 						<div id="<?php echo $name; ?>"></div>
 						
 						<div id="fancy-contact-form">
-							<div class="dz-default dz-message" ><span  id="fancy-<?php echo $name; ?>"><span><i class="fa fa-folder"></i>  <?php _e('Upload File',DOMAIN); ?></span></span></div>
+							<div class="dz-default dz-message" ><span  id="fancy-<?php echo $name; ?>"><span><i class="fa fa-folder"></i>  <?php _e('Upload File','templatic'); ?></span></span></div>
                             <?php
 							if(@$_REQUEST['pid']==''){
 							?>
@@ -685,7 +684,7 @@ function display_custom_post_field_plugin($custom_metaboxes,$session_variable,$p
 										}
 										else
 										{
-											jQuery('#image-<?php echo $name; ?>').html("<?php _e('Image can&rsquo;t be uploaded due to some error.',DOMAIN); ?>");
+											jQuery('#image-<?php echo $name; ?>').html("<?php _e('Image can&rsquo;t be uploaded due to some error.','templatic'); ?>");
 											jQuery('.ajax-file-upload-statusbar').css('display','none');
 											return false;
 										}
@@ -704,7 +703,7 @@ function display_custom_post_field_plugin($custom_metaboxes,$session_variable,$p
 											function(resp, textStatus, jqXHR)
 											{
 												/*Show Message  */
-												jQuery('#image-<?php echo $name; ?>').html("<div><?php _e('File Deleted',DOMAIN);?></div>");
+												jQuery('#image-<?php echo $name; ?>').html("<div><?php _e('File Deleted','templatic');?></div>");
 												jQuery('#<?php echo $name; ?>').val('');
 											});
 										 }      
@@ -745,9 +744,9 @@ function display_custom_post_field_plugin($custom_metaboxes,$session_variable,$p
 							$upload_file=strtolower(substr(strrchr($image,'.'),1));
 							if($upload_file =='jpg' || $upload_file =='jpeg' || $upload_file =='gif' || $upload_file =='png' || $upload_file =='jpg' ){
 									?>
-								<p id="image-<?php echo $name; ?>" class="resumback"><img height="60px" width="60px" src="<?php echo $image; ?>" /><span class="ajax-file-upload-red" onclick="single_delete_image('<?php echo basename($value);?>','<?php echo $name;?>')"><?php _e('Delete',ADMINDOMAIN); ?></span></p>
+								<p id="image-<?php echo $name; ?>" class="resumback"><img height="60px" width="60px" src="<?php echo $image; ?>" /><span class="ajax-file-upload-red" onclick="single_delete_image('<?php echo basename($value);?>','<?php echo $name;?>')"><?php _e('Delete','templatic-admin'); ?></span></p>
 						<?php }elseif($upload_file != ''){ ?>
-								<p id="image-<?php echo $name; ?>" class="resumback"><a href="<?php echo get_post_meta($_REQUEST['pid'],$name, $single = true); ?>"><?php echo basename(get_post_meta($_REQUEST['pid'],$name, $single = true)); ?></a><span class="ajax-file-upload-red" onclick="single_delete_image('<?php echo basename($value);?>','<?php echo $name;?>')"><?php _e('Delete',ADMINDOMAIN); ?></span></p>
+								<p id="image-<?php echo $name; ?>" class="resumback"><a href="<?php echo get_post_meta($_REQUEST['pid'],$name, $single = true); ?>"><?php echo basename(get_post_meta($_REQUEST['pid'],$name, $single = true)); ?></a><span class="ajax-file-upload-red" onclick="single_delete_image('<?php echo basename($value);?>','<?php echo $name;?>')"><?php _e('Delete','templatic-admin'); ?></span></p>
 							<?php } 
 						endif; 
 						echo '</div>';
@@ -805,8 +804,8 @@ function display_custom_post_field_plugin($custom_metaboxes,$session_variable,$p
 				echo '<div class="upload_box">';
 					add_action('wp_footer','callback_on_footer_fn');?>
                     <div class="hide_drag_option_ie">
-                        <p><?php _e('You can drag &amp; drop images from your computer to this box.',DOMAIN); ?></p>
-                        <p><?php _e('OR',DOMAIN); ?></p>
+                        <p><?php _e('You can drag &amp; drop images from your computer to this box.','templatic'); ?></p>
+                        <p><?php _e('OR','templatic'); ?></p>
                     </div>
 					<?php
 					include (apply_filters('include_image_upload_script',TEMPL_MONETIZE_FOLDER_PATH."templatic-custom_fields/image_uploader.php")); ?>
@@ -954,13 +953,13 @@ function display_custom_category_field_plugin($custom_metaboxes,$session_variabl
 		$_PostTypeName = $PostTypeObject->labels->name;
 		?>
         <div class="form_row clearfix">	  
-            <label><?php _e('Select Category',DOMAIN).$is_required; ?></label>
+            <label><?php _e('Select Category','templatic').$is_required; ?></label>
             <div class="category_label"><?php include(TEMPL_MONETIZE_FOLDER_PATH.'templatic-custom_fields/category.php');?></div>
             <?php echo $is_required_msg;?>
             <?php if($admin_desc!=""):?>
             	<div class="description"><?php echo $admin_desc; ?></div>
 			<?php else: ?>
-            	<span class="message_note msgcat"><?php _e("Select a category for your ",DOMAIN); echo strtolower($_PostTypeName); ?></span>
+            	<span class="message_note msgcat"><?php _e("Select a category for your ",'templatic'); echo strtolower($_PostTypeName); ?></span>
             <?php endif;
 			
 			/* check the category wise custom fields are enable or not - load Ajax if cat wise custom fields option is selected */
@@ -984,7 +983,7 @@ function display_custom_category_field_plugin($custom_metaboxes,$session_variabl
 
 		 ?>
         <div class="form_row clearfix">        
-            <label><?php echo $_PostTypeName. __('Category',DOMAIN).$is_required; ?></label>
+            <label><?php echo $_PostTypeName. __('Category','templatic').$is_required; ?></label>
             <div class="category_label"><?php include(TEMPL_MONETIZE_FOLDER_PATH.'templatic-custom_fields/category.php');?></div>
             <?php echo $is_required_msg;
 			
@@ -993,7 +992,7 @@ function display_custom_category_field_plugin($custom_metaboxes,$session_variabl
 			<?php else:
 				$PostTypeObject = get_post_type_object($post_type);
 				$_PostTypeName = $PostTypeObject->labels->name;?>
-            	<span class="message_note msgcat"><?php _e("In which category you'd like to publish this ",DOMAIN); echo strtolower($_PostTypeName) ."?"; ?></span>
+            	<span class="message_note msgcat"><?php _e("In which category you'd like to publish this ",'templatic'); echo strtolower($_PostTypeName) ."?"; ?></span>
             <?php endif;?>
         </div>    
 	<?php }
@@ -1074,7 +1073,7 @@ function tmpl_tevolution_submit_from_package_info(){
 	$result .='<span class="label label-default">'.ucfirst($package_array->post_title);
 	if(get_post_meta($_REQUEST['pkg_id'],'package_amount',true) > 0 && isset($_REQUEST['pkg_subscribed']) && $_REQUEST['pkg_subscribed'] ==0) 
 	{ 
-		$result .= __(' Package with price ',DOMAIN);
+		$result .= __(' Package with price ','templatic');
 		$result .= get_option('currency_symbol').get_post_meta($_REQUEST['pkg_id'],'package_amount',true); 
 	}
 	$result .='</span>';
@@ -1087,6 +1086,12 @@ add_action( 'wp_ajax_nopriv_tmpl_tevolution_submit_from_category','tmpl_tevoluti
 add_action( 'wp_ajax_tmpl_tevolution_submit_from_category' ,'tmpl_tevolution_submit_from_category');
 function tmpl_tevolution_submit_from_category(){
 	global $include_cat_array;
+	
+	/* Set curent language in cookie */
+	if(is_plugin_active('wpml-translation-management/plugin.php')){
+		global $sitepress;
+		$_COOKIE['_icl_current_language'] = $sitepress->get_current_language();
+	}
 	
 	$post_type=$_REQUEST['submit_post_type'];
 	/*get the post type taxonomy */
@@ -1155,9 +1160,9 @@ if(!function_exists('tmpl_get_submitfrm_link')){
 		$submit_link='';
 		if($post_query->have_posts()){
 			while ($post_query->have_posts()) { $post_query->the_post();
-				$submit_link = __(' Head over to the ',THEME_DOMAIN);
-				$submit_link .='<a href="'.get_permalink().'" target="_blank">'.__('Submit',DOMAIN)." ".ucfirst($_PostTypelabel)." ".__('Form',DOMAIN).'</a>';	
-				$submit_link .= __( ' to add one.', THEME_DOMAIN );
+				$submit_link = __(' Head over to the ','templatic');
+				$submit_link .='<a href="'.get_permalink().'" target="_blank">'.__('Submit','templatic')." ".ucfirst($_PostTypelabel)." ".__('Form','templatic').'</a>';	
+				$submit_link .= __( ' to add one.', 'templatic' );
 			}
 		}
 		return $submit_link;
@@ -1183,13 +1188,14 @@ function tmpl_submit_form_recaptcha_validation(){
 			/*decode the captcha response*/
 			$responde_encode = json_decode($response['body']);
 			if (!$responde_encode->success) {				
-				$send_data['recaptcha_error']= __('Please fill the captcha form.',DOMAIN);
+				$send_data['recaptcha_error']= __('Please fill the captcha form.','templatic');
 			}else{
 				$send_data['recaptcha_error']=true;
 				$_SESSION['gotit'] = true;
+				update_option('gotit',true);
 			}
 		}else{
-			$send_data['recaptcha_error']= __('Please fill the captcha form.',DOMAIN);
+			$send_data['recaptcha_error']= __('Please fill the captcha form.','templatic');
 		}
 		echo $send_data['recaptcha_error'];
 	}else{
@@ -1371,7 +1377,7 @@ function tev_wp_terms_checklist($post_id = 0, $args = array()) {
 
 	echo call_user_func_array(array(&$walker, 'walk'), array($categories, 0, $args));
 	if(empty($categories) && empty($checked_categories)){
-		echo '<span style="font-size:12px; color:red;">'.sprintf(__('You have not created any category for %s post type. So, this listing will be submited as uncategorized.',DOMAIN),$template_post_type).'</span>';
+		echo '<span style="font-size:12px; color:red;">'.sprintf(__('You have not created any category for %s post type. So, this listing will be submited as uncategorized.','templatic'),$template_post_type).'</span>';
 	}
 }
 
@@ -1430,7 +1436,9 @@ class Tev_Walker_Category_Checklist extends Walker {
 				$disabled = "disabled='disabled'";
 			}
 		}
-	/*	$class = in_array( $category->term_id, $popular_cats ) ? ' class="popular-category"' : '';*/
+		/* set category price as zero if price is not set */
+		$cat_price = ($category->term_price) ? $category->term_price : 0;
+		/*	$class = in_array( $category->term_id, $popular_cats ) ? ' class="popular-category"' : '';*/
 		$output .= "\n<li id='{$taxonomy}-{$category->term_id}'>" . '<label class="selectit"><input data-value="'.$category->term_id.'" value="' . $category->term_id . ','.$category->term_price.'" type="checkbox" name="category[]" id="in-'.$taxonomy.'-' . $category->term_id . '" '.$disabled.'  ' . checked( in_array( $category->term_id, $selected_cats ), true, false ) .    ' /> ' . esc_html( apply_filters('the_category', $category->name )) . $cprice.'</label>';
 	}
 
@@ -1623,8 +1631,8 @@ function tmpl_single_page_default_custom_field($post_type){
 				$post_name=get_post_meta($post->ID,'htmlvar_name',true);
 				$style_class=get_post_meta($post->ID,'style_class',true);
 				
-                $option_title=  in_array($ctype,$multi_option) ? '' : get_post_meta($post->ID,'option_title',true);
-				$option_values= in_array($ctype,$multi_option) ? '' : get_post_meta($post->ID,'option_values',true);
+                                $option_title = get_post_meta($post->ID,'option_title',true);
+				$option_values = get_post_meta($post->ID,'option_values',true);
 				
 				$default_value=get_post_meta($post->ID,'default_value',true);
 				$tmpl_flds_varname[$post_name] = array( 'type'=>$ctype,
@@ -1633,6 +1641,7 @@ function tmpl_single_page_default_custom_field($post_type){
 														'option_title'=>$option_title,
 														'option_values'=>$option_values,
 														'default'=>$default_value,
+														'fid'=>$post->ID
 													);			
 			endwhile;
 			wp_reset_query();
@@ -1936,7 +1945,7 @@ function get_site_emailName_plugin()
 	}
 }
 }
-define('TMPL_HEADING_TITLE',__('Other Information',DOMAIN));
+define('TMPL_HEADING_TITLE',__('Other Information','templatic'));
 /* To display the custom fields on detail page */
 if(!function_exists('tmpl_fields_detail_informations')){
 function tmpl_fields_detail_informations($not_show = array('title'),$title_text = TMPL_HEADING_TITLE){
@@ -1947,7 +1956,6 @@ function tmpl_fields_detail_informations($not_show = array('title'),$title_text 
 		$is_edit=1;
 	}	
 	$j=0;
-	/*echo "<pre>"; print_r($htmlvar_name); echo "</pre>";*/
 	if(!empty($htmlvar_name)){
 		echo '<div class="tevolution_custom_field  listing_custom_field">';
 		
@@ -1999,13 +2007,13 @@ function tmpl_fields_detail_informations($not_show = array('title'),$title_text 
 									$zoneinfo = $wpdb->get_results($wpdb->prepare("select zone_name from $zones_table where zones_id =%d",$zones_id ));
 								
 								if($countryinfo[0]->country_name){
-									?><p class='<?php echo $val['style_class'];?>'><label><?php _e('Country',DOMAIN); ?>:</label> <strong><span><?php echo $countryinfo[0]->country_name; ?></span></strong></p>
+									?><p class='<?php echo $val['style_class'];?>'><label><?php _e('Country','templatic'); ?>:</label> <strong><span><?php echo $countryinfo[0]->country_name; ?></span></strong></p>
 								<?php }
 									if($zoneinfo[0]->zone_name){ ?>
-									<p class='<?php echo $val['style_class'];?>'><label><?php _e('State',DOMAIN); ?>:</label> <strong><span><?php echo $zoneinfo[0]->zone_name; ?></span></strong></p>
+									<p class='<?php echo $val['style_class'];?>'><label><?php _e('State','templatic'); ?>:</label> <strong><span><?php echo $zoneinfo[0]->zone_name; ?></span></strong></p>
 								<?php } 
 									if($cityinfo[0]->cityname){ ?>
-									<p class='<?php echo $val['style_class'];?>'><label><?php _e('City',DOMAIN); ?>:</label> <strong><span><?php echo $cityinfo[0]->cityname; ?></span></strong></p>
+									<p class='<?php echo $val['style_class'];?>'><label><?php _e('City','templatic'); ?>:</label> <strong><span><?php echo $cityinfo[0]->cityname; ?></span></strong></p>
 							<?php }
 						}
 					
@@ -2047,7 +2055,7 @@ function tmpl_fields_detail_informations($not_show = array('title'),$title_text 
 				elseif($val['type']=='oembed_video' && ($field || $is_edit==1)):?>
 					<p class='<?php echo $val['style_class'];?>'><?php if($key != 'field_label') { ?><label><?php echo $val['label']; ?>:&nbsp;</label><?php } ?>
 						<?php if($is_edit==1):?>					
-						<span id="frontend_edit_<?php echo $k;?>" class="frontend_oembed_video button" ><?php _e('Edit Video',DOMAIN);?></span>
+						<span id="frontend_edit_<?php echo $k;?>" class="frontend_oembed_video button" ><?php _e('Edit Video','templatic');?></span>
 						<input type="hidden" class="frontend_<?php echo $k;?>" name="frontend_edit_<?php echo $k;?>" value='<?php echo $field;?>' />
 						<?php endif;?>
 					<span class="frontend_edit_<?php echo $k;?>"><?php             
@@ -2074,7 +2082,7 @@ function tmpl_fields_detail_informations($not_show = array('title'),$title_text 
 							<span class="entry-header-<?php echo $k;?> span_uploader" >
 							<span style="display:none;" class="frontend_<?php echo $k;?>"><?php echo $field?></span>                            
 							<span id="fronted_upload_<?php echo $k;?>" class="frontend_uploader button"  data-src="<?php echo $field?>">	                 	
-								<span><?php echo __( 'Upload ', ADMINDOMAIN ).$val['label']; ?></span>
+								<span><?php echo __( 'Upload ', 'templatic-admin' ).$val['label']; ?></span>
 							</span>
 							</span>
 						</p>
@@ -2223,7 +2231,7 @@ function tranaction_upgrade_post($orderId,$transID='')
 	$coupon = @$upgrade_post['add_coupon'];
 	$featured_type = @$upgrade_post['featured_type'];
 	$payable_amount = @$upgrade_post['total_price'];
-	$post_tax = fetch_page_taxonomy($upgrade_post['cur_post_id']);		
+	$post_tax = fetch_page_taxonomy($upgrade_post['pid']);		
 	/*delete custom fields */
 	$heading_type = fetch_heading_per_post_type(get_post_type($last_postid));
 	$taxonomies = get_object_taxonomies( (object) array( 'post_type' =>get_post_type($last_postid),'public'   => true, '_builtin' => true ));
@@ -2312,7 +2320,7 @@ function tranaction_upgrade_post($orderId,$transID='')
 				update_post_meta($last_postid,'package_select',$upgrade_post['pkg_id']);
 				update_post_meta($last_postid,'pkg_id',$upgrade_post['pkg_id']);
 				update_post_meta($last_postid,'paid_amount',$upgrade_post['total_price']);
-				update_post_meta($last_postid,'alive_days',$listing_price_info['alive_days']);
+				
 
 				$limit_post=get_user_meta($current_user_id,'total_list_of_post',true);				
 				update_user_meta($current_user_id,$submit_post_type.'_list_of_post',$limit_post+1);
@@ -2363,6 +2371,7 @@ function tranaction_upgrade_post($orderId,$transID='')
 					$monetize_settings = $monetization->templ_set_price_info($last_postid,$pid,$payable_amount,$alive_days,$payment_method,$coupon,$featured_type);
 	
 			}
+			update_post_meta($last_postid,'alive_days',$listing_price_info[0]['alive_days']);
 			$transection_db_table_name=$wpdb->prefix.'transactions';
 			if($upgrade_post['featured_type'] == 'both')
 			{
@@ -2374,19 +2383,24 @@ function tranaction_upgrade_post($orderId,$transID='')
 			if($upgrade_post['featured_type'] == 'h')
 			{
 				$transaction_update = $wpdb->query("update $transection_db_table_name set payforfeatured_h = 1  where trans_id  =$transID");
-				update_post_meta($pid, 'featured_c', 'c');
-				update_post_meta($pid, 'featured_type', 'c');
+				update_post_meta($pid, 'featured_c', 'n');
+				update_post_meta($pid, 'featured_h', 'h');
+				update_post_meta($pid, 'featured_type', 'h');
 			}
 			if($upgrade_post['featured_type'] == 'c')
 			{
 				$transaction_update = $wpdb->query("update $transection_db_table_name set  payforfeatured_c = 1 where trans_id  =$transID");
-				update_post_meta($pid, 'featured_h', 'h');
-				update_post_meta($pid, 'featured_type', 'h');
+				update_post_meta($pid, 'featured_h', 'n');
+				update_post_meta($pid, 'featured_c', 'c');
+				update_post_meta($pid, 'featured_type', 'c');
 			}
 			else
 			{
 				update_post_meta($pid, 'featured_type', 'none');
 			}
-
+		$my_post['post_date'] =  date_i18n('Y-m-d H:i:s',strtotime(date('Y-m-d H:i:s')));
+		$my_post['ID'] = $upgrade_post['pid'];
+		// Update the post into the database
+		wp_update_post( $my_post );
 }
 ?>

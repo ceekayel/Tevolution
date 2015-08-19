@@ -5,11 +5,11 @@
 ?>
 <div class="wrap">
 	<?php if(isset($_REQUEST['custom_msg_type']) && $_REQUEST['custom_msg_type'] == 'delete'):?>
-	<div class="message updated"><p><?php echo __('Claim deleted successfully',ADMINDOMAIN); ?></p></div>
+	<div class="message updated"><p><?php echo __('Claim deleted successfully','templatic-admin'); ?></p></div>
 	<?php endif; ?>    
 	<div id="icon-edit" class="icon32 icon32-posts-post"><br/></div>
 	<h2>
-	<?php echo __("Manage Claims",ADMINDOMAIN); ?>
+	<?php echo __("Manage Claims",'templatic-admin'); ?>
 	</h2
      ><?php do_action('tevolution_claim_listing_msg');?>
      
@@ -19,7 +19,7 @@
 	if(isset($_REQUEST['claim_msg'])){?>
 		<div class="updated fade below-h2" id="message" style="padding:5px; font-size:12px;" >
 			<?php if($_REQUEST['claim_msg']=='delsuccess'){
-					echo __('Claim deleted successfully.',ADMINDOMAIN);	
+					echo __('Claim deleted successfully.','templatic-admin');	
 				}
 			?>
 		</div>

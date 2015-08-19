@@ -51,10 +51,10 @@ class taxonmy_list_table extends Tmpl_WP_List_Table
 	{
 		$columns = array(
 			'cb' => '<input type="checkbox" />',
-			'title' => __('Post Type Name',ADMINDOMAIN),
-			'tax_desc' => __('Description',ADMINDOMAIN),
-			'tax_category' => __('Taxonomy Name',ADMINDOMAIN),
-			'tax_tags' => __('Tags',ADMINDOMAIN)
+			'title' => __('Post Type Name','templatic-admin'),
+			'tax_desc' => __('Description','templatic-admin'),
+			'tax_category' => __('Taxonomy Name','templatic-admin'),
+			'tax_tags' => __('Tags','templatic-admin')
 			);
 		return $columns;
 	}
@@ -207,7 +207,7 @@ function view_post_type_user_custom_column($out, $column_name, $user_id)
 			$result = $wpdb->get_row("SELECT count(ID) as count FROM $wpdb->posts WHERE post_type = '".strtolower($post_type)."' AND post_author = ".$user_id." AND post_status = 'publish'");
 			if( $result->count > 0 )
 			{
-				$articles = "<a href='edit.php?post_type=".strtolower($post_type)."&author=".$user_id."' class='edit' title='".__('View posts by this author',DOMAIN)."'>".$result->count."</a>";
+				$articles = "<a href='edit.php?post_type=".strtolower($post_type)."&author=".$user_id."' class='edit' title='".__('View posts by this author','templatic')."'>".$result->count."</a>";
 			}
 			else
 			{

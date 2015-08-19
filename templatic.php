@@ -3,7 +3,7 @@
 Plugin Name: Tevolution
 Plugin URI: http://templatic.com/docs/tevolution-guide/
 Description: Tevolution is a collection of Templatic features to enhance your website.
-Version: 2.2.9
+Version: 2.2.11
 Author: Templatic
 Author URI: http://templatic.com/
 */
@@ -14,7 +14,7 @@ if (defined('WP_DEBUG') and WP_DEBUG == true){
 	error_reporting(0);
 }
 define('PLUGIN_FOLDER_NAME','Tevolution');
-define('TEVOLUTION_VERSION','2.2.9');
+define('TEVOLUTION_VERSION','2.2.11');
 @define('PLUGIN_NAME','Tevolution Plugin');
 define('TEVOLUTION_SLUG','Tevolution/templatic.php');
 
@@ -34,18 +34,18 @@ define('TEMPL_PLUGIN_URL', plugin_dir_url( __FILE__ ));
 define('TT_CUSTOM_USERMETA_FOLDER_PATH',TEMPL_MONETIZE_FOLDER_PATH.'templatic-registration/custom_usermeta/');
 define('TEMPL_PAYMENT_FOLDER_PATH',TEMPL_MONETIZE_FOLDER_PATH.'templatic-monetization/templatic-payment_options/payment/');
 define('MY_PLUGIN_SETTINGS_URL',site_url().'/wp-admin/admin.php?page=templatic_system_menu&activated=true');
-if(!defined('DOMAIN'))
-	define('DOMAIN', 'templatic');  /*tevolution* deprecated*/
-if(!defined('ADMINDOMAIN'))
-	define( 'ADMINDOMAIN', 'templatic-admin' ); /*tevolution* deprecated*/
+//if(!defined('DOMAIN'))
+	//define('DOMAIN', 'templatic');  /*tevolution* deprecated*/
+//if(!defined(''templatic-admin''))
+	//define( ''templatic-admin'', 'templatic-admin' ); /*tevolution* deprecated*/
 
 
 $locale = get_locale();
 if(is_admin()){
-	load_textdomain( ADMINDOMAIN, plugin_dir_path( __FILE__ ).'languages/templatic-admin-'.$locale.'.mo' );
-	load_textdomain( DOMAIN, plugin_dir_path( __FILE__ ).'languages/templatic-'.$locale.'.mo' );
+	load_textdomain( 'templatic-admin', plugin_dir_path( __FILE__ ).'languages/templatic-admin-'.$locale.'.mo' );
+	load_textdomain( 'templatic', plugin_dir_path( __FILE__ ).'languages/templatic-'.$locale.'.mo' );
 }else{
-	load_textdomain( DOMAIN, plugin_dir_path( __FILE__ ).'languages/templatic-'.$locale.'.mo' );
+	load_textdomain( 'templatic' , plugin_dir_path( __FILE__ ).'languages/templatic-'.$locale.'.mo' );
 }
 
 global $templatic,$wpdb,$tevolutions_icon;
@@ -137,7 +137,7 @@ if(!function_exists('tmpl_fatalErrorHandler')){
 		
 			$messaeg = '';
 			$message .= "<div class='tmpl_addon_message'>";
-			$message .= "<p>".__("Oops! Site seems to be in trouble. We find some 'Templatic' Add-ons installed but not updated on your site. If any of the add-on is having older version, please download it from <a href='http://templatic.com/members'>members</a> area and <a href='http://templatic.com/docs/how-to-manage-and-handle-theme-updates/'>update</a> it manually. If this wan't work go to wp-config.php file located in root of WordPress installation. Change define('WP_DEBUG',false) to define('WP_DEBUG',true) and submit the ticket with error in <a href='http://templatic.com/docs/submit-a-ticket/'>helpdesk</a>.",THEME_DOMAIN)."</p>";
+			$message .= "<p>".__("Oops! Site seems to be in trouble. We find some 'Templatic' Add-ons installed but not updated on your site. If any of the add-on is having older version, please download it from <a href='http://templatic.com/members'>members</a> area and <a href='http://templatic.com/docs/how-to-manage-and-handle-theme-updates/'>update</a> it manually. If this wan't work go to wp-config.php file located in root of WordPress installation. Change define('WP_DEBUG',false) to define('WP_DEBUG',true) and submit the ticket with error in <a href='http://templatic.com/docs/submit-a-ticket/'>helpdesk</a>.",'templatic')."</p>";
 			
 			$message .= $message1;
 			?>
@@ -240,10 +240,10 @@ function my_plugin_activate() {
 				(
 					array
 						(
-							'title' =>  __('Your PayPal Email',ADMINDOMAIN),
+							'title' =>  __('Your PayPal Email','templatic-admin'),
 							'fieldname' => 'merchantid',
 							'value' => 'email@example.com',
-							'description' =>  __('Example: email@example.com',ADMINDOMAIN)
+							'description' =>  __('Example: email@example.com','templatic-admin')
 						),
 				),			
 		);
@@ -259,17 +259,17 @@ function my_plugin_activate() {
 				(
 					array
 						(
-							'title' => __('Bank Information',ADMINDOMAIN),
+							'title' => __('Bank Information','templatic-admin'),
 							'fieldname' => 'bankinfo',
 							'value' => 'ICICI Bank',
-							'description' => __('Enter the bank name to which you want to transfer payment',ADMINDOMAIN)
+							'description' => __('Enter the bank name to which you want to transfer payment','templatic-admin')
 						),
 					array
 						(
-							'title' =>  __('Account ID',ADMINDOMAIN),
+							'title' =>  __('Account ID','templatic-admin'),
 							'fieldname' => 'bank_accountid',
 							'value' => 'AB1234567890',
-							'description' =>  __('Enter your bank Account ID',ADMINDOMAIN)
+							'description' =>  __('Enter your bank Account ID','templatic-admin')
 						),
 				),
 		);
@@ -366,7 +366,7 @@ function my_plugin_activate() {
         
         /* Set On anyone can register at the time of plugin activate */
         update_option('users_can_register',1);
-}
+        }
 /* function called while plugin deactivation */
 function my_plugin_deactivate() {
 	delete_option('myplugin_redirect_on_first_activation');	
@@ -428,17 +428,17 @@ function tevolution_success_page_title()
 	
 	$post_type_label = ( @$post_type_object->labels->post_name ) ? @$post_type_object->labels->post_name  :  $post_type_object->labels->singular_name ;
 
-	echo $post_type_label.' '.__('Submitted Successfully',DOMAIN);
+	echo $post_type_label.' '.__('Submitted Successfully','templatic');
 }
 
 function tevolution_cancel_page_title()
 {
-	_e('Payment Cancelled',DOMAIN);
+	_e('Payment Cancelled','templatic');
 }
 /* plug-in activation - settings link*/
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ),'tevolution_action_links'  );
 function tevolution_action_links($links){
-	$plugin_links = array('<a href="' . admin_url( 'admin.php?page=templatic_settings' ) . '">' . __( 'Settings', DOMAIN ) . '</a>');
+	$plugin_links = array('<a href="' . admin_url( 'admin.php?page=templatic_settings' ) . '">' . __( 'Settings', 'templatic' ) . '</a>');
 	return array_merge( $plugin_links, $links );
 }
 /* add shortcode */
@@ -544,9 +544,9 @@ if($site_info_tracking_allow == 1 && empty($get_usages_date) || (time() > $get_u
     
     /* set time to schedule usage report */
     //$next_schedule_date = strtotime("+15 seconds");
-    $next_schedule_date = strtotime("+15 minutes");
+    //$next_schedule_date = strtotime("+15 minutes");
+    $next_schedule_date = strtotime("+15 days");
     update_option('tmpl_usages_last_date',$next_schedule_date);
     include_once( dirname( __FILE__ ) . '/api/usages-report.php' );
 }
-
 ?>

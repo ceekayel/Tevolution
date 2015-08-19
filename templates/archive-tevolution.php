@@ -81,7 +81,7 @@ do_action('templ_before_container_breadcrumb'); /*do action for display the brad
                     </div>
 			<?php wp_reset_query();
 			else:?>
-          	<p class='nodata_msg'><?php _e( 'Apologies, no results were found matching this search criteria.', DOMAIN ); ?></p>              
+          	<p class='nodata_msg'><?php _e( 'Apologies, no results were found matching this search criteria.', 'templatic' ); ?></p>              
           <?php endif;?>
      </div>
       <!--End loop archive page -->

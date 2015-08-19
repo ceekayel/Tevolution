@@ -32,15 +32,15 @@ function templatic_payment_option_preview_page()
                	<h5 class="payment_head"> 
 					<?php
 					 $one_payment=1;
-						$pay_with_title = __('Pay With',DOMAIN);
+						$pay_with_title = __('Pay With','templatic');
 						if(function_exists('icl_register_string')){
-							icl_register_string(ADMINDOMAIN,$pay_with_title,$pay_with_title);
+							icl_register_string('templatic-admin',$pay_with_title,$pay_with_title);
 						}
 						
 						if(function_exists('icl_t')){
-							$pay_with_title1 = icl_t(ADMINDOMAIN,$pay_with_title,$pay_with_title);
+							$pay_with_title1 = icl_t('templatic-admin',$pay_with_title,$pay_with_title);
 						}else{
-							$pay_with_title1 = __($pay_with_title,ADMINDOMAIN); 
+							$pay_with_title1 = __($pay_with_title,'templatic-admin'); 
 						}
 						echo apply_filters('tevolution_payment_title',$pay_with_title1);
 					?>
@@ -50,14 +50,14 @@ function templatic_payment_option_preview_page()
 					<?php 
 						$select_payment_method_title = SELECT_PAY_MEHTOD_TEXT;
 						if(function_exists('icl_register_string')){
-							icl_register_string(ADMINDOMAIN,$select_payment_method_title,$select_payment_method_title);
+							icl_register_string('templatic-admin',$select_payment_method_title,$select_payment_method_title);
 						}
 						
 						if(function_exists('icl_t')){
-							$select_payment_method_title1 = icl_t(ADMINDOMAIN,$select_payment_method_title,$select_payment_method_title);
+							$select_payment_method_title1 = icl_t('templatic-admin',$select_payment_method_title,$select_payment_method_title);
 							echo apply_filters('tevolution_payment_title',$select_payment_method_title1);
 						}else{							
-							echo apply_filters('tevolution_payment_title',__('Select Payment Method',DOMAIN));
+							echo apply_filters('tevolution_payment_title',__('Select Payment Method','templatic'));
 						}
 						
 					?>
@@ -99,15 +99,15 @@ function templatic_payment_option_preview_page()
 	<?php }?>
 						<?php 
 							if(function_exists('icl_register_string')){
-								$context = DOMAIN;
+								$context = 'templatic';
 								icl_register_string($context,$payment_display_name,$payment_display_name);
 							}
 							if(function_exists('icl_t')){
-								$payment_display_name = icl_t(DOMAIN,$payment_display_name,$payment_display_name);
+								$payment_display_name = icl_t('templatic',$payment_display_name,$payment_display_name);
 							}
 							else
 							{
-								$payment_display_name = sprintf(__('%1$s',DOMAIN), __($payment_display_name,DOMAIN));
+								$payment_display_name = sprintf(__('%1$s','templatic'), __($payment_display_name,'templatic'));
 							}
 							echo $payment_display_name;
 						?>
@@ -402,7 +402,7 @@ function successfull_return_paypal_content($post_id,$subject,$content)
 		$submit_form_package_url = '';
 		$tevolution_post_type = tevolution_get_post_type();
 		$submit_form_package_url='<ul>';
-		$submit_form_package_url .= '<li class="sucess_msg_prop">'.'<a class="button" target="_blank" href="'.get_author_posts_url($current_user->ID).'">'.__('Your Profile',DOMAIN).'</a></li>';
+		$submit_form_package_url .= '<li class="sucess_msg_prop">'.'<a class="button" target="_blank" href="'.get_author_posts_url($current_user->ID).'">'.__('Your Profile','templatic').'</a></li>';
 		foreach($tevolution_post_type as $post_type)
 		{
 			if($post_type != 'admanager')
@@ -433,7 +433,7 @@ function successfull_return_paypal_content($post_id,$subject,$content)
 				$post_meta_info = $post_query;	
 				if($post_meta_info->have_posts()){
 					while ($post_meta_info->have_posts()) : $post_meta_info->the_post();
-						$submit_form_package_url .= "<li><a class='button' target='_blank' href='".get_the_permalink($post->ID)."'>".__('Submit',DOMAIN).' '.ucfirst($post_type)."</a></li>";
+						$submit_form_package_url .= "<li><a class='button' target='_blank' href='".get_the_permalink($post->ID)."'>".__('Submit','templatic').' '.ucfirst($post_type)."</a></li>";
 				  endwhile;wp_reset_query();wp_reset_postData();
 				}
 			}

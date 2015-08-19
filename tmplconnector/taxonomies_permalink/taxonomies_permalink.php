@@ -38,7 +38,7 @@ function add_custom_taxonomies_permalink(){
 		/* Delete Tevolution query catch on permalink  reset */
 		$wpdb->query($wpdb->prepare("DELETE FROM $wpdb->options WHERE option_name like '%s'",'%_tevolution_query%' ));
 
-		$echo=__('All Tevolution custom permalink rules reset.', ADMINDOMAIN);
+		$echo=__('All Tevolution custom permalink rules reset.', 'templatic-admin');
 	}
 
 
@@ -122,7 +122,7 @@ function add_custom_taxonomies_permalink(){
 		/* Delete Tevolution query catch on permalink update  changes */
 		$wpdb->query($wpdb->prepare("DELETE FROM $wpdb->options WHERE option_name like '%s'",'%_tevolution_quer_%' ));
 
-		$echo=__('All Tevolution custom permalink rules options updated, Make sure you clear Tevolution cache after saving these settings.', ADMINDOMAIN);
+		$echo=__('All Tevolution custom permalink rules options updated, Make sure you clear Tevolution cache after saving these settings.', 'templatic-admin');
 	}
 	$tevolution_taxonomies_data=get_option('tevolution_taxonomies_rules_data');
 	$city_slug='';
@@ -136,8 +136,8 @@ function add_custom_taxonomies_permalink(){
 			do_action('tevolution_top_taxonimies_permalink',$tevolution_taxonomies_data)?>
 
 		  <div class="tevolution-section">
-			   <div class="tevo_sub_title"><?php echo __('Change or remove custom taxonomy base', ADMINDOMAIN);?></h3></div>
-				<p class="tevolution_desc"> <?php echo __('<strong>Be careful</strong>: With the bases removed you need to be extra careful while naming your categories. Slugs across all post types must be unique.',ADMINDOMAIN)?> </p>
+			   <div class="tevo_sub_title"><?php echo __('Change or remove custom taxonomy base', 'templatic-admin');?></h3></div>
+				<p class="tevolution_desc"> <?php echo __('<strong>Be careful</strong>: With the bases removed you need to be extra careful while naming your categories. Slugs across all post types must be unique.','templatic-admin')?> </p>
 				<?php do_action('tev_before_permaliknk_frm'); ?>
 			   <table class="form-table tevolution-inputs-taxonomies">
 				<?php
@@ -165,25 +165,25 @@ function add_custom_taxonomies_permalink(){
 						if (strpos($location_post_type,','.$taxonomy->name) == false) {
 							$city_slug='';
 						}else{
-							$city_slug= __('<em>(city-base)</em>/new-york/', ADMINDOMAIN);
+							$city_slug= __('<em>(city-base)</em>/new-york/', 'templatic-admin');
 						}
 					}
 					if(in_array($key,$taxonomies)){?>
 						 <tr valign="top">
-							  <th scope="row" style="width:18%;"><?php echo " ".$taxonomy->labels->name." " ; echo __('Base', ADMINDOMAIN); ?>
+							  <th scope="row" style="width:18%;"><?php echo " ".$taxonomy->labels->name." " ; echo __('Base', 'templatic-admin'); ?>
 							 </th>
 							  <td valign="top">
 								<div class="clearfix">
 										<fieldset>										
-										<p><input type="checkbox" id="<?php echo $taxonomy->name; ?>_remove_base" onclick="hidePermalinkbase(this,'<?php echo $taxonomy->name; ?>_base')" name="tevolution_taxonimies_remove[<?php echo $taxonomy->name; ?>]" <?php if($tevolution_taxonomies_data!='' && isset($tevolution_taxonomies_data['tevolution_taxonimies_remove'][$taxonomy->name])){echo "checked=checked";} ?> /><label for="<?php echo $taxonomy->name; ?>_remove_base"> <?php echo __('Remove base', ADMINDOMAIN); ?></label></p>																			
+										<p><input type="checkbox" id="<?php echo $taxonomy->name; ?>_remove_base" onclick="hidePermalinkbase(this,'<?php echo $taxonomy->name; ?>_base')" name="tevolution_taxonimies_remove[<?php echo $taxonomy->name; ?>]" <?php if($tevolution_taxonomies_data!='' && isset($tevolution_taxonomies_data['tevolution_taxonimies_remove'][$taxonomy->name])){echo "checked=checked";} ?> /><label for="<?php echo $taxonomy->name; ?>_remove_base"> <?php echo __('Remove base', 'templatic-admin'); ?></label></p>																			
 										</fieldset>
 								   </div>                                   
 								  <div id="<?php echo $taxonomy->name; ?>_base" class="clearfix" <?php if($tevolution_taxonomies_data!='' && isset($tevolution_taxonomies_data['tevolution_taxonimies_remove'][$taxonomy->name])){echo "style='display:none'";} ?> >
 										<fieldset>
-										<p> <?php echo __(' Or change the base to', ADMINDOMAIN); ?></p>
+										<p> <?php echo __(' Or change the base to', 'templatic-admin'); ?></p>
 										<?php $tevolution_taxonimies_add_name = ($tevolution_taxonomies_data!='' && $tevolution_taxonomies_data['tevolution_taxonimies_add'][$taxonomy->name])? $tevolution_taxonomies_data['tevolution_taxonimies_add'][$taxonomy->name] : '';?>
 										<p><code><?php echo get_bloginfo('url');?>/<?php echo $city_slug;?></code><input type="text" name="tevolution_taxonimies_add[<?php echo $taxonomy->name; ?>]" value="<?php echo $tevolution_taxonimies_add_name;?>" placeholder="<?php echo $taxonomy->name;?>" /></p>
-										<p class="description"><?php echo __('Leave blank to keep the default setting',ADMINDOMAIN);?></p>
+										<p class="description"><?php echo __('Leave blank to keep the default setting','templatic-admin');?></p>
 										</fieldset>
 								   </div>
 							  </td>
@@ -196,7 +196,7 @@ function add_custom_taxonomies_permalink(){
 			   </table>
 		  </div>
 		  <div class="tevolution-section">
-			   <div class="tevo_sub_title"><?php echo __('Change or remove custom post type base', ADMINDOMAIN);?></div>
+			   <div class="tevo_sub_title"><?php echo __('Change or remove custom post type base', 'templatic-admin');?></div>
 			   <table class="form-table tevolution-inputs-taxonomies">
 					<?php
 				$posttype=tevolution_get_post_type();
@@ -209,7 +209,7 @@ function add_custom_taxonomies_permalink(){
 					if(is_plugin_active('Tevolution-LocationManager/location-manager.php')){
 						$location_post_type=','.implode(',',get_option('location_post_type'));
 						if (strpos($location_post_type,','.$posts->name) !== false) {
-							$city_slug= __('<em>(city-base)</em>/new-york/', ADMINDOMAIN);
+							$city_slug= __('<em>(city-base)</em>/new-york/', 'templatic-admin');
 						}else{
 							$city_slug='';
 						}
@@ -217,19 +217,19 @@ function add_custom_taxonomies_permalink(){
 					if(in_array($key,$posttype)){
 						 ?>
 						 <tr valign="top">
-							  <th scope="row" style="width:18%;"><?php echo " ".$posts->labels->name." " ; echo __('Base', ADMINDOMAIN); ?>
+							  <th scope="row" style="width:18%;"><?php echo " ".$posts->labels->name." " ; echo __('Base', 'templatic-admin'); ?>
 							  </th>
 							  <td valign="top">
 								   <div class="clearfix">
 										<fieldset>
-										<p><input type="checkbox" id="<?php echo $posts->name; ?>_remove_base" onclick="hidePermalinkbase(this,'<?php echo $posts->name; ?>_base')" name="tevolution_single_post_remove[<?php echo $posts->name; ?>]" <?php if($tevolution_taxonomies_data!='' && $tevolution_taxonomies_data['tevolution_single_post_remove'][$posts->name]){echo "checked=checked";} ?> /> <label for="<?php echo $posts->name; ?>_remove_base"><?php echo __('Remove base', ADMINDOMAIN); ?></label></p>
+										<p><input type="checkbox" id="<?php echo $posts->name; ?>_remove_base" onclick="hidePermalinkbase(this,'<?php echo $posts->name; ?>_base')" name="tevolution_single_post_remove[<?php echo $posts->name; ?>]" <?php if($tevolution_taxonomies_data!='' && $tevolution_taxonomies_data['tevolution_single_post_remove'][$posts->name]){echo "checked=checked";} ?> /> <label for="<?php echo $posts->name; ?>_remove_base"><?php echo __('Remove base', 'templatic-admin'); ?></label></p>
 								</fieldset>
 							</div>
 								   <div id="<?php echo $posts->name; ?>_base" class="clearfix" <?php if($tevolution_taxonomies_data!='' && $tevolution_taxonomies_data['tevolution_single_post_remove'][$posts->name]){echo "style='display:none'";} ?>>									
-										<p> <?php echo __('Or change the base to', ADMINDOMAIN); ?></p>
+										<p> <?php echo __('Or change the base to', 'templatic-admin'); ?></p>
 										<?php $tevolution_single_post_add = ($tevolution_taxonomies_data!='' && $tevolution_taxonomies_data['tevolution_single_post_add'][$posts->name])? $tevolution_taxonomies_data['tevolution_single_post_add'][$posts->name] : $posts->name;?>
 										<p><code><?php echo get_bloginfo('url');?>/<?php echo $city_slug;?></code><input type="text" name="tevolution_single_post_add[<?php echo $posts->name; ?>]" value="<?php echo $tevolution_single_post_add;?>" placeholder="<?php echo $posts->name;?>" /></p>
-										<p class="description"><?php echo __('Leave blank to keep the default setting',ADMINDOMAIN);?></p>
+										<p class="description"><?php echo __('Leave blank to keep the default setting','templatic-admin');?></p>
 										</fieldset>
 								   </div>
 							  </td>
@@ -242,21 +242,21 @@ function add_custom_taxonomies_permalink(){
 		  </div>
 		  
 			<div class="tevolution-section">
-			<div class="tevo_sub_title"><?php echo __('Change or remove other base slugs', ADMINDOMAIN);?></div>
+			<div class="tevo_sub_title"><?php echo __('Change or remove other base slugs', 'templatic-admin');?></div>
 			<table class="form-table tevolution-inputs-taxonomies">
 				<tr valign="top">
-					 <th scope="row" style="width:18%;"><?php echo __('Author Base', ADMINDOMAIN); ?></th>
+					 <th scope="row" style="width:18%;"><?php echo __('Author Base', 'templatic-admin'); ?></th>
 					 <td >
 						<div class="clearfix">
 							   <fieldset>
 							   <p>
-							   <input type="checkbox" id="tevolution_author_remove_base" onclick="hidePermalinkbase(this,'tevolution_author_base')" name="tevolution_remove_author_base" <?php if(@$tevolution_taxonomies_data['tevolution_remove_author_base']){echo "checked=checked";} ?> /><label for="tevolution_author_remove_base"><?php echo __('Remove base', ADMINDOMAIN); ?></label></p>							   
+							   <input type="checkbox" id="tevolution_author_remove_base" onclick="hidePermalinkbase(this,'tevolution_author_base')" name="tevolution_remove_author_base" <?php if(@$tevolution_taxonomies_data['tevolution_remove_author_base']){echo "checked=checked";} ?> /><label for="tevolution_author_remove_base"><?php echo __('Remove base', 'templatic-admin'); ?></label></p>							   
 							   </fieldset>
 						  </div>                              
 						  <div id="tevolution_author_base" class="clearfix" <?php if(@$tevolution_taxonomies_data['tevolution_remove_author_base']){echo "style='display:none'";} ?>>							
-							<p> <?php echo __('Or Change the base to', ADMINDOMAIN); ?></p>
+							<p> <?php echo __('Or Change the base to', 'templatic-admin'); ?></p>
 							   <input type="text" name="tevolution_author" value="<?php echo $tevolution_taxonomies_data['tevolution_author']; ?>" />
-							<p><code><?php echo get_bloginfo('url');?>/<em><?php echo __('(your-base)', ADMINDOMAIN);?></em>/admin</code></p>
+							<p><code><?php echo get_bloginfo('url');?>/<em><?php echo __('(your-base)', 'templatic-admin');?></em>/admin</code></p>
 						  </div>
 					 </td>
 				</tr>
@@ -267,9 +267,9 @@ function add_custom_taxonomies_permalink(){
 			<div class="tevolution_taxonimies_menu">			
 			<input type="hidden" name="tevolution_taxonomies_rewrite_rules" value="true"  />
 			<input type="hidden" name="action" value="update" />
-			<input type="submit" name="taxonomies_permalink_submit" value="<?php echo __('Save all changes', ADMINDOMAIN); ?>" class="button button-primary button-hero">
-			<a  href="<?php echo wp_nonce_url($purl."&action=tevolution_reset_rules", 'tevolution_taxonomies_reset_settings'); ?>" class="button button-secondary button-hero"><?php _e('Reset all rules',ADMINDOMAIN); ?></a>
-			<p><?php echo __('Make sure you clear Tevolution cache after saving these settings.',ADMINDOMAIN);?></p>
+			<input type="submit" name="taxonomies_permalink_submit" value="<?php echo __('Save all changes', 'templatic-admin'); ?>" class="button button-primary button-hero">
+			<a  href="<?php echo wp_nonce_url($purl."&action=tevolution_reset_rules", 'tevolution_taxonomies_reset_settings'); ?>" class="button button-secondary button-hero"><?php _e('Reset all rules','templatic-admin'); ?></a>
+			<p><?php echo __('Make sure you clear Tevolution cache after saving these settings.','templatic-admin');?></p>
 			</div>
 		</form>
 		</div>
@@ -362,6 +362,7 @@ function tevolution_taxonimies_filter_rewrite_rules($rewrite_rules){
 								if($remove_city_base==1){
 									unset($rewrite_rules[$multi_city.'/([^/]+)/'.urldecode($post->post_name).'$']);
 									$new_rules['([^/]+)/'.urldecode($post->post_name).'$'] = 'index.php?'.$multi_city.'=$matches[1]&'.$key.'='.urldecode($post->post_name);
+									$new_rules['([^/]+)/'.urldecode($post->post_name).'/comment-page-([0-9]{1,})/?$'] = 'index.php?'.$multi_city.'=$matches[1]&'.$key.'='.urldecode($post->post_name).'&cpage=$matches[2]';
 								}else{
 									unset($rewrite_rules['([^/]+)/'.urldecode($post->post_name).'$']);
 									$new_rules[$multi_city.'/([^/]+)/'.urldecode($post->post_name).'$'] = 'index.php?'.$multi_city.'=$matches[1]&'.$key.'='.urldecode($post->post_name);
@@ -500,7 +501,7 @@ function tevolution_taxonimies_filter_rewrite_rules($rewrite_rules){
 		$new_rules[$tevolution_author.'/([^/]+)/(feed|rdf|rss|rss2|atom)/?$'] = 'index.php?author_name=$matches[1]&feed=$matches[2]';
 		$new_rules[$tevolution_author.'/([^/]+)/page/?([0-9]{1,})/?$'] = 'index.php?author_name=$matches[1]&paged=$matches[2]';
 		$new_rules[$tevolution_author.'/([^/]+)/?$'] = 'index.php?author_name=$matches[1]';
-		$rewrite_rules = $new_rules + $rewrite_rules;
+		$rewrite_rules = array_merge($new_rules,$rewrite_rules);
 	}
 	/*
 	 * Remove custom tevolution generate taxonomies slug in listing page
@@ -581,7 +582,7 @@ function tevolution_taxonimies_filter_rewrite_rules($rewrite_rules){
 					}
 				}
 			}
-			$rewrite_rules =  $new_terms_rules + $rewrite_rules;
+			$rewrite_rules =  array_merge($new_terms_rules,$rewrite_rules);
 		}
 	}
 	

@@ -26,7 +26,7 @@ class Templatic_connector {
 		$modules_array = array('templatic-custom_taxonomy','templatic-custom_fields','templatic-registration','templatic-monetization','templatic-claim_ownership');
 		require_once(TEMPL_MONETIZE_FOLDER_PATH.'templ_header_section.php' );
 		?>
-        <p class="tevolution_desc"><?php echo __('The plugins listed below will help you completely transform your website and give it some extra functionalities. Please click the "Details & Purchase" button next to any of them to find out more about the functions they each offer.',ADMINDOMAIN);?></p>
+        <p class="tevolution_desc"><?php echo __('The plugins listed below will help you completely transform your website and give it some extra functionalities. Please click the "Details & Purchase" button next to any of them to find out more about the functions they each offer.','templatic-admin');?></p>
           <?php
 		echo '
 		<div id="tevolution_bundled" class="metabox-holder wrapper widgets-holder-wrap"><table cellspacing="0" class="wp-list-tev-table postbox fixed pages ">
@@ -51,7 +51,7 @@ class Templatic_connector {
 		$modules_array = array('templatic-custom_taxonomy','templatic-custom_fields','templatic-registration','templatic-monetization','templatic-claim_ownership');
 		require_once(TEMPL_MONETIZE_FOLDER_PATH.'templ_header_section.php' );
 		?>
-          <p class="tevolution_desc"><?php echo __('The payment gateways below will help you maximize the earning potential of your site. Offering more payment options to your users will help encourage more people, who perhaps might not find the built-in PayPal suitable, to submit a listing on your directory.',ADMINDOMAIN);?></p>
+          <p class="tevolution_desc"><?php echo __('The payment gateways below will help you maximize the earning potential of your site. Offering more payment options to your users will help encourage more people, who perhaps might not find the built-in PayPal suitable, to submit a listing on your directory.','templatic-admin');?></p>
           <?php
 		
 		echo '
@@ -89,12 +89,12 @@ class Templatic_connector {
 				<br>
 				</div>
 				<h3 class="hndle">
-					<span><?php echo __('Verify your product license',ADMINDOMAIN); ?></span>
+					<span><?php echo __('Verify your product license','templatic-admin'); ?></span>
 				</h3>
 				<div id="licence_fields">
 					<form action="<?php echo site_url()."/wp-admin/admin.php?page=templatic_system_menu";?>" name="" method="post">
 					<div class="inside">
-                                            <p><?php echo __('You should be able to get your product license key from',ADMINDOMAIN) . '<a href="http://templatic.com/members/member">'. __(' Templatic Member Area',ADMINDOMAIN).'</a>. ' . __("Here's how a",ADMINDOMAIN).'<a href="http://templatic.com/docs/tevolution-guide/">'. __(' guide',ADMINDOMAIN) . '</a> ' . __('if you need some help with this.',ADMINDOMAIN); ?></p>
+                                            <p><?php echo __('You should be able to get your product license key from','templatic-admin') . '<a href="http://templatic.com/members/member">'. __(' Templatic Member Area','templatic-admin').'</a>. ' . __("Here's how a",'templatic-admin').'<a href="http://templatic.com/docs/tevolution-guide/">'. __(' guide','templatic-admin') . '</a> ' . __('if you need some help with this.','templatic-admin'); ?></p>
 					<div id="licence_fields">
 				
 						<div>
@@ -104,9 +104,9 @@ class Templatic_connector {
                                             <?php
 						$templatic_licence_key = get_option('templatic_licence_key');
 						if(strstr($templatic_licence_key,'is_supreme') && get_option('templatic_licence_key_') !='' && !$_POST){
-							$verify= __('Verified',ADMINDOMAIN);
+							$verify= __('Verified','templatic-admin');
 						}else{
-							$verify=__('Verify',ADMINDOMAIN);
+							$verify=__('Verify','templatic-admin');
 						}
 						?>
 						<input type="submit" accesskey="p" value="<?php echo $verify;?>" class="button button-primary button-large" id="Verify" name="Verify">
@@ -115,7 +115,7 @@ class Templatic_connector {
 						$templatic_licence_key = get_option('templatic_licence_key');
 						if(get_option('templatic_licence_key_') =='' && !$_POST){
 						?>
-							<p><?php echo __('Enter the license key in order to unlock the plugin and enable automatic updates.',ADMINDOMAIN); ?></p>
+							<p><?php echo __('Enter the license key in order to unlock the plugin and enable automatic updates.','templatic-admin'); ?></p>
 						<?php
 						} ?>
 					</div>

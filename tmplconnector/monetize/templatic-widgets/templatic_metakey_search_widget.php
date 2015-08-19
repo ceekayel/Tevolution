@@ -5,8 +5,8 @@
 class templatic_key_search_widget extends WP_Widget {
 	function templatic_key_search_widget() {
 		/*Constructor*/
-		$widget_ops = array('classname' => 'search_key', 'description' => __('A single-input widget that allows you to search within specific custom fields. Works best inside the Header widget area. It can also be used inside sidebar areas.',ADMINDOMAIN) );
-		$this->WP_Widget('directory_search_location', __('T &rarr; Instant Search',ADMINDOMAIN), $widget_ops);
+		$widget_ops = array('classname' => 'search_key', 'description' => __('A single-input widget that allows you to search within specific custom fields. Works best inside the Header widget area. It can also be used inside sidebar areas.','templatic-admin') );
+		$this->WP_Widget('directory_search_location', __('T &rarr; Instant Search','templatic-admin'), $widget_ops);
 	}
 	function widget($args, $instance) {
 		/* prints the widget*/
@@ -19,7 +19,7 @@ class templatic_key_search_widget extends WP_Widget {
 		$search_criteria= empty($instance['search_criteria']) ? array('all') : apply_filters('widget_search_criteria', $instance['search_criteria']);		
 		$search_in_city= empty($instance['search_in_city']) ? '' : apply_filters('widget_search_criteria', $instance['search_in_city']);		
 		$show_address= empty($instance['show_address']) ? '' : apply_filters('widget_show_address', $instance['show_address']);		
-		$radius_type=($radius_measure=='miles')? __('Miles',DOMAIN) : __('Kilometers',DOMAIN);
+		$radius_type=($radius_measure=='miles')? __('Miles','templatic') : __('Kilometers','templatic');
 		
 		$miles_search = empty($instance['miles_search']) ? '' : apply_filters('widget_miles_search', $instance['miles_search']);
 		$radius_measure= empty($instance['radius_measure']) ? 'miles' : apply_filters('widget_radius_measure', $instance['radius_measure']);
@@ -29,9 +29,9 @@ class templatic_key_search_widget extends WP_Widget {
 		echo $args['before_widget'];
 		
 		if(isset($_REQUEST['s']) && $_REQUEST['s'] !=''){
-			$search_txt= esc_html($_REQUEST['s']);
+			$search_txt= stripcslashes($_REQUEST['s']);
 		}else{
-			$search_txt= __('Looking For ...',DOMAIN);
+			$search_txt= __('Looking For ...','templatic');
 		}
 		if($miles_search==1){
 			$class=' search_by_mile_active';
@@ -45,12 +45,14 @@ class templatic_key_search_widget extends WP_Widget {
 		$distance_factor = @$_REQUEST['radius'];
 		if(isset($_REQUEST['location'])) { $location= @$_REQUEST['location']; }else{$location='';  }
 		if(isset($_REQUEST['search_key'])) { $what=  $_REQUEST['search_key']; }else{$what='';  }
+		do_action('tmpl_before_search_location');
 		echo '<div class="search_nearby_widget'.$class.' '.$onceclass.'">';
 		if($instance['title']){ echo $args['before_title'].$title.$args['after_title']; }
 		$nonce = wp_create_nonce  ('tmpl_search');
 		do_action('templ_before_search_widget',$instance);/* add action for display additional field before form.*/
-		?>
-		<form name="searchform" method="get" class="searchform allinone" id="searchform" action="<?php echo home_url(); ?>/" style="position:relative;">
+                $random_str = 'searchform_'.rand();
+                ?>
+            <form name="<?php echo $random_str;?>" method="get" class="<?php echo $random_str;?> allinone" id="searchform" action="<?php echo home_url(); ?>/" style="position:relative;">
 				<?php 
 				/* loop to fetch meta key Start */
 				if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
@@ -68,8 +70,8 @@ class templatic_key_search_widget extends WP_Widget {
 				}
 				if(!empty($post_type) && is_array($post_type)){
 					foreach($post_type as $val):?>
-					<input type="hidden" name="post_type<?php if(count($post_type)>1) {echo '[]';}?>" value="<?php echo $val;?>" />
-                <?php endforeach;	
+                                            <input type="hidden" name="post_type<?php if(count($post_type)>1) {echo '[]';}?>" value="<?php echo $val;?>" />
+                                         <?php endforeach;	
 				}else{ ?>
 					<input type="hidden" name="post_type" value="<?php echo $post_type;?>" />
 				<?php }
@@ -86,12 +88,17 @@ class templatic_key_search_widget extends WP_Widget {
 					<input type="hidden" name="mkey[]" value="all" />
 				<?php }
 				/* loop to fetch meta key End*/
+				do_action('templ_into_search_widget');
 				?>
-				<input type="text" value="<?php echo $what; ?>" name="s" id="search_near-<?php echo $search_id;?>" class="searchpost" placeholder="<?php if(isset($_REQUEST['s']) && trim($_REQUEST['s']) == '') { echo $search_txt;} else { echo $search_txt; }?>" size="100"/>
+                                
+               <input type="text" onClick="tmpl_insta_search_widget('<?php echo $random_str;?>')" onkeypress="tmpl_insta_search_widget('<?php echo $random_str;?>')" value="<?php echo $what; ?>" name="s" id="search_near-<?php echo $search_id;?>" class="searchpost" placeholder="<?php if(isset($_REQUEST['s']) && trim($_REQUEST['s']) == '') { echo $search_txt;} else { echo $search_txt; }?>" size="100"/>
                 
 				<input type="hidden" name="t" value="<?php echo $nonce; ?>" />
 				<input type="hidden" name="relation" class="sgo" value="<?php echo $exact_search; ?>" />
-				<input type="submit" class="sgo" onclick="tmpl_find_click(<?php echo $search_id;?>);" value="<?php echo apply_filters('tmpl_searcg_button_val',__('Search',DOMAIN)); ?>" />
+				<?php 
+				do_action('templ_before_submit_btn');
+				?>
+				<input type="submit" class="sgo" onclick="tmpl_find_click(<?php echo $search_id;?>);" value="<?php echo apply_filters('tmpl_searcg_button_val',__('Search','templatic')); ?>" />
 				<?php if(@$search_in_city ==1){ ?>
 				<input type="hidden" name="search_in_city" class="sgo" value="1" />
 				<?php }
@@ -103,7 +110,7 @@ class templatic_key_search_widget extends WP_Widget {
 			do_action('templ_after_search_widget',$instance);/* add action for display additional field after form.*/
 			add_action('wp_footer','tmpl_searchclick_script',99);
 		echo '</div>';
-		
+		do_action('tmpl_after_search_location');
 		echo $args['after_widget'];
 	}
 	
@@ -127,12 +134,12 @@ class templatic_key_search_widget extends WP_Widget {
 		if(empty($search_in_city)){ $search_in_city =array(); }
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id('title'); ?>"><?php echo __('Title',ADMINDOMAIN);?>:
+			<label for="<?php echo $this->get_field_id('title'); ?>"><?php echo __('Title','templatic-admin');?>:
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
 			</label>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id('post_type');?>" ><?php echo __('Select Post Type',ADMINDOMAIN);?>:    </label>	
+			<label for="<?php echo $this->get_field_id('post_type');?>" ><?php echo __('Select Post Type','templatic-admin');?>:    </label>	
 			<select  id="<?php echo $this->get_field_id('post_type');?>" name="<?php echo $this->get_field_name('post_type'); ?>[]" multiple="multiple" class="widefat" onclick="tevolution_search_fields(this.id,'<?php echo $this->get_field_name('search_criteria'); ?>','<?php echo $this->get_field_id('search_criteria'); ?>');">        	
 				<?php
                     $all_post_types = apply_filters('tmpl_allow_monetize_posttype',get_option("templatic_custom_post"));
@@ -148,18 +155,18 @@ class templatic_key_search_widget extends WP_Widget {
 			</select>
 		</p>
 			<p> 
-				<p id='search_process_<?php echo $this->get_field_name('search_criteria'); ?>' style='display:none;'><i class="fa fa-circle-o-notch fa-spin"></i></p><label for="<?php echo $this->get_field_id('search_criteria'); ?>"><?php echo __('Enable to search from',ADMINDOMAIN);?>: </label>
+				<p id='search_process_<?php echo $this->get_field_name('search_criteria'); ?>' style='display:none;'><i class="fa fa-circle-o-notch fa-spin"></i></p><label for="<?php echo $this->get_field_id('search_criteria'); ?>"><?php echo __('Enable to search from','templatic-admin');?>: </label>
 			</p> 
              <p> 
 				<label for="<?php echo $this->get_field_id(search_criteria_cats); ?>">
-				<input id="<?php echo $this->get_field_id('search_criteria_cats'); ?>" name="<?php echo $this->get_field_name('search_criteria'); ?>[]" type="checkbox" value="cats" <?php if(in_array('cats',$search_criteria)){ ?>checked=checked<?php } ?>style="width:10px;"  /><b><?php echo __('Categories',ADMINDOMAIN);?></b>             
+				<input id="<?php echo $this->get_field_id('search_criteria_cats'); ?>" name="<?php echo $this->get_field_name('search_criteria'); ?>[]" type="checkbox" value="cats" <?php if(in_array('cats',$search_criteria)){ ?>checked=checked<?php } ?>style="width:10px;"  /><b><?php echo __('Categories','templatic-admin');?></b>             
                </label></p>
 			 <p>
 				<label for="<?php echo $this->get_field_id('search_criteria_tags'); ?>">
-					<input id="<?php echo $this->get_field_id('search_criteria_tags'); ?>" name="<?php echo $this->get_field_name('search_criteria'); ?>[]" type="checkbox" value="tags" <?php if(in_array('tags',$search_criteria)){ ?>checked=checked<?php } ?>style="width:10px;"  /><b><?php echo __('Tags',ADMINDOMAIN);?></b>             
+					<input id="<?php echo $this->get_field_id('search_criteria_tags'); ?>" name="<?php echo $this->get_field_name('search_criteria'); ?>[]" type="checkbox" value="tags" <?php if(in_array('tags',$search_criteria)){ ?>checked=checked<?php } ?>style="width:10px;"  /><b><?php echo __('Tags','templatic-admin');?></b>             
                </label></p>
 			<p> <label for="<?php echo $this->get_field_id('search_criteria_review'); ?>">
-					<input id="<?php echo $this->get_field_id('search_criteria_review'); ?>" name="<?php echo $this->get_field_name('search_criteria'); ?>[]" type="checkbox" value="reviews" <?php if(in_array('reviews',$search_criteria)){ ?>checked=checked<?php } ?>style="width:10px;"  /><b><?php echo __('Reviews',ADMINDOMAIN);?></b>
+					<input id="<?php echo $this->get_field_id('search_criteria_review'); ?>" name="<?php echo $this->get_field_name('search_criteria'); ?>[]" type="checkbox" value="reviews" <?php if(in_array('reviews',$search_criteria)){ ?>checked=checked<?php } ?>style="width:10px;"  /><b><?php echo __('Reviews','templatic-admin');?></b>
 				</label></p>
 			<div class="searchable_fields" id="<?php echo $this->get_field_id('search_criteria'); ?>">
 				<?php 
@@ -204,18 +211,18 @@ class templatic_key_search_widget extends WP_Widget {
 				}
 				?>
             </div>
-			<p class="description"><?php echo __('Search results will come from all selected options.',ADMINDOMAIN); ?></p>
+			<p class="description"><?php echo __('Search results will come from all selected options.','templatic-admin'); ?></p>
 			<p>
                <label for="<?php echo $this->get_field_id('exact_search'); ?>">
-               <input id="<?php echo $this->get_field_id('exact_search'); ?>" name="<?php echo $this->get_field_name('exact_search'); ?>" type="checkbox" value="1" <?php if($exact_search =='1'){ ?>checked=checked<?php } ?>style="width:10px;"  /><b><?php echo __('Search with exact match conditions?',ADMINDOMAIN);?></b>             
+               <input id="<?php echo $this->get_field_id('exact_search'); ?>" name="<?php echo $this->get_field_name('exact_search'); ?>" type="checkbox" value="1" <?php if($exact_search =='1'){ ?>checked=checked<?php } ?>style="width:10px;"  /><b><?php echo __('Search with exact match conditions?','templatic-admin');?></b>             
                </label>
             </p>
 			<p> <label for="<?php echo $this->get_field_id('search_in_city'); ?>">
-					<input id="<?php echo $this->get_field_id('search_in_city'); ?>" name="<?php echo $this->get_field_name('search_in_city'); ?>[]" type="checkbox" value="search_in_city" <?php if(in_array('search_in_city',$search_in_city)){ ?>checked=checked<?php } ?>style="width:10px;"  /><b><?php echo __('Search from current city',ADMINDOMAIN);?></b>
+					<input id="<?php echo $this->get_field_id('search_in_city'); ?>" name="<?php echo $this->get_field_name('search_in_city'); ?>[]" type="checkbox" value="search_in_city" <?php if(in_array('search_in_city',$search_in_city)){ ?>checked=checked<?php } ?>style="width:10px;"  /><b><?php echo __('Search from current city','templatic-admin');?></b>
 				</label>
 				 
 			</p>			
-			<p><?php echo __('By default it will search from all cities, Enable the above option if you want to search from current city only',ADMINDOMAIN);?></p>   
+			<p><?php echo __('By default it will search from all cities, Enable the above option if you want to search from current city only','templatic-admin');?></p>   
      
 		<?php
 		add_action('admin_footer','tevolution_searchable_scripts');		
@@ -283,7 +290,7 @@ function tmpl_searchclick_script(){
 	if(isset($_REQUEST['s']) && $_REQUEST['s'] !=''){
 		$search_txt= esc_html($_REQUEST['s']);
 	}else{
-		$search_txt= __('What?',DOMAIN);
+		$search_txt= __('What?','templatic');
 	}
 	?>
 	<script  type="text/javascript" async >
@@ -293,7 +300,7 @@ function tmpl_searchclick_script(){
 				{
 					jQuery('#search_near-'+search_id).val(' ');
 				}
-				if(jQuery('#location').val() == '<?php _e('Address',DOMAIN); ?>')
+				if(jQuery('#location').val() == '<?php _e('Address','templatic'); ?>')
 				{
 					jQuery('#location').val('');
 				}

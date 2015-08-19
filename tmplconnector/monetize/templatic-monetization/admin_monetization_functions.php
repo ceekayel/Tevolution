@@ -139,8 +139,8 @@ function transactions_table_create() {
 /* creating a sub page menu to tevolution menu */
 
 function add_subpage_monetization() {
-          $page_title = __('Monetization', ADMINDOMAIN); /* define page title and menu title */
-          $transcation_title = __('Transactions', ADMINDOMAIN); /* define page title and menu title */
+          $page_title = __('Monetization', 'templatic-admin'); /* define page title and menu title */
+          $transcation_title = __('Transactions', 'templatic-admin'); /* define page title and menu title */
 
           $hook = add_submenu_page('templatic_system_menu', $page_title, $page_title, 'administrator', 'monetization', 'add_monetization');
 
@@ -263,10 +263,10 @@ function recent_transactions_dashboard_widget() {
                               echo '<table class="widefat"  width="100%" >
 			<thead>	';
                               $th = '	<tr>
-				<th valign="top" align="left" style="width: 50%;">' . __('Transactions', DOMAIN) . '</th>
-				<th valign="top" align="left">' . __('With', DOMAIN) . '</th>
-				<th valign="top" align="left">' . __('Exp.', DOMAIN) . '</th>
-				<th valign="top" align="left">' . __('Status', DOMAIN) . '</th>';
+				<th valign="top" align="left" style="width: 50%;">' . __('Transactions', 'templatic') . '</th>
+				<th valign="top" align="left">' . __('With', 'templatic') . '</th>
+				<th valign="top" align="left">' . __('Exp.', 'templatic') . '</th>
+				<th valign="top" align="left">' . __('Status', 'templatic') . '</th>';
                               $th .= '</tr>';
                               echo $th;
                               foreach ($recent_posts as $posts) {
@@ -277,11 +277,11 @@ function recent_transactions_dashboard_widget() {
                                         /* Check for featured posts: start */
                                         $featured_type = get_post_meta($posts->ID, 'featured_type', true);
                                         if ('h' == $featured_type) {
-                                                  $featured_text = '<div>' . __("Home", DOMAIN) . '</div>';
+                                                  $featured_text = '<div>' . __("Home", 'templatic') . '</div>';
                                         } elseif ('c' == $featured_type) {
-                                                  $featured_text = '<div>' . __("Category", DOMAIN) . '</div>';
+                                                  $featured_text = '<div>' . __("Category", 'templatic') . '</div>';
                                         } elseif ('both' == $featured_type) {
-                                                  $featured_text = '<div>' . __("Home, Category", DOMAIN) . '</div>';
+                                                  $featured_text = '<div>' . __("Home, Category", 'templatic') . '</div>';
                                         } else {
                                                   $featured_text = '';
                                         }
@@ -298,7 +298,7 @@ function recent_transactions_dashboard_widget() {
                                                   $color_taxonomy_value = $tmpdata[$color_taxonomy];
                                         }
                                         echo '<tr>
-				<td valign="top" align="left" ><a href="' . admin_url() . 'admin.php?page=transcation&action=edit&trans_id=' . $tran_info[0]->trans_id . '">' . $tran_info[0]->trans_id . '</a>&nbsp; <a href="' . site_url() . '/wp-admin/post.php?post=' . $posts->ID . '&action=edit">' . $posts->post_title . '</a>&nbsp;<div class="transaction_meta">' . __('On', ADMINDOMAIN) . "&nbsp;" . date_i18n(get_option("date_format"), strtotime($tran_info[0]->payment_date)) . '&nbsp;' . __('with', ADMINDOMAIN) . " " . get_the_title($tran_info[0]->package_id) . '&nbsp;' . __('with amt.', ADMINDOMAIN) . '<span style="color:green;">' . $price_amount . '</span></div></td>';
+				<td valign="top" align="left" ><a href="' . admin_url() . 'admin.php?page=transcation&action=edit&trans_id=' . $tran_info[0]->trans_id . '">' . $tran_info[0]->trans_id . '</a>&nbsp; <a href="' . site_url() . '/wp-admin/post.php?post=' . $posts->ID . '&action=edit">' . $posts->post_title . '</a>&nbsp;<div class="transaction_meta">' . __('On', 'templatic-admin') . "&nbsp;" . date_i18n(get_option("date_format"), strtotime($tran_info[0]->payment_date)) . '&nbsp;' . __('with', 'templatic-admin') . " " . get_the_title($tran_info[0]->package_id) . '&nbsp;' . __('with amt.', 'templatic-admin') . '<span style="color:green;">' . $price_amount . '</span></div></td>';
                                         echo '<td valign="top" align="left">' . $tran_info[0]->payment_method . '</td>';
                                         echo '<td valign="top" align="left">' . $expired_date . '</td>';
                                         if ($no_alive_days != '1') {
@@ -320,10 +320,10 @@ function recent_transactions_dashboard_widget() {
 
                               echo '<p><a href="' . admin_url('admin.php?page=transcation') . '">View More Transactions</a></p>';
                     } else {
-                              echo __('No recent transaction available.', ADMINDOMAIN);
+                              echo __('No recent transaction available.', 'templatic-admin');
                     }
           } else {
-                    echo '<p style="margin:0 0 10px">' . sprintf(__('No transaction type selected from  <a href="%s" >transaction settings</a>.', ADMINDOMAIN), admin_url('admin.php?page=transcation')) . '</p>';
+                    echo '<p style="margin:0 0 10px">' . sprintf(__('No transaction type selected from  <a href="%s" >transaction settings</a>.', 'templatic-admin'), admin_url('admin.php?page=transcation')) . '</p>';
           }
 }
 
@@ -375,12 +375,12 @@ function get_order_detailinfo_transaction_report($orderId, $isshow_paydetail = 0
           $alive_days = get_post_meta($post_id, 'alive_days', true);
 		  $trans_status = $orderinfo->status;
 		  if($trans_status == 0){
-				$tstatus = '<span id="p_status_'.$tid.'" style="color:#E66F00; font-weight:normal;"  href="javascript:void(0);">'.__('Pending',DOMAIN).'</span>';
+				$tstatus = '<span id="p_status_'.$tid.'" style="color:#E66F00; font-weight:normal;"  href="javascript:void(0);">'.__('Pending','templatic').'</span>';
 			}else if($trans_status == 1){
-				$tstatus = '<span style="color:green; font-weight:normal;">'.__('Approved',DOMAIN).'</span>';
+				$tstatus = '<span style="color:green; font-weight:normal;">'.__('Approved','templatic').'</span>';
 			}
 			else if($trans_status == 2){
-				$tstatus = '<span style="color:red; font-weight:normal;">'.__('Cancel',DOMAIN).'</span>';
+				$tstatus = '<span style="color:red; font-weight:normal;">'.__('Cancel','templatic').'</span>';
 			}else{
 				$tstatus = "-";
 			}
@@ -390,8 +390,8 @@ function get_order_detailinfo_transaction_report($orderId, $isshow_paydetail = 0
           }
           $message .='
 	<div class="order_info">
-	<p> <span class="span"> ' . __('Transaction ID', DOMAIN) . ' </span> : <span class="trans_strong">' . $orderinfo->trans_id . '  </span></p> 
-	<p><span class="span"> ' . __('Transaction Date', DOMAIN) . ' </span> : <span class="trans_strong">' . date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($orderinfo->payment_date)) . '</span> </p>';
+	<p> <span class="span"> ' . __('Transaction ID', 'templatic') . ' </span> : <span class="trans_strong">' . $orderinfo->trans_id . '  </span></p> 
+	<p><span class="span"> ' . __('Transaction Date', 'templatic') . ' </span> : <span class="trans_strong">' . date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($orderinfo->payment_date)) . '</span> </p>';
           if (!$alive_days) {
                     $publishdate = get_post($post_id);
                     $publish_date = strtotime($publishdate->post_date);
@@ -404,15 +404,15 @@ function get_order_detailinfo_transaction_report($orderId, $isshow_paydetail = 0
                     }
                     $message .='<div class="checkout_address" >
 								<div class="address_info address_info2 fr">
-									<p> <span class="span"> ' . __('Expiry Date', DOMAIN) . ' </span> :  <span class="trans_strong">' . $expired_date . $end_time . '</span>  </p>
+									<p> <span class="span"> ' . __('Expiry Date', 'templatic') . ' </span> :  <span class="trans_strong">' . $expired_date . $end_time . '</span>  </p>
 								</div>
 							</div>';
           }
-          $message .='<p><span class="span">' . __('Transaction Status', DOMAIN) . '</span>  : <span class="trans_strong">' . $tstatus . '</span> </p>
+          $message .='<p><span class="span">' . __('Transaction Status', 'templatic') . '</span>  : <span class="trans_strong">' . $tstatus . '</span> </p>
 	</div> <!--order_info -->
 	<div class="checkout_address" >
 	<div class="address_info address_info2 fr">
-		<p> <span class="span"> ' . __('Payment Method', DOMAIN) . ' </span> : <span class="trans_strong">' . get_payment_method($orderinfo->payment_method) . '</span>  </p>
+		<p> <span class="span"> ' . __('Payment Method', 'templatic') . ' </span> : <span class="trans_strong">' . get_payment_method($orderinfo->payment_method) . '</span>  </p>
 	</div>
 	</div>
 	';
@@ -421,7 +421,7 @@ function get_order_detailinfo_transaction_report($orderId, $isshow_paydetail = 0
 	<td align="left" valign="top" colspan="2">
 		<div class="checkout_address" >
 			<div class="address_info address_info2 fr">
-				<h3> ' . __('Coupon Code', DOMAIN) . '  </h3>									
+				<h3> ' . __('Coupon Code', 'templatic') . '  </h3>									
 				<div class="address_row"><span class="trans_strong">' . $coupon_code . '</span>  </div>
 			</div>
 		</div><!-- checkout Address -->
@@ -458,56 +458,56 @@ function get_order_detailinfo_price_package($orderId, $isshow_paydetail = 0) {
 
           $message .='<div class="checkout_address" >
 					<div class="address_info address_info2 fr">
-						<p> <span class="span"> ' . __('Package', DOMAIN) . ' </span> : <span class="trans_strong">' . $package_select_name . '</span>  </p>
+						<p> <span class="span"> ' . __('Package', 'templatic') . ' </span> : <span class="trans_strong">' . $package_select_name . '</span>  </p>
 					</div>
 				</div>';
           if ($package_type) {
                     if ($package_type == 1) {
                               $message .='<div class="order_info">
-						<p> <span class="span"> ' . __('Package Type', DOMAIN) . ' </span> : <span class="trans_strong">' . __('Single Submission', DOMAIN) . '</span> </p>
+						<p> <span class="span"> ' . __('Package Type', 'templatic') . ' </span> : <span class="trans_strong">' . __('Single Submission', 'templatic') . '</span> </p>
 					</div>';
                     } else {
                               $message .='<div class="order_info">
-						<p> <span class="span"> ' . __('Package Type', DOMAIN) . ' </span> : <span class="trans_strong">' . apply_filters('tmpl_package_type',__('Subscription', DOMAIN),$package_type) . '</span> </p>
+						<p> <span class="span"> ' . __('Package Type', 'templatic') . ' </span> : <span class="trans_strong">' . apply_filters('tmpl_package_type',__('Subscription', 'templatic'),$package_type) . '</span> </p>
 					</div>';
                     }
           }
           if ($recurring) {
                     $trans_details = $wpdb->get_row("select * from $transection_db_table_name where trans_id=\"$_REQUEST[trans_id]\"");
                     $message .='<div class="order_info">
-						<p> <span class="span"> ' . __('Recurring', DOMAIN) . ' </span> : <span class="trans_strong">' . __('Yes', DOMAIN) . '</span> </p>
+						<p> <span class="span"> ' . __('Recurring', 'templatic') . ' </span> : <span class="trans_strong">' . __('Yes', 'templatic') . '</span> </p>
 					</div>
 					<div class="order_info">
-						<p> <span class="span"> ' . __('Recurring Price', DOMAIN) . ' </span> : <span class="trans_strong">' . fetch_currency_with_position($trans_details->payable_amt, 2) . '  </span></p>
+						<p> <span class="span"> ' . __('Recurring Price', 'templatic') . ' </span> : <span class="trans_strong">' . fetch_currency_with_position($trans_details->payable_amt, 2) . '  </span></p>
 					</div>
 					';
           }
           /* package have home page featured or not */
           if ($is_home_featured) {
                     $message .='<div class="order_info">
-						<p> <span class="span"> ' . __('Featured for home page', DOMAIN) . ' </span> : <img src="' . TEVOLUTION_PAGE_TEMPLATES_URL . 'tmplconnector/monetize/images/icon-yes.png" /> </p>
+						<p> <span class="span"> ' . __('Featured for home page', 'templatic') . ' </span> : <img src="' . TEVOLUTION_PAGE_TEMPLATES_URL . 'tmplconnector/monetize/images/icon-yes.png" /> </p>
 					</div>';
           } elseif ($feature_amount != '') {
                     $message .='<div class="order_info">
-						<p> <span class="span"> ' . __('Featured for home page', DOMAIN) . ' </span> : ' . display_amount_with_currency_plugin($feature_amount) . ' </p>
+						<p> <span class="span"> ' . __('Featured for home page', 'templatic') . ' </span> : ' . display_amount_with_currency_plugin($feature_amount) . ' </p>
 					</div>';
           }
 
           /* package have category page featured or not */
           if ($is_category_featured) {
                     $message .='<div class="order_info">
-						<p> <span class="span"> ' . __('Featured for category page', DOMAIN) . ' </span> : <img src="' . TEVOLUTION_PAGE_TEMPLATES_URL . 'tmplconnector/monetize/images/icon-yes.png" /> </p>
+						<p> <span class="span"> ' . __('Featured for category page', 'templatic') . ' </span> : <img src="' . TEVOLUTION_PAGE_TEMPLATES_URL . 'tmplconnector/monetize/images/icon-yes.png" /> </p>
 					</div>';
           } elseif ($feature_cat_amount != '') {
                     $message .='<div class="order_info">
-						<p> <span class="span"> ' . __('Featured for category page', DOMAIN) . ' </span> : ' . display_amount_with_currency_plugin($feature_cat_amount) . ' </p>
+						<p> <span class="span"> ' . __('Featured for category page', 'templatic') . ' </span> : ' . display_amount_with_currency_plugin($feature_cat_amount) . ' </p>
 					</div>';
           }
 
           if (is_plugin_active('thoughtful-comments/fv-thoughtful-comments.php')) {
                     if (get_post_meta($post_id, 'author_moderate', true) == 1) {
                               $message .='<div class="order_info">
-						<p> <span class="span"> ' . __('User caon moderate comment', DOMAIN) . ' </span> : <img src="' . TEVOLUTION_PAGE_TEMPLATES_URL . 'tmplconnector/monetize/images/icon-yes.png" /> </p>
+						<p> <span class="span"> ' . __('User caon moderate comment', 'templatic') . ' </span> : <img src="' . TEVOLUTION_PAGE_TEMPLATES_URL . 'tmplconnector/monetize/images/icon-yes.png" /> </p>
 					</div>';
                     }
           }
@@ -545,14 +545,14 @@ function get_order_detailinfo_tableformat($orderId, $isshow_paydetail = 0) {
 
           $message .='<table width="100%" class="table widefat post" ><thead>
 			<tr>
-				<th width="5%" align="left" class="title" > ' . __('Image', DOMAIN) . '</th>
-				<th width="25%" align="left" class="title" >' . __('Title', DOMAIN) . '</th>
-				<th width="20%" align="left" class="title" > ' . __('Submitted by', DOMAIN) . '</th>
-				<th width="15%" align="left" class="title" > ' . __('Payment Method', DOMAIN) . '</th>
-				<th width="10%" align="left" class="title" > ' . __('For Category', DOMAIN) . '</th>
-				<th width="10%" align="left" class="title" > ' . __('Featured On Home Page', DOMAIN) . '</th>
-				<th width="10%" align="left" class="title" > ' . __('Featured On Category Page', DOMAIN) . '</th>
-				<th width="15%" align="left" class="title" >' . __('Total Price', DOMAIN) . '</th>
+				<th width="5%" align="left" class="title" > ' . __('Image', 'templatic') . '</th>
+				<th width="25%" align="left" class="title" >' . __('Title', 'templatic') . '</th>
+				<th width="20%" align="left" class="title" > ' . __('Submitted by', 'templatic') . '</th>
+				<th width="15%" align="left" class="title" > ' . __('Payment Method', 'templatic') . '</th>
+				<th width="10%" align="left" class="title" > ' . __('For Category', 'templatic') . '</th>
+				<th width="10%" align="left" class="title" > ' . __('Featured On Home Page', 'templatic') . '</th>
+				<th width="10%" align="left" class="title" > ' . __('Featured On Category Page', 'templatic') . '</th>
+				<th width="15%" align="left" class="title" >' . __('Total Price', 'templatic') . '</th>
 			</tr></thead>';
 
           $c = 0;
@@ -629,10 +629,10 @@ function get_order_user_info($orderId, $isshow_paydetail = 0) {
 				</div>
 				<div class="trans_user_info">
 					<div class="order_info">
-						<p> <span class="span"> ' . __('Username', DOMAIN) . ' </span> : <span class="trans_strong">' . $orderinfo->user_name . '</span> </p>
+						<p> <span class="span"> ' . __('Username', 'templatic') . ' </span> : <span class="trans_strong">' . $orderinfo->user_name . '</span> </p>
 					</div>
 					<div class="order_info">
-						<p> <span class="span"> ' . __('User Email', DOMAIN) . ' </span> : <span class="trans_strong">' . $orderinfo->pay_email . '</span> </p>
+						<p> <span class="span"> ' . __('User Email', 'templatic') . ' </span> : <span class="trans_strong">' . $orderinfo->pay_email . '</span> </p>
 					</div>
 				</div>';
           return $message;
@@ -662,19 +662,19 @@ function price_package_meta_box() {
           global $post;
           $package_id = get_post_meta($post->ID, 'package_select', true);
           $alive_days = get_post_meta($post->ID, 'alive_days', true);
-          $featured_c = (get_post_meta($post->ID, 'featured_c', true) == 'c') ? '' . __('Yes', DOMAIN) : '' . __('No', DOMAIN);
-          $featured_h = (get_post_meta($post->ID, 'featured_h', true) == 'h') ? '' . __('Yes', DOMAIN) : '' . __('No', DOMAIN);
+          $featured_c = (get_post_meta($post->ID, 'featured_c', true) == 'c') ? '' . __('Yes', 'templatic') : '' . __('No', 'templatic');
+          $featured_h = (get_post_meta($post->ID, 'featured_h', true) == 'h') ? '' . __('Yes', 'templatic') : '' . __('No', 'templatic');
           if (function_exists('fetch_currency_with_position')) {
                     $paid_amount = fetch_currency_with_position(get_post_meta($post->ID, 'paid_amount', true));
           }
 
           $package_name = get_the_title($package_id);
           ?>
-          <p><label><?php echo __('Package Name: ', ADMINDOMAIN); ?></label><strong><?php echo $package_name; ?></strong></p>
-          <p><label><?php echo __('Total Amount: ', ADMINDOMAIN); ?></label><strong><?php echo $paid_amount; ?></strong></p>
-          <p><label><?php echo __('Alive Days: ', ADMINDOMAIN); ?></label><strong><?php echo $alive_days; ?></strong></p>
-          <p><label><?php echo __('Featured for home page? : ', ADMINDOMAIN); ?></label><strong><?php echo $featured_h; ?></strong></p>
-          <p><label><?php echo __('Featured for category page? : ', ADMINDOMAIN); ?></label><strong><?php echo $featured_c; ?></strong></p>
+          <p><label><?php echo __('Package Name: ', 'templatic-admin'); ?></label><strong><?php echo $package_name; ?></strong></p>
+          <p><label><?php echo __('Total Amount: ', 'templatic-admin'); ?></label><strong><?php echo $paid_amount; ?></strong></p>
+          <p><label><?php echo __('Alive Days: ', 'templatic-admin'); ?></label><strong><?php echo $alive_days; ?></strong></p>
+          <p><label><?php echo __('Featured for home page? : ', 'templatic-admin'); ?></label><strong><?php echo $featured_h; ?></strong></p>
+          <p><label><?php echo __('Featured for category page? : ', 'templatic-admin'); ?></label><strong><?php echo $featured_c; ?></strong></p>
           <?php
 }
 
@@ -755,7 +755,7 @@ function ajax_categories_dropdown() {
           $category_li = '';
           $result .= '<ul class="categorychecklist form_cat" data-wp-lists="list:listingcategory" id="category_checklist"><li>
 		<input type="checkbox" name="selectall" id="selectall" class="checkbox" onclick="displaychk_frm();" />
-		<label for="selectall">&nbsp;' . __('Select All', DOMAIN) . '</label>
+		<label for="selectall">&nbsp;' . __('Select All', 'templatic') . '</label>
 	</li>';
 
           $pkg_id = $_REQUEST['package_id'];
@@ -871,7 +871,7 @@ function tmpl_get_wp_category_checklist_monetize_plugin($post_id = 0, $args = ar
           $category_result .= call_user_func_array(array(&$walker, 'walk'), array($categories, 0, $args));
           if (empty($categories) && empty($checked_categories)) {
 
-                    $category_result .= '<span style="font-size:12px;float:left;color:red;">' . sprintf(__('You have not created any category for %s post type. So, this listing will be submited as uncategorized.', DOMAIN), $template_post_type) . '</span>';
+                    $category_result .= '<span style="font-size:12px;float:left;color:red;">' . sprintf(__('You have not created any category for %s post type. So, this listing will be submited as uncategorized.', 'templatic'), $template_post_type) . '</span>';
           }
           return $category_result;
 }

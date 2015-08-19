@@ -98,9 +98,9 @@ class custom_fields_list_table extends Tmpl_WP_List_Table
 			$sort_order=get_post_meta($post_id,'sort_order',true);
 		}
 		if(get_post_meta($post_id,"is_active",true)){
-			$active = '<span style="color:green; font-weight:normal;">'.__('Active',ADMINDOMAIN)."</span>";
+			$active = '<span style="color:green; font-weight:normal;">'.__('Active','templatic-admin')."</span>";
 		}else{
-			$active = '<span style="color:#e66f00; font-weight:normal;">'.__('Inactive',ADMINDOMAIN)."</span>";
+			$active = '<span style="color:#e66f00; font-weight:normal;">'.__('Inactive','templatic-admin')."</span>";
 		}
 		
 		$edit_url=($is_edit =='true')? admin_url("admin.php?page=custom_setup&ctab=custom_fields&action=addnew&amp;field_id=$post_id") : '#';		
@@ -136,13 +136,13 @@ class custom_fields_list_table extends Tmpl_WP_List_Table
 			 if(isset($__management_columns_posts_translations[$post_id][$v['code']]) && $__management_columns_posts_translations[$post_id][$v['code']]->element_id){
 				  /* Translation exists */
 				 $img = 'edit_translation.png';
-				 $alt = sprintf(__('Edit the %s translation',ADMINDOMAIN), $v['display_name']);				 
+				 $alt = sprintf(__('Edit the %s translation','templatic-admin'), $v['display_name']);				 
 				 $link = 'admin.php?page='.$post_type.'&ctab=custom_fields&action=addnew&amp;field_id='.$__management_columns_posts_translations[$post_id][$v['code']]->element_id.'&amp;lang='.$v['code'];				 
 				  
 			  }else{
 				   /* Translation does not exist */
 				$img = 'add_translation.png';
-				$alt = sprintf(__('Add translation to %s',ADMINDOMAIN), $v['display_name']);
+				$alt = sprintf(__('Add translation to %s','templatic-admin'), $v['display_name']);
 					$src_lang = $sitepress->get_current_language() == 'all' ? $sitepress->get_default_language() : $sitepress->get_current_language();				        					
 					$link = '?page='.$post_type.'&ctab=custom_fields&action=addnew&trid='.$post_id.'&amp;lang='.$v['code'].'&amp;source_lang=' . $src_lang;
 			  }
@@ -296,26 +296,26 @@ class custom_fields_list_table extends Tmpl_WP_List_Table
 			}
 			$columns = array(
 				'cb' => '<input type="checkbox" />',
-				'title' => __('Field name',ADMINDOMAIN),
+				'title' => __('Field name','templatic-admin'),
 				'icl_translations' => $country_flag,
-				'show_in_post_type' => __('Shown in post-type',ADMINDOMAIN),
-				'html_var' => __('Variable name',ADMINDOMAIN),
-				'type' => __('Type',ADMINDOMAIN),
-				'heading_type' => __('Heading Type',ADMINDOMAIN),
-				'sort_order' => __('Sort Order',ADMINDOMAIN),
-				'active' => __('Status',ADMINDOMAIN),
+				'show_in_post_type' => __('Shown in post-type','templatic-admin'),
+				'html_var' => __('Variable name','templatic-admin'),
+				'type' => __('Type','templatic-admin'),
+				'heading_type' => __('Heading Type','templatic-admin'),
+				'sort_order' => __('Sort Order','templatic-admin'),
+				'active' => __('Status','templatic-admin'),
 				);
 		}else
 		{
 			$columns = apply_filters('tmpl_fileds_column',array(
 			'cb' => '<input type="checkbox" />',
-			'title' => __('Field name',ADMINDOMAIN),			
-			'show_in_post_type' => __('Shown in post-type',ADMINDOMAIN),
-			'html_var' => __('Variable name',ADMINDOMAIN),
-			'type' => __('Type',ADMINDOMAIN),	
-			'heading_type' => __('Heading Type',ADMINDOMAIN),
-			'sort_order' => __('Sort Order',ADMINDOMAIN),
-			'active' => __('Status',ADMINDOMAIN),
+			'title' => __('Field name','templatic-admin'),			
+			'show_in_post_type' => __('Shown in post-type','templatic-admin'),
+			'html_var' => __('Variable name','templatic-admin'),
+			'type' => __('Type','templatic-admin'),	
+			'heading_type' => __('Heading Type','templatic-admin'),
+			'sort_order' => __('Sort Order','templatic-admin'),
+			'active' => __('Status','templatic-admin'),
 			));
 		}
 		return $columns;
@@ -413,7 +413,7 @@ class custom_fields_list_table extends Tmpl_WP_List_Table
 		if(!in_array($item['html_var'],$exclude_del_array))
 			$action2 = array('delete' => sprintf('<a href="?page=%s&ctab=%s&pagetype=%s&field_id=%s" onclick="return confirm(\'Are you sure for deleteing custom field?\')">Delete Permanently</a>','custom_setup','custom_fields','delete',$item['ID']));
 		else	
-			$action2 = array('delete' => sprintf(__('Not Deletable',ADMINDOMAIN),'custom_setup','custom_fields','delete',$item['ID']));
+			$action2 = array('delete' => sprintf(__('Not Deletable','templatic-admin'),'custom_setup','custom_fields','delete',$item['ID']));
 			
 		$actions = array_merge($action1,$action2);
 		return sprintf('%1$s %2$s', $item['title'], $this->row_actions($actions , $always_visible = false) );
@@ -486,6 +486,6 @@ function tmpl_update_tevolution_custom_fields(){
 	if(isset($_REQUEST['sort_order']) && $_REQUEST['sort_order']!=''){
 		update_post_meta($post_id,$post_type.'_sort_order',$_REQUEST['sort_order']);
 	}
-	echo '<span style="color:green;">'.__('Saved',ADMINDOMAIN).'</span>';
+	echo '<span style="color:green;">'.__('Saved','templatic-admin').'</span>';
 	exit;
 }

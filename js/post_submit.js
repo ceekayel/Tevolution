@@ -623,7 +623,7 @@ if(cat_fields ==1){
 				if(typeof tinyMCE !== 'undefined') tinyMCE.triggerSave();
 				jQuery('#submit_form_custom_fields').removeClass('custom_fields_load');
 				jQuery('#submit_form_custom_fields').html(results);
-				if (jQuery( "#submit_form select" ).parent('a').length == 0){
+				if (jQuery( "#submit_form select" ).parent('.select-wrap').length == 0){
 				jQuery( "#submit_form select" ).wrap( "<div class='select-wrap'></div>" );
 					jQuery( ".peoplelisting li" ).wrapInner( "<div class='peopleinfo-wrap'></div>");
 					if (!jQuery.browser.opera) {

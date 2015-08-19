@@ -37,38 +37,38 @@ class templatic_List_Table extends Tmpl_WP_List_Table {
                     if ($validity_per == 'D') {
 
                               if ($validity == 1) {
-                                        $validity_d = __('Day', ADMINDOMAIN);
+                                        $validity_d = __('Day', 'templatic-admin');
                               } else {
-                                        $validity_d = __('Days', ADMINDOMAIN);
+                                        $validity_d = __('Days', 'templatic-admin');
                               }
                               $validity_per = $validity . "&nbsp;" . $validity_d;
                     } elseif ($validity_per == 'M') {
                               if ($validity == 1) {
-                                        $validity_m = __('Month', ADMINDOMAIN);
+                                        $validity_m = __('Month', 'templatic-admin');
                               } else {
-                                        $validity_m = __('Months', ADMINDOMAIN);
+                                        $validity_m = __('Months', 'templatic-admin');
                               }
 
                               $validity_per = $validity . "&nbsp;" . $validity_m;
                     } else {
                               if ($validity == 1) {
-                                        $validity_y = __('Year', ADMINDOMAIN);
+                                        $validity_y = __('Year', 'templatic-admin');
                               } else {
-                                        $validity_y = __('Years', ADMINDOMAIN);
+                                        $validity_y = __('Years', 'templatic-admin');
                               }
 
                               $validity_per = $validity . "&nbsp;" . $validity_y;
                     }
                     if ($status == '1') {
-                              $package_status = "<font color='green'>" . __('Active', ADMINDOMAIN) . "</font>";
+                              $package_status = "<font color='green'>" . __('Active', 'templatic-admin') . "</font>";
                     } else {
-                              $package_status = "<font color='red'>" . __('Inactive', ADMINDOMAIN) . "</font>";
+                              $package_status = "<font color='red'>" . __('Inactive', 'templatic-admin') . "</font>";
                     }
                     $package_type = get_post_meta($post_id, 'package_type', true);
                     if ($package_type == 2) {
-                              $package_type = __('Subscription', ADMINDOMAIN);
+                              $package_type = __('Subscription', 'templatic-admin');
                     } else {
-                              $package_type = __('Single Submission', ADMINDOMAIN);
+                              $package_type = __('Single Submission', 'templatic-admin');
                     }
                     $submit_form_package_url = '';
                     $tevolution_post_type = tevolution_get_post_type();
@@ -101,7 +101,7 @@ class templatic_List_Table extends Tmpl_WP_List_Table {
                                                   while ($post_meta_info->have_posts()) : $post_meta_info->the_post();
                                                             /* $post_link = "'".'#package_link_'.$post_type.'_'.$post->ID.'_'.$post_id."'"; */
                                                             $post_link = '#package_link_' . $post_type . '_' . $post->ID . '_' . $post_id;
-                                                            $submit_form_package_url .= "<div><span>" . __('Submit', ADMINDOMAIN) . ' ' . ucfirst($post_type) . "</span> <input type='hidden' value='" . get_permalink($post->ID) . "?pkg_id=" . $post_id . "' id='package_link_" . $post_type . "_" . $post->ID . "_" . $post_id . "'><a onclick='prompt(\"URL:\", jQuery(\"$post_link\").val()); return false;' class='link' href='#'>" . __('Short link', ADMINDOMAIN) . "</a></div>";
+                                                            $submit_form_package_url .= "<div><span>" . __('Submit', 'templatic-admin') . ' ' . ucfirst($post_type) . "</span> <input type='hidden' value='" . get_permalink($post->ID) . "?pkg_id=" . $post_id . "' id='package_link_" . $post_type . "_" . $post->ID . "_" . $post_id . "'><a onclick='prompt(\"URL:\", jQuery(\"$post_link\").val()); return false;' class='link' href='#'>" . __('Short link', 'templatic-admin') . "</a></div>";
                                                   endwhile;
                                                   wp_reset_query();
                                                   wp_reset_postData();
@@ -160,14 +160,14 @@ class templatic_List_Table extends Tmpl_WP_List_Table {
           function get_columns() {
                     $columns = array(
                               'cb' => '<input type="checkbox" />',
-                              'title' => __('Title', ADMINDOMAIN),
-                              'package_type' => __('Type', ADMINDOMAIN),
-                              'package_amount' => __('Amount', ADMINDOMAIN),
-                              'validity' => __('Package Duration', ADMINDOMAIN),
+                              'title' => __('Title', 'templatic-admin'),
+                              'package_type' => __('Type', 'templatic-admin'),
+                              'package_amount' => __('Amount', 'templatic-admin'),
+                              'validity' => __('Package Duration', 'templatic-admin'),
                     );
                     $columns = apply_filters('tevolution_pricepackage_list_table_column', $columns);
-                    $columns['package_link'] = __('Package Link', ADMINDOMAIN);
-                    $columns['package_status'] = __('Status', ADMINDOMAIN);
+                    $columns['package_link'] = __('Package Link', 'templatic-admin');
+                    $columns['package_status'] = __('Status', 'templatic-admin');
 
 
                     return $columns;
@@ -188,9 +188,9 @@ class templatic_List_Table extends Tmpl_WP_List_Table {
                               <?php
                               if (count($ids) > 0) {
                                         echo count($ids) . "&nbsp;";
-                                        echo __('Packages permanently deleted.', ADMINDOMAIN);
+                                        echo __('Packages permanently deleted.', 'templatic-admin');
                               } else {
-                                        echo __('Package permanently deleted.', ADMINDOMAIN);
+                                        echo __('Package permanently deleted.', 'templatic-admin');
                               }
                               ?>
                               </div>

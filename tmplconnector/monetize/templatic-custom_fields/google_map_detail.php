@@ -28,26 +28,26 @@ $height = (!empty($heigh)) ? $heigh : 450; /* height is taken from "google-maps\
 
 <div class=" get_direction clearfix">
 <form action="" method="post" onsubmit="get_googlemap_directory(); return false;">
-<input id="to-input" type="hidden" value="<?php echo $address;?>" placeholder="<?php _e('Enter a location',DOMAIN)?>"/>
+<input id="to-input" type="hidden" value="<?php echo $address;?>" placeholder="<?php _e('Enter a location','templatic')?>"/>
 
 <div class="google-map-directory">
 
-<input id="from-input" type="text" placeholder="<?php _e('Enter Location',DIR_DOMAIN);?>" value="" /> 
+<input id="from-input" type="text" placeholder="<?php _e('Enter Location','templatic');?>" value="" /> 
 
-<a href="javascript:void(0);" onclick="return set_direction_map()" class="b_getdirection getdir button" > <?php _e('Get Directions',DIR_DOMAIN);?> </a>
-<a class="large_map b_getdirection button" target="_blank" href="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=<?php echo urlencode($address);?>&amp;sll=<?php echo $geo_latitude;?>,<?php echo $geo_longitude;?>&amp;ie=UTF8&amp;hq=&amp;ll=<?php echo $geo_latitude;?>,<?php echo $geo_longitude;?>&amp;spn=0.368483,0.891953&amp;z=14&amp;iwloc=A"><?php _e('View Large Map',DIR_DOMAIN);?></a>
+<a href="javascript:void(0);" onclick="return set_direction_map()" class="b_getdirection getdir button" > <?php _e('Get Directions','templatic');?> </a>
+<a class="large_map b_getdirection button" target="_blank" href="http://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=<?php echo urlencode($address);?>&amp;sll=<?php echo $geo_latitude;?>,<?php echo $geo_longitude;?>&amp;ie=UTF8&amp;hq=&amp;ll=<?php echo $geo_latitude;?>,<?php echo $geo_longitude;?>&amp;spn=0.368483,0.891953&amp;z=14&amp;iwloc=A"><?php _e('View Large Map','templatic');?></a>
 </div>
 <div id="detail_map" style="display:none;">
 <a href="javascript:void(0);" onclick="return Demo.get_closeDirections();" class="hide_map_direction" style="display:none"><i class="fa fa-times"></i></a>
 <select onchange="Demo.getDirections();" id="travel-mode-input" style="display:none;">
-  <option value="driving" selected="selected"><?php _e('By car',DIR_DOMAIN);?></option>
-  <option value="transit"><?php _e('By public transit',DIR_DOMAIN);?></option>
-  <option value="bicycling"><?php _e('By Bicycling',DIR_DOMAIN);?></option>
-  <option value="walking"><?php _e('By Walking',DIR_DOMAIN);?></option>
+  <option value="driving" selected="selected"><?php _e('By car','templatic');?></option>
+  <option value="transit"><?php _e('By public transit','templatic');?></option>
+  <option value="bicycling"><?php _e('By Bicycling','templatic');?></option>
+  <option value="walking"><?php _e('By Walking','templatic');?></option>
 </select>
 <select onchange="Demo.getDirections();" id="unit-input" style="display:none;">
-  <option value="metric"  selected="selected"><?php _e('Metric',DIR_DOMAIN);?></option>
-  <option value="imperial"><?php _e('Imperial',DIR_DOMAIN);?></option>
+  <option value="metric"  selected="selected"><?php _e('Metric','templatic');?></option>
+  <option value="imperial"><?php _e('Imperial','templatic');?></option>
 </select>
 </div>
 </form>
@@ -69,9 +69,9 @@ $google_map_customizer=get_option('google_map_customizer');/* store google map c
 	}
 	function set_direction_map()
 	{
-		if(document.getElementById('from-input').value=="<?php _e('Enter Location',DIR_DOMAIN);?>" || document.getElementById('from-input').value=='')
+		if(document.getElementById('from-input').value=="<?php _e('Enter Location','templatic');?>" || document.getElementById('from-input').value=='')
 		{
-			alert("<?php _e('Please enter your address to get the direction map.',DIR_DOMAIN);?>");return false;
+			alert("<?php _e('Please enter your address to get the direction map.','templatic');?>");return false;
 		}else
 		{
 			document.getElementById('travel-mode-input').style.display='';
@@ -392,5 +392,5 @@ $address = str_replace('++','+',str_replace(' ','+',str_replace(',','+',$address
 $address = "Manhattan, NYC, USA";
 if(is_ssl()){ $http = "https://"; }else{ $http ="http://"; }
 ?>
-<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="<?php echo $http; ?>maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=<?php echo $address;?>&amp;ie=UTF8&amp;hq=&amp;hnear=Surat,+Gujarat,+India&amp;ll=21.194655,72.557831&amp;spn=0.906514,1.783905&amp;z=10&amp;output=embed"></iframe><br /><small><a href="<?php echo $http; ?>maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=<?php echo $address;?>&amp;ie=UTF8&amp;hq=&amp;hnear=Surat,+Gujarat,+India&amp;ll=21.194655,72.557831&amp;spn=0.906514,1.783905&amp;z=10" style="color:#0000FF;text-align:left"><?php _e("View Larger Map",DIR_DOMAIN);?></a></small>
+<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="<?php echo $http; ?>maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=<?php echo $address;?>&amp;ie=UTF8&amp;hq=&amp;hnear=Surat,+Gujarat,+India&amp;ll=21.194655,72.557831&amp;spn=0.906514,1.783905&amp;z=10&amp;output=embed"></iframe><br /><small><a href="<?php echo $http; ?>maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=<?php echo $address;?>&amp;ie=UTF8&amp;hq=&amp;hnear=Surat,+Gujarat,+India&amp;ll=21.194655,72.557831&amp;spn=0.906514,1.783905&amp;z=10" style="color:#0000FF;text-align:left"><?php _e("View Larger Map",'templatic');?></a></small>
 <?php }?>

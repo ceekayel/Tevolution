@@ -7,8 +7,8 @@
 class tevolution_author_listing extends WP_Widget {
 	function tevolution_author_listing() {
 	/*Constructor*/
-		$widget_ops = array('classname' => 'widget-twocolumn tevolution_author_listing', 'description' => __("Shows authors with their thumbnails and the number of posts they've submitted. Works best in sidebar areas.",ADMINDOMAIN) );
-		$this->WP_Widget('tevolution_author_listing', __('T &rarr; Display Authors',ADMINDOMAIN), $widget_ops);
+		$widget_ops = array('classname' => 'widget-twocolumn tevolution_author_listing', 'description' => __("Shows authors with their thumbnails and the number of posts they've submitted. Works best in sidebar areas.",'templatic-admin') );
+		$this->WP_Widget('tevolution_author_listing', __('T &rarr; Display Authors','templatic-admin'), $widget_ops);
 	}
 	function widget($author_listing_args, $instance) {
 	/* prints the widget*/
@@ -83,14 +83,14 @@ class tevolution_author_listing extends WP_Widget {
 						   
 								<div class="author_info">
 									<p class="title"><a href="<?php echo get_author_posts_url($val->ID);?>"><?php echo $val->display_name; ?> </a></p>
-									<p class="post-count"><?php _e('Submitted',DOMAIN)?>: <?php echo $submited_user_count; ?> <?php 
+									<p class="post-count"><?php _e('Submitted','templatic')?>: <?php echo $submited_user_count; ?> <?php 
 									if($submited_user_count > 1 || $submited_user_count==0)
 									{
-										_e('Listings',DOMAIN);
+										_e('Listings','templatic');
 									}
 									elseif($submited_user_count <= 1)
 									{
-										_e('Listing',DOMAIN);
+										_e('Listing','templatic');
 									} ?>  </p>
 									<?php do_action('tmpl_user_info',$val->ID); ?>
 								</div>
@@ -100,7 +100,7 @@ class tevolution_author_listing extends WP_Widget {
 					}
 					else
 					{ 
-						echo '<div>'; _e('There is no user registered with',DOMAIN)." "; echo "&nbsp;".$role_name." "; _e('role.',DOMAIN); echo '</div>';
+						echo '<div>'; _e('There is no user registered with','templatic')." "; echo "&nbsp;".$role_name." "; _e('role.','templatic'); echo '</div>';
 					}?>
         <?php
 	    echo '</ul>';
@@ -127,14 +127,14 @@ class tevolution_author_listing extends WP_Widget {
 		$role = strip_tags($instance['role']);
 ?>
 <p>
-  <label for="<?php echo $this->get_field_id('title'); ?>"><?php echo __('Title',ADMINDOMAIN);?>:
+  <label for="<?php echo $this->get_field_id('title'); ?>"><?php echo __('Title','templatic-admin');?>:
     <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
   </label>
 </p>
 <p>
-	<label for="<?php echo $this->get_field_id( 'role' ); ?>"><?php echo __('User role',ADMINDOMAIN);?>: 
+	<label for="<?php echo $this->get_field_id( 'role' ); ?>"><?php echo __('User role','templatic-admin');?>: 
 		<select class="widefat" id="<?php echo $this->get_field_id( 'role' ); ?>" name="<?php echo $this->get_field_name( 'role' ); ?>">
-		<option value="" ><?php echo esc_html( __('Select role',ADMINDOMAIN) ); ?></option>
+		<option value="" ><?php echo esc_html( __('Select role','templatic-admin') ); ?></option>
 		<?php
 		foreach ( $wp_roles->role_names as $role => $name ) 
 		{ ?>
@@ -146,7 +146,7 @@ class tevolution_author_listing extends WP_Widget {
 	</label>	
 </p>
 <p>
-  <label for="<?php echo $this->get_field_id('no_user'); ?>"><?php echo __('Number of posts to display.',ADMINDOMAIN);?>:
+  <label for="<?php echo $this->get_field_id('no_user'); ?>"><?php echo __('Number of posts to display.','templatic-admin');?>:
     <input class="widefat" id="<?php echo $this->get_field_id('no_user'); ?>" name="<?php echo $this->get_field_name('no_user'); ?>" type="text" value="<?php echo esc_attr($no_user); ?>" />
   </label>
 </p>

@@ -21,75 +21,80 @@ jQuery(document).ready(function() {
 		jQuery('input.ui-autocomplete-input').removeClass('temp-zindex');
 	  }
 	});
-	
-    var autocomplet_ajax = null;
-	var search_text='';
-    jQuery(".searchform .searchpost").autocomplete({
-       minLength: 0,
-	   create: function () {
-            jQuery(this).data('ui-autocomplete')._renderItem = function (ul, item) {				
-				return jQuery("<li>").addClass('instant_search').append("<a>").attr("href",item.url).html( item.label ).appendTo(ul);                
-            };
-        },
-       source: function( request, response ) {
-			var post_type='';			
-			jQuery(".searchform input[name^='post_type']").each(function(){
-				post_type+=jQuery(this).val()+',';
-			});			
-			if(search_text=='' || request.term!=''){
-				search_text=request.term;
-			}
-			var submit_from = jQuery('form.searchform').serialize();
-			autocomplet_ajax=jQuery.ajax({
-				url:tevolutionajaxUrl,
-				type:'POST',
-				dataType: "json",
-				data:'action=tevolution_autocomplete_callBack&search_text='+search_text+'&post_type='+post_type+'&'+submit_from,
-				beforeSend : function(){
-					if(autocomplet_ajax != null){
-						autocomplet_ajax.abort();
-					}
-				},
-				success:function(data) {						
-					 response(jQuery.map(data.results, function(item) {
-                            return {
-                                label: item.title,
-                                value: item.label,
-                                url: item.url,								
-                            };
-                        }));
-				}
-			});			
-		},
-        autoFocus: false,
-        scroll: true,		
-		select: function( event, ui ) {
-			if ( ui.item.url !== '#' ) {
-				location = ui.item.url;
-				//jQuery('input[name="s"]').val(ui.item.value);
-				//jQuery('#searchform').submit();
-				//jQuery(this).val(ui.item.value).closest('form').submit(); 
-			} else {
-				return true;
-			}
-		},
-		open: function(event, ui) {		
-			var acData = jQuery(this).data('uiAutocomplete');
-			acData
-					.menu
-					.element
-					.find('a')
-					.each(function () {
-						var $self = jQuery( this ),
-							keywords = jQuery.trim( acData.term ).split( ' ' ).join('|');
-						$self.html($self.text().replace(new RegExp("(" + keywords + ")", "gi"), '$1'));
-					});
-			jQuery(event.target).removeClass('sa_searching');
-		},		
-    }).focus(function() {
-        jQuery(this).autocomplete("search", "");
-    });
 });
+   
+        
+function tmpl_insta_search_widget(frm_name){
+        
+        var autocomplet_ajax = null;
+        var search_text='';
+        jQuery("."+frm_name+" .searchpost").autocomplete({
+           minLength: 0,
+               create: function () {
+                jQuery(this).data('ui-autocomplete')._renderItem = function (ul, item) {				
+                                    return jQuery("<li>").addClass('instant_search').append("<a>").attr("href",item.url).html( item.label ).appendTo(ul);                
+                };
+            },
+           source: function( request, response ) {
+                            var post_type='';
+                            jQuery("."+frm_name+" input[name^='post_type']").each(function(){
+                                    post_type+=jQuery(this).val()+',';
+                            });			
+                            if(search_text=='' || request.term!=''){
+                                    search_text=request.term;
+                            }
+                            var submit_from = jQuery('form.'+frm_name).serialize();
+                            autocomplet_ajax=jQuery.ajax({
+                                    url:tevolutionajaxUrl,
+                                    type:'POST',
+                                    dataType: "json",
+                                    data:'action=tevolution_autocomplete_callBack&search_text='+search_text+'&post_type='+post_type+'&'+submit_from,
+                                    beforeSend : function(){
+                                            if(autocomplet_ajax != null){
+                                                    autocomplet_ajax.abort();
+                                            }
+                                    },
+                                    success:function(data) {						
+                                             response(jQuery.map(data.results, function(item) {
+                                return {
+                                    label: item.title,
+                                    value: item.label,
+                                    url: item.url,								
+                                };
+                            }));
+                                    }
+                            });			
+                    },
+            autoFocus: false,
+            scroll: true,		
+                    select: function( event, ui ) {
+                            if ( ui.item.url !== '#' ) {
+                                    location = ui.item.url;
+                                    //jQuery('input[name="s"]').val(ui.item.value);
+                                    //jQuery('#searchform').submit();
+                                    //jQuery(this).val(ui.item.value).closest('form').submit(); 
+                            } else {
+                                    return true;
+                            }
+                    },
+                    open: function(event, ui) {		
+                            var acData = jQuery(this).data('uiAutocomplete');
+                            acData
+                                            .menu
+                                            .element
+                                            .find('a')
+                                            .each(function () {
+                                                    var $self = jQuery( this ),
+                                                            keywords = jQuery.trim( acData.term ).split( ' ' ).join('|');
+                                                    $self.html($self.text().replace(new RegExp("(" + keywords + ")", "gi"), '$1'));
+                                            });
+                            jQuery(event.target).removeClass('sa_searching');
+                    },		
+        }).focus(function() {
+            jQuery(this).autocomplete("search", "");
+        });
+    }
+
 
 /* Script to make element like select box in category pages */
 
@@ -119,7 +124,7 @@ jQuery("ul.sorting_option").on("click", "li:not(.init)", function() {
 jQuery(document).ready(function(){
 	jQuery(".autor_delete_link").click(function(){
 		if( confirm( delete_confirm) ){
-			jQuery(this).after("<span class='delete_append'><?php _e('Deleting.',DOMAIN);?></span>");
+			jQuery(this).after("<span class='delete_append'><?php _e('Deleting.','templatic');?></span>");
 			jQuery(".delete_append").css({"margin":"5px","vertical-align":"sub","font-size":"14px"});
 			setTimeout(function() {
 			   jQuery(".delete_append").html(deleting);
@@ -240,7 +245,7 @@ jQuery(document).ready(function(){
 					}else{
 						jQuery('#send_inquiry_msg').html(results);
 						setTimeout(function(){
-									jQuery("#lean_overlay").fadeOut(200);
+									jQuery("#lean_overlay").fadeOut(10);
 									jQuery('#inquiry_div').css({"display":"none"});
 									jQuery('#tmpl_send_inquiry').removeClass('open');
 									jQuery('#tmpl_send_inquiry').attr('style','');
@@ -1347,4 +1352,4 @@ jQuery('#listpagi .search_pagination .page-numbers').live('click',function(e){
 		},		
 	});
 	return false;
-});	
+});

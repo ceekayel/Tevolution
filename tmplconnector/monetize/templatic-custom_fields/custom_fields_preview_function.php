@@ -47,7 +47,7 @@ function tmpl_preview_detail_page_gallery_display()
 			 </div>
 		 </div>             
 		 <div id="gallery">
-			<h3><?php echo MORE_PHOTOS; echo " ";  echo __($single_gallery_post_type,DOMAIN); ?></h3>
+			<h3><?php echo MORE_PHOTOS; echo " ";  echo __($single_gallery_post_type,'templatic'); ?></h3>
 			<ul class="more_photos">
 			 <?php
 				foreach($_REQUEST['imgarr'] as $image_id=>$val)
@@ -161,7 +161,7 @@ function tmpl_show_custom_fields_onpreview($session,$cur_post_type){
 					if($j==0){
 						if($activ):
 							if($key == '[#taxonomy_name#]'):
-								echo '<div class="sec_title"><h3>'.$cur_post_type.__(' Information',DOMAIN).'</h3></div>';
+								echo '<div class="sec_title"><h3>'.$cur_post_type.__(' Information','templatic').'</h3></div>';
 							else:
 								echo "<li><h3>".$key."</h3></li>";
 							endif;
@@ -209,8 +209,8 @@ function templ_preview_address_map_display()
 	if(isset($_POST['address']) && $geo_longitude &&  $geo_latitude)
 	{ ?>
         <div class="row clearfix">
-			<h3 class="submit_info_section"><span><?php _e('Map',DOMAIN); ?></span></h3>                
-			<p><strong><?php _e('Location',DOMAIN); echo $add_str;?>: </strong></p>
+			<h3 class="submit_info_section"><span><?php _e('Map','templatic'); ?></span></h3>                
+			<p><strong><?php _e('Location','templatic'); echo $add_str;?>: </strong></p>
 			<div id="gmap" class="graybox img-pad">
 				<?php  require_once (TEMPL_MONETIZE_FOLDER_PATH . 'templatic-custom_fields/google_map_detail.php');?>
 			</div>

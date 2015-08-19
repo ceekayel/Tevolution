@@ -131,8 +131,8 @@ function tmpl_google_map_search_ajax(){
 						'current' => max( 1, $paged ),
 						'before_page_number' => '<strong>',
 						'after_page_number' => '</strong>',
-						'prev_text'    => '<strong>'.__('Previous',DOMAIN).'</strong>',
-						'next_text'    => '<strong>'.__('Next',DOMAIN).'</strong>',
+						'prev_text'    => '<strong>'.__('Previous','templatic').'</strong>',
+						'next_text'    => '<strong>'.__('Next','templatic').'</strong>',
 						'total' => $post_query->max_num_pages
 					) );
                 ?>
@@ -326,8 +326,8 @@ function tmpl_tevolution_autocomplete_callBack(){
 			$taxonomy_obj = get_taxonomy($taxonomies[0]);
 			$taxonomy_label = $taxonomy_obj->labels->name;
 			if(function_exists('icl_t')){
-				icl_register_string(DOMAIN,$taxonomy_label,$taxonomy_label);
-				$taxonomy_label = icl_t(DOMAIN,$taxonomy_label,$taxonomy_label);
+				icl_register_string('templatic',$taxonomy_label,$taxonomy_label);
+				$taxonomy_label = icl_t('templatic',$taxonomy_label,$taxonomy_label);
 			}else{
 				$taxonomy_label = @$taxonomy_label;
 			}
@@ -350,8 +350,8 @@ function tmpl_tevolution_autocomplete_callBack(){
 			$taxonomy_obj = get_taxonomy($taxonomies[1]);
 			$taxonomy_label = $taxonomy_obj->labels->name;
 			if(function_exists('icl_t')){
-				icl_register_string(DOMAIN,$taxonomy_label,$taxonomy_label);
-				$taxonomy_label = icl_t(DOMAIN,$taxonomy_label,$taxonomy_label);
+				icl_register_string('templatic',$taxonomy_label,$taxonomy_label);
+				$taxonomy_label = icl_t('templatic',$taxonomy_label,$taxonomy_label);
 			}else{
 				$taxonomy_label = @$taxonomy_label;
 			}
@@ -410,7 +410,7 @@ function tmpl_tevolution_autocomplete_callBack(){
 			while ( $address_query->have_posts() ) : $address_query->the_post();
 			$resultsPosts[] = array(
 						'label' => html_entity_decode(str_replace("&#8217;","'",get_post_meta(get_the_ID(),'address',true))),
-						'title' => '<label>'.get_post_meta(get_the_ID(),'address',true).'</label> <span class="type">'.__('Location',DOMAIN).'</span>',
+						'title' => '<label>'.get_post_meta(get_the_ID(),'address',true).'</label> <span class="type">'.__('Location','templatic').'</span>',
 						'url'   =>  get_the_permalink(get_the_ID()),
 					);
 			endwhile;

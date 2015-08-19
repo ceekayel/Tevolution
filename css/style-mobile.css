@@ -198,7 +198,7 @@
 	.mobile-view #content .peopleinfo-wrap h3 span{ display: inline-block; float: left;}
 	.mobile-view #content .peopleinfo-wrap h3 span.total_homes,.mobile-view #content .peopleinfo-wrap h3 span.total_homes a{ float: right; font-size: 0.875rem; font-weight: normal;}
 	.mobile-view .list .post .entry .listing_rating, .mobile-view .grid .post .entry .listing_rating, .mobile-view .list .post .entry .event_rating, .mobile-view .grid .post .entry .event_rating { margin: 0; line-height: 1.2; margin-bottom:0;}
-	.mobile-view .list .post, body.mobile-view .list .hentry, body.mobile-view .list div[id*="post"],body.mobile-view #loop_listing_archive.grid .post, body.mobile-view #loop_listing_taxonomy.grid .post,body.mobile-view .directory-post-type-page .post, body.mobile-view #tmpl-search-results.list .hentry,.mobile-view #content .peoplelisting li{display: inline-block; border: 1px solid #e5e5e5; border-width: 0 0 1px; margin: 0px -15px; background-color: transparent; width: calc(100% + 30px); padding: 11px 15px 9px!important; float: left;}
+	.mobile-view .list .post, body.mobile-view .list .hentry, body.mobile-view .list div[id*="post"],body.mobile-view #loop_listing_archive.grid .post, body.mobile-view #loop_listing_taxonomy.grid .post,body.mobile-view .directory-post-type-page .post, body.mobile-view #tmpl-search-results.list .hentry,.mobile-view #content .peoplelisting li{display: inline-block; border: 1px solid #e5e5e5; border-width: 0 0 1px; margin: 0px -15px; /*background-color: transparent; */ width: calc(100% + 30px); padding: 11px 15px 9px!important; float: left;}
 	body.mobile-view section[id*="property"].list article { padding-bottom: 0; }
 	.mobile-view #content article.hentry.featured_c, .mobile-view.archive article.hentry.featured_c, .mobile-view.archive article.post.featured_c, .mobile-view.home .hentry.featured_c, .mobile-view.home .post.featured_c{ padding: 15px;}
 	.mobile-view .list .post:last-child, body.mobile-view .list .hentry:last-child, body.mobile-view .list div[id*="post"]:last-child,body.mobile-view #loop_listing_archive.grid .post:last-child, body.mobile-view #loop_listing_taxonomy.grid .post:last-child,body.mobile-view .directory-post-type-page .post:last-child, body.mobile-view #tmpl-search-results.list .hentry:last-child,.mobile-view #content .peoplelisting li:last-child { border-bottom: 0;}
@@ -216,6 +216,7 @@
 	 .mobile-view .post .post-blog-image { 
 	 	max-width: 60px; width:20%;  margin: 0 4% 0 0; float: left; 
 	 }
+	.post .post-blog-image img{height:auto;}
 	 body.mobile-view #loop_listing_archive.list .post .entry, body.mobile-view #loop_listing_taxonomy.list .post .entry, body.mobile-view #tmpl-search-results.list .hentry .entry, body.mobile-view.user #content .hentry .entry, body.mobile-view .hfeed .post .entry,  body.mobile-view.user #content .author_cont div[id*="post"] .entry, body.mobile-view #loop_listing_archive .post .entry, body.mobile-view #loop_listing_taxonomy .post .entry,  body.mobile-view .list .post .entry,  body.mobile-view .grid .post .entry,.mobile-view #content .people_info {
 	 	width: 75%; margin: 0; max-width:inherit; width: auto; overflow: hidden; word-wrap:break-word; position: relative; top: -2px; margin-bottom: -4px; display: block;
 	 }
@@ -347,6 +348,7 @@
 	.mobile-view .average_rating #rate i { font-size: 0.875rem; top: 0; }
 
 	.mobile-view .hentry .entry-header{ width: 100%; display: inline-block; margin-bottom: 15px; margin-top: 15px;}
+	.mobile-view .listing_post_wrapper .post .entry-header {display: block; overflow: hidden; width: auto; margin-top:0;}
 	.mobile-view .widget.listing_post .post .entry-header{float: none; margin-top: 0;}
 	.mobile-view .hentry .entry-header-title .entry-header-custom-wrap,	.mobile-view.directory-single-page .hentry .entry-header-title .entry-header-custom-wrap,.mobile-view.event-single-page .hentry .entry-header-title .entry-header-custom-wrap { margin: 0px; width: 100%; display: inline-block;}
 	.mobile-view .hentry .entry-header-title .entry-header-custom-wrap .entry-header-custom-left,.mobile-view.directory-single-page .hentry .entry-header-title .entry-header-custom-wrap .entry-header-custom-left,.mobile-view.event-single-page .hentry .entry-header-title .entry-header-custom-wrap .entry-header-custom-left,	.mobile-view .event-organizer .event-organizer-left { padding:0; margin: 0; border: 0; }
@@ -979,7 +981,6 @@
 	body.mobile-view .classified_info-right .classified-info p.classified_county:before{content: '\f024'}
 	body.mobile-view .classified_info-right .contact-no i{ color: #999999; font-family: fontAwesome; font-weight: normal; height: 20px; left: 15px; position: absolute; text-align: center; top: 4px; width: 20px; font-size: 23px;}
 	body.mobile-view .classified_info-right .contact-no{ padding: 5px 15px 0 40px; display: block; position: relative;}
-
 }
 
 @media screen and (max-width: 320px){
@@ -988,10 +989,118 @@
 }
 
 
+.tmpl_classified_seller, .tmpl_property_agent{
+	margin-top:0 !important;
+	border-top: 1px solid rgba(0, 0, 0, 0.12);
+	border-bottom:1px solid rgba(0, 0, 0, 0.12);
+	padding:0.9375rem;;
+}
+.tmpl_classified_seller .widgettitle, .tmpl_property_agent .widgettitle{display:none;}
+.tmpl_classified_seller .seller-top_wrapper .tmpl-seller-photo , .tmpl_property_agent .tmpl-agent-details .tmpl-agent-photo {
+    display: inline-block;
+    margin-right: 15px;
+    max-width: 90px;
+    vertical-align: top;
+    width: 30%;
+}
+	
+.tmpl_classified_seller .seller-top_wrapper .tmpl-seller-photo img , .tmpl_property_agent .tmpl-agent-details .tmpl-agent-photo img{
+	border: 1px solid rgba(0, 0, 0, 0.12);
+	box-sizing: border-box;
+	height: auto;
+	max-width: 100%;
+	padding: 3px;
+}
+.tmpl_classified_seller .seller-top_wrapper .tmpl-seller-detail-rt, .tmpl_property_agent .tmpl-agent-details .tmpl-agent-detail-rt {
+    display: inline-block;
+    margin-left: -4px;
+    vertical-align: top;
+    width: 62%;
+}
+.tmpl_classified_seller .seller-top_wrapper .tmpl-seller-detail-rt p.title, .tmpl_property_agent .tmpl-agent-details .tmpl-agent-detail-rt  p.title {
+    color: #999999;
+    font-size: 20px;
+}
+.tmpl_classified_seller .seller-top_wrapper .tmpl-seller-detail-rt p , .tmpl_property_agent .tmpl-agent-details .tmpl-agent-detail-rt  p {
+    color: #858585;
+    padding-bottom: 4px;
+}
+.agent-social-networks {
+    margin: 10px 0;
+}
+.tmpl_classified_seller .tmpl-seller-details p.phone, .tmpl_property_agent .tmpl-agent-details p.phone {
+    color: #999999;
+    font-weight: bold;
+}
+.tmpl_classified_seller .tmpl-seller-details p,.tmpl_property_agent .tmpl-agent-details p {
+    line-height: 20px;
+}
+.tmpl_classified_seller .tmpl-seller-details .website:before,
+.tmpl_classified_seller .tmpl-seller-details .phone:before,
+.tmpl_property_agent .tmpl-agent-details .website:before,
+.tmpl_property_agent .tmpl-agent-details .phone:before,
+.tmpl_property_agent #contact_frm
+{
+	display:none;
+}
 
+.mobile-view .hentry .entry-header-title .entry-header-custom-wrap .tmpl-agent-details p{
+	border:none;
+	padding:2px;
+}
+.agent-social-networks a {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    color: #999999;
+    display: inline-block;
+    font-size: 13px;
+    margin: 0 2px 5px 0;
+    vertical-align: top;
+	padding:0 10px;
+}
+.agent-social-networks a:hover {
+    background: rgba(0, 0, 0, 0.08) none repeat scroll 0 0;
+	color:#df3539;
+	border-color:#df3539;
+}
 
+.agent-social-networks a i::after {
+    display: none;
+}
+.agent-social-networks a i::after {
+    background: rgba(0, 0, 0, 0.2) none repeat scroll 0 0;
+    content: "";
+    height: 15px;
+    position: absolute;
+    right: 1px;
+    top: 0;
+    width: 1px;
+}
+.agent-social-networks a i {
+    vertical-align: middle;
+}
+.agent-social-networks a i {
+    font-size: 14px;
+    padding-right: 10px;
+    position: relative;
+    text-align: left;
+    width: 20px;
+}
 
+.agent-social-networks a .urllink ,.aw-weblink a .urllink {
+    display: none;
+}
 
+/* footer content */
+.footer-logo{margin-left: 10px;}
+.mobile-view footer.footer p.copyright{
+	display: flex;
+	display: -webkit-flex;
+	align-items: center;
+	-webkit-align-items: center;
+	justify-content: center;
+	-webkit-justify-content: center;
+}
 /*@media only screen and (-webkit-min-device-pixel-ratio : 1.5), only screen and (min-device-pixel-ratio : 1.5) {
 	html { font-size: 65%;}
 }*/

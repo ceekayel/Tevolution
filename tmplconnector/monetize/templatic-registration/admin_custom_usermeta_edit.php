@@ -57,12 +57,12 @@ if(isset($_POST['save_user']) && $_POST['save_user'] != "")
 	<h2>
 	<?php if(isset($_REQUEST['cf']) && $_REQUEST['cf'])
 		 {  
-		 	echo __('Edit Custom User Meta',ADMINDOMAIN); 
+		 	echo __('Edit Custom User Meta','templatic-admin'); 
 		 }else{
-			echo __('Add a field for users&rsquo; profile',ADMINDOMAIN); 			
+			echo __('Add a field for users&rsquo; profile','templatic-admin'); 			
 		 }?>
-	  	<a href="<?php echo site_url();?>/wp-admin/admin.php?page=custom_setup&ctab=user_custom_fields" name="btnviewlisting" id="edit_custom_user_custom_field" class="add-new-h2" title="<?php echo __('Back to Manage fields list',ADMINDOMAIN);?>">
-			<?php echo __('Back to Manage fields list',ADMINDOMAIN); ?>
+	  	<a href="<?php echo site_url();?>/wp-admin/admin.php?page=custom_setup&ctab=user_custom_fields" name="btnviewlisting" id="edit_custom_user_custom_field" class="add-new-h2" title="<?php echo __('Back to Manage fields list','templatic-admin');?>">
+			<?php echo __('Back to Manage fields list','templatic-admin'); ?>
 		</a> 
     </h2>
 	<form class="form_style" action="<?php echo site_url();?>/wp-admin/admin.php?page=custom_setup&ctab=user_custom_fields&action=addnew" method="post" name="custom_fields_frm" onsubmit="return chk_userfield_form();">	
@@ -81,19 +81,19 @@ if(isset($_POST['save_user']) && $_POST['save_user'] != "")
                <!-- field type start -->
                <tr style="display:block;" >
                     <th>
-                    <label for="field_type" class="form-textfield-label"><?php echo __('Field type',ADMINDOMAIN);?></label>
+                    <label for="field_type" class="form-textfield-label"><?php echo __('Field type','templatic-admin');?></label>
                     </th>
                     <td>
                          <select name="ctype" id="ctype" onchange="usershow_option_add(this.value)" >
-                              <option value="date" <?php if(get_post_meta($post_id,"ctype",true)=='date'){ echo 'selected="selected"';}?>><?php echo __('Date Picker',ADMINDOMAIN);?></option>
-                              <option value="multicheckbox" <?php if(get_post_meta($post_id,"ctype",true)=='multicheckbox'){ echo 'selected="selected"';}?>><?php echo __('Multi Checkbox',ADMINDOMAIN);?></option>
-                              <option value="radio" <?php if(get_post_meta($post_id,"ctype",true)=='radio'){ echo 'selected="selected"';}?>><?php echo __('Radio',ADMINDOMAIN);?></option>
-                              <option value="select" <?php if(get_post_meta($post_id,"ctype",true)=='select'){ echo 'selected="selected"';}?>><?php echo __('Select',ADMINDOMAIN);?></option>
-                              <option value="text" <?php if(get_post_meta($post_id,"ctype",true)=='text'){ echo 'selected="selected"';}?>><?php echo __('Text',ADMINDOMAIN);?></option>
-                              <option value="textarea" <?php if(get_post_meta($post_id,"ctype",true)=='textarea'){ echo 'selected="selected"';}?>><?php echo __('Textarea',ADMINDOMAIN);?></option>
-                              <option value="texteditor" <?php if(get_post_meta($post_id,"ctype",true)=='texteditor'){ echo 'selected="selected"';}?>><?php echo __('Text Editor',ADMINDOMAIN);?></option>
-                              <option value="head" <?php if(get_post_meta($post_id,"ctype",true)=='head'){ echo 'selected="selected"';}?>><?php echo __('Text Heading',ADMINDOMAIN);?></option>
-                              <option value="upload" <?php if(get_post_meta($post_id,"ctype",true)=='upload'){ echo 'selected="selected"';}?>><?php echo __('Upload',ADMINDOMAIN);?></option>
+                              <option value="date" <?php if(get_post_meta($post_id,"ctype",true)=='date'){ echo 'selected="selected"';}?>><?php echo __('Date Picker','templatic-admin');?></option>
+                              <option value="multicheckbox" <?php if(get_post_meta($post_id,"ctype",true)=='multicheckbox'){ echo 'selected="selected"';}?>><?php echo __('Multi Checkbox','templatic-admin');?></option>
+                              <option value="radio" <?php if(get_post_meta($post_id,"ctype",true)=='radio'){ echo 'selected="selected"';}?>><?php echo __('Radio','templatic-admin');?></option>
+                              <option value="select" <?php if(get_post_meta($post_id,"ctype",true)=='select'){ echo 'selected="selected"';}?>><?php echo __('Select','templatic-admin');?></option>
+                              <option value="text" <?php if(get_post_meta($post_id,"ctype",true)=='text'){ echo 'selected="selected"';}?>><?php echo __('Text','templatic-admin');?></option>
+                              <option value="textarea" <?php if(get_post_meta($post_id,"ctype",true)=='textarea'){ echo 'selected="selected"';}?>><?php echo __('Textarea','templatic-admin');?></option>
+                              <option value="texteditor" <?php if(get_post_meta($post_id,"ctype",true)=='texteditor'){ echo 'selected="selected"';}?>><?php echo __('Text Editor','templatic-admin');?></option>
+                              <option value="head" <?php if(get_post_meta($post_id,"ctype",true)=='head'){ echo 'selected="selected"';}?>><?php echo __('Text Heading','templatic-admin');?></option>
+                              <option value="upload" <?php if(get_post_meta($post_id,"ctype",true)=='upload'){ echo 'selected="selected"';}?>><?php echo __('Upload','templatic-admin');?></option>
                          </select>
                     </td>
                </tr>
@@ -101,89 +101,89 @@ if(isset($_POST['save_user']) && $_POST['save_user'] != "")
 		
                <!-- option value start -->
                <tr id="ctype_option_tr_id"  <?php if(get_post_meta($post_id,"ctype",true)=='select'){?> style="display:block;" <?php }else{?> style="display:none;" <?php }?> >
-                    <th><?php echo __('Option values',ADMINDOMAIN);?></th>
+                    <th><?php echo __('Option values','templatic-admin');?></th>
                     <td> 
                     	<input type="text" class="regular-text" name="option_values" id="option_values" value="<?php echo get_post_meta($post_id,"option_values",true);?>" size="50" />
-	                    <p class="description"><?php echo __('Separate multiple option values with a comma. eg. Yes, No(Do not add space after comma)',ADMINDOMAIN);?></p>
+	                    <p class="description"><?php echo __('Separate multiple option values with a comma. eg. Yes, No(Do not add space after comma)','templatic-admin');?></p>
                     </td>
                </tr>
                 <tr id="ctype_titles_tr_id"  <?php if(get_post_meta($post_id,"ctype",true)=='select'){?> style="display:block;" <?php }else{?> style="display:none;" <?php }?> >
-                    <th><?php echo __('Option titles',ADMINDOMAIN);?></th>
+                    <th><?php echo __('Option titles','templatic-admin');?></th>
                     <td> 
                     	<input type="text" class="regular-text" name="option_titles" id="option_titles" value="<?php echo get_post_meta($post_id,"option_titles",true);?>" size="50" />
-	                    <p class="description"><?php echo __('Separate multiple option titles with a comma. eg. Yes, No',ADMINDOMAIN);?></p>
+	                    <p class="description"><?php echo __('Separate multiple option titles with a comma. eg. Yes, No','templatic-admin');?></p>
                     </td>
                </tr>
                <!-- option value end -->
 		
                <!-- fieldname start -->
                <tr id="ctype_option_tr_id"  <?php if(get_post_meta($post_id,"ctype",true)=='select'){?> style="display:block;" <?php }else{?> style="display:block;" <?php }?> >
-                    <th><?php echo __('Field name',ADMINDOMAIN);?></th>
+                    <th><?php echo __('Field name','templatic-admin');?></th>
                     <td>  
                     	<input type="text" class="regular-text" name="site_title" id="site_title" value="<?php if(isset($post_val->post_title)) { echo $post_val->post_title; } ?>" />
-                    	<p class="description"><?php echo __('The name you enter here will be used in both the registration form and in the user dashboard.',ADMINDOMAIN);?></p>
+                    	<p class="description"><?php echo __('The name you enter here will be used in both the registration form and in the user dashboard.','templatic-admin');?></p>
                     </td>
                </tr>
                <!-- field name end -->
 		
                <!-- field description start -->
                <tr id="ctype_option_tr_id"  <?php if(get_post_meta($post_id,"ctype",true)=='select'){?> style="display:block;" <?php }else{?> style="display:none;" <?php }?> >
-                    <th><?php echo __('Field description',ADMINDOMAIN);?></th>
+                    <th><?php echo __('Field description','templatic-admin');?></th>
                     <td> 
                     	<input type="text" class="regular-text" name="admin_desc" id="admin_desc" value="<?php if(isset($post_val->post_content)) { echo $post_val->post_content; } ?>" />
-                    	<p class="description"><?php echo __('Custom field description which will appear in the front-end as well as the backend.',ADMINDOMAIN);?></p>
+                    	<p class="description"><?php echo __('Custom field description which will appear in the front-end as well as the backend.','templatic-admin');?></p>
                     </td>
                </tr>
                <!-- field description end -->
 		
                <!-- htmlvar_name1 name start-->
                <tr id="htmlvar_name1" style="display:block;" >
-                    <th><?php echo __('HTML variable name',ADMINDOMAIN);?></th>
+                    <th><?php echo __('HTML variable name','templatic-admin');?></th>
                     <td>
                     	<input type="text" class="regular-text" name="htmlvar_name" id="htmlvar_name" value="<?php if(isset($post_val->post_name)) { echo $post_val->post_name; } ?>"<?php if(isset($_REQUEST['cf']) && $_REQUEST['cf']){?>readonly="readonly"<?php } ?> />
-                    	<p class="description"><?php echo __('Enter a unique name for the field. Use only lowercase letters and numbers, no space allowed.',ADMINDOMAIN);?></p>
+                    	<p class="description"><?php echo __('Enter a unique name for the field. Use only lowercase letters and numbers, no space allowed.','templatic-admin');?></p>
                     </td>
                </tr>
                <!-- htmlvar_name1 name end-->
 		
                <!-- start order1 start-->
                <tr id="sort_order1" style="display:block;" >
-                    <th><?php echo __('Position (Display order)',ADMINDOMAIN);?></th>
+                    <th><?php echo __('Position (Display order)','templatic-admin');?></th>
                     <td> 
                     	<input type="text" class="regular-text" name="sort_order" id="sort_order"  value="<?php echo get_post_meta($post_id,"sort_order",true);?>" />
-                    	<p class="description"><?php echo __('Enter a number that will determine the position of the field inside the registration form, e.g., 5.',ADMINDOMAIN);?></p>
+                    	<p class="description"><?php echo __('Enter a number that will determine the position of the field inside the registration form, e.g., 5.','templatic-admin');?></p>
                     </td>
                </tr>
                <!-- start order1 end-->
 		
                <!-- status start-->
                <tr id="sort_order1" style="display:block;" >
-                    <th><?php echo __('Active',ADMINDOMAIN);?></th>
+                    <th><?php echo __('Active','templatic-admin');?></th>
                     <td>  
-                    	<input type="checkbox" name="is_active" id="is_active" value="publish" <?php if(isset($post_val->post_status) && $post_val->post_status=='publish'){ echo 'checked="checked"';}?> />&nbsp;<label for="is_active"><?php echo __('Yes',ADMINDOMAIN);?></label>                        
-                         <p class="description"><?php echo __('Uncheck this box only if you want to create the field but not use it right away.',ADMINDOMAIN);?></p></td>
+                    	<input type="checkbox" name="is_active" id="is_active" value="publish" <?php if(isset($post_val->post_status) && $post_val->post_status=='publish'){ echo 'checked="checked"';}?> />&nbsp;<label for="is_active"><?php echo __('Yes','templatic-admin');?></label>                        
+                         <p class="description"><?php echo __('Uncheck this box only if you want to create the field but not use it right away.','templatic-admin');?></p></td>
                </tr>
                <!-- status end-->
 		
                <!-- Compulsory start -->
                <tr id="is_require_id"  <?php if(get_post_meta($post_id,"ctype",true)=='head'){?> style="display:none;" <?php }else{ ?>style="display:block;"<?php }?>>
-                    <th><?php echo __('Compulsory',ADMINDOMAIN);?></th>
+                    <th><?php echo __('Compulsory','templatic-admin');?></th>
                     <td>
-                    	<input type="checkbox" name="is_require" id="is_require" value="1"  <?php if(get_post_meta($post_id,"is_require",true)=='1'){ echo 'checked="checked"';}?>/>&nbsp;<label for="is_require"><?php echo __('Yes',ADMINDOMAIN);?></label>                         
-                         <p class="description"><?php echo __("Check this option if this should be a required field.",ADMINDOMAIN);?></p>
+                    	<input type="checkbox" name="is_require" id="is_require" value="1"  <?php if(get_post_meta($post_id,"is_require",true)=='1'){ echo 'checked="checked"';}?>/>&nbsp;<label for="is_require"><?php echo __('Yes','templatic-admin');?></label>                         
+                         <p class="description"><?php echo __("Check this option if this should be a required field.",'templatic-admin');?></p>
                     </td>
                </tr>
                <!-- Compulsory end-->	
 				
                <!-- on Registration page start -->               
                <tr style="display:block;">
-               	<th><?php echo __('Show the field on',ADMINDOMAIN);?></th>
+               	<th><?php echo __('Show the field on','templatic-admin');?></th>
                     <td>
                     	
-                         	<p id="for_profile"><input type="checkbox" name="on_profile" id="on_profile" value="1"  <?php if(get_post_meta($post_id,"on_profile",true)=='1'){ echo 'checked="checked"';}?>/>&nbsp;<label for="on_profile"><?php echo __('Edit profile page',ADMINDOMAIN);?></label></p>
-                         	<p id="for_registration"><input type="checkbox" name="on_registration" id="on_registration" value="1"  <?php if(get_post_meta($post_id,"on_registration",true)=='1'){ echo 'checked="checked"';}?>/>&nbsp;<label for="on_registration"><?php echo __('Registration page',ADMINDOMAIN);?></label>
-                            <p class="description"><?php echo __('Only username and email field will be shown in pop up register form.',ADMINDOMAIN); ?></p></p>
-                            <p id="for_author"><input type="checkbox" name="on_author_page" id="on_author_page" value="1"  <?php if(get_post_meta($post_id,"on_author_page",true)=='1'){ echo 'checked="checked"';}?>/>&nbsp;<label for="on_author_page"><?php echo __('User dashboard page',ADMINDOMAIN);?></label></p>                             
+                         	<p id="for_profile"><input type="checkbox" name="on_profile" id="on_profile" value="1"  <?php if(get_post_meta($post_id,"on_profile",true)=='1'){ echo 'checked="checked"';}?>/>&nbsp;<label for="on_profile"><?php echo __('Edit profile page','templatic-admin');?></label></p>
+                         	<p id="for_registration"><input type="checkbox" name="on_registration" id="on_registration" value="1"  <?php if(get_post_meta($post_id,"on_registration",true)=='1'){ echo 'checked="checked"';}?>/>&nbsp;<label for="on_registration"><?php echo __('Registration page','templatic-admin');?></label>
+                            <p class="description"><?php echo __('Only username and email field will be shown in pop up register form.','templatic-admin'); ?></p></p>
+                            <p id="for_author"><input type="checkbox" name="on_author_page" id="on_author_page" value="1"  <?php if(get_post_meta($post_id,"on_author_page",true)=='1'){ echo 'checked="checked"';}?>/>&nbsp;<label for="on_author_page"><?php echo __('User dashboard page','templatic-admin');?></label></p>                             
                          
                     </td>                    
                </tr>
@@ -193,9 +193,9 @@ if(isset($_POST['save_user']) && $_POST['save_user'] != "")
                	<td class="save" colspan="2">
 					<?php
 					if(isset($_REQUEST['cf']) && $_REQUEST['cf'] !=''){
-						$val = __('Update Changes',ADMINDOMAIN);
+						$val = __('Update Changes','templatic-admin');
 					}else{
-						$val = __('Save all changes',ADMINDOMAIN);
+						$val = __('Save all changes','templatic-admin');
 					}
 					?>
 		               <input type="submit" class="button button-primary button-hero" name="save_user"  id="save" value="<?php echo $val; ?>" />

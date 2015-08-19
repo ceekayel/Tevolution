@@ -32,16 +32,16 @@ class wp_list_payment_options extends Tmpl_WP_List_Table
 		/* Display Order */
 		$display_order=(isset($paymentInfo_value['display_order'])) ? $paymentInfo_value['display_order'] :'-';
 		
-		if((isset($paymentInfo->isactive) && $paymentInfo->isactive !='') || (isset($paymentInfo->autoload) && $paymentInfo->autoload == 'yes')){ $status = "<span style='color:green; font-weight:normal;'>".__("Activated",DOMAIN)."</span>"; }else{ $status = "<span style='color:red; font-weight:normal;'>".__("Deactivated",DOMAIN)."</span>"; } /* display status */
+		if((isset($paymentInfo->isactive) && $paymentInfo->isactive !='') || (isset($paymentInfo->autoload) && $paymentInfo->autoload == 'yes')){ $status = "<span style='color:green; font-weight:normal;'>".__("Activated",'templatic')."</span>"; }else{ $status = "<span style='color:red; font-weight:normal;'>".__("Deactivated",'templatic')."</span>"; } /* display status */
 		
 		/* show install/uninstall links */
 		if(get_option('payment_method_'.$payment_method)){
-			$action = '<a href="'.site_url('/wp-admin/admin.php?page=monetization&tab=payment_options&uninstall='.$payment_method).'">'. __("Deactivate",DOMAIN).'</a><input type="hidden" value="'.$payment_method.'" name="payment_order[]"> ';
+			$action = '<a href="'.site_url('/wp-admin/admin.php?page=monetization&tab=payment_options&uninstall='.$payment_method).'">'. __("Deactivate",'templatic').'</a><input type="hidden" value="'.$payment_method.'" name="payment_order[]"> ';
 		}else{
-			$action = '<a href="'.site_url('/wp-admin/admin.php?page=monetization&tab=payment_options&install='.$payment_method).'">'. __("Activate",DOMAIN).'</a>';
+			$action = '<a href="'.site_url('/wp-admin/admin.php?page=monetization&tab=payment_options&install='.$payment_method).'">'. __("Activate",'templatic').'</a>';
 		}
 		if((isset($paymentInfo->isactive) && $paymentInfo->isactive !='') || (isset($paymentInfo->autoload) && $paymentInfo->autoload == 'yes')){
-			$trans_id = "<br/><a href='?page=monetization&action=settings&id=".$option_id."&tab=payment_options&payact=setting#option_payment'>".__('Setting',DOMAIN)."</a>";
+			$trans_id = "<br/><a href='?page=monetization&action=settings&id=".$option_id."&tab=payment_options&payact=setting#option_payment'>".__('Setting','templatic')."</a>";
 		}else{
 			$trans_id ='';
 		}
@@ -105,10 +105,10 @@ class wp_list_payment_options extends Tmpl_WP_List_Table
 	/* DEFINE THE COLUMNS FOR THE TABLE */
 	function get_columns()
 	{
-		$columns = array('title'         => __('Payment Method',DOMAIN),			
-					 /* 'display_order' => __('Display Order',DOMAIN),*/
-					  'status'        => __('Status',DOMAIN),
-					  'action'        => __('Action',DOMAIN)
+		$columns = array('title'         => __('Payment Method','templatic'),			
+					 /* 'display_order' => __('Display Order','templatic'),*/
+					  'status'        => __('Status','templatic'),
+					  'action'        => __('Action','templatic')
 					);
 		return $columns;
 	}
@@ -169,7 +169,7 @@ class wp_list_payment_options extends Tmpl_WP_List_Table
 		if(strtolower($item['status']) == strtolower('yes'))
 		{
 			$actions = array(
-				'settings' => sprintf('<a href="?page=%s&action=%s&id=%s&tab=%s&payact=%s#option_payment">'.__('Settings',ADMINDOMAIN).'</a>',$_REQUEST['page'],'settings',$item['ID'],'payment_options','setting')
+				'settings' => sprintf('<a href="?page=%s&action=%s&id=%s&tab=%s&payact=%s#option_payment">'.__('Settings','templatic-admin').'</a>',$_REQUEST['page'],'settings',$item['ID'],'payment_options','setting')
 				);
 		}else{
 			$actions = array();

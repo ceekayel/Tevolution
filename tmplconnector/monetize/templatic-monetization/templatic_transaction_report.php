@@ -3,7 +3,7 @@
  * transaction list for backend
  */
 if(!defined('PLEASE_SELECT')) 
-	define('PLEASE_SELECT',__('Please Select',DOMAIN));
+	define('PLEASE_SELECT',__('Please Select','templatic'));
 global $wpdb,$transection_db_table_name,$external_queries;
 $transection_db_table_name = $wpdb->prefix."transactions";
 if(count(@$_REQUEST['cf'])>0)
@@ -150,20 +150,20 @@ include(TEMPL_MONETIZATION_PATH."admin_transaction_class.php");	/* class to fetc
 ?>
 <div class="wrap">
 <div class="icon32 icon32-posts-post" id="icon-edit"></div>
-<h2><?php echo __('Transaction Report',ADMINDOMAIN);?></h2>
-<p class="tevolution_desc"> <?php echo __('Whatever sales are done on your site are recorded and displayed here as the transactions. Few things that you can perform here are easily changing the payment status manually (if you want), search for particular transaction using the below given fields, sort your all transactions according to your payment gateway by clicking the column "Payment Method" and last but not the least, you can also export all your transactions to CSV file.',ADMINDOMAIN);?></p>
+<h2><?php echo __('Transaction Report','templatic-admin');?></h2>
+<p class="tevolution_desc"> <?php echo __('Whatever sales are done on your site are recorded and displayed here as the transactions. Few things that you can perform here are easily changing the payment status manually (if you want), search for particular transaction using the below given fields, sort your all transactions according to your payment gateway by clicking the column "Payment Method" and last but not the least, you can also export all your transactions to CSV file.','templatic-admin');?></p>
 	<div class="tevolution_normal">
 	<div class="transaction_page_set">
     <form method="post" action="" name="ordersearch_frm">
 		<table class="form-table" cellspacing="1" cellpadding="4" border="0" >
             <?php	do_action('add_fields_before_transaction_fields');		?>
 			<tr>
-				<th valign="center"><?php echo __('Search by transaction ID',ADMINDOMAIN); ?></th>
-				<td valign="center"><input type="text" class="regular-text" value="" name="srch_orderno" id="srch_orderno" />&nbsp;<input type="submit" name="Search" value="<?php echo __('Search',ADMINDOMAIN); ?>" class="button-primary"  />
-                    <p class="description"><?php echo __('Enter unique Id to search transaction', ADMINDOMAIN);?></p></td>
+				<th valign="center"><?php echo __('Search by transaction ID','templatic-admin'); ?></th>
+				<td valign="center"><input type="text" class="regular-text" value="" name="srch_orderno" id="srch_orderno" />&nbsp;<input type="submit" name="Search" value="<?php echo __('Search','templatic-admin'); ?>" class="button-primary"  />
+                    <p class="description"><?php echo __('Enter unique Id to search transaction', 'templatic-admin');?></p></td>
             </tr>
             <tr style="border-top: 1px solid #ccc; ">
-				<th  valign="center"><?php echo __('Post Type',ADMINDOMAIN); ?></th>
+				<th  valign="center"><?php echo __('Post Type','templatic-admin'); ?></th>
 				<td valign="center">	
 				<?php
 			$custom_post_types_args = array();
@@ -171,17 +171,17 @@ include(TEMPL_MONETIZATION_PATH."admin_transaction_class.php");	/* class to fetc
 			$i = 0;
 			?>
 				<select name="post_types" id="post_types"  >
-				<option value="0"><?php echo __('Please select',ADMINDOMAIN); ?></option>
+				<option value="0"><?php echo __('Please select','templatic-admin'); ?></option>
 			<?php
             foreach ($custom_post_types as $content_type=>$content_type_label) { ?>
             	<option value="<?php echo $content_type; ?>" <?php if(isset($_REQUEST['post_types']) && $_REQUEST['post_types']== $content_type ) {?> selected="selected" <?php } ?>><?php echo $content_type_label['label']; ?></option>                    
             <?php
 			}
 				$i++;	
-        ?></select><br /><p class="description"><?php echo __('Select the post type, transactions of which you want to search', ADMINDOMAIN);?></p></td>
+        ?></select><br /><p class="description"><?php echo __('Select the post type, transactions of which you want to search', 'templatic-admin');?></p></td>
         	</tr>
             <tr>
-				<th valign="center"><?php echo __('Payment Type',ADMINDOMAIN); ?></th>
+				<th valign="center"><?php echo __('Payment Type','templatic-admin'); ?></th>
 				<td valign="center">
 				<?php
 					$targetpage = site_url("/wp-admin/admin.php?page=transcation");
@@ -197,33 +197,33 @@ include(TEMPL_MONETIZATION_PATH."admin_transaction_class.php");	/* class to fetc
 						}
 					} ?>
 					<select name="srch_payment" >
-						<option value=""> <?php echo __('Select Payment Type',ADMINDOMAIN); ?> </option>
+						<option value=""> <?php echo __('Select Payment Type','templatic-admin'); ?> </option>
 						<?php 
 						if(!empty($paymethodKeyarray))
 						{
 							foreach($paymethodKeyarray as $key=>$value) {
 								if($value) { ?>
-								<option value="<?php echo $key;?>" <?php if($key == @$_REQUEST['srch_payment']){?> selected<?php }?>><?php echo __(ucfirst($value),ADMINDOMAIN); ?></option>
+								<option value="<?php echo $key;?>" <?php if($key == @$_REQUEST['srch_payment']){?> selected<?php }?>><?php echo __(ucfirst($value),'templatic-admin'); ?></option>
 						<?php	} 	
 							}
 						}?>
-					</select><p class="description"><?php echo __('Select the payment method (gateway), using which transactions have been done.', ADMINDOMAIN);?></p></td>
+					</select><p class="description"><?php echo __('Select the payment method (gateway), using which transactions have been done.', 'templatic-admin');?></p></td>
             </tr>
 			<tr>
-				<th valign="center"><?php echo __('Package type',ADMINDOMAIN); ?></th>
+				<th valign="center"><?php echo __('Package type','templatic-admin'); ?></th>
 				<td valign="center" colspan="4">
 					<select name="srch_pkg_type" >
-						<option value=""> <?php echo __('Select Package Type',ADMINDOMAIN); ?> </option>
-						<option value="1" <?php if(@$_REQUEST['srch_pkg_type'] == 1){ ?> selected<?php } ?> > <?php echo __('Single Submission',ADMINDOMAIN); ?> </option>
-						<option value="2" <?php if(@$_REQUEST['srch_pkg_type'] == 2){ ?> selected<?php } ?> > <?php echo __('Subscription',ADMINDOMAIN); ?> </option>
+						<option value=""> <?php echo __('Select Package Type','templatic-admin'); ?> </option>
+						<option value="1" <?php if(@$_REQUEST['srch_pkg_type'] == 1){ ?> selected<?php } ?> > <?php echo __('Single Submission','templatic-admin'); ?> </option>
+						<option value="2" <?php if(@$_REQUEST['srch_pkg_type'] == 2){ ?> selected<?php } ?> > <?php echo __('Subscription','templatic-admin'); ?> </option>
 						<?php do_action('tmpl_package_type'); ?>
 					</select>
 						
 				</td>
 			</tr>
 			<tr>	
-				<th valign="center"><?php echo __('Name/Email',ADMINDOMAIN); ?></th>
-				<td valign="center" colspan="4"><input type="text" class="regular-text" value="" name="srch_name" id="srch_name" /><br /><p class="description"><?php echo __('Enter the name or email Id using which transactions have been done', ADMINDOMAIN);?></p></td>
+				<th valign="center"><?php echo __('Name/Email','templatic-admin'); ?></th>
+				<td valign="center" colspan="4"><input type="text" class="regular-text" value="" name="srch_name" id="srch_name" /><br /><p class="description"><?php echo __('Enter the name or email Id using which transactions have been done', 'templatic-admin');?></p></td>
 			</tr>
 			<tr>
 				<?php
@@ -250,18 +250,18 @@ include(TEMPL_MONETIZATION_PATH."admin_transaction_class.php");	/* class to fetc
 					</script>
 				<?php } 
 				?>
-				<th valign="center"><?php echo __('Search by transaction date',ADMINDOMAIN); ?></th>
-				<td valign="center" ><input type="text" PLACEHOLDER="<?php echo __('From',ADMINDOMAIN); ?>" class="regular-text" value="<?php if(isset($_REQUEST['trans_from_date']) && $_REQUEST['trans_from_date']!= ''){ echo $_REQUEST['trans_from_date'];}?>" name="trans_from_date" id="trans_from_date" />
-				<input type="text" PLACEHOLDER="<?php echo __('To',ADMINDOMAIN); ?>" class="regular-text" value="<?php if(isset($_REQUEST['trans_to_date']) && $_REQUEST['trans_to_date']!= ''){ echo $_REQUEST['trans_to_date'];}?>" name="trans_to_date" id="trans_to_date" /><p class="description"><?php echo __('Select the time duration in which transactions have been done.', ADMINDOMAIN);?></p></td>
+				<th valign="center"><?php echo __('Search by transaction date','templatic-admin'); ?></th>
+				<td valign="center" ><input type="text" PLACEHOLDER="<?php echo __('From','templatic-admin'); ?>" class="regular-text" value="<?php if(isset($_REQUEST['trans_from_date']) && $_REQUEST['trans_from_date']!= ''){ echo $_REQUEST['trans_from_date'];}?>" name="trans_from_date" id="trans_from_date" />
+				<input type="text" PLACEHOLDER="<?php echo __('To','templatic-admin'); ?>" class="regular-text" value="<?php if(isset($_REQUEST['trans_to_date']) && $_REQUEST['trans_to_date']!= ''){ echo $_REQUEST['trans_to_date'];}?>" name="trans_to_date" id="trans_to_date" /><p class="description"><?php echo __('Select the time duration in which transactions have been done.', 'templatic-admin');?></p></td>
 			</tr>
 			<?php	do_action('add_fields_after_transaction_fields');		?>
 			<tr>
 				<th></th>
-				<td valign="center"><input type="submit" name="Search" value="<?php echo __('Search',ADMINDOMAIN); ?>" class="button-primary"  />&nbsp;<input type="submit" name="Reset" value="<?php echo __('Reset',ADMINDOMAIN); ?>"  class="button-secondary action" /></td>
+				<td valign="center"><input type="submit" name="Search" value="<?php echo __('Search','templatic-admin'); ?>" class="button-primary"  />&nbsp;<input type="submit" name="Reset" value="<?php echo __('Reset','templatic-admin'); ?>"  class="button-secondary action" /></td>
         	</tr>
 			
             <tr style="border-top: 1px solid #ccc; "><br/>
-            	<td colspan="2"><p><?php echo __('Export the transaction data from here ',ADMINDOMAIN); ?>&nbsp;&nbsp;<a class="button button-primary button-hero" href="<?php echo plugin_dir_url( __FILE__ ).'export_transaction.php';?>" title="Export To CSV" class="i_export"><?php echo __('Export To CSV',ADMINDOMAIN);?></a></p></td>
+            	<td colspan="2"><p><?php echo __('Export the transaction data from here ','templatic-admin'); ?>&nbsp;&nbsp;<a class="button button-primary button-hero" href="<?php echo plugin_dir_url( __FILE__ ).'export_transaction.php';?>" title="Export To CSV" class="i_export"><?php echo __('Export To CSV','templatic-admin');?></a></p></td>
             </tr>
     </table>
 	</form>
@@ -271,7 +271,7 @@ include(TEMPL_MONETIZATION_PATH."admin_transaction_class.php");	/* class to fetc
 	<div style="display:none;" id="trans_frm_id" class="tevolution_normal ordersearch" class="tevolution_normal ordersearch">
 		<div id="poststuff">
 			<div class="postbox">
-				<h3 class="hndle"><span><?php echo __('Transaction color settings',ADMINDOMAIN); ?></span></h3>
+				<h3 class="hndle"><span><?php echo __('Transaction color settings','templatic-admin'); ?></span></h3>
 	<div class="transaction_page_set">
 	<form  method="post" action=""  name="transaction_frm">
 		<?php
@@ -279,10 +279,10 @@ include(TEMPL_MONETIZATION_PATH."admin_transaction_class.php");	/* class to fetc
 			add_action('admin_print_scripts-widgets.php', 'templatic_load_color_picker_script');
 			add_action('admin_print_styles-widgets.php', 'templatic_load_color_picker_style');
 		?>
-		<p class="tevolution_desc"><?php echo __('You can select the different colors for the different post types here which will be applied to that transaction report.It basically helps you in differentiating the transactions done with various post types.',ADMINDOMAIN); ?></p>
+		<p class="tevolution_desc"><?php echo __('You can select the different colors for the different post types here which will be applied to that transaction report.It basically helps you in differentiating the transactions done with various post types.','templatic-admin'); ?></p>
 		<table class="form-table tbl_transaction_frm">
 			<tr>
-				<th valign="center"><label><?php echo __('Transaction Settings',ADMINDOMAIN);?></label></th>
+				<th valign="center"><label><?php echo __('Transaction Settings','templatic-admin');?></label></th>
 				<td valign="center">
 				   <div class="element">
 					 <?php $value = array(); if(isset($tmpdata['trans_post_type_value'])) { $value = $tmpdata['trans_post_type_value']; } ?>
@@ -316,7 +316,7 @@ include(TEMPL_MONETIZATION_PATH."admin_transaction_class.php");	/* class to fetc
 			 </tr>
 			 <tr>
 				<td></td>
-				<td><p style="clear: both;" class="submit"><input type="submit" value="<?php echo __('Save All Settings',ADMINDOMAIN);?>" class="button button-primary button-hero" name="trans_setting"></td>
+				<td><p style="clear: both;" class="submit"><input type="submit" value="<?php echo __('Save All Settings','templatic-admin');?>" class="button button-primary button-hero" name="trans_setting"></td>
 			 </tr>
 		</table>	
 	</form>

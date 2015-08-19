@@ -7,7 +7,7 @@ if($_POST['user_email'] != '')
 	if (  $_POST['user_email'] == '' )
 	{
 		get_header();
-		echo "<div class=error_msg>".__('Email for Contact Details is Empty. Please enter Email, your all information will sent to your Email.',DOMAIN)."</div>";	
+		echo "<div class=error_msg>".__('Email for Contact Details is Empty. Please enter Email, your all information will sent to your Email.','templatic')."</div>";	
 		echo '<h6><b><a href="'.get_permalink($_POST['cur_post_id']).'/?backandedit=1">Return to '.__(SUBMIT_POST_TEXT).'</a></b></h6>';
 		get_footer();
 		exit;
@@ -78,7 +78,7 @@ if($_POST['user_email'] != '')
 		
 	$user = wp_signon($crd, true );
 	if ( !$user_id ) {
-		$errors->add('registerfail', sprintf(__('<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a href="mailto:%s">webmaster</a> !',DOMAIN), get_option('admin_email')));
+		$errors->add('registerfail', sprintf(__('<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the <a href="mailto:%s">webmaster</a> !','templatic'), get_option('admin_email')));
 		exit;
 	}
 	
@@ -154,9 +154,9 @@ if($_POST['user_email'] != '')
 		$subject = stripslashes($tmpdata['registration_success_email_subject']);
 		if($subject == '')
 		 {
-			$subject = __("Thank you for registering!",DOMAIN);
+			$subject = __("Thank you for registering!",'templatic');
 		 }
-		$store_login_url = '<a href="'.get_tevolution_login_permalink().'">'.__('Login',DOMAIN).'</a>';
+		$store_login_url = '<a href="'.get_tevolution_login_permalink().'">'.__('Login','templatic').'</a>';
 		/* customer email */
 		$search_array = array('[#user_name#]','[#user_login#]','[#user_password#]','[#site_name#]','[#site_login_url#]','[#site_login_url_link#]');
 		$replace_array = array($user_fname,$user_login,$user_pass,$store_name,$store_login,$store_login_url);

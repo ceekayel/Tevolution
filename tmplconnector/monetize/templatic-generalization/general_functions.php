@@ -22,7 +22,7 @@ function tevolution_server_date_time() {
 	
 	$tev_time_now = date("D dS M, Y h:i a");
 	$timezone_now = date("e, (T P)");
-	echo "<p id='server-date-time'><strong>".__('Server Date/Time',ADMINDOMAIN).":</strong> $tev_time_now <br/><strong>".__('Time Zone',ADMINDOMAIN).": </strong> $timezone_now</p>";
+	echo "<p id='server-date-time'><strong>".__('Server Date/Time','templatic-admin').":</strong> $tev_time_now <br/><strong>".__('Time Zone','templatic-admin').": </strong> $timezone_now</p>";
 	
 }
 /* 
@@ -103,7 +103,7 @@ function tevolution_send_inquiry_form(){
 			<p>Link : <b>[#post_title#]</b> </p>
 			<p>Contact number : [#contact#]</p>
 			<p>From, [#your_name#]</p>
-			<p>Sent from -[#$post_url_link#]</p></p>',DOMAIN);
+			<p>Sent from -[#$post_url_link#]</p></p>','templatic');
 			$filecontent_arr1 = explode('[SUBJECT-STR]',$message1);
 			$filecontent_arr2 = explode('[SUBJECT-END]',$filecontent_arr1[1]);
 			$subject = $filecontent_arr2[0];
@@ -119,7 +119,7 @@ function tevolution_send_inquiry_form(){
 	
 		$post_url_link = '<a href="'.$_REQUEST['link_url'].'">'.$post_title.'</a>';
 		/*customer email*/
-		$yourname_link = __('<b><a href="'.get_option('siteurl').'">'.get_option('blogname').'</a></b>.',DOMAIN);
+		$yourname_link = __('<b><a href="'.get_option('siteurl').'">'.get_option('blogname').'</a></b>.','templatic');
 		$search_array = array('[#to_name#]','[#frnd_subject#]','[#post_title#]','[#frnd_comments#]','[#your_name#]','[#$post_url_link#]','[#contact#]');
 		$replace_array = array($to_name,$frnd_subject,$post_url_link,$frnd_comments,$yourname,$yourname_link,$contact_num);
 		$client_message = str_replace($search_array,$replace_array,$client_message,$contact_num); 
@@ -128,10 +128,10 @@ function tevolution_send_inquiry_form(){
 		/*Inquiry EMAIL END*/
 		$post = "";
 		if(get_option('siteurl').'/' == $_REQUEST['request_uri']){
-				_e('Email sent successfully',DOMAIN);
+				_e('Email sent successfully','templatic');
 				exit;
 		} else {
-				_e('Email sent successfully',DOMAIN);
+				_e('Email sent successfully','templatic');
 				exit;
 		}
 		
@@ -193,7 +193,7 @@ function tevolution_send_friendto_form(){
 			<p>Dear [#to_name#],</p>
 			<p>[#frnd_comments#]</p>
 			<p>Link : <b>[#post_title#]</b> </p>
-			<p>From, [#your_name#]</p>',DOMAIN);
+			<p>From, [#your_name#]</p>','templatic');
 			$filecontent_arr1 = explode('[SUBJECT-STR]',$message1);
 			$filecontent_arr2 = explode('[SUBJECT-END]',$filecontent_arr1[1]);
 			$subject = $filecontent_arr2[0];
@@ -216,7 +216,7 @@ function tevolution_send_friendto_form(){
 		templ_send_email($youremail,$yourname,$to_friend_email,$to_name,$subject,stripslashes($client_message),$extra='');/*/To clidne email*/
 		
 		/*Inquiry EMAIL END*/
-		_e('Email sent successfully',DOMAIN);
+		_e('Email sent successfully','templatic');
 		exit;
 	}
 		
@@ -238,13 +238,13 @@ if(!function_exists('tmpl_detailpage_favourite_html')){
 function tmpl_detailpage_favourite_html($user_id,$post)
 {
 	global $current_user,$post;
-	$add_to_favorite = __('Add to favorites',DOMAIN);
-	$added = __('Added',DOMAIN);
+	$add_to_favorite = __('Add to favorites','templatic');
+	$added = __('Added','templatic');
 	if(function_exists('icl_register_string')){
-		icl_register_string(DOMAIN,'directory'.$add_to_favorite,$add_to_favorite);
-		$add_to_favorite = icl_t(DOMAIN,'directory'.$add_to_favorite,$add_to_favorite);
-		icl_register_string(DOMAIN,'directory'.$added,$added);
-		$added = icl_t(DOMAIN,'directory'.$added,$added);
+		icl_register_string('templatic','directory'.$add_to_favorite,$add_to_favorite);
+		$add_to_favorite = icl_t('templatic','directory'.$add_to_favorite,$add_to_favorite);
+		icl_register_string('templatic','directory'.$added,$added);
+		$added = icl_t('templatic','directory'.$added,$added);
 	}
 	$post_id = $post->ID;
 	
@@ -389,16 +389,16 @@ function tmpl_default_view_settings(){
 			?>
 			<tr>
 			  <th><label>
-				  <?php echo __('Default page view',ADMINDOMAIN); ?>
+				  <?php echo __('Default page view','templatic-admin'); ?>
 				</label></th>
 			  <td><label for="default_page_view1">
 				  <input type="radio" id="default_page_view1" name="default_page_view" value="gridview" <?php if( @$get_plug_data['default_page_view']=='gridview') echo "checked=checked";?> />
-				  <?php echo __('Grid',ADMINDOMAIN); ?>
+				  <?php echo __('Grid','templatic-admin'); ?>
 				</label>
 				&nbsp;&nbsp;
 				<label for="default_page_view2">
 				  <input type="radio" id="default_page_view2" name="default_page_view" value="listview" <?php if( @$get_plug_data['default_page_view']== "" || $get_plug_data['default_page_view']=='listview') echo "checked=checked";?> />
-				  <?php echo __('List',ADMINDOMAIN); ?>
+				  <?php echo __('List','templatic-admin'); ?>
 				</label>
 				<?php do_action('tmpl_other_page_view_option'); ?>
 			   </td>
@@ -421,11 +421,11 @@ function tmpl_start_generalsettings_options(){
 		?>
 		<table class="tmpl-general-settings form-table" id="home_page_settings">
 		<tr id="home_page_settings">
-				<th colspan="2"><div class="tevo_sub_title"><?php echo __('Home page settings',ADMINDOMAIN); ?></div>
+				<th colspan="2"><div class="tevo_sub_title"><?php echo __('Home page settings','templatic-admin'); ?></div>
 				</th>
 		</tr> 
 		<tr>
-		<th><label><?php echo __('Homepage displays',ADMINDOMAIN); ?> </label></th>
+		<th><label><?php echo __('Homepage displays','templatic-admin'); ?> </label></th>
 			<td>
 			<?php 
 			$posttaxonomy = get_option("templatic_custom_post");
@@ -436,18 +436,18 @@ function tmpl_start_generalsettings_options(){
 						continue;
 					?>
 					<div class="element">
-						<label for="home_listing_type_value_<?php echo $key; ?>"><input type="checkbox" name="home_listing_type_value[]" id="home_listing_type_value_<?php echo $key; ?>" value="<?php echo $key; ?>" <?php if(@$tmpdata['home_listing_type_value'] && in_array($key,$tmpdata['home_listing_type_value'])) { echo "checked=checked";  } ?>>&nbsp;<?php echo __($_posttaxonomy['label'],ADMINDOMAIN); ?></label>
+						<label for="home_listing_type_value_<?php echo $key; ?>"><input type="checkbox" name="home_listing_type_value[]" id="home_listing_type_value_<?php echo $key; ?>" value="<?php echo $key; ?>" <?php if(@$tmpdata['home_listing_type_value'] && in_array($key,$tmpdata['home_listing_type_value'])) { echo "checked=checked";  } ?>>&nbsp;<?php echo __($_posttaxonomy['label'],'templatic-admin'); ?></label>
 					</div>
 				<?php endforeach;  }
 			else
 			{
 				$url = '<a target=\"_blank\" href='.admin_url("admin.php?page=custom_setup&ctab=custom_setup&action=add_taxonomy").'>';
-				$url .= __('here',ADMINDOMAIN);
+				$url .= __('here','templatic-admin');
 				$url .= '</a>'; 
-				 echo __('Please create a custom post type from ',ADMINDOMAIN);
+				 echo __('Please create a custom post type from ','templatic-admin');
 				 echo $url;
 			}
-			 do_action('templ_post_type_description');?>  <p class="description"><?php echo sprintf(__('For this option to work you must select set the "Front page displays" option within %s to "Your latest posts".',ADMINDOMAIN),'<a href="'.admin_url().'options-reading.php" target= "_blank">WordPress reading settings</a>');?></p>           
+			 do_action('templ_post_type_description');?>  <p class="description"><?php echo sprintf(__('For this option to work you must select set the "Front page displays" option within %s to "Your latest posts".','templatic-admin'),'<a href="'.admin_url().'options-reading.php" target= "_blank">WordPress reading settings</a>');?></p>           
 			</td>
 		</tr>	
 		<?php 
@@ -455,7 +455,7 @@ function tmpl_start_generalsettings_options(){
 			if($ordervalue ==''){ $ordervalue ='ddesc'; }
 		?>
 		<tr>
-			<th><label><?php echo __('Sorting options for home page',ADMINDOMAIN); ?> </label></th>
+			<th><label><?php echo __('Sorting options for home page','templatic-admin'); ?> </label></th>
 			<td>
 				<?php $orders = array('dasc'=>'Publish Date Ascending','ddesc'=>'Publish Date Descending','random'=>'Random','asc'=>'Title Ascending','desc'=>'Title Descending'); ?>
 				<select name="tev_front_page_order" id="tev_front_page_order">
@@ -469,7 +469,7 @@ function tmpl_start_generalsettings_options(){
 			<td>
 				<p class="submit" style="clear: both;">
 			
-					<input type="submit" value="<?php _e('Save All Settings',ADMINDOMAIN); ?>" class="button button-primary button-hero" name="Submit">
+					<input type="submit" value="<?php _e('Save All Settings','templatic-admin'); ?>" class="button button-primary button-hero" name="Submit">
 				</p>
 			</td>
 		</tr>
@@ -725,10 +725,10 @@ function pagenavi_plugin($before = '', $after = '') {
  
     $pagenavi_options['current_text'] = '%PAGE_NUMBER%';
     $pagenavi_options['page_text'] = '%PAGE_NUMBER%';
-    $pagenavi_options['first_text'] = __('First Page',DOMAIN);
-    $pagenavi_options['last_text'] = __('Last Page',DOMAIN);
-    $pagenavi_options['next_text'] = apply_filters('text_pagi_next','<strong>'.__('NEXT',DOMAIN).'</strong>');
-    $pagenavi_options['prev_text'] = apply_filters('text_pagi_prev','<strong>'.__('PREV',DOMAIN).'</strong>');
+    $pagenavi_options['first_text'] = __('First Page','templatic');
+    $pagenavi_options['last_text'] = __('Last Page','templatic');
+    $pagenavi_options['next_text'] = apply_filters('text_pagi_next','<strong>'.__('NEXT','templatic').'</strong>');
+    $pagenavi_options['prev_text'] = apply_filters('text_pagi_prev','<strong>'.__('PREV','templatic').'</strong>');
     $pagenavi_options['dotright_text'] = '...';
     $pagenavi_options['dotleft_text'] = '...';
     $pagenavi_options['num_pages'] = 5; /*continuous block of page numbers*/
@@ -959,7 +959,7 @@ function header_css_javascript()  {
 			$aryArgs = array(
 				'monthNames'        => strip_array_indices( $wp_locale->month ),
 				'monthNamesShort'   => strip_array_indices( $wp_locale->month_abbrev ),
-				'monthStatus'       => __( 'Show a different month', DOMAIN ),
+				'monthStatus'       => __( 'Show a different month', 'templatic' ),
 				'dayNames'          => strip_array_indices( $wp_locale->weekday ),
 				'dayNamesShort'     => strip_array_indices( $wp_locale->weekday_abbrev ),
 				'dayNamesMin'       => strip_array_indices( $wp_locale->weekday_initial ),
@@ -1001,7 +1001,7 @@ function tevolution_transaction_mail_fn()
 		if($orderinfo->payment_method != '' && $orderinfo->payment_method != '-')
 			$payment_type = $orderinfo->payment_method;
 		else
-			$payment_type = __('Free',DOMAIN);
+			$payment_type = __('Free','templatic');
 					
 		$payment_date =  date_i18n(get_option('date_format'),strtotime($orderinfo->payment_date));
 		if(isset($_REQUEST['ostatus']) && @$_REQUEST['ostatus']!='')
@@ -1077,12 +1077,12 @@ function tevolution_transaction_mail_fn()
 	    $post_type_mail = $productinfo->post_type;
 		$transaction_details="";
 		$transaction_details .= "-------------------------------------------------- <br/>\r\n";
-			$transaction_details .= __('Payment Details for Listing',DOMAIN).": $post_name <br/>\r\n";
+			$transaction_details .= __('Payment Details for Listing','templatic').": $post_name <br/>\r\n";
 			$transaction_details .= "-------------------------------------------------- <br/>\r\n";
-			$transaction_details .= __('Package Name',DOMAIN).": ".$package_name->post_title."<br/>\r\n";
-			$transaction_details .= __('Status',DOMAIN).": ".$payment_status."<br/>\r\n";
-			$transaction_details .= __('Type',DOMAIN).": $payment_type <br/>\r\n";
-			$transaction_details .= __('Date',DOMAIN).": $payment_date <br/>\r\n";
+			$transaction_details .= __('Package Name','templatic').": ".$package_name->post_title."<br/>\r\n";
+			$transaction_details .= __('Status','templatic').": ".$payment_status."<br/>\r\n";
+			$transaction_details .= __('Type','templatic').": $payment_type <br/>\r\n";
+			$transaction_details .= __('Date','templatic').": $payment_date <br/>\r\n";
 			$transaction_details .= "-------------------------------------------------- <br/>\r\n";
 			$transaction_details = $transaction_details;
 			if((isset($_REQUEST['ostatus']) && $_REQUEST['ostatus'] == 1 ))
@@ -1090,11 +1090,11 @@ function tevolution_transaction_mail_fn()
 				$subject = $tmpdata['payment_success_email_subject_to_admin'];
 				if(!$subject)
 				{
-					$subject = __("You have received a payment",DOMAIN);
+					$subject = __("You have received a payment",'templatic');
 				}
 				$content = $tmpdata['payment_success_email_content_to_admin'];
 				if(!$content){
-					$content = __("<p>Howdy [#to_name#],</p><p>A post has been approved of [#payable_amt#] on [#site_name#].",DOMAIN).' '.__('Details are available below',DOMAIN).'</p><p>[#transaction_details#]</p><p>'.__('Thanks,',DOMAIN).'<br/>[#site_name#]</p>';
+					$content = __("<p>Howdy [#to_name#],</p><p>A post has been approved of [#payable_amt#] on [#site_name#].",'templatic').' '.__('Details are available below','templatic').'</p><p>[#transaction_details#]</p><p>'.__('Thanks,','templatic').'<br/>[#site_name#]</p>';
 				}
 			}
 			if((isset($_REQUEST['ostatus']) && $_REQUEST['ostatus'] == 0 ))
@@ -1102,12 +1102,12 @@ function tevolution_transaction_mail_fn()
 				$subject = $tmpdata['pending_listing_notification_subject'];
 				if(!$subject)
 				{
-					$subject = __("Listing payment not confirmed",DOMAIN);
+					$subject = __("Listing payment not confirmed",'templatic');
 				}
 				$content = $tmpdata['pending_listing_notification_content'];
 				if(!$content)
 				{
-					$content = __("<p>Hi [#to_name#],<br />A listing request on the below details has been rejected.<p>[#transaction_details#]</p>Please try again later.<br />Thanks you.<br />[#site_name#]</p>",DOMAIN);
+					$content = __("<p>Hi [#to_name#],<br />A listing request on the below details has been rejected.<p>[#transaction_details#]</p>Please try again later.<br />Thanks you.<br />[#site_name#]</p>",'templatic');
 				}
 			}
 			
@@ -1116,7 +1116,7 @@ function tevolution_transaction_mail_fn()
 			$fromEmailName = stripslashes(get_option('blogname'));	
 
 			$search_array = array('[#to_name#]','[#payable_amt#]','[#transaction_details#]','[#site_name#]');
-			$replace_array = array($fromEmailName,display_amount_with_currency_plugin($payable_amount),$transaction_details,$store_name);
+			$replace_array = array($fromEmailName,display_amount_with_currency_plugin($orderinfo->payable_amt),$transaction_details,$store_name);
 			$filecontent = str_replace($search_array,$replace_array,$content);
 			if((isset($_REQUEST['ostatus']) && ( $_REQUEST['ostatus'] != 3 || $_REQUEST['ostatus'] != 2 )))
 			{
@@ -1132,7 +1132,7 @@ function tevolution_transaction_mail_fn()
 				$user_email = $userInfo->user_email;
 			
 			$transaction_details ="";
-			$transaction_details .= __('Information Submitted URL',DOMAIN)." <br/>\r\n";
+			$transaction_details .= __('Information Submitted URL','templatic')." <br/>\r\n";
 			$transaction_details .= "-------------------------------------------------- <br/>\r\n";
 			$transaction_details .= "  $post_title <br/>\r\n";
 			$transaction_details = $transaction_details;
@@ -1141,12 +1141,12 @@ function tevolution_transaction_mail_fn()
 				$subject = $tmpdata['payment_success_email_subject_to_client'];
 				if(!$subject)
 				{
-					$subject = __("Thank you for your submission!",DOMAIN);
+					$subject = __("Thank you for your submission!",'templatic');
 				}
 				$content = $tmpdata['payment_success_email_content_to_client'];
 				if(!$content)
 				{
-					$content = __("<p>Hello [#to_name#],</p><p>Your submission has been approved! You can see the listing here:</p><p>[#transaction_details#]</p><p>If you'll have any questions about this please send an email to [#admin_email#]</p><p>Thanks!,<br/>[#site_name#]</p>",DOMAIN);
+					$content = __("<p>Hello [#to_name#],</p><p>Your submission has been approved! You can see the listing here:</p><p>[#transaction_details#]</p><p>If you'll have any questions about this please send an email to [#admin_email#]</p><p>Thanks!,<br/>[#site_name#]</p>",'templatic');
 				}
 			}
 			if((isset($_REQUEST['ostatus']) && $_REQUEST['ostatus'] == 0 ))
@@ -1154,12 +1154,12 @@ function tevolution_transaction_mail_fn()
 				$subject = $tmpdata['pending_listing_notification_subject'];
 				if(!$subject)
 				{
-					$subject = __("Listing payment not confirmed",DOMAIN);
+					$subject = __("Listing payment not confirmed",'templatic');
 				}
 				$content = $tmpdata['pending_listing_notification_content'];
 				if(!$content)
 				{
-					$content = __("<p>Hi [#to_name#],<br />A listing request on the below details has been rejected.<p>[#transaction_details#]</p>Please try again later.<br />Thanks you.<br />[#site_name#]</p>",DOMAIN);
+					$content = __("<p>Hi [#to_name#],<br />A listing request on the below details has been rejected.<p>[#transaction_details#]</p>Please try again later.<br />Thanks you.<br />[#site_name#]</p>",'templatic');
 				}
 			}
 			if((isset($_REQUEST['ostatus']) && $_REQUEST['ostatus'] == 2 ))
@@ -1167,12 +1167,12 @@ function tevolution_transaction_mail_fn()
 				$subject = $tmpdata['payment_cancelled_subject'];
 				if(!$subject)
 				{
-					$subject = __("Payment Cancelled",DOMAIN);
+					$subject = __("Payment Cancelled",'templatic');
 				}
 				$content = $tmpdata['payment_cancelled_content'];
 				if(!$content)
 				{
-					$content = __("<p>[#post_type#] has been cancelled with transaction id [#transection_id#]</p>",DOMAIN);
+					$content = __("<p>[#post_type#] has been cancelled with transaction id [#transection_id#]</p>",'templatic');
 				}
 			}
 			$store_name = get_option('blogname');
@@ -1264,7 +1264,7 @@ function tmpl_ajax_custom_taxonomy()
 	<ul class="categorychecklist form_cat">
 	<li>
 		<input type="checkbox" name="selectall" id="selectall" class="checkbox" onclick="displaychk_frm();" />
-		<label for="selectall">&nbsp;<?php _e('Select All',DOMAIN); ?></label>
+		<label for="selectall">&nbsp;<?php _e('Select All','templatic'); ?></label>
 	</li>
 	<?php
 		$scats = $_REQUEST['scats'];
@@ -1371,7 +1371,7 @@ function fetch_heading_per_post_type($post_type)
 		{
 			$heading_title[$post->post_name] = $post->post_title;
 		}
-		endwhile;
+		endwhile;wp_reset_query();
 	}
 	remove_filter('posts_join', 'custom_field_posts_where_filter');
 	
@@ -1735,7 +1735,16 @@ function tmpl_get_mob_archive_template(){
 		else{
 			$exclude_post_type = array('event','listing','property');
 			if(!in_array(get_post_type(),$exclude_post_type))
-				$mob_template = WP_PLUGIN_DIR.'/Tevolution-Directory/templates/mobile-listing.php';
+			{
+				if(file_exists(WP_PLUGIN_DIR.'/Tevolution-Directory/templates/mobile-listing.php'))
+				{
+					$mob_template = WP_PLUGIN_DIR.'/Tevolution-Directory/templates/mobile-listing.php';
+				}
+				else
+				{
+					$mob_template = WP_PLUGIN_DIR.'/Tevolution/templates/taxonomy-tevolution.php';
+				}
+			}
 		}		
 	}
 	if(!is_category()){
@@ -2000,7 +2009,7 @@ function tmpl_captcha_script()
 				});
 			}
 			<?php } ?>
-			<?php if( @in_array('submit', $display) && get_post_meta($post->ID,'is_tevolution_submit_form',true) == 1) {?>
+			<?php if( @in_array('submit', $display)) {?>
 			grecaptcha.render('captcha_div', {
 				'sitekey' : '<?php echo $tmpdata['site_key']; ?>',
 				'theme' : '<?php echo $tmpdata['comments_theme']; ?>',
@@ -2153,7 +2162,7 @@ function tmpl_captcha_varification_admin_registration(){
  
 	if (empty($_POST['g-recaptcha-response']) ||
 		$_POST['g-recaptcha-response'] == '') {
-		$errors->add('blank_captcha', __('Blank Captcha',DOMAIN));
+		$errors->add('blank_captcha', __('Blank Captcha','templatic'));
 		return $errors;
 	}
 
@@ -2168,7 +2177,7 @@ function tmpl_captcha_varification_admin_registration(){
 	
 	if (!$response->success)
 	{
-		$errors->add('captcha_wrong', __('Wrong Captcha',DOMAIN));
+		$errors->add('captcha_wrong', __('Wrong Captcha','templatic'));
 		return $errors;
 		
 	}	
@@ -2351,7 +2360,7 @@ function directory_post_preview_categories_tags($cats,$tags)
 	}
 	if($taxonomy_category !='' && !empty($htm_keys) && is_array($htm_keys) && in_array('category',$htm_keys))
 	{		
-		echo "<span>".__('Posted in ',DIR_DOMAIN)."</span>".$taxonomy_category;		
+		echo "<span>".__('Posted in ','templatic')."</span>".$taxonomy_category;		
 	}
 	
 	$tag_terms = explode(',',$tags);
@@ -2375,7 +2384,7 @@ function directory_post_preview_categories_tags($cats,$tags)
 			$taxonomy_tag .= '<a href="#">' .$termname. '</a>'.$sep;
 		}
 		if(!empty($tag_terms)){			
-			echo sprintf(__('Tagged In %s',DOMAIN),$taxonomy_tag);			
+			echo sprintf(__('Tagged In %s','templatic'),$taxonomy_tag);			
 		}
 	}
 }

@@ -31,7 +31,7 @@ function templ_payment_methods(){
 			include(plugin_dir_path( __FILE__ ).'payment/'.$foldername.'/install.php');
 		}else
 		{
-			$install_message = __('Sorry there is no such payment gateway',ADMINDOMAIN);	
+			$install_message = __('Sorry there is no such payment gateway','templatic-admin');	
 		}
 	}
 	if( @$_GET['status']!='' && @$_GET['id']!='')
@@ -45,7 +45,7 @@ function templ_payment_methods(){
 				$option_value = unserialize($paymentupdinfoObj->option_value);
 				$option_value['isactive'] = $_GET['status'];
 				$option_value_str = serialize($option_value);
-				$message = __('Status updated successfully.',ADMINDOMAIN);
+				$message = __('Status updated successfully.','templatic-admin');
 			}
 		}	
 		$updatestatus = "update $wpdb->options set option_value= '$option_value_str' where option_id='".$_GET['id']."'";
@@ -54,8 +54,8 @@ function templ_payment_methods(){
 	?>
 	<div class="wrap">
 		<div class="tevolution_paymentgatway">
-		<div class="tevo_sub_title"><?php echo __('Manage Payment Options',ADMINDOMAIN); ?></div>
-		<p class="tevolution_desc"><?php echo __('Manage the available payment gateways. To download and install more please visit the <a href="http://templatic.com/members/member" title="Plugins" target="_blank">member area (Plugins Download section)</a>',ADMINDOMAIN); ?>.</p>
+		<div class="tevo_sub_title"><?php echo __('Manage Payment Options','templatic-admin'); ?></div>
+		<p class="tevolution_desc"><?php echo __('Manage the available payment gateways. To download and install more please visit the <a href="http://templatic.com/members/member" title="Plugins" target="_blank">member area (Plugins Download section)</a>','templatic-admin'); ?>.</p>
 		<?php
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		
@@ -105,8 +105,8 @@ function tevolution_paymentgateway_sortorder(){
 /* Currency settings for for back end */
 
 function tmpl_currency_settings(){ ?>
-	<div class="tevo_sub_title"><?php echo __('Manage Currency',ADMINDOMAIN); ?></div>
-	<p class="tevolution_desc"><?php echo __('Define the currency in which you want to take payment on your site, you can set currency position with its amount as per your currency standards.',ADMINDOMAIN); ?></p>
+	<div class="tevo_sub_title"><?php echo __('Manage Currency','templatic-admin'); ?></div>
+	<p class="tevolution_desc"><?php echo __('Define the currency in which you want to take payment on your site, you can set currency position with its amount as per your currency standards.','templatic-admin'); ?></p>
 	<?php
 		if(@$_REQUEST['submit_currency'] != '')
 		{
@@ -183,32 +183,32 @@ function tmpl_currency_settings(){ ?>
 			<tbody>
 				<tr >
 					<th valign="top">
-					<label for="currency_symbol" class="form-textfield-label"><?php echo __(CURRENCY_SYMB,ADMINDOMAIN); ?> <span class="required"><?php echo REQUIRED_TEXT; ?></span></label>
+					<label for="currency_symbol" class="form-textfield-label"><?php echo __(CURRENCY_SYMB,'templatic-admin'); ?> <span class="required"><?php echo REQUIRED_TEXT; ?></span></label>
 					</th>
 					<td valign="top">
 					<div id="cur_sym" class="currency_sets">
-						<input type="text" class="" class="form-radio radio" value="<?php echo get_option('currency_symbol'); ?>" name="currency_symbol" id="currency_symbol" PLACEHOLDER="<?php echo __('Currency Symbol',ADMINDOMAIN); ?>"/>
+						<input type="text" class="" class="form-radio radio" value="<?php echo get_option('currency_symbol'); ?>" name="currency_symbol" id="currency_symbol" PLACEHOLDER="<?php echo __('Currency Symbol','templatic-admin'); ?>"/>
                        
 					</div>
 					<div id="cur_code" class="currency_sets">
-						<input type="text" class="" class="form-radio radio" value="<?php echo get_option('currency_code'); ?>" name="currency_code" id="currency_code" PLACEHOLDER="<?php echo __('Currency Code',ADMINDOMAIN); ?>"/>
+						<input type="text" class="" class="form-radio radio" value="<?php echo get_option('currency_code'); ?>" name="currency_code" id="currency_code" PLACEHOLDER="<?php echo __('Currency Code','templatic-admin'); ?>"/>
 						
 					</div>
-					<p class="description"><?php echo __('Your currency symbol can be any character like alphabets, numbers, alplhanumeric etc,',ADMINDOMAIN);?> <span class="description"><?php echo  CURRENCY_CODE_DESC; ?></p>
+					<p class="description"><?php echo __('Your currency symbol can be any character like alphabets, numbers, alplhanumeric etc,','templatic-admin');?> <span class="description"><?php echo  CURRENCY_CODE_DESC; ?></p>
 					</td>
 				</tr>
 				
 				<tr >
 					<th valign="top">
-						<label for="currency_pos" class="form-textfield-label"><?php echo __(CURRENCY_POS,ADMINDOMAIN); ?> <span class="required"><?php echo REQUIRED_TEXT; ?></span></label>
+						<label for="currency_pos" class="form-textfield-label"><?php echo __(CURRENCY_POS,'templatic-admin'); ?> <span class="required"><?php echo REQUIRED_TEXT; ?></span></label>
 					</th>
 					<td colspan="2">
 					
 						<select name="currency_pos" id="currency_pos" onchange="currency_pos_change(this.value,'<?php echo get_option('currency_symbol'); ?>');">
-						<option value="1" <?php if(get_option('currency_pos') == '1') { echo "selected=selected"; } ?>><?php echo __(SYMB_BFR_AMT,ADMINDOMAIN); ?></option>
-						<option value="2" <?php if(get_option('currency_pos') == '2') { echo "selected=selected"; } ?>><?php echo __(SPACE_BET_BFR_AMT,ADMINDOMAIN); ?></option>
-						<option value="3" <?php if(get_option('currency_pos') == '3') { echo "selected=selected"; } ?>><?php echo __(SYM_AFTR_AMT,ADMINDOMAIN); ?></option>
-						<option value="4" <?php if(get_option('currency_pos') == '4') { echo "selected=selected"; } ?>><?php echo __(SPACE_BET_AFTR_AMT,ADMINDOMAIN); ?></option>
+						<option value="1" <?php if(get_option('currency_pos') == '1') { echo "selected=selected"; } ?>><?php echo __(SYMB_BFR_AMT,'templatic-admin'); ?></option>
+						<option value="2" <?php if(get_option('currency_pos') == '2') { echo "selected=selected"; } ?>><?php echo __(SPACE_BET_BFR_AMT,'templatic-admin'); ?></option>
+						<option value="3" <?php if(get_option('currency_pos') == '3') { echo "selected=selected"; } ?>><?php echo __(SYM_AFTR_AMT,'templatic-admin'); ?></option>
+						<option value="4" <?php if(get_option('currency_pos') == '4') { echo "selected=selected"; } ?>><?php echo __(SPACE_BET_AFTR_AMT,'templatic-admin'); ?></option>
 						</select><br/>
 						
 						<div id="show_price_exp"></div>
@@ -217,30 +217,30 @@ function tmpl_currency_settings(){ ?>
 				</tr>
 				<tr valign="top">
 						<th class="" >
-							<label for="tmpl_price_thousand_sep" class="form-textfield-label"><?php echo __('Thousand Separator',ADMINDOMAIN); ?></label>
+							<label for="tmpl_price_thousand_sep" class="form-textfield-label"><?php echo __('Thousand Separator','templatic-admin'); ?></label>
 						</th>
 	                    <td class="forminp forminp-text">
 							<?php $tmpl_price_thousand_sep = get_option('tmpl_price_thousand_sep'); 
 							?>
 	                    	<input type="text" class="" value="<?php echo $tmpl_price_thousand_sep; ?>" style="width:50px;" id="tmpl_price_thousand_sep" name="tmpl_price_thousand_sep">
-							<p class="description"><?php echo __('This sets the thousand separator of displayed prices.',ADMINDOMAIN);?></p>
+							<p class="description"><?php echo __('This sets the thousand separator of displayed prices.','templatic-admin');?></p>
 						</td>
 	            </tr>
 				<tr valign="top">
 						<th class="">
-							<label for="tmpl_price_decimal_sep" class="form-textfield-label"><?php echo __('Decimal Separator',ADMINDOMAIN); ?></label>
+							<label for="tmpl_price_decimal_sep" class="form-textfield-label"><?php echo __('Decimal Separator','templatic-admin'); ?></label>
 						</th>
 						<?php $tmpl_price_decimal_sep = get_option('tmpl_price_decimal_sep'); 
 								if(!$tmpl_price_decimal_sep){ $tmpl_price_decimal_sep =''; } 
 						?>
 	                    <td class="forminp forminp-text">
 	                    	<input type="text" class="" value="<?php echo $tmpl_price_decimal_sep; ?>" style="width:50px;" id="tmpl_price_decimal_sep" name="tmpl_price_decimal_sep">
-							<p class="description"><?php echo __('This sets the decimal separator of displayed prices.',ADMINDOMAIN);?></p>
+							<p class="description"><?php echo __('This sets the decimal separator of displayed prices.','templatic-admin');?></p>
 						</td>
 	            </tr>
 				<tr valign="top">
 						<th class="">
-							<label for="tmpl_price_num_decimals" class="form-textfield-label"><?php echo __('Number of Decimals',ADMINDOMAIN); ?></label>
+							<label for="tmpl_price_num_decimals" class="form-textfield-label"><?php echo __('Number of Decimals','templatic-admin'); ?></label>
 						</th>
 	                    <td class="forminp forminp-number">
 							<?php $tmpl_price_num_decimals = get_option('tmpl_price_num_decimals');
@@ -248,12 +248,12 @@ function tmpl_currency_settings(){ ?>
 								if($tmpl_price_num_decimals=='' && $tmpl_price_num_decimals==0){ $tmpl_price_num_decimals ='2'; }
 							?>
 	                    	<input type="number" step="1" min="0" class="" value="<?php echo $tmpl_price_num_decimals; ?>" style="width:50px;" id="tmpl_price_num_decimals" name="tmpl_price_num_decimals">
-							<p class="description"><?php echo __('This sets the number of decimal points shown in displayed prices.',ADMINDOMAIN);?></p>
+							<p class="description"><?php echo __('This sets the number of decimal points shown in displayed prices.','templatic-admin');?></p>
 						</td>
 	            </tr>
 				<tr>
 					<td colspan="2">
-						<input type="submit" class="button-primary button button-hero" value="<?php echo __('Save Settings',ADMINDOMAIN);?>" name="submit_currency" id="submit_currency">
+						<input type="submit" class="button-primary button button-hero" value="<?php echo __('Save Settings','templatic-admin');?>" name="submit_currency" id="submit_currency">
 					</td>
 				</tr>
 			</tbody>

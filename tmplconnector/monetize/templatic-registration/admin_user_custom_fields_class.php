@@ -72,12 +72,12 @@ class wp_list_custom_user_field extends Tmpl_WP_List_Table
 	function get_columns()
 	{
 		$columns = array( 'cb'            => '<input type="checkbox" />',
-					   'title'         => __('Title',ADMINDOMAIN),
-					   'type'          => __('Type',ADMINDOMAIN),
-					   'variable_name' => __('Variable Name',ADMINDOMAIN),
-					   'active'        => __('Active',ADMINDOMAIN),
+					   'title'         => __('Title','templatic-admin'),
+					   'type'          => __('Type','templatic-admin'),
+					   'variable_name' => __('Variable Name','templatic-admin'),
+					   'active'        => __('Active','templatic-admin'),
                                                                                                                                   
-					   /*'display_order' => __('Display Order',DOMAIN)*/
+					   /*'display_order' => __('Display Order','templatic')*/
 					);
 		return $columns;
 	}
@@ -165,8 +165,8 @@ class wp_list_custom_user_field extends Tmpl_WP_List_Table
 	function column_title($item)
 	{
 		$actions = array(
-			'edit' => sprintf('<a href="?page=%s&ctab=%s&action=%s&cf=%s">'.__('Edit',ADMINDOMAIN).'</a>',$_REQUEST['page'],'user_custom_fields','addnew',$item['ID']),
-			'delete' => sprintf('<a href="?page=%s&ctab=%s&action_del=%s&cf[]=%s" onclick="return confirm(\''.__('Are you sure for deleteing custom field?',ADMINDOMAIN).'\')">'.__('Delete',ADMINDOMAIN).'</a>',$_REQUEST['page'],'user_custom_fields','delete',$item['ID'])
+			'edit' => sprintf('<a href="?page=%s&ctab=%s&action=%s&cf=%s">'.__('Edit','templatic-admin').'</a>',$_REQUEST['page'],'user_custom_fields','addnew',$item['ID']),
+			'delete' => sprintf('<a href="?page=%s&ctab=%s&action_del=%s&cf[]=%s" onclick="return confirm(\''.__('Are you sure for deleteing custom field?','templatic-admin').'\')">'.__('Delete','templatic-admin').'</a>',$_REQUEST['page'],'user_custom_fields','delete',$item['ID'])
 			);
 		
 		return sprintf('%1$s %2$s', $item['title'], $this->row_actions($actions , $always_visible = false) );

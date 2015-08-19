@@ -45,7 +45,7 @@ $google_map_customizer=get_option('google_map_customizer');/* store google map c
 wp_print_scripts( 'google-maps-apiscript' );
 ?>
 
-<script type="text/javascript" async >
+<script type="text/javascript">
 /* <![CDATA[ */
 var map;
 var marker;
@@ -301,17 +301,6 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 /* JavaScript Document*/
 jQuery(document).ready(function(){
-	searchInput = jQuery('#address');
-	searchInput.typeWatch({
-		callback: function(){
-			initialize();
-			geocode();
-			setTimeout("set_address_mapview()",500); 
-		},
-		wait: 1000,
-		highlight: false,
-		captureLength: 0
-	});
 	
 	/* Display map view as per city change */
 	jQuery('select[name^=post_city_id]').live( 'change', function(e) {
@@ -398,7 +387,7 @@ if(is_templ_wp_admin()): /* Didsplay google map address in backend */
 
 ?>
     <div class="clearfix">
-      <input type="text" class="pt_input_text regular-text" value="<?php if(isset($_REQUEST['post']))echo esc_html(get_post_meta($_REQUEST['post'],'address',true)); ?>" id="address" name="address" placeholder="<?php echo __('Enter a location',ADMINDOMAIN)?>" />
+      <input type="text" class="pt_input_text regular-text" value="<?php if(isset($_REQUEST['post']))echo esc_html(get_post_meta($_REQUEST['post'],'address',true)); ?>" id="address" name="address" placeholder="<?php echo __('Enter a location','templatic-admin')?>" />
       <p class="description"><?php echo $pt_metabox['desc']; ?></p>
       <span class="message_error2" id="address_error"></span>
       
@@ -417,7 +406,7 @@ if(is_templ_wp_admin()): /* Didsplay google map address in backend */
 	do_action('tmpl_before_geomap');
 	?>
     <div class="form_row clearfix">     
-    	<input type="text" class="textfield" value="<?php echo esc_html($addval); ?>" id="address" name="address"  <?php echo $val['extra_parameter']; ?> placeholder="<?php _e('Enter a location',DOMAIN)?>" />
+    	<input type="text" class="textfield" value="<?php echo esc_html($addval); ?>" id="address" name="address"  <?php echo $val['extra_parameter']; ?> placeholder="<?php _e('Enter a location','templatic')?>" />
         <span class="message_note"><?php echo $admin_desc;?></span>
         <span class="message_error2" id="address_error"></span>
         <input type="hidden" class="textfield" value="<?php echo $zoomval; ?>" id="zooming_factor" name="zooming_factor" />

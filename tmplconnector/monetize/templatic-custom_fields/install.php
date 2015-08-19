@@ -205,7 +205,7 @@ function create_default_wordpress_customfields()
 	}
 	
 	global $wpdb,$pagenow,$table_name;
-	if(($pagenow=='plugins.php' || $pagenow=='themes.php' ||  (isset($_REQUEST['page']) && ($_REQUEST['page']=='custom_setup' || $_REQUEST['ctab']=='custom_fields' ))))
+	if(($pagenow=='plugins.php' || $pagenow=='themes.php' ||  (isset($_REQUEST['page']) && ($_REQUEST['page']=='custom_setup' || @$_REQUEST['ctab']=='custom_fields' ))))
 	{
 		
 		$args = array(
@@ -355,7 +355,7 @@ function create_default_wordpress_customfields()
 				'show_in_column'     => '0',
 				'is_submit_field'    => '1',
 				'is_search'          =>'0',
-				'field_require_desc' => __('Please Select Category',DOMAIN),
+				'field_require_desc' => __('Please Select Category','templatic'),
 				'validation_type'    => 'require',
 				'heading_type'       => '[#taxonomy_name#]',
 				);
@@ -436,7 +436,7 @@ function create_default_wordpress_customfields()
 				'show_in_column'     => '0',
 				'is_search'          => '0',
 				'is_submit_field'    => '1',
-				'field_require_desc' => __('Please Enter title',DOMAIN),
+				'field_require_desc' => __('Please Enter title','templatic'),
 				'validation_type'    => 'require',
 				'heading_type'       => '[#taxonomy_name#]',
 				);
@@ -517,7 +517,7 @@ function create_default_wordpress_customfields()
 				'show_in_column'     => '0',
 				'is_search'          => '0',
 				'is_submit_field'    => '1',
-				'field_require_desc' => __('Please Enter content',DOMAIN),
+				'field_require_desc' => __('Please Enter content','templatic'),
 				'validation_type'    => 'require',
 				'heading_type'       => '[#taxonomy_name#]',
 				'listing_heading_type'=> '[#taxonomy_name#]',);
@@ -805,9 +805,9 @@ function create_default_wordpress_customfields()
 		 
                                                   /* Reset Location & Map  type if user changes */
 		$post_location_info = $wpdb->get_row("SELECT post_title,ID FROM $wpdb->posts WHERE $wpdb->posts.post_name = 'locations_info' and $wpdb->posts.post_type = 'custom_fields'");
-		if(count($post_location_info) == 0)
+		if(count($post_location_info) != 0)
 		{
-                                                            update_post_meta($post_location_info->ID, 'ctype','heading_type' );
+             update_post_meta($post_location_info->ID, 'ctype','heading_type' );
 		}
                     
 		global $wp_post_types;
@@ -829,63 +829,63 @@ function post_page_setting_data($column)
 	
 		$templatic_theme = wp_get_theme();		
 	?>
-	    <p class="tevolution_desc"> <?php echo __('This is the main Tevolution settings area. As you add Tevolution add-ons their settings will appear here. <br><b>Note:</b> Do not forget to click on "Save all settings" at the bottom when done with tweaking settings. You should also clear Tevolution cache (top of the page) after every major change. ',ADMINDOMAIN)?> </p>
+	    <p class="tevolution_desc"> <?php echo __('This is the main Tevolution settings area. As you add Tevolution add-ons their settings will appear here. <br><b>Note:</b> Do not forget to click on "Save all settings" at the bottom when done with tweaking settings. You should also clear Tevolution cache (top of the page) after every major change. ','templatic-admin')?> </p>
 			
 			<div id="theme_support_setting">
 			<?php 
 			if(strtolower($templatic_theme->get( 'Author' ))!='templatic' && (!current_theme_supports('home_listing_type_value') || ((function_exists('directory_admin_notices') || function_exists('event_manager_admin_notices') )&& (!current_theme_supports('tev_taxonomy_sorting_opt') || !current_theme_supports('tev_taxonomy_excerpt_opt'))) )):?>
-					<p><?php echo __("If you are not using one of Directory based themes from templatic then copy below code and paste it in your theme's functions.php file located in your active WordPress directory to enhance your theme functionality.",ADMINDOMAIN); ?></p>
+					<p><?php echo __("If you are not using one of Directory based themes from templatic then copy below code and paste it in your theme's functions.php file located in your active WordPress directory to enhance your theme functionality.",'templatic-admin'); ?></p>
 			<?php endif;
 			
 			if(strtolower($templatic_theme->get( 'Author' ))!='templatic' && !current_theme_supports('home_listing_type_value')):?>
-					<p class="tevolution_desc"><?php echo __('Display different post type on home page   -   add_theme_support("home_listing_type_value");',ADMINDOMAIN); ?></p>
+					<p class="tevolution_desc"><?php echo __('Display different post type on home page   -   add_theme_support("home_listing_type_value");','templatic-admin'); ?></p>
 			<?php endif;
 			
 			if(strtolower($templatic_theme->get( 'Author' ))!='templatic' && !current_theme_supports('author_box')):?>
-					<p class="tevolution_desc"><?php echo __('Display different post type on author page   -   do_action("author_box") on author page;',ADMINDOMAIN); ?></p>
+					<p class="tevolution_desc"><?php echo __('Display different post type on author page   -   do_action("author_box") on author page;','templatic-admin'); ?></p>
 			<?php endif;
 			
 			if(strtolower($templatic_theme->get( 'Author' ))!='templatic' && !current_theme_supports('tev_taxonomy_sorting_opt') && function_exists('directory_admin_notices')):?>               
-			<p class="tevolution_desc"><?php echo __('Display sorting option on taxonomy page    -   add_theme_support("tev_taxonomy_sorting_opt");',ADMINDOMAIN); ?></p>
+			<p class="tevolution_desc"><?php echo __('Display sorting option on taxonomy page    -   add_theme_support("tev_taxonomy_sorting_opt");','templatic-admin'); ?></p>
 			<?php endif;
 			
 			if(strtolower($templatic_theme->get( 'Author' ))!='templatic' && !current_theme_supports('tev_taxonomy_excerpt_opt')  && function_exists('directory_admin_notices')):?>                        
-			<p class="tevolution_desc"><?php echo __('Display excerpt setting on post listing page   -   add_theme_support("tev_taxonomy_excerpt_opt");',ADMINDOMAIN); ?></p>
+			<p class="tevolution_desc"><?php echo __('Display excerpt setting on post listing page   -   add_theme_support("tev_taxonomy_excerpt_opt");','templatic-admin'); ?></p>
 			<?php endif;?> 
 			</div>
 	
 		<!-- Sub Menu For General Settings Section-->	
 		<div class="wp-filter tev-sub-menu" >
 		<ul id="tev_general_settings" class="filter-links">
-			<li class="submit_page_settings active"><a id="submit_page_settings" href="javascript:void(0);" class="current"><?php echo __('Submission Page',ADMINDOMAIN); ?></a></li>
+			<li class="submit_page_settings active"><a id="submit_page_settings" href="javascript:void(0);" class="current"><?php echo __('Submission Page','templatic-admin'); ?></a></li>
 			<?php do_action('tevolution_before_subsettings'); 
 			
 			/* show if current theme support - home page display with different post types OR not */
 			if(current_theme_supports('theme_home_page') && get_option('show_on_front') =='posts'){
 			?>
-				<li class="home_page_settings"><a id="home_page_settings" href="javascript:void(0);"><?php echo __('Home page',ADMINDOMAIN); ?></a></li>
+				<li class="home_page_settings"><a id="home_page_settings" href="javascript:void(0);"><?php echo __('Home page','templatic-admin'); ?></a></li>
 			<?php
 			}
 			do_action('tevolution_after_homepagelink'); 
 			if(current_theme_supports('home_listing_type_value') || current_theme_supports('tev_taxonomy_excerpt_opt')): ?>
-				<li class="listing_page_settings"><a id="listing_page_settings" href="javascript:void(0);"><?php echo __('Category Page',ADMINDOMAIN); ?></a></li>
+				<li class="listing_page_settings"><a id="listing_page_settings" href="javascript:void(0);"><?php echo __('Category Page','templatic-admin'); ?></a></li>
 			<?php endif;
 			do_action('tevolution_after_catpagelink'); 
 			?>
 			
-			<li class="detail_page_settings"><a id="detail_page_settings" href="javascript:void(0);"><?php echo __('Detail Page',ADMINDOMAIN); ?></a></li>
+			<li class="detail_page_settings"><a id="detail_page_settings" href="javascript:void(0);"><?php echo __('Detail Page','templatic-admin'); ?></a></li>
 			<?php do_action('tevolution_after_detailpagelink');  ?>			
 			
-			<li class="registration_page_setup"><a id="registration_page_setup" href="javascript:void(0);" ><?php echo __('Registration Page',ADMINDOMAIN); ?></a></li>
+			<li class="registration_page_setup"><a id="registration_page_setup" href="javascript:void(0);" ><?php echo __('Registration Page','templatic-admin'); ?></a></li>
 			<?php 
 			do_action('tevolution_after_regpagelink'); 
 			
 			?>
-			<li class="general_claim_setting"><a id="general_claim_setting" href="javascript:void(0);"><?php echo __('Claim Ownership',ADMINDOMAIN); ?></a></li>
+			<li class="general_claim_setting"><a id="general_claim_setting" href="javascript:void(0);"><?php echo __('Claim Ownership','templatic-admin'); ?></a></li>
 			
 			<?php do_action('tevolution_after_subsettings'); ?>
             
-            <li class="captcha_settings"><a id="captcha_settings" href="javascript:void(0);"><?php echo __('Captcha',ADMINDOMAIN); ?></a></li>
+            <li class="captcha_settings"><a id="captcha_settings" href="javascript:void(0);"><?php echo __('Captcha','templatic-admin'); ?></a></li>
 		</ul> 
 		</div>
 		<?php
@@ -896,81 +896,81 @@ function post_page_setting_data($column)
 		<table id="submit_page_settings" class="tmpl-general-settings form-table active-tab">
 			<tr>                    
 				<td colspan="2">
-				   <p class="tevolution_desc"><strong><?php _e('Tip: ',ADMINDOMAIN); ?></strong><?php echo sprintf(__('Generate a submission page for a new post type by entering the following shortcode in a new page <strong>[submit_form post_type= &acute;your_post_type_name&acute;]</strong>. For details on this please open the %s',ADMINDOMAIN),'<a href="http://templatic.com/docs/tevolution-guide" target= "_blank" > documentation guide</a>'); ?></p><br />
+				   <p class="tevolution_desc"><strong><?php _e('Tip: ','templatic-admin'); ?></strong><?php echo sprintf(__('Generate a submission page for a new post type by entering the following shortcode in a new page <strong>[submit_form post_type= &acute;your_post_type_name&acute;]</strong>. For details on this please open the %s','templatic-admin'),'<a href="http://templatic.com/docs/tevolution-guide" target= "_blank" > documentation guide</a>'); ?></p><br />
 				</td>
 			</tr> 
-	   		<tr>
+	   		<tr id="category_specific_fields" >
                 <th>
-                    <label><?php echo __('Category specific fields',ADMINDOMAIN);	$templatic_category_custom_fields =  @$tmpdata['templatic-category_custom_fields']; if(!isset($templatic_category_custom_fields) && $templatic_category_custom_fields == ''){update_option('templatic-category_custom_fields','No');}?></label>
+                    <label><?php echo __('Category specific fields','templatic-admin');	$templatic_category_custom_fields =  @$tmpdata['templatic-category_custom_fields']; if(!isset($templatic_category_custom_fields) && $templatic_category_custom_fields == ''){update_option('templatic-category_custom_fields','No');}?></label>
                 </th>
                 <td> 
 				
 					<div class="input-switch">
 						<input type="checkbox"  id="templatic-category_custom_fields" name="templatic-category_custom_fields" value="Yes" <?php if($templatic_category_custom_fields == 'Yes' || $templatic_category_custom_fields ==''){?>checked="checked"<?php }?> />
-						<label for="templatic-category_custom_fields" class="checkbox">&nbsp;<?php echo __('Enable',ADMINDOMAIN);?></label>
+						<label for="templatic-category_custom_fields" class="checkbox">&nbsp;<?php echo __('Enable','templatic-admin');?></label>
 					</div>
              
-                    <p class="description"><?php echo __('Displays different fields for different categories on submission page. For more information, open the <a href="http://templatic.com/docs/tevolution-guide/#basic_settings" title="Tevolution Guid" target="_blank">Custom Fields Guide</a>',ADMINDOMAIN);?></p>
+                    <p class="description"><?php echo __('Displays different fields for different categories on submission page. For more information, open the <a href="http://templatic.com/docs/tevolution-guide/#basic_settings" title="Tevolution Guid" target="_blank">Custom Fields Guide</a>','templatic-admin');?></p>
                 </td>
             </tr>
 			 <tr>
-				<th><label><?php echo __('Category Display',ADMINDOMAIN); ?></label></th>
+				<th><label><?php echo __('Category Display','templatic-admin'); ?></label></th>
 				<td>
 					<div class="element">
 						 <div class="input_wrap">
 							<?php $templatic_category_type =  @$tmpdata['templatic-category_type']; ?>
 						   <select id="templatic-category_type" name="templatic-category_type" style="vertical-align:top;width:200px;" >							
-							<option value="checkbox" <?php if($templatic_category_type == 'checkbox' ) { echo "selected=selected";  } ?>><?php echo __('Check Box',ADMINDOMAIN); ?></option>
-							<option value="multiselectbox" <?php if($templatic_category_type == 'multiselectbox' ) { echo "selected=selected";  } ?>><?php echo __('Multi-select Box',ADMINDOMAIN); ?></option>
-							<option value="select" <?php if($templatic_category_type == 'select' ) { echo "selected=selected";  } ?>><?php echo __('Select Box',ADMINDOMAIN); ?></option>
+							<option value="checkbox" <?php if($templatic_category_type == 'checkbox' ) { echo "selected=selected";  } ?>><?php echo __('Check Box','templatic-admin'); ?></option>
+							<option value="multiselectbox" <?php if($templatic_category_type == 'multiselectbox' ) { echo "selected=selected";  } ?>><?php echo __('Multi-select Box','templatic-admin'); ?></option>
+							<option value="select" <?php if($templatic_category_type == 'select' ) { echo "selected=selected";  } ?>><?php echo __('Select Box','templatic-admin'); ?></option>
 						   </select> 
 					</div>
 					</div>
-				   <label for="ilc_tag_class"><p class="description"><?php echo __('Specify the format in which you want to display the categories on Submit page.',ADMINDOMAIN);?></p></label>
+				   <label for="ilc_tag_class"><p class="description"><?php echo __('Specify the format in which you want to display the categories on Submit page.','templatic-admin');?></p></label>
 				</td>
 			 </tr>
 			 <tr>
-				<th><label><?php echo __('Maximum image upload size',ADMINDOMAIN);	$templatic_image_size =  @$tmpdata['templatic_image_size']; ?></label></th>
+				<th><label><?php echo __('Maximum image upload size','templatic-admin');	$templatic_image_size =  @$tmpdata['templatic_image_size']; ?></label></th>
 				<td>
 					<div class="element">
 						 <div class="input_wrap">
 						 <input type="text" id="templatic_image_size" name="templatic_image_size" value="<?php echo $templatic_image_size; ?>"/> </div>
 						</div>
 					</div>
-				   <label for="ilc_tag_class"><p class="description"><?php echo __('The size is in kilobytes, e.g. 1MB = 1024KB. Enter only the number.',ADMINDOMAIN);?></p></label>
+				   <label for="ilc_tag_class"><p class="description"><?php echo __('The size is in kilobytes, e.g. 1MB = 1024KB. Enter only the number.','templatic-admin');?></p></label>
 				</td>
 			 </tr> 
 		  	 <tr>
-				<th><label><?php echo __('Default status for free submissions',ADMINDOMAIN);	$post_default_status =  @$tmpdata['post_default_status']; ?></label></th>
+				<th><label><?php echo __('Default status for free submissions','templatic-admin');	$post_default_status =  @$tmpdata['post_default_status']; ?></label></th>
 				<td>
 					<select name="post_default_status">
-						<option value="draft" <?php if($post_default_status == 'draft')echo "selected";?>><?php echo __('Draft',ADMINDOMAIN); ?></option>
-						<option value="publish" <?php if($post_default_status == 'publish')echo "selected";?>><?php echo __('Published',ADMINDOMAIN); ?></option>
+						<option value="draft" <?php if($post_default_status == 'draft')echo "selected";?>><?php echo __('Draft','templatic-admin'); ?></option>
+						<option value="publish" <?php if($post_default_status == 'publish')echo "selected";?>><?php echo __('Published','templatic-admin'); ?></option>
 					</select>
 				</td>
 			 </tr> 
 			<tr>
-				<th><label><?php echo __('Default status for paid submissions',ADMINDOMAIN);	$post_default_status_paid =  @$tmpdata['post_default_status_paid']; ?></label></th>
+				<th><label><?php echo __('Default status for paid submissions','templatic-admin');	$post_default_status_paid =  @$tmpdata['post_default_status_paid']; ?></label></th>
 				<td>
 					<select name="post_default_status_paid">
-						<option value="draft" <?php if($post_default_status_paid == 'draft')echo "selected";?>><?php echo __('Draft',ADMINDOMAIN); ?></option>
-						<option value="publish" <?php if($post_default_status_paid == 'publish')echo "selected";?>><?php echo __('Published',ADMINDOMAIN); ?></option>
+						<option value="draft" <?php if($post_default_status_paid == 'draft')echo "selected";?>><?php echo __('Draft','templatic-admin'); ?></option>
+						<option value="publish" <?php if($post_default_status_paid == 'publish')echo "selected";?>><?php echo __('Published','templatic-admin'); ?></option>
 					</select>
 				</td>
 			 </tr> 
 		
 		 	<tr>
-				<th><label><?php echo __('Default status for expired listings',ADMINDOMAIN);	$post_listing_ex_status =  @$tmpdata['post_listing_ex_status']; ?></label></th>
+				<th><label><?php echo __('Default status for expired listings','templatic-admin');	$post_listing_ex_status =  @$tmpdata['post_listing_ex_status']; ?></label></th>
 				<td>
 					<select name="post_listing_ex_status">
-						<option value="draft" <?php if($post_listing_ex_status == 'draft')echo "selected";?>><?php echo __('Draft',ADMINDOMAIN); ?></option>
-						<option value="trash" <?php if($post_listing_ex_status == 'trash')echo "selected";?>><?php echo __('Trash',ADMINDOMAIN); ?></option>
+						<option value="draft" <?php if($post_listing_ex_status == 'draft')echo "selected";?>><?php echo __('Draft','templatic-admin'); ?></option>
+						<option value="trash" <?php if($post_listing_ex_status == 'trash')echo "selected";?>><?php echo __('Trash','templatic-admin'); ?></option>
 					</select>
 				</td>
 			 </tr> 
 			 
 		 	 <tr>
-				<th><label><?php echo __('User listing expiry notification email',ADMINDOMAIN);	$listing_email_notification =  @$tmpdata['listing_email_notification']; ?></label></th>
+				<th><label><?php echo __('User listing expiry notification email','templatic-admin');	$listing_email_notification =  @$tmpdata['listing_email_notification']; ?></label></th>
 				<td>
 					<select name="listing_email_notification">
 					<option value="">-- Choose One --</option>
@@ -986,11 +986,11 @@ function post_page_setting_data($column)
 					 <option value="10" <?php if($listing_email_notification == '10')echo "selected";?>>10</option>
 					</select>
 					
-					<p class="description"><?php echo __('Select number of days prior to expiry',ADMINDOMAIN);?></p>
+					<p class="description"><?php echo __('Select number of days prior to expiry','templatic-admin');?></p>
 				</td>
 			 </tr> 
 			<tr>
-				<th><label><?php echo __('Terms and conditions',ADMINDOMAIN); 
+				<th><label><?php echo __('Terms and conditions','templatic-admin'); 
 				$tev_accept_term_condition =  @$tmpdata['tev_accept_term_condition'];
 				if($tev_accept_term_condition ==1){ $checked ="checked=checked"; }else{
 					$checked='';
@@ -999,18 +999,18 @@ function post_page_setting_data($column)
 				<td>
 					<div class="input-switch">
 						<input id="tev_accept_term_condition" type="checkbox" value="1" name="tev_accept_term_condition" <?php echo $checked; ?>/>
-						<label for="tev_accept_term_condition">&nbsp; <?php echo __('Enable',ADMINDOMAIN); ?></label>
+						<label for="tev_accept_term_condition">&nbsp; <?php echo __('Enable','templatic-admin'); ?></label>
 					</div>
 				</td>
 			</tr>
 			<?php do_action('templ_general_setting_before_tc'); ?>	
 			<tr>
-				<th><label><?php echo __('Terms and condition text',ADMINDOMAIN); 
+				<th><label><?php echo __('Terms and condition text','templatic-admin'); 
 				$term_condition_content =  stripslashes(@$tmpdata['term_condition_content']);
 				?> <label> </th>
 				<td>
 					<textarea class="tb_textarea" id="term_condition_content" name="term_condition_content"><?php echo $term_condition_content; ?></textarea>
-					 <p class="description"><?php echo __('Enter your terms in the above box. You can use HTML to create a link to your full terms of use page.',ADMINDOMAIN);?></p>
+					 <p class="description"><?php echo __('Enter your terms in the above box. You can use HTML to create a link to your full terms of use page.','templatic-admin');?></p>
 				</td>
 			</tr>
 			
@@ -1018,7 +1018,7 @@ function post_page_setting_data($column)
             <tr>
 				<td colspan="2">
 				<p class="submit" style="clear: both;">
-				  <input type="submit" name="Submit"  class="button button-primary button-hero" value="<?php echo __('Save All Settings',ADMINDOMAIN);?>" />
+				  <input type="submit" name="Submit"  class="button button-primary button-hero" value="<?php echo __('Save All Settings','templatic-admin');?>" />
 				  <input type="hidden" name="settings-submit" value="Y" />
 				</p>
 				</td>
@@ -1030,7 +1030,7 @@ function post_page_setting_data($column)
 		$fl=0; 
 		if(current_theme_supports('home_listing_type_value')) : $fl=1; ?>
 		<tr>
-			<td colspan="2"><p class="tevolution_desc"><?php echo __("Category page settings apply to the default 'listing' post type and any new custom post types you create.",ADMINDOMAIN); ?></p>
+			<td colspan="2"><p class="tevolution_desc"><?php echo __("Category page settings apply to the default 'listing' post type and any new custom post types you create.",'templatic-admin'); ?></p>
 		    </td>
 		</tr>
 			
@@ -1043,46 +1043,46 @@ function post_page_setting_data($column)
 		if(current_theme_supports('tev_taxonomy_excerpt_opt')) :?>
 			<?php if($fl==0): ?>
 			<tr>
-				<th colspan="2"><div class="tevo_sub_title"><?php echo __('Category Page',ADMINDOMAIN);?></div></th>
+				<th colspan="2"><div class="tevo_sub_title"><?php echo __('Category Page','templatic-admin');?></div></th>
 			</tr>
 		<?php endif; ?>    
 			<tr>
-				<th><label><?php echo __('Length Of Summary ',ADMINDOMAIN); ?></label></th>
+				<th><label><?php echo __('Length Of Summary ','templatic-admin'); ?></label></th>
 				<td>
 					<input type="text" name="excerpt_length" value="<?php echo $tmpdata['excerpt_length']; ?>" />
-					<p class="description"><?php echo __("If you haven't entered excerpt in your post we will display here mentioned number of characters from your post description .",ADMINDOMAIN);?></p>
+					<p class="description"><?php echo __("If you haven't entered excerpt in your post we will display here mentioned number of characters from your post description .",'templatic-admin');?></p>
 				</td>
 			</tr>
 			<tr>
-				<th><label><?php echo __('Title For Continue Link ',ADMINDOMAIN); ?></label></th>
+				<th><label><?php echo __('Title For Continue Link ','templatic-admin'); ?></label></th>
 				<td>
 					<input type="text" name="excerpt_continue" value="<?php echo $tmpdata['excerpt_continue']; ?>" />
-					<p class="description"><?php echo __('Mention the title you want to show for a link which will be redirected to post detail page ',ADMINDOMAIN);?></p>
+					<p class="description"><?php echo __('Mention the title you want to show for a link which will be redirected to post detail page ','templatic-admin');?></p>
 				</td>
 			</tr>
 		<?php endif;
 		
 		if(current_theme_supports('tev_taxonomy_sorting_opt')): ?>
 		<tr class="templatic_sorting">
-			<th valign="top"><label><?php echo __('Sorting options',ADMINDOMAIN);?></label></th>
+			<th valign="top"><label><?php echo __('Sorting options','templatic-admin');?></label></th>
 			<td>
-				<label><input type="checkbox" class="checkall" name="sorting_option[]" <?php if(!empty($tmpdata['sorting_option']) && in_array('select_all',$tmpdata['sorting_option'])) echo 'checked';?> onclick="SelectAllSorting()" value="select_all" /> <?php echo __("Select all",ADMINDOMAIN);?></label><br/>
-				<label for="title_alphabetical"><input type="checkbox" id="title_alphabetical" name="sorting_option[]" value="title_alphabetical" <?php if(!empty($tmpdata['sorting_option']) && in_array('title_alphabetical',$tmpdata['sorting_option'])) echo 'checked';?>/>&nbsp;<?php  echo __('Alphabetical',ADMINDOMAIN);?></label><br/>
-				<label for="date_asc"><input type="checkbox" id="date_asc" name="sorting_option[]" value="date_asc" <?php if(!empty($tmpdata['sorting_option']) && in_array('date_asc',$tmpdata['sorting_option'])) echo 'checked';?>/>&nbsp;<?php echo __('Publish Date Ascending',ADMINDOMAIN);?></label><br/>
-				<label for="date_desc"><input type="checkbox" id="date_desc" name="sorting_option[]" value="date_desc" <?php if(!empty($tmpdata['sorting_option']) && in_array('date_desc',$tmpdata['sorting_option'])) echo 'checked';?>/>&nbsp;<?php echo __('Publish Date Descending',ADMINDOMAIN);?></label><br />
+				<label><input type="checkbox" class="checkall" name="sorting_option[]" <?php if(!empty($tmpdata['sorting_option']) && in_array('select_all',$tmpdata['sorting_option'])) echo 'checked';?> onclick="SelectAllSorting()" value="select_all" /> <?php echo __("Select all",'templatic-admin');?></label><br/>
+				<label for="title_alphabetical"><input type="checkbox" id="title_alphabetical" name="sorting_option[]" value="title_alphabetical" <?php if(!empty($tmpdata['sorting_option']) && in_array('title_alphabetical',$tmpdata['sorting_option'])) echo 'checked';?>/>&nbsp;<?php  echo __('Alphabetical','templatic-admin');?></label><br/>
+				<label for="date_asc"><input type="checkbox" id="date_asc" name="sorting_option[]" value="date_asc" <?php if(!empty($tmpdata['sorting_option']) && in_array('date_asc',$tmpdata['sorting_option'])) echo 'checked';?>/>&nbsp;<?php echo __('Publish Date Ascending','templatic-admin');?></label><br/>
+				<label for="date_desc"><input type="checkbox" id="date_desc" name="sorting_option[]" value="date_desc" <?php if(!empty($tmpdata['sorting_option']) && in_array('date_desc',$tmpdata['sorting_option'])) echo 'checked';?>/>&nbsp;<?php echo __('Publish Date Descending','templatic-admin');?></label><br />
 			
-				<label for="random"><input type="checkbox" id="random" name="sorting_option[]" value="random" <?php if(!empty($tmpdata['sorting_option']) && in_array('random',$tmpdata['sorting_option'])) echo 'checked';?>/>&nbsp;<?php echo __('Random',ADMINDOMAIN);?></label><br />
+				<label for="random"><input type="checkbox" id="random" name="sorting_option[]" value="random" <?php if(!empty($tmpdata['sorting_option']) && in_array('random',$tmpdata['sorting_option'])) echo 'checked';?>/>&nbsp;<?php echo __('Random','templatic-admin');?></label><br />
 					
 				<?php if($tmpdata['templatin_rating']=='yes' || is_plugin_active('Templatic-MultiRating/multiple_rating.php')){ ?>
-				<label for="rating"><input type="checkbox" id="rating" name="sorting_option[]" value="rating" <?php if(!empty($tmpdata['sorting_option']) && in_array('rating',$tmpdata['sorting_option'])) echo 'checked';?>/>&nbsp;<?php echo __('Rating',ADMINDOMAIN);?></label><br />
+				<label for="rating"><input type="checkbox" id="rating" name="sorting_option[]" value="rating" <?php if(!empty($tmpdata['sorting_option']) && in_array('rating',$tmpdata['sorting_option'])) echo 'checked';?>/>&nbsp;<?php echo __('Rating','templatic-admin');?></label><br />
 				<?php } ?>
-				<label for="reviews"><input type="checkbox" id="reviews" name="sorting_option[]" value="reviews" <?php if(!empty($tmpdata['sorting_option']) && in_array('reviews',$tmpdata['sorting_option'])) echo 'checked';?>/>&nbsp;<?php echo __('Reviews ',ADMINDOMAIN);?></label><br />
-				<label for="title_asc"><input type="checkbox" id="title_asc" name="sorting_option[]" value="title_asc" <?php if(!empty($tmpdata['sorting_option']) && in_array('title_asc',$tmpdata['sorting_option'])) echo 'checked';?>/>&nbsp;<?php  echo __('Title Ascending',ADMINDOMAIN);?></label><br/>
-				<label for="title_desc"><input type="checkbox" id="title_desc" name="sorting_option[]" value="title_desc" <?php if(!empty($tmpdata['sorting_option']) && in_array('title_desc',$tmpdata['sorting_option'])) echo 'checked';?>/>&nbsp;<?php echo __('Title Descending',ADMINDOMAIN);?></label><br />
+				<label for="reviews"><input type="checkbox" id="reviews" name="sorting_option[]" value="reviews" <?php if(!empty($tmpdata['sorting_option']) && in_array('reviews',$tmpdata['sorting_option'])) echo 'checked';?>/>&nbsp;<?php echo __('Reviews ','templatic-admin');?></label><br />
+				<label for="title_asc"><input type="checkbox" id="title_asc" name="sorting_option[]" value="title_asc" <?php if(!empty($tmpdata['sorting_option']) && in_array('title_asc',$tmpdata['sorting_option'])) echo 'checked';?>/>&nbsp;<?php  echo __('Title Ascending','templatic-admin');?></label><br/>
+				<label for="title_desc"><input type="checkbox" id="title_desc" name="sorting_option[]" value="title_desc" <?php if(!empty($tmpdata['sorting_option']) && in_array('title_desc',$tmpdata['sorting_option'])) echo 'checked';?>/>&nbsp;<?php echo __('Title Descending','templatic-admin');?></label><br />
 				
 				
 				<?php do_action('taxonomy_sorting_option','sorting_option');?>
-				<p class="description"><?php echo __('For the "Rating" option to work you must enable the "Show rating" setting available in the "Detail Page" tab above.',ADMINDOMAIN);?></p>
+				<p class="description"><?php echo __('For the "Rating" option to work you must enable the "Show rating" setting available in the "Detail Page" tab above.','templatic-admin');?></p>
 				<script type="text/javascript">
 				function SelectAllSorting()
 				{
@@ -1096,7 +1096,7 @@ function post_page_setting_data($column)
 			<tr>
 				<td colspan="2">
 				<p class="submit" style="clear: both;">
-				  <input type="submit" name="Submit"  class="button button-primary button-hero" value="<?php echo __('Save All Settings',ADMINDOMAIN);?>" />
+				  <input type="submit" name="Submit"  class="button button-primary button-hero" value="<?php echo __('Save All Settings','templatic-admin');?>" />
 				  <input type="hidden" name="settings-submit" value="Y" />
 				</p>
 				</td>
@@ -1105,21 +1105,21 @@ function post_page_setting_data($column)
 		
 		<table id="detail_page_settings" class="tmpl-general-settings form-table">
 		<tr>
-			<td colspan="2"><p class="tevolution_desc"><?php echo __('Control your detail page settings from this screen which will affect the user experience for your visitors.',ADMINDOMAIN);?></p></div>
+			<td colspan="2"><p class="tevolution_desc"><?php echo __('Control your detail page settings from this screen which will affect the user experience for your visitors.','templatic-admin');?></p></div>
 		    </td>
 		</tr> 
 		<?php do_action('before_detail_page_setting');
 
 		do_action('before_related_post');?>
-		 <tr>
-				<th><label><?php echo __('Filter related posts by',ADMINDOMAIN);	$related_post =  @$tmpdata['related_post']; ?></label></th>
+		 <tr id="related_posts">
+				<th><label><?php echo __('Filter related posts by','templatic-admin');	$related_post =  @$tmpdata['related_post']; ?></label></th>
 				<td>
-					<label for="related_post_categories"><input id="related_post_categories" type="radio" name="related_post" value="categories"  <?php if(isset($related_post) && $related_post=='categories') echo 'checked'; ?>/>&nbsp;<?php echo __('Category',ADMINDOMAIN);?></label>&nbsp;&nbsp;
-					<label for="related_post_tags"> <input id="related_post_tags" type="radio" name="related_post" value="tags" <?php if(isset($related_post) && $related_post=='tags') echo 'checked'; ?>/>&nbsp;<?php echo __('Tag',ADMINDOMAIN);?></label>
+					<label for="related_post_categories"><input id="related_post_categories" type="radio" name="related_post" value="categories"  <?php if(isset($related_post) && $related_post=='categories') echo 'checked'; ?>/>&nbsp;<?php echo __('Category','templatic-admin');?></label>&nbsp;&nbsp;
+					<label for="related_post_tags"> <input id="related_post_tags" type="radio" name="related_post" value="tags" <?php if(isset($related_post) && $related_post=='tags') echo 'checked'; ?>/>&nbsp;<?php echo __('Tag','templatic-admin');?></label>
 				</td>
 			 </tr>
-			 <tr>
-				<th><label><?php echo __('Number of related posts',ADMINDOMAIN);	$related_post_numbers =  @$tmpdata['related_post_numbers']; ?></label></th>
+			 <tr id="no_related_post">
+				<th><label><?php echo __('Number of related posts','templatic-admin');	$related_post_numbers =  @$tmpdata['related_post_numbers']; ?></label></th>
 				<td>
 					<label for="related_post_numbers">
 						<input id="related_post_numbers" type="text" value="<?php if(isset($related_post_numbers)){ echo @$related_post_numbers;}else{ echo 3;}  ?>" size="4" name="related_post_numbers">
@@ -1131,15 +1131,15 @@ function post_page_setting_data($column)
 		
 		if(!current_theme_supports('remove_tevolution_sharing_opts')){ ?>                         
 			<tr>
-				<th><label><?php echo __('View counters',ADMINDOMAIN);	$templatic_view_counter =  @$tmpdata['templatic_view_counter']; ?></label></th>
+				<th><label><?php echo __('View counters','templatic-admin');	$templatic_view_counter =  @$tmpdata['templatic_view_counter']; ?></label></th>
 				<td>
 					<div class="input-switch">						 
-					<input type="checkbox" name="templatic_view_counter" value="Yes" <?php if($templatic_view_counter == 'Yes' || $templatic_view_counter ==''){?>checked="checked"<?php }?> id="yes" /><label for="yes">&nbsp;<?php echo __('Enable',ADMINDOMAIN);?>	</label>		 					 
+					<input type="checkbox" name="templatic_view_counter" value="Yes" <?php if($templatic_view_counter == 'Yes' || $templatic_view_counter ==''){?>checked="checked"<?php }?> id="yes" /><label for="yes">&nbsp;<?php echo __('Enable','templatic-admin');?>	</label>		 					 
 					</div>
 				</td>
 			</tr>
 			<tr>
-				<th><label><?php echo __('Show sharing buttons',ADMINDOMAIN);?></label></th>
+				<th><label><?php echo __('Show sharing buttons','templatic-admin');?></label></th>
 				<td>
 					<?php
 					$facebook_share_detail_page =  @$tmpdata['facebook_share_detail_page']; 
@@ -1147,15 +1147,15 @@ function post_page_setting_data($column)
 					$twitter_share_detail_page =  @$tmpdata['twitter_share_detail_page'];
 					$pintrest_detail_page =  @$tmpdata['pintrest_detail_page'];
 					?>
-					<label for="facebook_share_detail_page_yes"><input id="facebook_share_detail_page_yes" type="checkbox" name="facebook_share_detail_page" value="yes"  <?php if(isset($facebook_share_detail_page) && $facebook_share_detail_page=='yes') echo 'checked'; ?>/>&nbsp;<?php echo __('Facebook',ADMINDOMAIN);?></label> <br/>
+					<label for="facebook_share_detail_page_yes"><input id="facebook_share_detail_page_yes" type="checkbox" name="facebook_share_detail_page" value="yes"  <?php if(isset($facebook_share_detail_page) && $facebook_share_detail_page=='yes') echo 'checked'; ?>/>&nbsp;<?php echo __('Facebook','templatic-admin');?></label> <br/>
 					
-					<label for="google_share_detail_page_yes"><input id="google_share_detail_page_yes" type="checkbox" name="google_share_detail_page" value="yes"  <?php if(isset($google_share_detail_page) && $google_share_detail_page=='yes') echo 'checked'; ?>/>&nbsp;<?php  echo __('GooglePlus',ADMINDOMAIN);?></label> <br/>
+					<label for="google_share_detail_page_yes"><input id="google_share_detail_page_yes" type="checkbox" name="google_share_detail_page" value="yes"  <?php if(isset($google_share_detail_page) && $google_share_detail_page=='yes') echo 'checked'; ?>/>&nbsp;<?php  echo __('GooglePlus','templatic-admin');?></label> <br/>
 					
-					<label for="pintrest_detail_page_yes"><input id="pintrest_detail_page_yes" type="checkbox" name="pintrest_detail_page" value="yes"  <?php if(isset($pintrest_detail_page) && $pintrest_detail_page=='yes') echo 'checked'; ?>/>&nbsp;<?php  echo __('Pintrest',ADMINDOMAIN);?></label> <br/>
+					<label for="pintrest_detail_page_yes"><input id="pintrest_detail_page_yes" type="checkbox" name="pintrest_detail_page" value="yes"  <?php if(isset($pintrest_detail_page) && $pintrest_detail_page=='yes') echo 'checked'; ?>/>&nbsp;<?php  echo __('Pintrest','templatic-admin');?></label> <br/>
 					
-					<label for="twitter_share_detail_page_yes"><input id="twitter_share_detail_page_yes" type="checkbox" name="twitter_share_detail_page" value="yes"  <?php if(isset($twitter_share_detail_page) && $twitter_share_detail_page=='yes') echo 'checked'; ?>/>&nbsp;<?php  echo __('Twitter',ADMINDOMAIN);?></label> <br/>
+					<label for="twitter_share_detail_page_yes"><input id="twitter_share_detail_page_yes" type="checkbox" name="twitter_share_detail_page" value="yes"  <?php if(isset($twitter_share_detail_page) && $twitter_share_detail_page=='yes') echo 'checked'; ?>/>&nbsp;<?php  echo __('Twitter','templatic-admin');?></label> <br/>
 					
-					<p class="description"><?php echo __('Once enabled, selected sharing buttons will appear below the image gallery on detail pages',ADMINDOMAIN);?></p>
+					<p class="description"><?php echo __('Once enabled, selected sharing buttons will appear below the image gallery on detail pages','templatic-admin');?></p>
 					<?php do_action('test'); ?>
 				</td>
 				
@@ -1168,7 +1168,7 @@ function post_page_setting_data($column)
 		 <tr>
 			<td colspan="2">
 			<p class="submit" style="clear: both;">
-			  <input type="submit" name="Submit"  class="button button-primary button-hero" value="<?php echo __('Save All Settings',ADMINDOMAIN);?>" />
+			  <input type="submit" name="Submit"  class="button button-primary button-hero" value="<?php echo __('Save All Settings','templatic-admin');?>" />
 			  <input type="hidden" name="settings-submit" value="Y" />
 			</p>
 			</td>
@@ -1222,7 +1222,7 @@ function tevolution_custom_fields_notice(){
 				update_option('tevolution_query_cache',0);
 				?>
                     <div id="tevolution_message" class="updated fade below-h2">
-                    <p><?php echo __('Tevolution cache has been successfully cleared.',ADMINDOMAIN);?></p>
+                    <p><?php echo __('Tevolution cache has been successfully cleared.','templatic-admin');?></p>
                     </div>
                     <?php
 			}
@@ -1242,16 +1242,16 @@ function tevolution_custom_fields_notice(){
 				   <div>
 				   <form action="" method="post" style="width: 70%; float: left;">
 				   <input type="hidden" name="tevolution_cache" value="1" />
-					<p><?php echo __('In order to apply the changes made to the site you must clear the Tevolution cache.',ADMINDOMAIN);?> <input class="button-primary" type="submit" name="tevolution_query" value="<?php echo __('Clear cache',ADMINDOMAIN);?>" /></p>	
+					<p><?php echo __('In order to apply the changes made to the site you must clear the Tevolution cache.','templatic-admin');?> <input class="button-primary" type="submit" name="tevolution_query" value="<?php echo __('Clear cache','templatic-admin');?>" /></p>	
 					</form>
 				    <form action="" method="post" style="float: left; margin: 12px 0px;">
-						<input type="hidden" name="tevolution_cache_disable" value=""/><input class="button-secondary" type="submit" name="tevolution_query_cache" value="<?php echo __('Disable Cache',ADMINDOMAIN);?>" />
+						<input type="hidden" name="tevolution_cache_disable" value=""/><input class="button-secondary" type="submit" name="tevolution_query_cache" value="<?php echo __('Disable Cache','templatic-admin');?>" />
 					</form></div>
                     
 					<?php }else{ ?>
-					<form action="" method="post" style="width: 50%; float: left; text-align:right;"><p><?php echo __('Tevolution caching is disabled.',ADMINDOMAIN);?>&nbsp;&nbsp;</p></form>
+					<form action="" method="post" style="width: 50%; float: left; text-align:right;"><p><?php echo __('Tevolution caching is disabled.','templatic-admin');?>&nbsp;&nbsp;</p></form>
 					<form action="" method="post" style="width: 50%; float: left; margin: 10px 0px; text-align:left;">
-					  <input type="hidden" name="tevolution_cache_disable" value="1"/><input class="button-secondary" type="submit" name="tevolution_query_cache" value="<?php echo __('Enable Cache',ADMINDOMAIN);?>" />	
+					  <input type="hidden" name="tevolution_cache_disable" value="1"/><input class="button-secondary" type="submit" name="tevolution_query_cache" value="<?php echo __('Enable Cache','templatic-admin');?>" />	
 					</form>
 					<?php } ?>
 			</div>
@@ -1309,7 +1309,7 @@ function successfull_return_paypal_content_message(){
 			}
 		}
 		
-		$subcontent = sprintf(__('This package allows you to submit %s posts in %s',ADMINDOMAIN),$allow,"<strong>".rtrim($taxonomies1,',')."</strong>" );
+		$subcontent = sprintf(__('This package allows you to submit %s posts in %s','templatic-admin'),$allow,"<strong>".rtrim($taxonomies1,',')."</strong>" );
 	}
 	$post_tax = fetch_page_taxonomy($pkg_details['cur_post_id']);
 	/* Here array separated by category id and price amount */
@@ -1338,9 +1338,9 @@ function successfull_return_paypal_content_message(){
 	} 
 	/* set post categories end */
 	$pkgname = $pkgdata->post_title;
-	$subject = __('Payment procedure has been completed.',ADMINDOMAIN);
+	$subject = __('Payment procedure has been completed.','templatic-admin');
 	
-	$content = sprintf(__('You have now upgraded to a new package %s You paid %s to upgrade your package.',ADMINDOMAIN),"<strong>".$pkgname."</strong>.<br/>","<strong>".display_amount_with_currency_plugin($paid_amount)."</strong>");
+	$content = sprintf(__('You have now upgraded to a new package %s You paid %s to upgrade your package.','templatic-admin'),"<strong>".$pkgname."</strong>.<br/>","<strong>".display_amount_with_currency_plugin($paid_amount)."</strong>");
 	echo "<h2>".$subject."</h2>";
 	echo "<p>".$content."</p>";
 	echo "<p>".$subcontent."</p>";
@@ -1372,40 +1372,40 @@ function tmpl_captcha_setting_option(){
 		deactivate_plugins( ( 'wp-recaptcha/wp-recaptcha.php' ) );
 	}
 	
-	$lang_array = array('en'=>__('English',ADMINDOMAIN),'ar'=>__('Arabic',ADMINDOMAIN),'bg'=>__('Bulgarian',ADMINDOMAIN),'ca'=>__('Catalan Valencian',ADMINDOMAIN),'cs'=>__('Czech',ADMINDOMAIN),'da'=>__('Danish',ADMINDOMAIN),'de'=>__('German',ADMINDOMAIN),'el'=>__('Greek',ADMINDOMAIN),'en_gb'=>__('British English',ADMINDOMAIN),'es'=>__('Spanish',ADMINDOMAIN),'fa'=>__('Persian',ADMINDOMAIN),'fr'=>__('French',ADMINDOMAIN),'fr_ca'=>__('Canadian French',ADMINDOMAIN),'hi'=>__('Hindi',ADMINDOMAIN),'hr'=>__('Croatian',ADMINDOMAIN),'hu'=>__('Hungarian',ADMINDOMAIN),'id'=>__('Indonesian',ADMINDOMAIN),'it'=>__('Italian',ADMINDOMAIN),'iw'=>__('Hebrew',ADMINDOMAIN),'ja'=>__('Jananese',ADMINDOMAIN),'ko'=>__('Korean',ADMINDOMAIN),'lt'=>__('Lithuanian',ADMINDOMAIN),'lv'=>__('Latvian',ADMINDOMAIN),'nl'=>__('Dutch',ADMINDOMAIN),'no'=>__('Norwegian',ADMINDOMAIN),'pl'=>__('Polish',ADMINDOMAIN),'pt'=>__('Portuguese',ADMINDOMAIN),'ro'=>__('Romanian',ADMINDOMAIN),'ru'=>__('Russian',ADMINDOMAIN),'sk'=>__('Slovak',ADMINDOMAIN),'sl'=>__('Slovene',ADMINDOMAIN),'sr'=>__('Serbian',ADMINDOMAIN),'sv'=>__('Swedish',ADMINDOMAIN),'th'=>__('Thai',ADMINDOMAIN),'tr'=>__('Turkish',ADMINDOMAIN),'uk'=>__('Ukrainian',ADMINDOMAIN),'vi'=>__('Vietnamese',ADMINDOMAIN),'zh_cn'=>__('Simplified Chinese',ADMINDOMAIN),'zh_tw'=>__('Traditional Chinese',ADMINDOMAIN));
+	$lang_array = array('en'=>__('English','templatic-admin'),'ar'=>__('Arabic','templatic-admin'),'bg'=>__('Bulgarian','templatic-admin'),'ca'=>__('Catalan Valencian','templatic-admin'),'cs'=>__('Czech','templatic-admin'),'da'=>__('Danish','templatic-admin'),'de'=>__('German','templatic-admin'),'el'=>__('Greek','templatic-admin'),'en_gb'=>__('British English','templatic-admin'),'es'=>__('Spanish','templatic-admin'),'fa'=>__('Persian','templatic-admin'),'fr'=>__('French','templatic-admin'),'fr_ca'=>__('Canadian French','templatic-admin'),'hi'=>__('Hindi','templatic-admin'),'hr'=>__('Croatian','templatic-admin'),'hu'=>__('Hungarian','templatic-admin'),'id'=>__('Indonesian','templatic-admin'),'it'=>__('Italian','templatic-admin'),'iw'=>__('Hebrew','templatic-admin'),'ja'=>__('Jananese','templatic-admin'),'ko'=>__('Korean','templatic-admin'),'lt'=>__('Lithuanian','templatic-admin'),'lv'=>__('Latvian','templatic-admin'),'nl'=>__('Dutch','templatic-admin'),'no'=>__('Norwegian','templatic-admin'),'pl'=>__('Polish','templatic-admin'),'pt'=>__('Portuguese','templatic-admin'),'ro'=>__('Romanian','templatic-admin'),'ru'=>__('Russian','templatic-admin'),'sk'=>__('Slovak','templatic-admin'),'sl'=>__('Slovene','templatic-admin'),'sr'=>__('Serbian','templatic-admin'),'sv'=>__('Swedish','templatic-admin'),'th'=>__('Thai','templatic-admin'),'tr'=>__('Turkish','templatic-admin'),'uk'=>__('Ukrainian','templatic-admin'),'vi'=>__('Vietnamese','templatic-admin'),'zh_cn'=>__('Simplified Chinese','templatic-admin'),'zh_tw'=>__('Traditional Chinese','templatic-admin'));
 	?>
 	<table id="captcha_settings" class="tmpl-general-settings form-table">
     <tr>
-		<td colspan="2"><p class="tevolution_desc"><?php echo __('Keep your website spam-free by activating reCAPTCHA challenge to any of the functions or pages below. Please register your website for reCAPTCHA <a title="Get your CAPTCHA API Keys" href="https://www.google.com/recaptcha/admin#list">here</a> and add the keys you will get from there in the fields given below.',ADMINDOMAIN); ?></p>
+		<td colspan="2"><p class="tevolution_desc"><?php echo __('Keep your website spam-free by activating reCAPTCHA challenge to any of the functions or pages below. Please register your website for reCAPTCHA <a title="Get your CAPTCHA API Keys" href="https://www.google.com/recaptcha/admin#list">here</a> and add the keys you will get from there in the fields given below.','templatic-admin'); ?></p>
 		</td>
 	</tr> 
     <tbody>
     	<tr valign="top">
-            <th scope="row"><?php echo __('Site Key',ADMINDOMAIN); ?></th>
+            <th scope="row"><?php echo __('Site Key','templatic-admin'); ?></th>
             <td>
                <input type="text" value="<?php  echo @$tmpdata['site_key'] ?>" size="40" name="site_key">
             </td>
          </tr>
          <tr valign="top">
-            <th scope="row"><?php echo __('Secret Key',ADMINDOMAIN); ?></th>
+            <th scope="row"><?php echo __('Secret Key','templatic-admin'); ?></th>
             <td>
                <input type="text" value="<?php  echo @$tmpdata['secret'] ?>" size="40" name="secret">
             </td>
          </tr>
       </tbody>
       <tbody><tr valign="top">
-            <th scope="row"><?php echo __('Theme',ADMINDOMAIN); ?></th>
+            <th scope="row"><?php echo __('Theme','templatic-admin'); ?></th>
             <td>
                <select id="comments_theme" name="comments_theme">
-					<option <?php if($tmpdata['comments_theme'] == 'standard'){ ?>selected="selected" <?php } ?> value="standard"><?php echo __('Standard',ADMINDOMAIN); ?></option> 
-                	<option <?php if($tmpdata['comments_theme'] == 'light'){ ?>selected="selected" <?php } ?> value="light"><?php echo __('Light',ADMINDOMAIN); ?></option> 
-                	<option <?php if($tmpdata['comments_theme'] == 'dark'){ ?>selected="selected" <?php } ?> value="dark"><?php echo __('Dark',ADMINDOMAIN); ?></option> 
+					<option <?php if($tmpdata['comments_theme'] == 'standard'){ ?>selected="selected" <?php } ?> value="standard"><?php echo __('Standard','templatic-admin'); ?></option> 
+                	<option <?php if($tmpdata['comments_theme'] == 'light'){ ?>selected="selected" <?php } ?> value="light"><?php echo __('Light','templatic-admin'); ?></option> 
+                	<option <?php if($tmpdata['comments_theme'] == 'dark'){ ?>selected="selected" <?php } ?> value="dark"><?php echo __('Dark','templatic-admin'); ?></option> 
                 </select> 
             </td>
          </tr>
 
          <tr valign="top">
-            <th scope="row"><?php echo __('Language',ADMINDOMAIN); ?></th>
+            <th scope="row"><?php echo __('Language','templatic-admin'); ?></th>
             <td>
 				<select id="captcha_language" name="captcha_language">
                 	<?php foreach($lang_array as $key=>$val)
@@ -1418,20 +1418,20 @@ function tmpl_captcha_setting_option(){
          </tr>
       </tbody>
     <tr>
-        <th><label><?php echo __('Enable spam verification for',ADMINDOMAIN);?></label></th>
+        <th><label><?php echo __('Enable spam verification for','templatic-admin');?></label></th>
         <td class="captcha_chk">            
-            <label><input type='checkbox' name="user_verification_page[]" id="user_verification_page" <?php if(count($user_verification_page) > 0 && in_array('registration', $user_verification_page)){ echo "checked=checked"; } ?> value="registration"/> <?php echo __('Registration page and Comment form',ADMINDOMAIN); ?></label><div class="clearfix"></div>
-            <label><input type='checkbox' name="user_verification_page[]" id="user_verification_page" <?php if(count($user_verification_page) > 0 && in_array('submit', $user_verification_page)){ echo "checked=checked"; } ?> value="submit"/> <?php echo __('Submit listing page',ADMINDOMAIN); ?></label><div class="clearfix"></div>				  
-            <label><input type='checkbox' name="user_verification_page[]" id="user_verification_page" <?php if(count($user_verification_page) > 0 && in_array('claim', $user_verification_page)){ echo "checked=checked"; } ?> value="claim"/> <?php echo __('Claim Ownership',ADMINDOMAIN); ?></label><div class="clearfix"></div>
-            <label><input type='checkbox' name="user_verification_page[]" id="user_verification_page" <?php if(count($user_verification_page) > 0 && in_array('emaitofrd', $user_verification_page)){ echo "checked=checked"; } ?> value="emaitofrd"/> <?php echo __('Email to Friend',ADMINDOMAIN); ?></label><div class="clearfix"></div><div class="clearfix"></div>
-            <label><input type='checkbox' name="user_verification_page[]" id="user_verification_page" <?php if(count($user_verification_page) > 0 && in_array('sendinquiry', $user_verification_page)){ echo "checked=checked"; } ?> value="sendinquiry"/> <?php echo __('Send Inquiry',ADMINDOMAIN); ?></label><div class="clearfix"></div><div class="clearfix"></div>
+            <label><input type='checkbox' name="user_verification_page[]" id="user_verification_page" <?php if(count($user_verification_page) > 0 && in_array('registration', $user_verification_page)){ echo "checked=checked"; } ?> value="registration"/> <?php echo __('Registration page and Comment form','templatic-admin'); ?></label><div class="clearfix"></div>
+            <label><input type='checkbox' name="user_verification_page[]" id="user_verification_page" <?php if(count($user_verification_page) > 0 && in_array('submit', $user_verification_page)){ echo "checked=checked"; } ?> value="submit"/> <?php echo __('Submit listing page','templatic-admin'); ?></label><div class="clearfix"></div>				  
+            <label><input type='checkbox' name="user_verification_page[]" id="user_verification_page" <?php if(count($user_verification_page) > 0 && in_array('claim', $user_verification_page)){ echo "checked=checked"; } ?> value="claim"/> <?php echo __('Claim Ownership','templatic-admin'); ?></label><div class="clearfix"></div>
+            <label><input type='checkbox' name="user_verification_page[]" id="user_verification_page" <?php if(count($user_verification_page) > 0 && in_array('emaitofrd', $user_verification_page)){ echo "checked=checked"; } ?> value="emaitofrd"/> <?php echo __('Email to Friend','templatic-admin'); ?></label><div class="clearfix"></div><div class="clearfix"></div>
+            <label><input type='checkbox' name="user_verification_page[]" id="user_verification_page" <?php if(count($user_verification_page) > 0 && in_array('sendinquiry', $user_verification_page)){ echo "checked=checked"; } ?> value="sendinquiry"/> <?php echo __('Send Inquiry','templatic-admin'); ?></label><div class="clearfix"></div><div class="clearfix"></div>
         
         </td>
     </tr>
 	<tr>
 		<td colspan="2">
 			<p class="submit" style="clear: both;">
-			<input type="submit" name="Submit"  class="button button-primary button-hero" value="<?php echo __('Save All Settings',ADMINDOMAIN);?>" />
+			<input type="submit" name="Submit"  class="button button-primary button-hero" value="<?php echo __('Save All Settings','templatic-admin');?>" />
 			<input type="hidden" name="settings-submit" value="Y" />
 			</p>
 		</td>
@@ -1460,9 +1460,9 @@ function templatic_site_info_tracking_notice(){
                 <div>
                     <form action="" method="post" style="width: 70%; float: left;">
                         
-                         <p><?php echo __('Tevolution may get site data periodicaly from the site .',ADMINDOMAIN);?> 
-                            <input class="button-primary" type="submit" name="tmpl_site_info_tracking_allow" value="<?php echo __('Allow',ADMINDOMAIN);?>" />
-                            <input class="button-secondary" type="submit" name="tmpl_site_info_tracking_not_allow" value="<?php echo __('Do Not Allow',ADMINDOMAIN);?>" />
+                         <p><?php echo __('Do you want to allow us to periodically collect anonymous data from your site? <br/>The data will be used to improve plugin performance and ease-of-use. ','templatic-admin');?> 
+                            <input class="button-primary" type="submit" name="tmpl_site_info_tracking_allow" value="<?php echo __('Allow','templatic-admin');?>" />
+                            <input class="button-secondary" type="submit" name="tmpl_site_info_tracking_not_allow" value="<?php echo __('Do Not Allow','templatic-admin');?>" />
                          </p>	
                     </form>
                 </div>

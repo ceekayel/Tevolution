@@ -132,23 +132,21 @@ class Hybrid_Auth
 		Hybrid_Logger::debug( "Hybrid_Auth initialize. dump current session: ", Hybrid_Auth::storage()->getSessionData() ); 
 		Hybrid_Logger::info( "Hybrid_Auth initialize: check if any error is stored on the endpoint..." );
 
-		if( Hybrid_Error::hasError() ){ 
-			$m = Hybrid_Error::getErrorMessage();
+                if( Hybrid_Error::hasError() ){ 
+                    $m = Hybrid_Error::getErrorMessage();
 			$c = Hybrid_Error::getErrorCode();
 			$p = Hybrid_Error::getErrorPrevious();
 
 			Hybrid_Logger::error( "Hybrid_Auth initialize: A stored Error found, Throw an new Exception and delete it from the store: Error#$c, '$m'" );
 
 			Hybrid_Error::clearError();
-
-			/* try to provide the previous if any*/
-			/* Exception::getPrevious (PHP 5 >= 5.3.0) http://php.net/manual/en/exception.getprevious.php*/
-			if ( version_compare( PHP_VERSION, '5.3.0', '>=' ) && ($p instanceof Exception) ) { 
-				throw new Exception( $m, $c, $p );
-			}
-			else{
-				throw new Exception( $m, $c );
-			}
+                        
+                        /* if any error found than redirect to home page */
+                        $protocol = $_SERVER['HTTPS'] == 'on' ? 'https' : 'http';
+                        $url = $protocol.'://'.$_SERVER['HTTP_HOST'];
+                        header("location:$url");
+                        die();
+                        /* end with redirect to home page */
 		}
 
 		Hybrid_Logger::info( "Hybrid_Auth initialize: no error found. initialization succeed." );

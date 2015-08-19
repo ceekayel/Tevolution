@@ -48,6 +48,7 @@ jQuery(function() {
 		jQuery('#loop_listing').addClass('grid');
 		jQuery('#loop_listing').removeClass('list');
 		jQuery('#loop_taxonomy').addClass('grid');
+		jQuery('#loop_taxonomy').removeClass('list');
 		jQuery('#loop_archive').addClass('grid');
 		jQuery("#gridview").addClass("active");	
 		jQuery("#listview").removeClass("active");	

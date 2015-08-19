@@ -49,22 +49,22 @@ function tmpl_curentauth_social_links($curauth){
 		/* give the author's social media contacts link */
 		do_action('tmpl_social_media_list_start');
 		if($facebook!=''):  ?>
-		<li><a href="<?php echo (strstr($facebook,'http'))?$facebook:'http://'.$facebook; ?>" target="_blank"><i class="fa fa-facebook" title="<?php _e("Facebook",DOMAIN);?>"></i></a></li>
+		<li><a href="<?php echo (strstr($facebook,'http'))?$facebook:'http://'.$facebook; ?>" target="_blank"><i class="fa fa-facebook" title="<?php _e("Facebook",'templatic');?>"></i></a></li>
 		<?php endif;
 		
 		if($twitter):?>
-		<li><a href="<?php echo (strstr($twitter,'http'))?$twitter:'http://'.$twitter; ?>" target="_blank"><i class="fa fa-twitter" title="<?php _e("Twitter",DOMAIN);?>"></i></a></li>
+		<li><a href="<?php echo (strstr($twitter,'http'))?$twitter:'http://'.$twitter; ?>" target="_blank"><i class="fa fa-twitter" title="<?php _e("Twitter",'templatic');?>"></i></a></li>
 		<?php endif;
 		
 		if($google):?>
-		<li><a href="<?php echo (strstr($google,'http'))?$google:'http://'.$google; ?>" target="_blank"><i class="fa fa-google-plus" title="<?php _e("Google Plus",DOMAIN);?>"></i></a></li>
+		<li><a href="<?php echo (strstr($google,'http'))?$google:'http://'.$google; ?>" target="_blank"><i class="fa fa-google-plus" title="<?php _e("Google Plus",'templatic');?>"></i></a></li>
 		<?php endif;
 		
 		if($linkedin):?>
-		<li><a href="<?php echo (strstr($linkedin,'http://'))?$linkedin:'http://'.$linkedin; ?>" target="_blank"><i class="fa fa-linkedin" title="<?php _e("LinkedIn",DOMAIN);?>"></i></a></li>
+		<li><a href="<?php echo (strstr($linkedin,'http://'))?$linkedin:'http://'.$linkedin; ?>" target="_blank"><i class="fa fa-linkedin" title="<?php _e("LinkedIn",'templatic');?>"></i></a></li>
 		<?php endif;
 		if($curauth->user_email && $form_fields_usermeta['user_email']['on_author_page'] == 1 && $curauth->ID != $current_user->ID) { ?>
-		<li><a href="mailto:<?php echo antispambot($curauth->user_email); ?>" ><i class="fa fa-envelope-o" title="<?php _e("Contact Me",DOMAIN);?>"></i></a></li>
+		<li><a href="mailto:<?php echo antispambot($curauth->user_email); ?>" ><i class="fa fa-envelope-o" title="<?php _e("Contact Me",'templatic');?>"></i></a></li>
 		<?php } 
 		do_action('tmpl_social_media_list_end');
 		/* give the author's social media contacts link end */
@@ -127,8 +127,8 @@ function tmpl_get_authorpage_posttypes_tabs($curauth){
 			}
 		
 			if(function_exists('icl_register_string')){
-				icl_register_string(DOMAIN,$_posttaxonomy['label'].'author',$_posttaxonomy['label']);
-				$_posttaxonomy['label'] = icl_t(DOMAIN,$_posttaxonomy['label'].'author',$_posttaxonomy['label']);
+				icl_register_string('templatic',$_posttaxonomy['label'].'author',$_posttaxonomy['label']);
+				$_posttaxonomy['label'] = icl_t('templatic',$_posttaxonomy['label'].'author',$_posttaxonomy['label']);
 			}
 			
 			/* return true if user submitted the posts in post type */
@@ -203,7 +203,7 @@ function tmpl_get_author_photo($curauth,$is_author=0){
 		}
 		$profile_url=get_permalink($profile_page_id);
 		?>
-			<div class="editProfile"><a href="<?php echo $profile_url; ?>" ><?php _e('Edit Profile',DOMAIN);?> </a> </div>
+			<div class="editProfile"><a href="<?php echo $profile_url; ?>" ><?php _e('Edit Profile','templatic');?> </a> </div>
 		<?php } 
 		do_action('tmpl_after_author_photo');
 	}
@@ -239,7 +239,7 @@ function tmpl_author_dashboard($content)
 			<?php
 			if(@$_SESSION['twitter_login'] == 'twitter_login')
 			{
-				echo '<div class="alert-box info radius">';_e('Please edit your',DOMAIN); echo ' <a href="'.get_tevolution_profile_permalink().'">';_e('profile',DOMAIN); echo '</a> '; _e('and mention your email address to get notifications',DOMAIN); echo '</div>';
+				echo '<div class="alert-box info radius">';_e('Please edit your','templatic'); echo ' <a href="'.get_tevolution_profile_permalink().'">';_e('profile','templatic'); echo '</a> '; _e('and mention your email address to get notifications','templatic'); echo '</div>';
 				unset($_SESSION['twitter_login']);
 			}
 		?>
@@ -410,7 +410,7 @@ function templ_fetch_registration_onsubmit(){
 			display_usermeta_fields($user_meta_array);/* fetch registration form */
 		?>
         <div class="form_row clearfix">
-        	<input name="register" type="button" id="register_form" value="<?php echo __('Sign Up',DOMAIN); ?>" class="submit">
+        	<input name="register" type="button" id="register_form" value="<?php echo __('Sign Up','templatic'); ?>" class="submit">
         </div>
         <?php
 			include_once(TT_REGISTRATION_FOLDER_PATH . 'registration_validation.php');
@@ -429,7 +429,7 @@ function templ_fecth_login_onsubmit(){
 <p style="display:none;" class="status"></p>
 	<div class="login_submit clearfix" id="loginform">
 		<div class="sec_title">
-			<h3 class="form_title spacer_none"><?php _e('Login or register',DOMAIN);?></h3>
+			<h3 class="form_title spacer_none"><?php _e('Login or register','templatic');?></h3>
 		</div>
 		<?php 
 		
@@ -450,17 +450,17 @@ function templ_fecth_login_onsubmit(){
 		}
 		
 		if(isset($_REQUEST['emsg'])==1): ?>
-			<div class="error_msg"><?php _e('Incorrect Username/Password.',DOMAIN);?></div>
+			<div class="error_msg"><?php _e('Incorrect Username/Password.','templatic');?></div>
 		<?php endif; ?>
 		
 		<div class="user_type clearfix">
 			
-			<label class="lab1"><?php _e('I am a',DOMAIN);?> </label>
-			<label class="radio_lbl"><input name="user_login_or_not" type="radio" value="existing_user" <?php if($user_login_or_not=='existing_user'){ echo 'checked="checked"';}else{ echo 'checked="checked"'; }?> onclick="set_login_registration_frm('existing_user');" /> <?php _e('Existing User',DOMAIN);?> </label>
+			<label class="lab1"><?php _e('I am a','templatic');?> </label>
+			<label class="radio_lbl"><input name="user_login_or_not" type="radio" value="existing_user" <?php if($user_login_or_not=='existing_user'){ echo 'checked="checked"';}else{ echo 'checked="checked"'; }?> onclick="set_login_registration_frm('existing_user');" /> <?php _e('Existing User','templatic');?> </label>
 			<?php 
 				$users_can_register = get_option('users_can_register');
 				if($users_can_register):
-			?><label class="radio_lbl"><input name="user_login_or_not" type="radio" value="new_user" <?php if($user_login_or_not=='new_user'){ echo 'checked="checked"';}?> onclick="set_login_registration_frm('new_user');" /> <?php _e('New User? Register Now',DOMAIN);?> </label>
+			?><label class="radio_lbl"><input name="user_login_or_not" type="radio" value="new_user" <?php if($user_login_or_not=='new_user'){ echo 'checked="checked"';}?> onclick="set_login_registration_frm('new_user');" /> <?php _e('New User? Register Now','templatic');?> </label>
 			<?php endif;
 		do_action('tmpl_login_options');
 		?>
@@ -473,17 +473,17 @@ function templ_fecth_login_onsubmit(){
 		<div name="loginform" class="sublog_login" <?php if($user_login_or_not=='existing_user' || $user_login_or_not == '' ){ ?> style="display:block;" <?php } else {  ?> style="display:none;" <?php }?>  id="login_user_frm_id"  >
       
 			<div class="form_row clearfix lab2_cont">
-				<label class="lab2"><?php _e('Login',DOMAIN);?><span class="required">*</span></label>
+				<label class="lab2"><?php _e('Login','templatic');?><span class="required">*</span></label>
 				<input type="text" class="textfield slog_prop " id="user_login" name="log" />
 			</div>
 
 			<div class="form_row learfix lab2_cont">
-				<label class="lab2"><?php _e('Password',DOMAIN);?><span class="required">*</span> </label>
+				<label class="lab2"><?php _e('Password','templatic');?><span class="required">*</span> </label>
 				<input type="password" class="textfield slog_prop" id="user_pass" name="pwd" />
 			</div>
 		  
 			<div class="form_row clearfix">
-				<input name="submit_form_login" type="button" id="submit_form_login" value="<?php _e('Login',DOMAIN);?>" class="button_green submit" />
+				<input name="submit_form_login" type="button" id="submit_form_login" value="<?php _e('Login','templatic');?>" class="button_green submit" />
 			</div>
 			<?php do_action('login_form');
 			$login_redirect_link = get_permalink();?>
@@ -515,7 +515,7 @@ function submit_form_ajax_login()
 					var emailReg = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/;
 					if(jQuery("form#submit_form #user_email").val() == "") { 
 					<?php
-					$msg = html_entity_decode(__("Please provide your email address",DOMAIN),ENT_COMPAT, 'utf-8');
+					$msg = html_entity_decode(__("Please provide your email address",'templatic'),ENT_COMPAT, 'utf-8');
 					?>
 						jQuery("form#submit_form #user_email").addClass("error");
 						jQuery("form#submit_form #user_email_error").text("<?php echo $msg; ?>");
@@ -523,7 +523,7 @@ function submit_form_ajax_login()
 					return false;
 						
 					} else if(!emailReg.test(jQuery("form#submit_form #user_email").val().replace(/\s+$/,""))) { <?php
-						$msg = html_entity_decode(__("Please enter a valid email address",DOMAIN),ENT_COMPAT, 'utf-8');
+						$msg = html_entity_decode(__("Please enter a valid email address",'templatic'),ENT_COMPAT, 'utf-8');
 						?>
 						jQuery("form#submit_form #user_email").addClass("error");
 						jQuery("form#submit_form #user_email_error").text("<?php echo $msg; ?>");
@@ -539,13 +539,13 @@ function submit_form_ajax_login()
 							jQuery("form#submit_form #user_email_already_exist").val(1);
 							jQuery("form#submit_form #user_email_error").removeClass('message_error2');
 							jQuery("form#submit_form #user_email_error").addClass('available_tick');
-							jQuery("form#submit_form #user_email_error").html("<?php _e('The email address is correctly entered.',DOMAIN);?>");
+							jQuery("form#submit_form #user_email_error").html("<?php _e('The email address is correctly entered.','templatic');?>");
 							jQuery("form#submit_form #user_email").removeClass("error");
 							jQuery("form#submit_form #user_email_error").removeClass("message_error2");
 							return true;
 						}
 						else{
-							jQuery("form#submit_form #user_email_error").html("<?php _e('Email address already exists, Please enter another email',DOMAIN);?>");
+							jQuery("form#submit_form #user_email_error").html("<?php _e('Email address already exists, Please enter another email','templatic');?>");
 							jQuery("form#submit_form #user_email_already_exist").val(0);
 							jQuery("form#submit_form #user_email_error").removeClass('available_tick');
 							jQuery("form#submit_form #user_email_error").addClass('message_error2');
@@ -566,12 +566,12 @@ function submit_form_ajax_login()
 							
 					}else if(jQuery("form#submit_form #user_fname").val().match(/\ /)){
 						jQuery("form#submit_form #user_fname").addClass("error");
-						jQuery("form#submit_form #user_fname_error").text("<?php _e("Usernames should not contain space.",DOMAIN); ?>");
+						jQuery("form#submit_form #user_fname_error").text("<?php _e("Usernames should not contain space.",'templatic'); ?>");
 						jQuery("form#submit_form #user_fname_error").addClass("message_error2");
 						return false;
 					}else if(userLength < 4 ){
 						jQuery("form#submit_form #user_fname").addClass("error");
-						jQuery("form#submit_form #user_fname_error").text("<?php _e("The username must be at least 4 characters long",DOMAIN); ?>");
+						jQuery("form#submit_form #user_fname_error").text("<?php _e("The username must be at least 4 characters long",'templatic'); ?>");
 						jQuery("form#submit_form #user_fname_error").addClass("message_error2");
 						return false;
 					}else
@@ -580,7 +580,7 @@ function submit_form_ajax_login()
 						var chk_fname = document.getElementById("user_fname_already_exist").value;
 						if(chk_fname > 0)
 						{
-							jQuery("form#submit_form #user_fname_error").html("<?php _e('This username is available.',DOMAIN);?>");
+							jQuery("form#submit_form #user_fname_error").html("<?php _e('This username is available.','templatic');?>");
 							jQuery("form#submit_form #user_fname_already_exist").val(1);
 							jQuery("form#submit_form #user_fname_error").removeClass('message_error2');
 							jQuery("form#submit_form #user_fname_error").addClass('available_tick');
@@ -589,7 +589,7 @@ function submit_form_ajax_login()
 							return true;
 						}
 						else{
-							jQuery("form#submit_form #user_fname_error").html("<?php _e('The username you entered already exists, please try a different one',DOMAIN);?>");
+							jQuery("form#submit_form #user_fname_error").html("<?php _e('The username you entered already exists, please try a different one','templatic');?>");
 							jQuery("form#submit_form #user_fname_already_exist").val(0);
 							jQuery("form#submit_form #user_fname_error").addClass('message_error2');
 							jQuery("form#submit_form #user_fname_error").removeClass('available_tick');
@@ -627,16 +627,16 @@ function show_meida_login_button($page_id='')
 	if((isset($tmpdata['allow_facebook_login']) && $tmpdata['allow_facebook_login']==1) || (isset($tmpdata['allow_google_login']) && $tmpdata['allow_google_login']==1) || isset($tmpdata['allow_twitter_login']) && $tmpdata['allow_twitter_login']==1){
 	?>
     <ul class="social_login social_media_login">
-		<li><?php _e('Sign in with',DOMAIN); ?></li>
+		<li><?php _e('Sign in with','templatic'); ?></li>
 		 <?php
          if(isset($tmpdata['allow_facebook_login']) && $tmpdata['allow_facebook_login']==1){?>
-            <li><a class="facebook" href="?route=authentications/authenticatewith/facebook<?php echo $redirect_id;?>"><?php _e('Facebook',DOMAIN); ?></a></li>
+            <li><a class="facebook" href="?route=authentications/authenticatewith/facebook<?php echo $redirect_id;?>"><?php _e('Facebook','templatic'); ?></a></li>
         <?php }
         if(isset($tmpdata['allow_google_login']) && $tmpdata['allow_google_login']==1){ ?>
-            <li><a class="google" href="?route=authentications/authenticatewith/google<?php echo $redirect_id;?>"><?php _e('Google',DOMAIN); ?></a></li>
+            <li><a class="google" href="?route=authentications/authenticatewith/google<?php echo $redirect_id;?>"><?php _e('Google','templatic'); ?></a></li>
         <?php }
         if(isset($tmpdata['allow_twitter_login']) && $tmpdata['allow_twitter_login']==1){ ?>
-            <li><a class="twitter" href="?route=authentications/authenticatewith/twitter<?php echo $redirect_id;?>"><?php _e('Twitter',DOMAIN); ?></a></li>
+            <li><a class="twitter" href="?route=authentications/authenticatewith/twitter<?php echo $redirect_id;?>"><?php _e('Twitter','templatic'); ?></a></li>
         <?php } ?>
     </ul>
     <?php
@@ -663,17 +663,17 @@ function tmpl_frm_forgot_password($atts){ ?>
 	?>
 
 	<div  class='forgotpassword' id="lostpassword_form" <?php if($display_style != '') { echo $display_style; } else { echo 'style="display:none;"';} ?> >
-	<h3><?php  _e('Forgot password',DOMAIN);?></h3>
+	<h3><?php  _e('Forgot password','templatic');?></h3>
 	<form name="<?php echo $submit_form; ?>" id="<?php echo $submit_form; ?>" action="<?php echo get_permalink(); ?>" method="post" >
 			<input type="hidden" name="action" value="lostpassword" />
 		<div class="form_row clearfix">
-		<label> <?php  _e('Email',DOMAIN); ?>: </label>
+		<label> <?php  _e('Email','templatic'); ?>: </label>
 		<input type="text" name="user_login" id="user_login_email"  value="<?php if(isset($user_login))echo esc_attr($user_login); ?>" size="20" class="textfield" />
 			 <span id="forget_user_email_error" class="message_error2"></span>
 		<?php do_action('lostpassword_form'); ?>
 		</div>
 		<input type="hidden" name="pwdredirect_to" value="<?php if(isset($_SERVER['HTTP_REFERER'])) echo $_SERVER['HTTP_REFERER']; ?>" />
-		<input type="submit" name="get_new_password" onclick="return forget_email_validate('<?php echo $submit_form; ?>');" value="<?php _e('Get New Password',DOMAIN);?>" class="b_signin_n " />
+		<input type="submit" name="get_new_password" onclick="return forget_email_validate('<?php echo $submit_form; ?>');" value="<?php _e('Get New Password','templatic');?>" class="b_signin_n " />
 	</form>
 	</div>
 <?php
@@ -693,7 +693,7 @@ function show_user_register_message()
     <script type="text/javascript" async>
 		jQuery( document ).ready(function(){
 			jQuery('#header').append('<p class=\"success_msg\"></p>')
-			jQuery('.success_msg').html("<?php echo __('Thank you for registration! Please check your mail to get your login information.',DOMAIN);?>");
+			jQuery('.success_msg').html("<?php echo __('Thank you for registration! Please check your mail to get your login information.','templatic');?>");
 			jQuery('.success_msg').css('display','inline-block');
 			jQuery('.success_msg').delay(5000).fadeOut('slow');
 		});
@@ -710,7 +710,7 @@ function tmpl_authorbox_right_content($curauth,$form_fields_usermeta){
 	<div class="user_dsb_cf">
 	<?php 
 		if(get_user_meta($curauth->ID,'Country',true) && $form_fields_usermeta['Country']['on_author_page'] == 1){  ?>
-		<p><label><?php _e('Country',DOMAIN); ?>: </label><span><?php echo get_user_meta($curauth->ID,'Country',true); ?></span></p>
+		<p><label><?php _e('Country','templatic'); ?>: </label><span><?php echo get_user_meta($curauth->ID,'Country',true); ?></span></p>
 	<?php } 
 		/* get custom fields */
 		if(is_array($form_fields_usermeta) && !empty($form_fields_usermeta)){
@@ -718,8 +718,8 @@ function tmpl_authorbox_right_content($curauth,$form_fields_usermeta){
 			{
 				/* Localize string with WPML */
 				if(function_exists('icl_register_string')){
-					icl_register_string(DOMAIN,$_form_fields_usermeta['label'],$_form_fields_usermeta['label']);
-					$_form_fields_usermeta['label'] = icl_t(DOMAIN,$_form_fields_usermeta['label'],$_form_fields_usermeta['label']);
+					icl_register_string('templatic',$_form_fields_usermeta['label'],$_form_fields_usermeta['label']);
+					$_form_fields_usermeta['label'] = icl_t('templatic',$_form_fields_usermeta['label'],$_form_fields_usermeta['label']);
 				}
 				if($_form_fields_usermeta['type']=='head' && $_form_fields_usermeta['on_author_page']==1){
 					echo '<h2>'. $_form_fields_usermeta['label'].'</h2>';
@@ -780,9 +780,23 @@ function tmpl_authorbox_right_content($curauth,$form_fields_usermeta){
 			$posttaxonomy = implode(',',array_keys($posttaxonomy));
 			$posttaxonomy = str_replace(",","','",$posttaxonomy);
 
-			@$post_count = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->posts WHERE post_author = '" . $curauth->ID . "' AND post_type IN('$posttaxonomy') AND post_status = 'publish'"); ?>
+			global $wpdb, $pagenow, $wp_taxonomies,$ljoin;
+			$language_where='';
+			if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
+				$a = array_keys(get_option("templatic_custom_post"));
+				for($i=0;$i<count($a);$i++)
+				{
+					$posttaxonomy1 .= 'post_'.$a[$i].",";
+				}
+				$posttaxonomy1 = str_replace(",","','",$posttaxonomy1);
+				$language = ICL_LANGUAGE_CODE;
+				$join .= " {$ljoin} JOIN {$wpdb->prefix}icl_translations t ON {$wpdb->posts}.ID = t.element_id			
+					AND t.element_type IN ('$posttaxonomy1') JOIN {$wpdb->prefix}icl_languages l ON t.language_code=l.code AND l.active=1 AND t.language_code='".$language."'";
+			}
+			
+			@$post_count = $wpdb->get_var("SELECT COUNT(*) FROM $wpdb->posts  $join WHERE post_author = '" . $curauth->ID . "' AND post_type IN('$posttaxonomy') AND post_status = 'publish'");?>
 			<p>
-			<label><?php echo _e('Total Submissions',DOMAIN);?>: </label><span class="i_agent_others"> <b><?php echo $post_count;?></b></span>
+			<label><?php echo _e('Total Submissions','templatic');?>: </label><span class="i_agent_others"> <b><?php echo $post_count;?></b></span>
 			</p>
 			<?php
 		endif;
@@ -815,15 +829,15 @@ function tmpl_authorbox_right_content($curauth,$form_fields_usermeta){
 		if($pkg_type == 2 && $current_user->ID != '' && $curauth->ID == $current_user->ID){
 			echo "<div class='pkg_info'>";
 			
-				_e('You have subscribed to',DOMAIN);
+				_e('You have subscribed to','templatic');
 				echo " <b>".$package_name."</b> ";
-				_e('price package for',DOMAIN);
+				_e('price package for','templatic');
 				echo "<b> ".rtrim($pkg_post_type1,',')." </b>"; 
-				_e('Total number of posts:',DOMAIN);
+				_e('Total number of posts:','templatic');
 				echo "<b> ".$limit_no_post."</b>, "; 
-				_e('Submited:',DOMAIN);
+				_e('Submited:','templatic');
 				echo '<b> '.$submited.', </b>';
-				_e('Remaining:',DOMAIN);
+				_e('Remaining:','templatic');
 				echo '<b> '.$remaining.' </b>';
 			
 			echo ".</div>";

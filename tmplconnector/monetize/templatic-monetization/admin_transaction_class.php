@@ -49,11 +49,11 @@ class wp_list_transaction extends Tmpl_WP_List_Table
 				/*Check for featured posts: start*/
 				$featured_type = @get_post_meta($post->ID,'featured_type',true);
 				if( 'h' == $featured_type ){
-					$featured_text = '<div>'.__("Featured",ADMINDOMAIN).': '.__("Home",ADMINDOMAIN).'</div>';
+					$featured_text = '<div>'.__("Featured",'templatic-admin').': '.__("Home",'templatic-admin').'</div>';
 				}elseif( 'c' == $featured_type ){
-					$featured_text = '<div>'.__("Featured",ADMINDOMAIN).': '.__("Category",ADMINDOMAIN).'</div>';
+					$featured_text = '<div>'.__("Featured",'templatic-admin').': '.__("Category",'templatic-admin').'</div>';
 				}elseif( 'both' == $featured_type ){
-					$featured_text = '<div>'.__("Featured",ADMINDOMAIN).': '.__("Home, Category",ADMINDOMAIN).'</div>';
+					$featured_text = '<div>'.__("Featured",'templatic-admin').': '.__("Home, Category",'templatic-admin').'</div>';
 				}else{
 					$featured_text = '';
 				}
@@ -62,7 +62,7 @@ class wp_list_transaction extends Tmpl_WP_List_Table
 				/*Check for post is recurring: Start*/
 				/*TODO: Need to make entry in post meta table, */
 				/* whether currently inserting post is recurring or not */
-				$is_recurring = ( @get_post_meta($post_package->ID,'recurring',true)) ? '<div>'.__("Recurring",ADMINDOMAIN).'</div>' : '';				
+				$is_recurring = ( @get_post_meta($post_package->ID,'recurring',true)) ? '<div>'.__("Recurring",'templatic-admin').'</div>' : '';				
 				/*Check for post is recurring: End*/
 				
 				$color_taxonomy = 'trans_post_type_colour_'.$post_type;
@@ -77,15 +77,15 @@ class wp_list_transaction extends Tmpl_WP_List_Table
 				$alive_days = $transaction_price_pkg[0]['alive_days'];
 				$expired_date = date_i18n(get_option("date_format"),strtotime($publish_date. "+$alive_days day"));
 				if($transinfoObj->trans_id !=''){
-					$trans_id = '<div>'.__('ID:',ADMINDOMAIN).' <a href="'.site_url().'/wp-admin/admin.php?page=transcation&action=edit&trans_id='.$transinfoObj->trans_id.'">'.$transinfoObj->trans_id.'</a></div>';
+					$trans_id = '<div>'.__('ID:','templatic-admin').' <a href="'.site_url().'/wp-admin/admin.php?page=transcation&action=edit&trans_id='.$transinfoObj->trans_id.'">'.$transinfoObj->trans_id.'</a></div>';
 				}else{
 					$trans_id ='';
 				}
 				$transaction_data[] =  array(
                                                                                                                                   'ID'      => $transinfoObj->trans_id,
-                                                                                                                                  'title'    => '<a href="'.site_url().'/wp-admin/user-edit.php?user_id='.$transinfoObj->user_id.'">'.$transinfoObj->billing_name.'</a><div>'.__('Email:',ADMINDOMAIN).' '.$transinfoObj->pay_email.'</div>'.$trans_id,
+                                                                                                                                  'title'    => '<a href="'.site_url().'/wp-admin/user-edit.php?user_id='.$transinfoObj->user_id.'">'.$transinfoObj->billing_name.'</a><div>'.__('Email:','templatic-admin').' '.$transinfoObj->pay_email.'</div>'.$trans_id,
                                                                                                                                   'post_type'	  => '<label style="color:'.$color_taxonomy_value.'">'.$post_type_label.'<label>',
-                                                                                                                                  'payment_method' => __($transinfoObj->payment_method,ADMINDOMAIN),
+                                                                                                                                  'payment_method' => __($transinfoObj->payment_method,'templatic-admin'),
                                                                                                                                   'package' 	  => apply_filters('tmpl_transaction_package_type',$package.$featured_text.$is_recurring,$transinfoObj->payforpackage),
                                                                                                                                   'amount'    => fetch_currency_with_position($transinfoObj->payable_amt,2),
                                                                                                                                   'post_id'  => $transinfoObj->post_id,
@@ -106,13 +106,13 @@ class wp_list_transaction extends Tmpl_WP_List_Table
 	{
 		$columns = array(
 					'cb'            => '<input type="checkbox" />',
-					'title'         => __('User',ADMINDOMAIN),
-					'package'       => __('Price Package',ADMINDOMAIN),
-					'amount'        => __('Amount',ADMINDOMAIN),
-					'payment_method'=> __('Payment Method',ADMINDOMAIN),
-					'tran_date'     => __('Paid On',ADMINDOMAIN),
-					'exp_date'      => __('Exp. Date',ADMINDOMAIN),					
-					'status'        => __('Status',ADMINDOMAIN),
+					'title'         => __('User','templatic-admin'),
+					'package'       => __('Price Package','templatic-admin'),
+					'amount'        => __('Amount','templatic-admin'),
+					'payment_method'=> __('Payment Method','templatic-admin'),
+					'tran_date'     => __('Paid On','templatic-admin'),
+					'exp_date'      => __('Exp. Date','templatic-admin'),					
+					'status'        => __('Status','templatic-admin'),
 				);
 		$columns = apply_filters('transaction_column_fields',$columns);
 		return $columns;

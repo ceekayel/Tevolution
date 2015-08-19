@@ -6,7 +6,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 	<head>
-		<title><?php echo __( 'Tevolution Update', ADMINDOMAIN ); ?></title>
+		<title><?php echo __( 'Tevolution Update', 'templatic-admin' ); ?></title>
 		<?php
 			wp_enqueue_script( 'jquery-ui-tabs' );
 			wp_enqueue_style( 'jquery-tools', plugins_url( '/css/tabs.css', __FILE__ ) );
@@ -38,7 +38,7 @@
 		$response = wp_remote_post('http://templatic.com/members/login_api.php',$arg );	
 	
 		if( is_wp_error( $response ) ) {
-		  	$warnning_message = __("Invalid UserName or password. are you using templatic member username and password?",ADMINDOMAIN);
+		  	$warnning_message = __("Invalid UserName or password. are you using templatic member username and password?",'templatic-admin');
 		} else { 
 		  	$data = json_decode($response['body']);
 		}
@@ -62,12 +62,12 @@
 				$download_link=$data_product[PLUGIN_NAME];
 			}else
 			{
-				$warnning_message = __("Oops, we have a problem. The information you provided is either incorrect or you don't have",ADMINDOMAIN).' '.PLUGIN_NAME.' '.__('available inside the account. If you think everything should be ok with your account, please',ADMINDOMAIN)." <a href='http://templatic.com/contact'>".__('contact us.',ADMINDOMAIN)."</a>";
+				$warnning_message = __("Oops, we have a problem. The information you provided is either incorrect or you don't have",'templatic-admin').' '.PLUGIN_NAME.' '.__('available inside the account. If you think everything should be ok with your account, please','templatic-admin')." <a href='http://templatic.com/contact'>".__('contact us.','templatic-admin')."</a>";
 			}
 		}
 	}else{
 		if(isset($_POST['templatic_login']) && ($_POST['templatic_username'] =='' || $_POST['templatic_password']=='')){
-		$warnning_message = __("Invalid UserName or password. Please enter templatic member's username and password.",ADMINDOMAIN); }
+		$warnning_message = __("Invalid UserName or password. Please enter templatic member's username and password.",'templatic-admin'); }
 	}
 	?>
      <body style="padding:40px;">
@@ -79,7 +79,7 @@
            <?php
 		if(isset($warnning_message) && $warnning_message!='')
 		{?>
-			<div class='error'><p><strong><?php echo __($warnning_message,ADMINDOMAIN);?></strong></p></div>	
+			<div class='error'><p><strong><?php echo __($warnning_message,'templatic-admin');?></strong></p></div>	
 		<?php
           }
 		?>
@@ -87,20 +87,20 @@
 			   
                <p class="info">
 			   
-			   <?php echo __('Enter your Templatic account credentials to proceed with the update. These are the same details you use for the member area.',ADMINDOMAIN);?></p>
+			   <?php echo __('Enter your Templatic account credentials to proceed with the update. These are the same details you use for the member area.','templatic-admin');?></p>
                <form action="<?php echo $self_url;?>" name="" method="post">
                    <table>
 					<tr>
-					<td><label><?php echo __('Username: ',ADMINDOMAIN); ?></label></td>
+					<td><label><?php echo __('Username: ','templatic-admin'); ?></label></td>
 					<td><input type="text" name="templatic_username"  /></td>
 					</tr>
 					<tr>
-                    <td><label><?php echo __('Password: ',ADMINDOMAIN); ?></label></td>
+                    <td><label><?php echo __('Password: ','templatic-admin'); ?></label></td>
 					<td><input type="password" name="templatic_password"  /></td>
 					</tr>
 					<tr>
 					<td><input type="submit" name="templatic_login" value="Sign In" class="button-primary"/></td>
-					<td><a title="Close" id="TB_closeWindowButton" href="#" class="button-secondary"><?php echo __('Cancel',ADMINDOMAIN); ?></a></td>
+					<td><a title="Close" id="TB_closeWindowButton" href="#" class="button-secondary"><?php echo __('Cancel','templatic-admin'); ?></a></td>
 					</tr>
 				</table>
 				
@@ -109,7 +109,7 @@
           <?php else:								
 				 $file=PLUGIN_FOLDER_NAME.'/templatic.php';
 		 		 $download= wp_nonce_url( self_admin_url('update.php?action=upgrade-plugin&plugin=').$file, 'upgrade-plugin_' . $file);
-				 echo '<a href="'.$download.'"  target="_parent" class="button button-primary">'.__('Update Now',ADMINDOMAIN).'</a>';
+				 echo '<a href="'.$download.'"  target="_parent" class="button button-primary">'.__('Update Now','templatic-admin').'</a>';
 			 endif;?>
           </div>
 <?php

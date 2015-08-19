@@ -30,7 +30,7 @@ body.custom-background {
 
 
 global $page_title,$current_user;
-$page_title =  __('Payment Cancellation',DOMAIN);
+$page_title =  __('Payment Cancellation','templatic');
 
 get_header(); ?>
 <?php if ( get_option( 'ptthemes_breadcrumbs' ) == 'Yes') {  ?>
@@ -41,7 +41,7 @@ get_header(); ?>
 	
 	<div class="post-content">
 	<?php if($current_user->ID !=''){ ?>
-	<h2><?php  _e('Payment Cancellation',DOMAIN);?></h2>
+	<h2><?php  _e('Payment Cancellation','templatic');?></h2>
 	<?php 
 	
 	$tmpdata = get_option('templatic_settings');
@@ -56,7 +56,7 @@ get_header(); ?>
 	$filecontent = str_replace($search_array,$replace_array,$filecontent);
 	echo $filecontent;
 	echo ' <a href="'.site_url().'">';
-	_e('Go to Home',DOMAIN);
+	_e('Go to Home','templatic');
 	echo '</a>';
 	$post = get_post($_REQUEST['pid']);
 	$user_info = get_userdata( $post->post_author );
@@ -85,7 +85,7 @@ get_header(); ?>
 	}
 	
 	}else{
-		_e('You are not allowed to access this page.',DOMAIN);	
+		_e('You are not allowed to access this page.','templatic');	
 	}
 	global $wpdb;
 	$tevolution_post_type = tevolution_get_post_type();

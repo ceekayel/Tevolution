@@ -8,18 +8,18 @@ function templatic_widget_retrieve_password() {
 	$errors = new WP_Error();
 	$login = trim($_POST['user_login']);
 	if (empty( $_POST['user_login'] ) )
-		$errors->add('empty_username', __('<strong>ERROR</strong>: Enter a username or e-mail address.',DOMAIN));
+		$errors->add('empty_username', __('<strong>ERROR</strong>: Enter a username or e-mail address.','templatic'));
 	if ( strpos($_POST['user_login'], '@') ) {
 		$user_data = get_user_by('email',$login);
 		if ( empty($user_data) )
-			$errors->add('invalid_email', __('<strong>ERROR</strong>: There is no user registered with that email address.',DOMAIN));
+			$errors->add('invalid_email', __('<strong>ERROR</strong>: There is no user registered with that email address.','templatic'));
 	} else {
 		$user_data = get_user_by('email',$login);
 	}
 	if ( $errors->get_error_code() )
 		return $errors;
 	if ( !$user_data ) {
-		$errors->add('invalidcombo', __('<strong>ERROR</strong>: Incorrect username or e-mail.',DOMAIN));
+		$errors->add('invalidcombo', __('<strong>ERROR</strong>: Incorrect username or e-mail.','templatic'));
 		return $errors;
 	}
 	 /* redefining user_login ensures we return the right case in the email */
@@ -30,7 +30,7 @@ function templatic_widget_retrieve_password() {
 	
 	$user = $wpdb->get_row("SELECT * FROM $wpdb->users WHERE user_login like \"$user_login\" or user_email like \"$user_login\"");
 	if ( empty( $user ) )
-		return new WP_Error('invalid_key', __('Invalid key',DOMAIN));
+		return new WP_Error('invalid_key', __('Invalid key','templatic'));
 		
 	$new_pass = wp_generate_password(12,false);
 	wp_set_password($new_pass, $user->ID);
@@ -43,20 +43,20 @@ function templatic_widget_retrieve_password() {
 	$email_subject =  @stripslashes($tmpdata['reset_password_subject']);
 	if(@$email_subject == '')
 	{
-		$email_subject = __('[#site_title#] Your new password',DOMAIN);
+		$email_subject = __('[#site_title#] Your new password','templatic');
 	}
 	$email_content =  @stripslashes($tmpdata['reset_password_content']);
 	if(@$email_content == '')
 	{
-		$email_content = __("<p>Hi [#to_name#],</p><p>Here is the new password you have requested for your account [#user_email#].</p><p> Login URL: [#login_url#] </p><p>User name: [#user_login#]</p> <p> Password: [#user_password#]</p><p>You may change this password in your profile once you login with the new password above.</p><p>Thanks <br/> [#site_title#] </p>",ADMINDOMAIN);
+		$email_content = __("<p>Hi [#to_name#],</p><p>Here is the new password you have requested for your account [#user_email#].</p><p> Login URL: [#login_url#] </p><p>User name: [#user_login#]</p> <p> Password: [#user_password#]</p><p>You may change this password in your profile once you login with the new password above.</p><p>Thanks <br/> [#site_title#] </p>",'templatic-admin');
 	}
-	$title = sprintf('[%s]'.__(' Your new password',DOMAIN), get_option('blogname'));
+	$title = sprintf('[%s]'.__(' Your new password','templatic'), get_option('blogname'));
 	
 	$email_subject_array = array('[#site_title#]');
 	$email_subject_replace_array = array(get_option('blogname'));
 	$email_subject = str_replace($email_subject_array,$email_subject_replace_array,$email_subject);
 	
-	$login_url = "<a href='".get_tevolution_login_permalink()."'>".__('Login',DOMAIN)."</a>";
+	$login_url = "<a href='".get_tevolution_login_permalink()."'>".__('Login','templatic')."</a>";
 	$search_array_content = array('[#to_name#]','[#user_email#]','[#login_url#]','[#user_login#]','[#user_password#]','[#site_title#]');
 	$replace_array_content = array($user_name,$user_data->user_email,$login_url,$user->user_login,$new_pass,get_option('blogname'));
 	$email_content = str_replace($search_array_content,$replace_array_content,$email_content);
@@ -113,7 +113,7 @@ function tmpl_custom_login(){
 		
 		/*  If cookies are disabled we can't log in even with a valid user+pass */
 		if ( isset($_POST['testcookie']) && empty($_COOKIE[TEST_COOKIE]) )
-			$errors->add('test_cookie', __("<strong>ERROR</strong>: Cookies are blocked or not supported by your browser. You must <a href='http://www.google.com/cookies.html'>enable cookies</a> to use WordPress.",DOMAIN));
+			$errors->add('test_cookie', __("<strong>ERROR</strong>: Cookies are blocked or not supported by your browser. You must <a href='http://www.google.com/cookies.html'>enable cookies</a> to use WordPress.",'templatic'));
 		
 		if ( !is_wp_error($user) ) 
 		{
@@ -126,8 +126,8 @@ class loginwidget_plugin extends WP_Widget {
 	
 	function loginwidget_plugin() {
 		/*Constructor*/
-		$widget_ops = array('classname' => 'Login Dashboard wizard', 'description' => __('The widget shows account-related links to logged-in visitors. Visitors that are not logged-in will see a login form. Works best in sidebar areas.',ADMINDOMAIN) );		
-		$this->WP_Widget('widget_login', __('T &rarr; Login Box',ADMINDOMAIN), $widget_ops);
+		$widget_ops = array('classname' => 'Login Dashboard wizard', 'description' => __('The widget shows account-related links to logged-in visitors. Visitors that are not logged-in will see a login form. Works best in sidebar areas.','templatic-admin') );		
+		$this->WP_Widget('widget_login', __('T &rarr; Login Box','templatic-admin'), $widget_ops);
 	}
 	
 	function widget($args, $instance) {
@@ -139,7 +139,7 @@ class loginwidget_plugin extends WP_Widget {
 		{
 			$errors = templatic_widget_retrieve_password();
 			if ( !is_wp_error($errors) ) {
-				$for_msg = __('Check your e-mail for the new password.',DOMAIN);
+				$for_msg = __('Check your e-mail for the new password.','templatic');
 			}
 		} 
 		$login_page_id=get_option('tevolution_login');
@@ -160,15 +160,13 @@ class loginwidget_plugin extends WP_Widget {
                     <ul class="xoxo blogroll">
                     <?php 
                          $authorlink = get_author_posts_url($current_user->ID);													
-                         echo '<li><a href="'. get_author_posts_url($current_user->ID).'">'; _e('Dashboard',DOMAIN); echo '</a></li>';
-                         
-                         
-                         echo '<li><a href="'.get_tevolution_profile_permalink().'">'; _e('Edit profile',DOMAIN); echo '</a></li>';
-                         echo '<li><a href="'.get_tevolution_profile_permalink().'#chngpwdform">'; _e('Change password',DOMAIN); echo '</a></li>';
+                         echo '<li><a href="'. get_author_posts_url($current_user->ID).'">'; _e('Dashboard','templatic'); echo '</a></li>';
+                         echo '<li><a href="'.get_tevolution_profile_permalink().'">'; _e('Edit profile','templatic'); echo '</a></li>';
+                         echo '<li><a href="'.get_tevolution_profile_permalink().'#chngpwdform">'; _e('Change password','templatic'); echo '</a></li>';
                          $user_link = get_author_posts_url($current_user->ID);
                          if(strstr($user_link,'?') ){$user_link = $user_link.'&list=favourite';}else{$user_link = $user_link.'?list=favourite';}
                          do_action('tevolution_login_dashboard_content');
-                         echo '<li><a href="'.wp_logout_url(get_option('siteurl')."/").'">'; _e('Logout',DOMAIN); echo '</a></li>';
+                         echo '<li><a href="'.wp_logout_url(get_option('siteurl')."/").'">'; _e('Logout','templatic'); echo '</a></li>';
                          ?>
                     </ul>
 			<?php
@@ -182,9 +180,9 @@ class loginwidget_plugin extends WP_Widget {
 				{
 					if(is_object($errors))
 					{
-						$login_link = sprintf(__('<a href="%s">Lost your password?</a>',DOMAIN),get_tevolution_login_permalink());
+						$login_link = sprintf(__('<a href="%s">Lost your password?</a>','templatic'),get_tevolution_login_permalink());
 						echo "<p class=\"error_msg\">";
-						_e('The password you entered is incorrect. Please try again.',DOMAIN); echo ' '.$login_link;
+						_e('The password you entered is incorrect. Please try again.','templatic'); echo ' '.$login_link;
 						echo '</p>';
 					
 					}
@@ -203,7 +201,7 @@ class loginwidget_plugin extends WP_Widget {
 					
 					<?php echo do_shortcode('[tevolution_register form_name="register_login_widget"]'); ?>
                     <?php include(TT_REGISTRATION_FOLDER_PATH . 'registration_validation.php');?>
-					<p><?php _e('Already have an account? ',DOMAIN); ?><a href="javascript:void(0)" class="widgets-link" id="tmpl-back-login"><?php _e('Sign in',DOMAIN);?></a></p>
+					<p><?php _e('Already have an account? ','templatic'); ?><a href="javascript:void(0)" class="widgets-link" id="tmpl-back-login"><?php _e('Sign in','templatic');?></a></p>
 				</div>
 				
 				<?php 
@@ -237,12 +235,12 @@ class loginwidget_plugin extends WP_Widget {
 	}
 	function form($instance) {
 		/*widgetform in backend*/
-		$instance = wp_parse_args( (array) $instance, array( 'title' => __("Dashboard",DOMAIN) ) );		
+		$instance = wp_parse_args( (array) $instance, array( 'title' => __("Dashboard",'templatic') ) );		
 		$title = strip_tags($instance['title']);		
 		?>
 		<p>
           	<label for="<?php echo $this->get_field_id('title'); ?>">
-				<?php echo __('Login Box Title',DOMAIN);?>: <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
+				<?php echo __('Login Box Title','templatic');?>: <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" />
                </label>
           </p>
 		<?php
@@ -328,7 +326,7 @@ function tmpl_add_login_reg_popup(){ ?>
 		<div id="tmpl_sign_up" style="display:none;">  
 			<?php echo do_shortcode('[tevolution_register form_name="popup_register"]'); ?>
             <?php include(TT_REGISTRATION_FOLDER_PATH . 'registration_validation.php');?>
-			<p><?php _e('Already have an account? ',DOMAIN); ?><a href="javascript:void(0)" class="widgets-link" id="tmpl-back-login"><?php _e('Sign in',DOMAIN);?></a></p>
+			<p><?php _e('Already have an account? ','templatic'); ?><a href="javascript:void(0)" class="widgets-link" id="tmpl-back-login"><?php _e('Sign in','templatic');?></a></p>
 		</div>
 		
 	</div>

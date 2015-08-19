@@ -42,10 +42,10 @@ if($_REQUEST['pid']){
 }
 if(isset($_REQUEST['renew']) && $_REQUEST['renew']!="")
 {
-	$page_title = __('Renew Successfully Information',DOMAIN);
+	$page_title = __('Renew Successfully Information','templatic');
 }elseif($_REQUEST['action']=='edit'){
 	
-	$page_title = $post_type_label.' '.__('Updated Successfully',DOMAIN);
+	$page_title = $post_type_label.' '.__('Updated Successfully','templatic');
 	if(function_exists('icl_register_string')){
 		$context = get_option('blogname');
 		icl_register_string($context,$post_type_label." Updated",$post_type_label." Updated");
@@ -53,22 +53,22 @@ if(isset($_REQUEST['renew']) && $_REQUEST['renew']!="")
 	}
 }elseif(isset($_REQUEST['upgrade']) && $_REQUEST['upgrade']!=""){
 		if(function_exists('icl_register_string')){
-			icl_register_string(DOMAIN,$post_type_label."success",$post_type_label);
-		    $post_type_label = icl_t(DOMAIN,$post_type_label."success",$post_type_label);
+			icl_register_string('templatic',$post_type_label."success",$post_type_label);
+		    $post_type_label = icl_t('templatic',$post_type_label."success",$post_type_label);
 		}
-		$page_title = $post_type_label.' '.__('Upgraded Successfully',DOMAIN);
+		$page_title = $post_type_label.' '.__('Upgraded Successfully','templatic');
 
 }else{
 	if(function_exists('icl_register_string')){
-		icl_register_string(DOMAIN,$post_type_label."success",$post_type_label);
-		 $post_type_label = icl_t(DOMAIN,$post_type_label."success",$post_type_label);
+		icl_register_string('templatic',$post_type_label."success",$post_type_label);
+		 $post_type_label = icl_t('templatic',$post_type_label."success",$post_type_label);
 	    }
 	if($_REQUEST['pid'] && !isset($_REQUEST['action_edit']))
-		$page_title = $post_type_label.' '.__('Submitted Successfully',DOMAIN);
+		$page_title = $post_type_label.' '.__('Submitted Successfully','templatic');
 	elseif(isset($_REQUEST['action_edit']))
-		$page_title = $post_type_label.' '.__('Updated Successfully',DOMAIN);
+		$page_title = $post_type_label.' '.__('Updated Successfully','templatic');
 	else
-		$page_title = $post_type_label.' '.__('Thank you for purchasing a subscription plan',DOMAIN);
+		$page_title = $post_type_label.' '.__('Thank you for purchasing a subscription plan','templatic');
 }
 get_header(); 
 do_action('templ_before_success_container_breadcrumb');
@@ -121,11 +121,11 @@ if(isset($_REQUEST['paydeltype']) && $_REQUEST['paydeltype']=='prebanktransfer' 
 	
 	if(@$client_mail_subject == '')
 	{
-		$client_mail_subject = __('Thank you for your submission!',DOMAIN);
+		$client_mail_subject = __('Thank you for your submission!','templatic');
 	}
 	if(@$client_mail_content == '')
 	{
-		$client_mail_content = __("<p>Howdy [#to_name#],</p><p>You have submitted a new listing. Here are some details about it</p><p>[#information_details#]</p><p>Thank You,<br/>[#site_name#]</p>",DOMAIN);
+		$client_mail_content = __("<p>Howdy [#to_name#],</p><p>You have submitted a new listing. Here are some details about it</p><p>[#information_details#]</p><p>Thank You,<br/>[#site_name#]</p>",'templatic');
 	}
 	$paymentupdsql = "select option_value from $wpdb->options where option_name='payment_method_".$_REQUEST['paydeltype']."'";
 	$paymentupdinfo = $wpdb->get_results($paymentupdsql);
@@ -136,31 +136,31 @@ if(isset($_REQUEST['paydeltype']) && $_REQUEST['paydeltype']=='prebanktransfer' 
 	$accountinfo = $payOpts[1]['value'];
 	if($tmpdata['post_default_status_paid'] == 'publish')
 	{
-		$payment_status = __("Approved",DOMAIN);
+		$payment_status = __("Approved",'templatic');
 	}
 	else
 	{
-		$payment_status = __("Pending",DOMAIN);
+		$payment_status = __("Pending",'templatic');
 	}
 	$payment_type = $payment_detail['name'];
 	$orderId = $sql_post_id?$sql_post_id:mt_rand(100000, 999999);
 	$payment_date =  date_i18n(get_option('date_format'),strtotime($payment_date));
 	$transaction_details="";
 	$transaction_details .= "<br/>\r\n-------------------------------------------------- <br/>\r\n";
-	$transaction_details .= __('Payment Details for',DOMAIN).": $post_title <br/>\r\n";
+	$transaction_details .= __('Payment Details for','templatic').": $post_title <br/>\r\n";
 	$transaction_details .= "-------------------------------------------------- <br/>\r\n";
-	$transaction_details .= 	__('Status',DOMAIN).": $payment_status <br/>\r\n";
-	$transaction_details .=     __('Type',DOMAIN).": $payment_type <br/>\r\n";
-	$transaction_details .= 	__('Date',DOMAIN).": $payment_date <br/>\r\n";
-	$transaction_details .= 	__('Bank Name',DOMAIN).": $bankInfo <br/>\r\n";
-	$transaction_details .= 	__('Account Number',DOMAIN).": $accountinfo <br/>\r\n";
-	$transaction_details .= 	__('Reference Number',DOMAIN).": $orderId <br/>\r\n";
+	$transaction_details .= 	__('Status','templatic').": $payment_status <br/>\r\n";
+	$transaction_details .=     __('Type','templatic').": $payment_type <br/>\r\n";
+	$transaction_details .= 	__('Date','templatic').": $payment_date <br/>\r\n";
+	$transaction_details .= 	__('Bank Name','templatic').": $bankInfo <br/>\r\n";
+	$transaction_details .= 	__('Account Number','templatic').": $accountinfo <br/>\r\n";
+	$transaction_details .= 	__('Reference Number','templatic').": $orderId <br/>\r\n";
 	$transaction_details .= "-------------------------------------------------- <br/>\r\n";
 	$transaction_details = $transaction_details;
-	$client_transaction_mail_content = '<p>'.__('Thank you for your cooperation with us.',DOMAIN).'</p>';
+	$client_transaction_mail_content = '<p>'.__('Thank you for your cooperation with us.','templatic').'</p>';
 	/*$client_transaction_mail_content .= '<p>You successfully completed your payment by Pre Bank Transfer.</p>';*/
-	$client_transaction_mail_content .= "<p>".__('Your submitted id is',DOMAIN)." : ".$sql_post_id."</p>";
-	$client_transaction_mail_content .= '<p>'.__('View more detail from',DOMAIN).' <a href="'.get_permalink($sql_post_id).'">'.$suc_post->post_title.'</a></p>';
+	$client_transaction_mail_content .= "<p>".__('Your submitted id is','templatic')." : ".$sql_post_id."</p>";
+	$client_transaction_mail_content .= '<p>'.__('View more detail from','templatic').' <a href="'.get_permalink($sql_post_id).'">'.$suc_post->post_title.'</a></p>';
 	
 	$search_array = array('[#to_name#]','[#payable_amt#]','[#information_details#]','[#site_name#]','[#admin_email#]','[#user_login#]');
 	$replace_array = array($toEmailName,$sql_payable_amt,$transaction_details,$fromEmailName,get_option('admin_email'),$toEmailName);
@@ -174,12 +174,12 @@ if(isset($_REQUEST['paydeltype']) && $_REQUEST['paydeltype']=='prebanktransfer' 
 	
 	$transaction_details="";
 	$transaction_details .= "<br/>\r\n-------------------------------------------------- <br/>\r\n";
-	$transaction_details .= __('Payment Details for',DOMAIN).": $post_title <br/>\r\n";
+	$transaction_details .= __('Payment Details for','templatic').": $post_title <br/>\r\n";
 	$transaction_details .= "-------------------------------------------------- <br/>\r\n";
-	$transaction_details .= 	__('Status',DOMAIN).": $payment_status <br/>\r\n";
-	$transaction_details .=     __('Type',DOMAIN).": $payment_type <br/>\r\n";
-	$transaction_details .= 	__('Date',DOMAIN).": $payment_date <br/>\r\n";
-	$transaction_details .= 	__('Reference Number',DOMAIN).": $orderId <br/>\r\n";
+	$transaction_details .= 	__('Status','templatic').": $payment_status <br/>\r\n";
+	$transaction_details .=     __('Type','templatic').": $payment_type <br/>\r\n";
+	$transaction_details .= 	__('Date','templatic').": $payment_date <br/>\r\n";
+	$transaction_details .= 	__('Reference Number','templatic').": $orderId <br/>\r\n";
 	$transaction_details .= "-------------------------------------------------- <br/>\r\n";
 	/* Check psot dedault status for paid listing is publish then listing and transction will be publish and approve */
 	if($tmpdata['post_default_status_paid']=='publish'){
@@ -203,11 +203,11 @@ if(isset($_REQUEST['paydeltype']) && $_REQUEST['paydeltype']=='prebanktransfer' 
 		
 	}
 	/*Payment success Mail to admin START*/
-	$admin_mail_subject =  apply_filters('prebanktransfer_admin_subject',__('Submission pending payment',DOMAIN));
+	$admin_mail_subject =  apply_filters('prebanktransfer_admin_subject',__('Submission pending payment','templatic'));
 	$admin_mail_content = $theme_settings['pre_payment_success_email_content_to_admin'];
 	if(@$admin_mail_subject == '')
 	{
-		$admin_mail_subject = __('Submission pending payment',DOMAIN);
+		$admin_mail_subject = __('Submission pending payment','templatic');
 	}
 	if(@$admin_mail_content == '')
 	{
@@ -242,12 +242,25 @@ if($amout=='0' || $amout==''){
 	}
 	else
 	{
+		$post_default_status = $tmpdata['post_default_status'];
 		if($tmpdata['post_default_status']=='publish' && !isset($_SESSION['custom_fields']['last_selected_pkg']) && $_SESSION['custom_fields']['last_selected_pkg'] == '' && (!isset($_REQUEST['upgrade']) && $_REQUEST['upgrade'] != 1) && (isset($_REQUEST['pid']) && $_REQUEST['pid'] != '')){
 			if($amout == 0 && isset($_REQUEST['renew']) && $_REQUEST['renew'] ==1){
 				$post_status = $tmpdata['post_default_status'];
 				$post_default_status= ($post_status)? $post_status :  'draft';
+			}elseif($amout > 0 && isset($_REQUEST['renew']) && $_REQUEST['renew'] ==1){
+				$post_status = $tmpdata['post_default_status_paid'];
+				$post_default_status= ($post_status)? $post_status :  'draft';
 			}else{
-				$post_default_status= (isset($_REQUEST['pid']) && $_REQUEST['pid']!="")? get_post_status($_REQUEST['pid']):  'publish';
+				if($post_default_status != 'publish')
+				{
+					$trans_status = $wpdb->query("update $transaction_tabel SET status = 0 where post_id = ".$_REQUEST['pid']);
+					$wpdb->query("UPDATE $wpdb->posts SET post_status='".$post_default_status."' where ID = '".$_REQUEST['pid']."'");
+				}
+				else
+				{
+					$trans_status = $wpdb->query("update $transaction_tabel SET status = 1 where post_id = ".$_REQUEST['pid']);
+					$wpdb->query("UPDATE $wpdb->posts SET post_status='".$post_default_status."' where ID = '".$_REQUEST['pid']."'");
+				}
 			}
 			$trans_status = $wpdb->query("update $transaction_tabel SET status = 1 where post_id = ".$_REQUEST['pid']);
 			$wpdb->query("UPDATE $wpdb->posts SET post_status='".$post_default_status."' where ID = '".$_REQUEST['pid']."'");

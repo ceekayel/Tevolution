@@ -380,7 +380,7 @@ add_action('templatic_general_setting_data','templatic_general_setting_register_
  * Add Filter for create the general setting sub tab for email setting
  */	
 function registration_email_setting($tabs ) {			
-	$tabs['email']=__('Email Settings',ADMINDOMAIN);
+	$tabs['email']=__('Email Settings','templatic-admin');
 	return $tabs;
 }	
 /*
@@ -395,14 +395,14 @@ function registration_email_setting_data($column)
 			?>
 				
 	<tr class="registration-email alternate">
-	<td><label class="form-textfield-label"><?php echo __('Registration email to user',ADMINDOMAIN); ?></label></td>
+	<td><label class="form-textfield-label"><?php echo __('Registration email to user','templatic-admin'); ?></label></td>
 
 	<td>
-		<a href="javascript:void(0);" onclick="open_quick_edit('registration-email','edit-registration-email')"><?php echo __("Quick Edit",ADMINDOMAIN);?></a> 
+		<a href="javascript:void(0);" onclick="open_quick_edit('registration-email','edit-registration-email')"><?php echo __("Quick Edit",'templatic-admin');?></a> 
 		| 
-		<a href="javascript:void(0);" onclick="reset_to_default('registration_success_email_subject','registration_success_email_content','registration-email');"><?php echo __("Reset",ADMINDOMAIN);?></a>
+		<a href="javascript:void(0);" onclick="reset_to_default('registration_success_email_subject','registration_success_email_content','registration-email');"><?php echo __("Reset",'templatic-admin');?></a>
 		<span class="spinner" style="margin:2px 18px 0;"></span>
-		<span class="qucik_reset"><?php echo __("Data reset",DOMAIN);?></span>
+		<span class="qucik_reset"><?php echo __("Data reset",'templatic');?></span>
 	</td>
 	</tr>
 	<tr class="edit-registration-email alternate" style="display:none">
@@ -411,7 +411,7 @@ function registration_email_setting_data($column)
 		<table width="98%" align="left" class="tab-sub-table">
 			<tr>
 				<td style="line-height:10px">
-					<label class="form-textfield-label sub-title"><?php echo __('Subject',ADMINDOMAIN); ?></label>
+					<label class="form-textfield-label sub-title"><?php echo __('Subject','templatic-admin'); ?></label>
 				</td>
 				<td width="90%" style="line-height:10px">
 					<input type="text" name="registration_success_email_subject" id="registration_success_email_subject" value="<?php if(isset($tmpdata['registration_success_email_subject'])){echo $tmpdata['registration_success_email_subject'];}else{echo 'Thank you for registering!'; } ?>"/>
@@ -419,7 +419,7 @@ function registration_email_setting_data($column)
 			</tr>
 			<tr>
 				<td style="line-height:10px">
-					<label class="form-textfield-label sub-title"><?php echo __('Message',ADMINDOMAIN); ?></label>
+					<label class="form-textfield-label sub-title"><?php echo __('Message','templatic-admin'); ?></label>
 				</td>
 				<td width="90%" style="line-height:10px">
 					<?php
@@ -439,7 +439,7 @@ function registration_email_setting_data($column)
 					if($tmpdata['registration_success_email_content'] != ""){
 						$content = stripslashes($tmpdata['registration_success_email_content']);
 					}else{
-						$content = __('<p>Dear [#user_name#],</p><p>Thank you for registering and welcome to [#site_name#]. You can proceed with logging in to your account.</p><p>Login here: [#site_login_url_link#]</p><p>Username: [#user_login#]</p><p>Password: [#user_password#]</p><p>Feel free to change the password after you login for the first time.</p><p>&nbsp;</p><p>Thanks again for signing up at [#site_name#]</p>',DOMAIN);
+						$content = __('<p>Dear [#user_name#],</p><p>Thank you for registering and welcome to [#site_name#]. You can proceed with logging in to your account.</p><p>Login here: [#site_login_url_link#]</p><p>Username: [#user_login#]</p><p>Password: [#user_password#]</p><p>Feel free to change the password after you login for the first time.</p><p>&nbsp;</p><p>Thanks again for signing up at [#site_name#]</p>','templatic');
 					}
 					wp_editor( $content, 'registration_success_email_content', $settings);
 				?>
@@ -449,8 +449,8 @@ function registration_email_setting_data($column)
 				<td colspan="2">
 				<div class="buttons">
 					<div class="inline_update">
-					<a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes",ADMINDOMAIN);?></a>
-					<a class="button-secondary cancel alignright " href="javascript:void(0);" onclick="open_quick_edit('edit-registration-email','registration-email')" accesskey="c"><?php echo __("Cancel",ADMINDOMAIN);?></a>
+					<a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes",'templatic-admin');?></a>
+					<a class="button-secondary cancel alignright " href="javascript:void(0);" onclick="open_quick_edit('edit-registration-email','registration-email')" accesskey="c"><?php echo __("Cancel",'templatic-admin');?></a>
 					<span class="save_error" style="display:none"></span><span class="spinner"></span>
 					</div>
 				</div>	
@@ -460,14 +460,14 @@ function registration_email_setting_data($column)
 	</td>
 	</tr>
 	<tr class="admin-registration-email">
-	<td><label class="form-textfield-label"><?php echo __('Registration email to admin',ADMINDOMAIN); ?></label></td>
+	<td><label class="form-textfield-label"><?php echo __('Registration email to admin','templatic-admin'); ?></label></td>
 
 	<td>
-		<a href="javascript:void(0);" onclick="open_quick_edit('admin-registration-email','edit-admin-registration-email')"><?php echo __("Quick Edit",ADMINDOMAIN);?></a> 
+		<a href="javascript:void(0);" onclick="open_quick_edit('admin-registration-email','edit-admin-registration-email')"><?php echo __("Quick Edit",'templatic-admin');?></a> 
 		| 
-		<a href="javascript:void(0);" onclick="reset_to_default('admin_registration_success_email_subject','admin_registration_success_email_content','admin-registration-email');"><?php echo __("Reset",ADMINDOMAIN);?></a>
+		<a href="javascript:void(0);" onclick="reset_to_default('admin_registration_success_email_subject','admin_registration_success_email_content','admin-registration-email');"><?php echo __("Reset",'templatic-admin');?></a>
 		<span class="spinner" style="margin:2px 18px 0;"></span>
-		<span class="qucik_reset"><?php echo __("Data reset",DOMAIN);?></span>
+		<span class="qucik_reset"><?php echo __("Data reset",'templatic');?></span>
 	</td>
 	</tr>
 	<tr class="edit-admin-registration-email" style="display:none">
@@ -476,7 +476,7 @@ function registration_email_setting_data($column)
 		<table width="98%" align="left" class="tab-sub-table">
 			<tr>
 				<td style="line-height:10px">
-					<label class="form-textfield-label sub-title"><?php echo __('Subject',ADMINDOMAIN); ?></label>
+					<label class="form-textfield-label sub-title"><?php echo __('Subject','templatic-admin'); ?></label>
 				</td>
 				<td width="90%" style="line-height:10px">
 					<input type="text" name="admin_registration_success_email_subject" id="admin_registration_success_email_subject" value="<?php if(isset($tmpdata['admin_registration_success_email_subject'])){echo $tmpdata['admin_registration_success_email_subject'];}else{echo 'New user registration'; } ?>"/>
@@ -484,7 +484,7 @@ function registration_email_setting_data($column)
 			</tr>
 			<tr>
 				<td style="line-height:10px">
-					<label class="form-textfield-label sub-title"><?php echo __('Message',ADMINDOMAIN); ?></label>
+					<label class="form-textfield-label sub-title"><?php echo __('Message','templatic-admin'); ?></label>
 				</td>
 				<td width="90%" style="line-height:10px">
 					<?php
@@ -514,8 +514,8 @@ function registration_email_setting_data($column)
 				<td colspan="2">
 					<div class="buttons">
 						<div class="inline_update">
-						<a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes",ADMINDOMAIN);?></a>
-						<a class="button-secondary cancel alignright " href="javascript:void(0);" onclick="open_quick_edit('edit-admin-registration-email','admin-registration-email')" accesskey="c"><?php echo __("Cancel",ADMINDOMAIN);?></a>
+						<a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes",'templatic-admin');?></a>
+						<a class="button-secondary cancel alignright " href="javascript:void(0);" onclick="open_quick_edit('edit-admin-registration-email','admin-registration-email')" accesskey="c"><?php echo __("Cancel",'templatic-admin');?></a>
 						<span class="save_error" style="display:none"></span><span class="spinner"></span>
 						</div>
 					</div>	
@@ -641,48 +641,48 @@ function templatic_general_setting_register_data($column){
 	?>
 		<table id="registration_page_setup" class="tmpl-general-settings form-table">
 		<tr>
-			<td colspan="2"><p class="tevolution_desc"><?php echo sprintf(__('Match your Login, Register and Profile pages below to ensure registration works correctly. These pages were created automatically when Tevolution was activated. If you need to create them manually please open the %s',ADMINDOMAIN),'<a href="http://templatic.com/docs/tevolution-guide/#registration" target= "_blank"> documentation guide</a>')?></p></td>
+			<td colspan="2"><p class="tevolution_desc"><?php echo sprintf(__('Match your Login, Register and Profile pages below to ensure registration works correctly. These pages were created automatically when Tevolution was activated. If you need to create them manually please open the %s','templatic-admin'),'<a href="http://templatic.com/docs/tevolution-guide/#registration" target= "_blank"> documentation guide</a>')?></p></td>
 		</tr>
 		<tr>
-		<th><label><?php echo __('Allow user to auto login after registration',ADMINDOMAIN);  ?></label></th>
+		<th><label><?php echo __('Allow user to auto login after registration','templatic-admin');  ?></label></th>
 		<td>
 			<div class="input-switch"><input type="checkbox" id="allow_autologin_after_reg" name="allow_autologin_after_reg" value="1" <?php if(isset($tmpdata['allow_autologin_after_reg']) && @$tmpdata['allow_autologin_after_reg']==1){?>checked="checked"<?php }?> />
-			<label for="allow_autologin_after_reg">&nbsp;<?php echo __('Enable',ADMINDOMAIN);?></label></div>
-			<p class="description"><?php echo __('Enabling this option will automatically show the user status as logged in after registering on your site.',ADMINDOMAIN); ?></p>
+			<label for="allow_autologin_after_reg">&nbsp;<?php echo __('Enable','templatic-admin');?></label></div>
+			<p class="description"><?php echo __('Enabling this option will automatically show the user status as logged in after registering on your site.','templatic-admin'); ?></p>
 		</td>
 		</tr> 
 		<!-- HTML for social loggin -->
 		<tr>
-		<th><label><?php echo __('Allow user to login from social sites',ADMINDOMAIN);  ?></label></th>
+		<th><label><?php echo __('Allow user to login from social sites','templatic-admin');  ?></label></th>
 		<td>
-			<div class="input_wrap"><label for="allow_facebook_login"><input type="checkbox" id="allow_facebook_login" name="allow_facebook_login" value="1" onclick="return show_social_login(this.id);" <?php if(isset($tmpdata['allow_facebook_login']) && @$tmpdata['allow_facebook_login']==1){?>checked="checked"<?php }?> />&nbsp;<?php echo __('Facebook',ADMINDOMAIN);?></label></div>
+			<div class="input_wrap"><label for="allow_facebook_login"><input type="checkbox" id="allow_facebook_login" name="allow_facebook_login" value="1" onclick="return show_social_login(this.id);" <?php if(isset($tmpdata['allow_facebook_login']) && @$tmpdata['allow_facebook_login']==1){?>checked="checked"<?php }?> />&nbsp;<?php echo __('Facebook','templatic-admin');?></label></div>
 			<div id="show_facebook_key" <?php if((!isset($tmpdata['allow_facebook_login']) && @$tmpdata['allow_facebook_login']!=1) || @$tmpdata['allow_facebook_login'] == ''){ ?> style="display:none;" <?php } ?>>
-				<?php echo __('App ID',ADMINDOMAIN); ?>
-				<input type="text" name="facebook_key" id="facebook_key" placeholder="<?php echo __('Your Facbook App ID here',ADMINDOMAIN); ?>" value="<?php if(isset($tmpdata['facebook_key'])){echo @$tmpdata['facebook_key'];} ?>"/>
-				<?php echo __('Secret Key',ADMINDOMAIN); ?>
-				<input type="text" name="facebook_secret_key" id="facebook_secret_key" placeholder="<?php echo __('Your Facbook Secret Key here',ADMINDOMAIN); ?>" value="<?php if(isset($tmpdata['facebook_secret_key'])){echo $tmpdata['facebook_secret_key'];} ?>"/>
-				<p class="description"><?php echo __('You can create the facebook key from',ADMINDOMAIN);  ?><a href="https://developers.facebook.com/apps"><?php echo __(' here',ADMINDOMAIN); ?></a></p>
+				<?php echo __('App ID','templatic-admin'); ?>
+				<input type="text" name="facebook_key" id="facebook_key" placeholder="<?php echo __('Your Facbook App ID here','templatic-admin'); ?>" value="<?php if(isset($tmpdata['facebook_key'])){echo @$tmpdata['facebook_key'];} ?>"/>
+				<?php echo __('Secret Key','templatic-admin'); ?>
+				<input type="text" name="facebook_secret_key" id="facebook_secret_key" placeholder="<?php echo __('Your Facbook Secret Key here','templatic-admin'); ?>" value="<?php if(isset($tmpdata['facebook_secret_key'])){echo $tmpdata['facebook_secret_key'];} ?>"/>
+				<p class="description"><?php echo __('You can create the facebook key from','templatic-admin');  ?><a href="https://developers.facebook.com/apps"><?php echo __(' here','templatic-admin'); ?></a></p>
 			</div>
-			<div class="input_wrap"><label for="allow_google_login"><input type="checkbox" id="allow_google_login" name="allow_google_login" value="1" onclick="return show_social_login(this.id);" <?php if(isset($tmpdata['allow_google_login']) && @$tmpdata['allow_google_login']==1){?>checked="checked"<?php }?> />&nbsp;<?php echo __('Google',ADMINDOMAIN);?></label></div>
+			<div class="input_wrap"><label for="allow_google_login"><input type="checkbox" id="allow_google_login" name="allow_google_login" value="1" onclick="return show_social_login(this.id);" <?php if(isset($tmpdata['allow_google_login']) && @$tmpdata['allow_google_login']==1){?>checked="checked"<?php }?> />&nbsp;<?php echo __('Google','templatic-admin');?></label></div>
 			<div id="show_google_key" <?php if((!isset($tmpdata['allow_google_login']) && @$tmpdata['allow_google_login']!=1 ) || @$tmpdata['allow_google_login'] == ''){ ?> style="display:none;" <?php } ?>>
-				<?php echo __('App ID',ADMINDOMAIN); ?>
-				<input type="text" name="google_key" id="google_key" placeholder="<?php echo __('Your google App ID here',ADMINDOMAIN); ?>" value="<?php if(isset($tmpdata['google_key'])){	echo $tmpdata['google_key'];} ?>"/>
-				<?php echo __('Secret Key',ADMINDOMAIN); ?>
-				<input type="text" name="google_secret_key" id="google_secret_key" placeholder="<?php echo __('Your Google Secret Key here',ADMINDOMAIN); ?>" value="<?php if(isset($tmpdata['google_secret_key'])){echo $tmpdata['google_secret_key'];} ?>"/>
-				<p class="description"><?php echo __('You can create the google key from',ADMINDOMAIN);  ?><a href="https://code.google.com/apis/console/"><?php echo __(' here',ADMINDOMAIN); ?></a></p>
+				<?php echo __('App ID','templatic-admin'); ?>
+				<input type="text" name="google_key" id="google_key" placeholder="<?php echo __('Your google App ID here','templatic-admin'); ?>" value="<?php if(isset($tmpdata['google_key'])){	echo $tmpdata['google_key'];} ?>"/>
+				<?php echo __('Secret Key','templatic-admin'); ?>
+				<input type="text" name="google_secret_key" id="google_secret_key" placeholder="<?php echo __('Your Google Secret Key here','templatic-admin'); ?>" value="<?php if(isset($tmpdata['google_secret_key'])){echo $tmpdata['google_secret_key'];} ?>"/>
+				<p class="description"><?php echo __('You can create the google key from','templatic-admin');  ?><a href="https://code.google.com/apis/console/"><?php echo __(' here','templatic-admin'); ?></a></p>
 			</div>
-			<div class="input_wrap"><label for="allow_twitter_login"><input type="checkbox" id="allow_twitter_login" name="allow_twitter_login" value="1" onclick="return show_social_login(this.id);" <?php if(isset($tmpdata['allow_twitter_login']) && $tmpdata['allow_twitter_login']==1){?>checked="checked"<?php }?> />&nbsp;<?php echo __('Twitter',ADMINDOMAIN);?></label></div>
+			<div class="input_wrap"><label for="allow_twitter_login"><input type="checkbox" id="allow_twitter_login" name="allow_twitter_login" value="1" onclick="return show_social_login(this.id);" <?php if(isset($tmpdata['allow_twitter_login']) && $tmpdata['allow_twitter_login']==1){?>checked="checked"<?php }?> />&nbsp;<?php echo __('Twitter','templatic-admin');?></label></div>
 			<div id="show_twitter_key"  <?php if((!isset($tmpdata['allow_twitter_login']) && @$tmpdata['allow_twitter_login']!=1) || @$tmpdata['allow_twitter_login'] == ''){ ?> style="display:none;" <?php } ?>>
-				<?php echo __('App ID',ADMINDOMAIN); ?>
-				<input type="text" placeholder="<?php echo __('Your Twitter App ID here',ADMINDOMAIN); ?>" name="twitter_key" id="twitter_key" value="<?php if(isset($tmpdata['twitter_key'])){echo $tmpdata['twitter_key'];} ?>"/>
-				<?php echo __('Secret Key',ADMINDOMAIN); ?>
-				<input type="text" name="twitter_secret_key" placeholder="<?php echo __('Your Twitter Secret Key here',ADMINDOMAIN); ?>" id="twitter_secret_key" value="<?php if(isset($tmpdata['twitter_secret_key'])){echo $tmpdata['twitter_secret_key'];} ?>"/>
-				<p class="description"><?php echo __('You can create the twitter key from',ADMINDOMAIN);  ?><a href="https://dev.twitter.com/apps/"><?php echo __(' here',ADMINDOMAIN); ?></a></p>
+				<?php echo __('App ID','templatic-admin'); ?>
+				<input type="text" placeholder="<?php echo __('Your Twitter App ID here','templatic-admin'); ?>" name="twitter_key" id="twitter_key" value="<?php if(isset($tmpdata['twitter_key'])){echo $tmpdata['twitter_key'];} ?>"/>
+				<?php echo __('Secret Key','templatic-admin'); ?>
+				<input type="text" name="twitter_secret_key" placeholder="<?php echo __('Your Twitter Secret Key here','templatic-admin'); ?>" id="twitter_secret_key" value="<?php if(isset($tmpdata['twitter_secret_key'])){echo $tmpdata['twitter_secret_key'];} ?>"/>
+				<p class="description"><?php echo __('You can create the twitter key from','templatic-admin');  ?><a href="https://dev.twitter.com/apps/"><?php echo __(' here','templatic-admin'); ?></a></p>
 			</div>
 		</td>
 		</tr>  
 		<tr>
-		<th><label><?php echo __('Login Page',ADMINDOMAIN);?></label></th>
+		<th><label><?php echo __('Login Page','templatic-admin');?></label></th>
 		<td>
 			<?php $pages = get_pages();
                                                                                         $select_page=$tmpdata['tevolution_login'];
@@ -708,15 +708,15 @@ function templatic_general_setting_register_data($column){
 						echo $option;
 					}
 				else :
-					echo '<option>' . __('No pages found', ADMINDOMAIN) . '</option>';
+					echo '<option>' . __('No pages found', 'templatic-admin') . '</option>';
 				endif;
 				?>
 			</select> 
-			<p style="display:none" id="tevolution_login_page" class="description act_success"><?php echo __('Copy this shortcode and paste it in the editor of your selected page to make it work correctly.<br> Shortcode - [tevolution_login] (including square braces)', ADMINDOMAIN); ?></p>
+			<p style="display:none" id="tevolution_login_page" class="description act_success"><?php echo __('Copy this shortcode and paste it in the editor of your selected page to make it work correctly.<br> Shortcode - [tevolution_login] (including square braces)', 'templatic-admin'); ?></p>
 		</td>
 		</tr>
 		<tr>
-		<th><label><?php echo __('Register Page',ADMINDOMAIN);?></label></th>
+		<th><label><?php echo __('Register Page','templatic-admin');?></label></th>
 		<td>
 			<?php 
                                                                                           $pages = get_pages();
@@ -742,15 +742,15 @@ function templatic_general_setting_register_data($column){
 						echo $option;
 					}
 				else :
-					echo '<option>' . __('No pages found', ADMINDOMAIN) . '</option>';
+					echo '<option>' . __('No pages found', 'templatic-admin') . '</option>';
 				endif;
 				?>
 			</select> 
-                                                                           <p style="display:none" id="tevolution_register_page" class="description act_success"><?php echo __('Copy this shortcode and paste it in the editor of your selected page to make it work correctly.<br> Shortcode - [tevolution_register] (including square braces)',ADMINDOMAIN); ?></p>
+                                                                           <p style="display:none" id="tevolution_register_page" class="description act_success"><?php echo __('Copy this shortcode and paste it in the editor of your selected page to make it work correctly.<br> Shortcode - [tevolution_register] (including square braces)','templatic-admin'); ?></p>
 		</td>
 		</tr>
 		<tr>
-		<th><label><?php echo __('Profile Page',ADMINDOMAIN);?></label></th>
+		<th><label><?php echo __('Profile Page','templatic-admin');?></label></th>
 		<td>
 			<?php $pages = get_pages();
                                                                                           $select_page=$tmpdata['tevolution_profile'];
@@ -775,17 +775,17 @@ function templatic_general_setting_register_data($column){
 						echo $option;
 					}
 				else :
-					echo '<option>' . __('No pages found', ADMINDOMAIN) . '</option>';
+					echo '<option>' . __('No pages found', 'templatic-admin') . '</option>';
 				endif;
 				?>
 			</select> 
-                                                                           <p style="display:none" id="tevolution_profile_page" class="description act_success"><?php echo __('Copy this shortcode and paste it in the editor of your selected page to make it work correctly.<br> Shortcode - [tevolution_profile] (including square braces)',ADMINDOMAIN); ?></p>
+                                                                           <p style="display:none" id="tevolution_profile_page" class="description act_success"><?php echo __('Copy this shortcode and paste it in the editor of your selected page to make it work correctly.<br> Shortcode - [tevolution_profile] (including square braces)','templatic-admin'); ?></p>
 		</td>
 		</tr>
 		<tr>
 			<td colspan="2">
 			<p class="submit" style="clear: both;">
-			<input type="submit" name="Submit"  class="button button-primary button-hero" value="<?php echo __('Save All Settings',ADMINDOMAIN);?>" />
+			<input type="submit" name="Submit"  class="button button-primary button-hero" value="<?php echo __('Save All Settings','templatic-admin');?>" />
 			<input type="hidden" name="settings-submit" value="Y" />
 			</p>
 		</td>
@@ -909,9 +909,9 @@ function ajax_login(){
 	}
 	$username = ucfirst($user_signon->data->display_name);
     if ( is_wp_error($user_signon) ){
-        echo json_encode(array('loggedin'=>false, 'message'=>__('Wrong username or password.',DOMAIN)));
+        echo json_encode(array('loggedin'=>false, 'message'=>__('Wrong username or password.','templatic')));
     } else {
-		echo json_encode(array('loggedin'=>true, 'message'=>sprintf(__('Welcome %s, submit your listing details.',DOMAIN),$username),'package_type'=>$package_type,'selected_package_type'=>$selected_package_type));
+		echo json_encode(array('loggedin'=>true, 'message'=>sprintf(__('Welcome %s, submit your listing details.','templatic'),$username),'package_type'=>$package_type,'selected_package_type'=>$selected_package_type));
     }
     die();
 }

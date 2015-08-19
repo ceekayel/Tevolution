@@ -135,13 +135,13 @@
 			$store_name = '<a href="'.site_url().'">'.get_option('blogname').'</a>';
 			if($subject=="" && $client_message=="")
 			{
-				$client_message = __('[SUBJECT-STR]Thank you for registering![SUBJECT-END]<p>Dear [#user_name#],</p><p>Thank you for registering and welcome to [#site_name#]. You can proceed with logging in to your account.</p><p>Login here: [#site_login_url_link#]</p><p>Username: [#user_login#]</p><p>Password: [#user_password#]</p><p>Feel free to change the password after you login for the first time.</p><p>&nbsp;</p><p>Thanks again for signing up at [#site_name#]</p>',DOMAIN);
+				$client_message = __('[SUBJECT-STR]Thank you for registering![SUBJECT-END]<p>Dear [#user_name#],</p><p>Thank you for registering and welcome to [#site_name#]. You can proceed with logging in to your account.</p><p>Login here: [#site_login_url_link#]</p><p>Username: [#user_login#]</p><p>Password: [#user_password#]</p><p>Feel free to change the password after you login for the first time.</p><p>&nbsp;</p><p>Thanks again for signing up at [#site_name#]</p>','templatic');
 				$filecontent_arr1 = explode('[SUBJECT-STR]',$client_message);
 				$filecontent_arr2 = explode('[SUBJECT-END]',$filecontent_arr1[1]);
 				$subject = $filecontent_arr2[0];
 				if($subject == '')
 				{
-					$subject = __("Thank you for registering!",DOMAIN);
+					$subject = __("Thank you for registering!",'templatic');
 				}
 				
 				$client_message = $filecontent_arr2[1];
@@ -154,7 +154,7 @@
 			}
 			
 			$store_login_link = '<a href="'.$login_url_link.'">'.$login_url_link.'</a>';
-			$store_login = sprintf(__('<a href="'.$login_url_link.'">'.'here'.'</a>',DOMAIN));
+			$store_login = sprintf(__('<a href="'.$login_url_link.'">'.'here'.'</a>','templatic'));
 		
 			/* customer email */
 			$search_array = array('[#user_name#]','[#user_login#]','[#user_password#]','[#site_name#]','[#site_login_url#]','[#site_login_url_link#]');
@@ -214,12 +214,12 @@ function tevolution_user_login($atts)
 	else:
 		if(isset($_SESSION['update_password']) && $_SESSION['update_password']!='')
 		{
-			echo "<p class=\"success_msg\"> ".__('Password changed successfully. Please login with your new password.',DOMAIN)."</p>";
+			echo "<p class=\"success_msg\"> ".__('Password changed successfully. Please login with your new password.','templatic')."</p>";
 			unset($_SESSION['update_password']);
 		}
 	
 		echo '<div class="login_form_l">';
-		echo '<h3>'; _e('Sign In',DOMAIN); echo '</h3>';
+		echo '<h3>'; _e('Sign In','templatic'); echo '</h3>';
 		$flg=0;		
 		if((isset($_POST['log']) && $_POST['log']!='') && (isset($_POST['pwd']) && $_POST['pwd']!='' ))
 		{
@@ -261,7 +261,7 @@ function tevolution_user_login($atts)
 		
 		if(isset($flg) && $flg==1)
 		{
-			echo '<p class="error_msg"> '.__(INVALID_USER_PW_MSG,DOMAIN).' </p>';
+			echo '<p class="error_msg"> '.__(INVALID_USER_PW_MSG,'templatic').' </p>';
 			/* while login is password is wrong than show the error message in pop up */
 			$login_permalink	= get_tevolution_login_permalink();
 			$register_permalink	= get_tevolution_register_permalink();
@@ -313,18 +313,18 @@ function tevolution_user_login($atts)
 				/* if social media login is enable then show the separation login message */
 				if((isset($tmpdata['allow_facebook_login']) && $tmpdata['allow_facebook_login']==1) || (isset($tmpdata['allow_google_login']) && $tmpdata['allow_google_login']==1) || isset($tmpdata['allow_twitter_login']) && $tmpdata['allow_twitter_login']==1){
 					 echo "<p class='login_sep'>";
-					 _e('OR use your account',DOMAIN);
+					 _e('OR use your account','templatic');
 					 echo "</p>";
 				}	?>
 					<input type="hidden" name="action" value="login" />                         
 					<div class="form_row clearfix">
-						<label><?php _e('Username',DOMAIN); ?> <span class="indicates">*</span> </label>
+						<label><?php _e('Username','templatic'); ?> <span class="indicates">*</span> </label>
 						<input type="text" name="log" id="user_login" value="<?php if(isset($user_login)){ echo esc_attr($user_login);} ?>" size="20" class="textfield" />
 						<span id="user_loginInfo"></span> 
 					</div>
 					
 					<div class="form_row clearfix">
-						<label> <?php _e('Password',DOMAIN); ?> <span class="indicates">*</span> </label>
+						<label> <?php _e('Password','templatic'); ?> <span class="indicates">*</span> </label>
 						<input type="password" name="pwd" id="user_pass" class="textfield" value="" size="20"  />
 						<span id="user_passInfo"></span> 
 					</div>
@@ -333,15 +333,15 @@ function tevolution_user_login($atts)
 					<div class="form_row rember clearfix">
 					<label>
 						<input name="rememberme" type="checkbox" id="rememberme" value="forever" class="fl" />
-						<?php _e('Remember me on this computer',DOMAIN); ?> 
+						<?php _e('Remember me on this computer','templatic'); ?> 
 					</label>	
 					
 					 <!-- html to show social login -->
-                    <a onclick="showhide_forgetpw('<?php  echo $form_name; ?>');" href="javascript:void(0)" class="lw_fpw_lnk"><?php _e('Forgot your password',DOMAIN);?>?</a> 
+                    <a onclick="showhide_forgetpw('<?php  echo $form_name; ?>');" href="javascript:void(0)" class="lw_fpw_lnk"><?php _e('Forgot your password','templatic');?>?</a> 
 				    </div>
 				 	
 					<div class="form_row ">
-				    <input class="b_signin_n" type="submit" value="<?php _e('Sign In',DOMAIN);?>"  name="submit" />		
+				    <input class="b_signin_n" type="submit" value="<?php _e('Sign In','templatic');?>"  name="submit" />		
 					<p class="forgot_link">
 					<?php 
 						$register_page_id=get_option('tevolution_register');
@@ -349,9 +349,9 @@ function tevolution_user_login($atts)
 						global $post;
 						if(get_option('users_can_register') == 1 && $login_page_id != $post->ID)
 						{
-							_e('New User? ',DOMAIN);
+							_e('New User? ','templatic');
 							?>
-								<a href="javascript:void(0)" class="logreg-link" id="tmpl-reg-link"><?php _e('Register Now',DOMAIN);?></a>
+								<a href="javascript:void(0)" class="logreg-link" id="tmpl-reg-link"><?php _e('Register Now','templatic');?></a>
 							<?php
 						}
 						?>			
@@ -389,11 +389,11 @@ function tevolution_user_login($atts)
 					var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 					
 					if(email.val()==''){
-						jQuery('#'+form_id+' #forget_user_email_error').html("<?php _e('Please Enter E-mail',DOMAIN);?>");
+						jQuery('#'+form_id+' #forget_user_email_error').html("<?php _e('Please Enter E-mail','templatic');?>");
 						email.focus();
 						return false;
 					}else if (!filter.test(email.val())) {						
-						jQuery('#'+form_id+' #forget_user_email_error').html("<?php _e('Please provide a valid email address',DOMAIN);?>");
+						jQuery('#'+form_id+' #forget_user_email_error').html("<?php _e('Please provide a valid email address','templatic');?>");
 						email.focus();
 						return false;
 					}else
@@ -457,11 +457,11 @@ function tevolution_retrieve_password()
 	$errors = new WP_Error();
 	
 	if ( empty( $_POST['user_login'] ) && empty( $_POST['user_email'] ) )
-		$errors->add('empty_username', __('<strong>ERROR</strong>: Enter a username or e-mail address.',DOMAIN));
+		$errors->add('empty_username', __('<strong>ERROR</strong>: Enter a username or e-mail address.','templatic'));
 	if ( strpos($_POST['user_login'], '@') ) {
 		$user_data = get_user_by('email',trim($_POST['user_login']));
 		if ( empty($user_data) )
-			$errors->add('invalid_email', __('<strong>ERROR</strong>: There is no user registered with that email address.',DOMAIN));
+			$errors->add('invalid_email', __('<strong>ERROR</strong>: There is no user registered with that email address.','templatic'));
 	} else {
 		$login = trim($_POST['user_login']);
 		$user_data = get_user_by('login',$login);
@@ -469,7 +469,7 @@ function tevolution_retrieve_password()
 	if ( $errors->get_error_code() )
 		return $errors;
 	if ( !$user_data ) {
-		$errors->add('invalidcombo', __('<strong>ERROR</strong>: Incorrect username or e-mail.',DOMAIN));
+		$errors->add('invalidcombo', __('<strong>ERROR</strong>: Incorrect username or e-mail.','templatic'));
 		return $errors;
 	}
 	/* redefining user_login ensures we return the right case in the email*/
@@ -482,7 +482,7 @@ function tevolution_retrieve_password()
 	
 	$user = $wpdb->get_row("SELECT * FROM $wpdb->users WHERE user_login like \"$user_login\" or user_email like \"$user_login\"");
 	if ( empty( $user ) )
-		return new WP_Error('invalid_key', __('Invalid key',DOMAIN));
+		return new WP_Error('invalid_key', __('Invalid key','templatic'));
 		
 	$new_pass = wp_generate_password(7,false);
 	
@@ -495,20 +495,20 @@ function tevolution_retrieve_password()
 	$email_subject =  @stripslashes($tmpdata['reset_password_subject']);
 	if(@$email_subject == '')
 	{
-		$email_subject = __('[#site_title#] Your new password',DOMAIN);
+		$email_subject = __('[#site_title#] Your new password','templatic');
 	}
 	$email_content =  @stripslashes($tmpdata['reset_password_content']);
 	if(@$email_content == '')
 	{
-		$email_content = __("<p>Hi [#to_name#],</p><p>You have requested for a new password for your account [#user_email#]. Here is the new password</p><p> Login URL: [#login_url#] </p><p> User name: [#user_login#]</p> <p> Password: [#user_password#]</p><p>You may change this password in your profile once you login with the new password.</p><p>Thanks <br/> [#site_title#] </p>",ADMINDOMAIN);
+		$email_content = __("<p>Hi [#to_name#],</p><p>You have requested for a new password for your account [#user_email#]. Here is the new password</p><p> Login URL: [#login_url#] </p><p> User name: [#user_login#]</p> <p> Password: [#user_password#]</p><p>You may change this password in your profile once you login with the new password.</p><p>Thanks <br/> [#site_title#] </p>",'templatic-admin');
 	}
-	$title = sprintf('[%s]'.__(' Your new password',DOMAIN), get_option('blogname'));
+	$title = sprintf('[%s]'.__(' Your new password','templatic'), get_option('blogname'));
 	
 	$email_subject_array = array('[#site_title#]');
 	$email_subject_replace_array = array(get_option('blogname'));
 	$email_subject = str_replace($email_subject_array,$email_subject_replace_array,$email_subject);
 	
-	$login_url = "<a href='".get_tevolution_login_permalink()."'>".__('Login',DOMAIN)."</a>";
+	$login_url = "<a href='".get_tevolution_login_permalink()."'>".__('Login','templatic')."</a>";
 	$search_array_content = array('[#to_name#]','[#user_email#]','[#login_url#]','[#user_login#]','[#user_password#]','[#site_title#]');
 	$replace_array_content = array($user_name,$user_data->user_email,$login_url,$user->user_login,$new_pass,get_option('blogname'));
 	$email_content = str_replace($search_array_content,$replace_array_content,$email_content);
@@ -562,10 +562,10 @@ function tmpl_forget_password_message(){
 	if(!is_user_logged_in()){
 		global $error_message,$user_forget_password_errors;
 		if ( is_wp_error($user_forget_password_errors) ) {
-			echo '<p class="error_msg">'.__($error_message,DOMAIN).'</p>';
+			echo '<p class="error_msg">'.__($error_message,'templatic').'</p>';
 		}else
 		{
-			echo $message = '<div class="success_msg">'.__('Check your e-mail for your new password.',DOMAIN).'</div>';				
+			echo $message = '<div class="success_msg">'.__('Check your e-mail for your new password.','templatic').'</div>';				
 		}
 	}
 }
@@ -580,10 +580,10 @@ function templ_ajax_fg_passowrd_action(){
 	$error_message = $user_forget_password_errors->errors['invalid_email'][0];
 	if(!is_user_logged_in()){
 		if ( is_wp_error($user_forget_password_errors) ) {
-			echo '<p class="error_msg">'.__($error_message,DOMAIN).'</p>';
+			echo '<p class="error_msg">'.__($error_message,'templatic').'</p>';
 		}else
 		{
-			echo $message = '<div class="success_msg">'.__('Check your e-mail for your new password.',DOMAIN).'</div>';				
+			echo $message = '<div class="success_msg">'.__('Check your e-mail for your new password.','templatic').'</div>';				
 		}
 		exit;
 	}

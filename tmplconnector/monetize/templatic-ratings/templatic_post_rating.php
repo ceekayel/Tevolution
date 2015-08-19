@@ -137,7 +137,7 @@ function ratings_in_comments () {
 	$tmpdata = get_option('templatic_settings');
 	if($tmpdata['templatin_rating']=='yes'):?>
     <div class="templatic_rating">
-        <span class="rating_text"><?php _e('Rate this by clicking a star below',DOMAIN);?>: </span>
+        <span class="rating_text"><?php _e('Rate this by clicking a star below','templatic');?>: </span>
         <p class="commpadd"><span class="comments_rating"> <?php require_once (TEMPL_MONETIZE_FOLDER_PATH . 'templatic-ratings/get_rating.php');?> </span> </p>
     </div>    
 	<?php endif;
@@ -161,7 +161,7 @@ function ratings_list($comment) {
       	</span> 
       	 <?php if (isset($comment->comment_approved) && $comment->comment_approved == '0') : ?>
         	 <div>
-	        	<?php _e('Your comment is awaiting moderation.',DOMAIN) ?>
+	        	<?php _e('Your comment is awaiting moderation.','templatic') ?>
          	</div>   
     	 <?php endif; ?>
     </div>

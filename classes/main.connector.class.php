@@ -29,9 +29,9 @@ function tevoltion_submission_form(){
 add_action('tevolution_extend_box','tevolution_extend_box');
 function tevolution_extend_box(){
 	
-	$buttontext =  __('Details & Purchase',ADMINDOMAIN); 
-	$activate =  __('Activate',ADMINDOMAIN);
-	$deactivatetext =  __('Deactivate',ADMINDOMAIN);
+	$buttontext =  __('Details & Purchase','templatic-admin'); 
+	$activate =  __('Activate','templatic-admin');
+	$deactivatetext =  __('Deactivate','templatic-admin');
 
 	/* Add stand alone plugin list in transient */
 	/* delete_transient('_tevolution_standalone_plugin'); */
@@ -48,7 +48,7 @@ function tevolution_extend_box(){
 	}
 	if( is_wp_error( $response ) ) {		 
 			echo '<div id="standalone_plugin_error" class="metabox-holder wrapper widgets-holder-wrap">';
-			printf(__('<strong>templatic.com connect Error</strong>: %s',ADMINDOMAIN), $response->get_error_message());		
+			printf(__('<strong>templatic.com connect Error</strong>: %s','templatic-admin'), $response->get_error_message());		
 		} else {
 		  $data = $response['body'];
 		}	
@@ -104,11 +104,11 @@ function tevolution_extend_box(){
 				
 				if (function_exists('icl_register_string')) {			   		
 					/*Plugin Description */
-					icl_register_string(ADMINDOMAIN, 'plugin_description_'.$name,$short_description);
-					$short_description = icl_t(ADMINDOMAIN, 'plugin_description_'.$name,$short_description);
+					icl_register_string('templatic-admin', 'plugin_description_'.$name,$short_description);
+					$short_description = icl_t('templatic-admin', 'plugin_description_'.$name,$short_description);
 					
-					icl_register_string(ADMINDOMAIN, 'plugin_name_'.$name,$name);
-					$name = icl_t(ADMINDOMAIN, 'plugin_name_'.$name,$name);
+					icl_register_string('templatic-admin', 'plugin_name_'.$name,$name);
+					$name = icl_t('templatic-admin', 'plugin_name_'.$name,$name);
 				}
 				
 				/* come only if directory theme start*/
@@ -273,9 +273,9 @@ function tevolution_extend_box(){
  */
 add_action('tevolution_payment_gateway','tevolution_payment_gateway');
 function tevolution_payment_gateway(){
-	$buttontext =  __('Details & Purchase',ADMINDOMAIN); 
-	$activate =  __('Activate',ADMINDOMAIN);
-	$deactivatetext =  __('Deactivate',ADMINDOMAIN);
+	$buttontext =  __('Details & Purchase','templatic-admin'); 
+	$activate =  __('Activate','templatic-admin');
+	$deactivatetext =  __('Deactivate','templatic-admin');
 	/* Add payment gateway list in transient */
 	if ( false === ( $response = get_transient( '_tevolution_payment_gateways') ) ) {
 		$response = wp_remote_get( 'http://templatic.net/api/templatic-paymentgateways-plugin.xml', array(
@@ -293,7 +293,7 @@ function tevolution_payment_gateway(){
 	/* finish payment gateway listing in transient */
 	if( is_wp_error( $response ) ) {		 
 		echo '<div id="standalone_plugin_error" class="metabox-holder wrapper widgets-holder-wrap">';
-		printf(__('<strong>templatic.com connect Error</strong>: %s',ADMINDOMAIN), $response->get_error_message());		
+		printf(__('<strong>templatic.com connect Error</strong>: %s','templatic-admin'), $response->get_error_message());		
 	} else {
 		$data = $response['body'];
 	}
@@ -334,11 +334,11 @@ function tevolution_payment_gateway(){
 			
 			if (function_exists('icl_register_string')) {			   		
 					/*Plugin Description */
-					icl_register_string(ADMINDOMAIN, 'plugin_description_'.$name,$short_description);
-					$short_description = icl_t(ADMINDOMAIN, 'plugin_description_'.$name,$short_description);
+					icl_register_string('templatic-admin', 'plugin_description_'.$name,$short_description);
+					$short_description = icl_t('templatic-admin', 'plugin_description_'.$name,$short_description);
 					
-					icl_register_string(ADMINDOMAIN, 'plugin_name_'.$name,$name);
-					$name = icl_t(ADMINDOMAIN, 'plugin_name_'.$name,$name);
+					icl_register_string('templatic-admin', 'plugin_name_'.$name,$name);
+					$name = icl_t('templatic-admin', 'plugin_name_'.$name,$name);
 			}
 			
 			if(!file_exists($filename))

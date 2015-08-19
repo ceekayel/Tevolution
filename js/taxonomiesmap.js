@@ -140,43 +140,43 @@ function taxo_googlemap_initialize(map){
 	all_googlemap_deleteMarkers();	
 	
 	jQuery("input[name='posttype[]']").each(function() {// post type loop
-		classname=jQuery(this).attr('id');
-		categoryname='';
-		id_name=jQuery(this).attr('data-category');
-		if(checkbox_id==classname){
-			jQuery('.'+classname).find(':checkbox').attr('checked', jQuery('#'+classname).is(":checked"));
-			
-		}
+            classname=jQuery(this).attr('id');
+            //categoryname='';
+            id_name=jQuery(this).attr('data-category');
+            if(checkbox_id==classname){
+                    jQuery('.'+classname).find(':checkbox').attr('checked', jQuery('#'+classname).is(":checked"));
+            }
 
-			post_type=jQuery(this).val()+',';
-			jQuery("div#"+id_name+" input[name='categoryname[]']").each(function() {// post type category loop
-				if (jQuery(this).attr('checked'))
-				{
-					categoryname+=jQuery(this).val()+',';				// finish the ajax
-					jQuery(this).parent().parent().parent().find('.mw_cat_title .'+classname).attr('checked','true'); /* for post type checkbox */
-					
-				}
-			
-			});// finish post type category loop
-			
-			
-			taxo_googlemap =jQuery.ajax({
-				url:ajaxUrl,
-				type:'POST',
-				data:'action=taxonomies_googlemap_initialize&posttype='+post_type+'&categoryname='+categoryname,
-				beforeSend : function(){
-					if(taxo_googlemap != null){
-						taxo_googlemap.abort();
-					}
-				},
-				success:function(results){
-					document.getElementById('map_loading_div').style.display = 'none';
-					all_googlemap(results);
-				}
-			});
-		
+            post_type+=jQuery(this).val()+',';
+            
+            jQuery("div#"+id_name+" input[name='categoryname[]']").each(function() {// post type category loop
+                    if (jQuery(this).attr('checked'))
+                    {
+                            categoryname+=jQuery(this).val()+',';				// finish the ajax
+                            jQuery(this).parent().parent().parent().find('.mw_cat_title .'+classname).attr('checked','true'); /* for post type checkbox */
 
-	});// finish post type loop
+                    }
+
+            });// finish post type category loop
+
+        });// finish post type loop	
+        
+        /* list of post type and category send */        
+        
+        taxo_googlemap =jQuery.ajax({
+            url:ajaxUrl,
+            type:'POST',
+            data:'action=taxonomies_googlemap_initialize&posttype='+post_type+'&categoryname='+categoryname,
+            beforeSend : function(){
+                    if(taxo_googlemap != null){
+                                    taxo_googlemap.abort();
+                    }
+            },
+            success:function(results){
+                    document.getElementById('map_loading_div').style.display = 'none';
+                    all_googlemap(results);
+            }
+        });
 	
 	if(categoryname==''){
 		document.getElementById('map_loading_div').style.display = 'none';

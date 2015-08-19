@@ -3,7 +3,7 @@
 ?>
 <div class="wrap">
 	<div class="icon32 icon32-posts-post" id="icon-edit"><br></div>
-	<h2><?php echo __('Add New Post type',ADMINDOMAIN); ?><a id="back_cutom_taxonomy" class="add-new-h2" href="<?php echo site_url().'/wp-admin/admin.php?page=custom_setup&ctab=custom_setup';?>" title="<?php echo __('Back to Post type list',ADMINDOMAIN);?>" name="btnviewlisting"/><?php echo __('Back to Post type list',ADMINDOMAIN); ?>
+	<h2><?php echo __('Add New Post type','templatic-admin'); ?><a id="back_cutom_taxonomy" class="add-new-h2" href="<?php echo site_url().'/wp-admin/admin.php?page=custom_setup&ctab=custom_setup';?>" title="<?php echo __('Back to Post type list','templatic-admin');?>" name="btnviewlisting"/><?php echo __('Back to Post type list','templatic-admin'); ?>
 	</a></h2>
 <?php
 $edit_post = array();
@@ -23,71 +23,71 @@ else
           <thead>
                <tr colspan="3">                   
                          <p class="tevolution_desc">
-                         <?php echo __('Fill up the necessary information to create a new post type and matching taxonomies. Starred <span class="required">*</span> fields are compulsory, so you cannot leave them blank. These custom post will appear as one of the option in wp-admin (dashboard) menu panel. <br><strong> Note: </strong>Be careful while adding slugs, It will appear in the URL and you will not be able to edit them once you save taxonomy.',ADMINDOMAIN); ?>
+                         <?php echo __('Fill up the necessary information to create a new post type and matching taxonomies. Starred <span class="required">*</span> fields are compulsory, so you cannot leave them blank. These custom post will appear as one of the option in wp-admin (dashboard) menu panel. <br><strong> Note: </strong>Be careful while adding slugs, It will appear in the URL and you will not be able to edit them once you save taxonomy.','templatic-admin'); ?>
                          </p>
                </tr>
           </thead>
           <tbody>
                <tr class="" id="post_title">
                     <th valign="top">
-                    	<label for="post_name" class="form-textfield-label"><?php echo __('Post Type Name',ADMINDOMAIN); ?> <span class="required"><?php echo FLD_REQUIRED_TEXT; ?></span></label>
+                    	<label for="post_name" class="form-textfield-label"><?php echo __('Post Type Name','templatic-admin'); ?> <span class="required"><?php echo FLD_REQUIRED_TEXT; ?></span></label>
                     </th>
                     <td>
                          <input type="text" class="regular-text" value="<?php if($edit_post){ echo stripslashes($edit_post[$_REQUEST['post-type']]['labels']['name']); } ?>" name="post_name" id="post_name" />
-                         <p class="description"><?php echo __('e.g. Places, Events etc',ADMINDOMAIN); ?>.</p>
+                         <p class="description"><?php echo __('e.g. Places, Events etc','templatic-admin'); ?>.</p>
                     </td>
                </tr>
                <tr class="" id="post_title_slug">
                     <th valign="top">
-                    	<label for="post_slug" class="form-textfield-label"><?php echo __('Post Type Slug',ADMINDOMAIN); ?> <span class="required"><?php echo FLD_REQUIRED_TEXT; ?></span></label>
+                    	<label for="post_slug" class="form-textfield-label"><?php echo __('Post Type Slug','templatic-admin'); ?> <span class="required"><?php echo FLD_REQUIRED_TEXT; ?></span></label>
                     </th>
                     <td>
                          <input onkeydown="return character_validation(event)" onkeyup="return character_validation(event)" type="text" class="regular-text" <?php if($edit_post) { ?>readonly="readonly" <?php } ?> value="<?php if($edit_post) { echo $edit_post[@$_REQUEST['post-type']]['rewrite']['slug']; } ?>" name="post_slug" id="post_slug" />
-                         <p class="description"><?php echo __('e.g. places, events etc',ADMINDOMAIN); ?>.<strong> <?php echo __('Note',ADMINDOMAIN); ?>: </strong><?php echo __('Just enter small letters without any space, Maximum 20 characters are allowed.',ADMINDOMAIN); ?></p>
+                         <p class="description"><?php echo __('e.g. places, events etc','templatic-admin'); ?>.<strong> <?php echo __('Note','templatic-admin'); ?>: </strong><?php echo __('Just enter small letters without any space, Maximum 20 characters are allowed.','templatic-admin'); ?></p>
                     </td>
                </tr>
                <tr class="" id="tax_name">
                     <th valign="top">
-                    	<label for="taxonomy_name" class="form-textfield-label"><?php echo __('Custom Taxonomy name',ADMINDOMAIN); ?><span class="required"><?php echo FLD_REQUIRED_TEXT; ?></span></label>
+                    	<label for="taxonomy_name" class="form-textfield-label"><?php echo __('Custom Taxonomy name','templatic-admin'); ?><span class="required"><?php echo FLD_REQUIRED_TEXT; ?></span></label>
                     </th>
                     <td>
                          <input type="text" class="regular-text" value="<?php if($edit_post) { echo stripslashes($edit_post[@$_REQUEST['post-type']]['taxonomies'][0]); } ?>" name="taxonomy_name" id="taxonomy_name" />
-                         <p class="description"><?php echo __('e.g. Categories, Event Categories etc.',ADMINDOMAIN); ?></p>
+                         <p class="description"><?php echo __('e.g. Categories, Event Categories etc.','templatic-admin'); ?></p>
                     </td>
                </tr>
                <tr class="" id="tax_slug">
                     <th valign="top">
-                    	<label for="taxonomy_slug"  class="textfield-label"><?php echo __('Taxonomy Slug ',ADMINDOMAIN); ?> <span class="required"><?php echo FLD_REQUIRED_TEXT; ?></span></label>
+                    	<label for="taxonomy_slug"  class="textfield-label"><?php echo __('Taxonomy Slug ','templatic-admin'); ?> <span class="required"><?php echo FLD_REQUIRED_TEXT; ?></span></label>
                     </th>
                     <td>
-                         <input type="text" class="regular-text" onkeydown="return character_validation(event)" onkeyup="return character_validation(event)" <?php if($edit_post) { ?>readonly="readonly" <?php } ?> value="<?php if($edit_post) { echo $edit_post[@$_REQUEST['post-type']]['slugs'][0]; } ?>" name="taxonomy_slug" id="taxonomy_slug">                         <p class="description"><?php echo __('e.g. eventcategories, placecategories etc',ADMINDOMAIN); ?>.<strong> <?php echo __('Note',ADMINDOMAIN); ?>: </strong><?php echo __('Just enter small letters without any space, Maximum 20 characters are allowed.',ADMINDOMAIN); ?></p>
+                         <input type="text" class="regular-text" onkeydown="return character_validation(event)" onkeyup="return character_validation(event)" <?php if($edit_post) { ?>readonly="readonly" <?php } ?> value="<?php if($edit_post) { echo $edit_post[@$_REQUEST['post-type']]['slugs'][0]; } ?>" name="taxonomy_slug" id="taxonomy_slug">                         <p class="description"><?php echo __('e.g. eventcategories, placecategories etc','templatic-admin'); ?>.<strong> <?php echo __('Note','templatic-admin'); ?>: </strong><?php echo __('Just enter small letters without any space, Maximum 20 characters are allowed.','templatic-admin'); ?></p>
                     </td>
                </tr>
                <tr class="" id="tag_title">
                     <th valign="top">
-                    	<label for="tag_name" class="textfield-label"><?php echo __('Custom Tag name',ADMINDOMAIN); ?><span class="required"><?php echo FLD_REQUIRED_TEXT; ?></span></label>
+                    	<label for="tag_name" class="textfield-label"><?php echo __('Custom Tag name','templatic-admin'); ?><span class="required"><?php echo FLD_REQUIRED_TEXT; ?></span></label>
                     </th>
                     <td>
                          <input type="text" class="regular-text" value="<?php if($edit_post) { echo stripslashes($edit_post[@$_REQUEST['post-type']]['taxonomies'][1]); } ?>" name="tag_name" id="tag_name">
-                         <p class="description"><?php echo __('e.g. Tags, Events Tags etc.',ADMINDOMAIN); ?></p>
+                         <p class="description"><?php echo __('e.g. Tags, Events Tags etc.','templatic-admin'); ?></p>
                     </td>
                </tr>
                <tr class="" id="tag_slug_name">
                     <th valign="top">
-                    	<label for="tag_slug"  class="textfield-label"><?php echo __('Tags Slug',ADMINDOMAIN); ?> <span class="required"><?php echo FLD_REQUIRED_TEXT; ?></span></label>
+                    	<label for="tag_slug"  class="textfield-label"><?php echo __('Tags Slug','templatic-admin'); ?> <span class="required"><?php echo FLD_REQUIRED_TEXT; ?></span></label>
                     </th>
                     <td>
                          <input type="text" class="regular-text" onkeydown="return character_validation(event)" onkeyup="return character_validation(event)"  <?php if($edit_post) { ?>readonly="readonly" <?php } ?> value="<?php if($edit_post) { echo $edit_post[@$_REQUEST['post-type']]['slugs'][1]; } ?>" name="tag_slug" id="tag_slug">
-                         <p class="description"><?php echo __('e.g. etags, placetags etc',ADMINDOMAIN); ?>.<strong> <?php echo __('Note',ADMINDOMAIN); ?>: </strong><?php echo __('Just enter small letters without any space, Maximum 20 characters are allowed.',ADMINDOMAIN); ?></p>
+                         <p class="description"><?php echo __('e.g. etags, placetags etc','templatic-admin'); ?>.<strong> <?php echo __('Note','templatic-admin'); ?>: </strong><?php echo __('Just enter small letters without any space, Maximum 20 characters are allowed.','templatic-admin'); ?></p>
                     </td>
                </tr>
                <tr>
               		<th valign="top">
-                    	<label for="description" class="form-textarea-label"><?php echo __('Description',ADMINDOMAIN) ;?></label>
+                    	<label for="description" class="form-textarea-label"><?php echo __('Description','templatic-admin') ;?></label>
                     </th>
                     <td>
                     <textarea class="tb_textarea textarea" cols="40" rows="4" name="description" id="description"><?php if($edit_post && isset($edit_post[$_REQUEST['post-type']]['description'])) { echo $edit_post[@$_REQUEST['post-type']]['description']; } ?></textarea>
-                    <p class="description"><?php echo __('Explain the purpose of this custom post type in few words.',ADMINDOMAIN); ?></p>
+                    <p class="description"><?php echo __('Explain the purpose of this custom post type in few words.','templatic-admin'); ?></p>
                     </td>
                </tr>
 			   <?php
@@ -97,12 +97,12 @@ else
 			   ?>
                <tr>
                     <th valign="top">
-                    	<label for="upload_image" class="form-textarea-label"><?php echo __('Upload Icon',ADMINDOMAIN) ;?></label>
+                    	<label for="upload_image" class="form-textarea-label"><?php echo __('Upload Icon','templatic-admin') ;?></label>
                     </th>
                     <td>
-                         <input id="upload_image" type="text" size="36" name="upload_image" value="<?php if($edit_post) { echo $edit_post[@$_REQUEST['post-type']]['menu_icon']; } ?>" /> <?php echo __('Or',ADMINDOMAIN);?>
-                          <a data-id="upload_image" id="Upload Icon" type="submit" class="upload_file_button button"><?php  echo __('Upload Image',ADMINDOMAIN);?></a>   	   
-                         <p class="description"><?php echo __('Enter the URL or upload an image of 16 x 16 pixels for the custom post type icon.',ADMINDOMAIN); ?>.</p>                         
+                         <input id="upload_image" type="text" size="36" name="upload_image" value="<?php if($edit_post) { echo $edit_post[@$_REQUEST['post-type']]['menu_icon']; } ?>" /> <?php echo __('Or','templatic-admin');?>
+                          <a data-id="upload_image" id="Upload Icon" type="submit" class="upload_file_button button"><?php  echo __('Upload Image','templatic-admin');?></a>   	   
+                         <p class="description"><?php echo __('Enter the URL or upload an image of 16 x 16 pixels for the custom post type icon.','templatic-admin'); ?>.</p>                         
                     </td>
                </tr>
 			   <?php } 
@@ -114,76 +114,76 @@ else
      <table class="form-table" >
           <thead>
                <tr>
-               	<th colspan="3"><div class="tevo_sub_title"><?php echo __('Labels For Taxonomy Section',ADMINDOMAIN); ?></div><p class="tevolution_desc"><?php echo __('Specify the labels (basically names) for your custom post type. These labels are used for your custom post type which indicates certain action like add new listing, category (helps in grouping your posts), tags etc. They will appear under your post type section on your wp-admin panel.',ADMINDOMAIN)?></p></th>
+               	<th colspan="3"><div class="tevo_sub_title"><?php echo __('Labels For Taxonomy Section','templatic-admin'); ?></div><p class="tevolution_desc"><?php echo __('Specify the labels (basically names) for your custom post type. These labels are used for your custom post type which indicates certain action like add new listing, category (helps in grouping your posts), tags etc. They will appear under your post type section on your wp-admin panel.','templatic-admin')?></p></th>
                </tr>
           </thead>
           <tbody>
                <tr>
                     <th valign="top">
-                   		<label for="add_new" class="form-textfield-label"><?php echo __('Add New text',ADMINDOMAIN); ?></label>
+                   		<label for="add_new" class="form-textfield-label"><?php echo __('Add New text','templatic-admin'); ?></label>
                     </th>
                     <td>
-                         <input type="text" class="regular-text" value="<?php if($edit_post){ echo stripslashes($edit_post[@$_REQUEST['post-type']]['labels']['add_new']); } else { echo __('Add New',ADMINDOMAIN); } ?>" name="add_new" id="add_new">
-                         <p class="description"><?php echo __('Will be displayed on Add new item links. By default it will display Add New for all the post types.',ADMINDOMAIN); ?></p>
+                         <input type="text" class="regular-text" value="<?php if($edit_post){ echo stripslashes($edit_post[@$_REQUEST['post-type']]['labels']['add_new']); } else { echo __('Add New','templatic-admin'); } ?>" name="add_new" id="add_new">
+                         <p class="description"><?php echo __('Will be displayed on Add new item links. By default it will display Add New for all the post types.','templatic-admin'); ?></p>
                     </td>
                </tr>
                <tr>
                     <th valign="top">
-                    	<label for="add_new_item" class="form-textfield-label"><?php echo __('Add New Item',ADMINDOMAIN); ?></label>
+                    	<label for="add_new_item" class="form-textfield-label"><?php echo __('Add New Item','templatic-admin'); ?></label>
                     </th>
                     <td>
-                         <input type="text" class="regular-text" value="<?php if($edit_post){ echo stripslashes($edit_post[@$_REQUEST['post-type']]['labels']['add_new_item']); } else { echo __('Add New Item',ADMINDOMAIN); } ?>" name="add_new_item" id="add_new_item">
-                         <p class="description"><?php echo __('Will be displayed on the post detail page while adding a post. By default it will display New Item.',ADMINDOMAIN); ?></p></div>
+                         <input type="text" class="regular-text" value="<?php if($edit_post){ echo stripslashes($edit_post[@$_REQUEST['post-type']]['labels']['add_new_item']); } else { echo __('Add New Item','templatic-admin'); } ?>" name="add_new_item" id="add_new_item">
+                         <p class="description"><?php echo __('Will be displayed on the post detail page while adding a post. By default it will display New Item.','templatic-admin'); ?></p></div>
                     </td>
                </tr>
                <tr>
                     <th valign="top">
-                    	<label for="edit_item" class="form-textfield-label"><?php echo __('Edit Item text',ADMINDOMAIN); ?></label>
+                    	<label for="edit_item" class="form-textfield-label"><?php echo __('Edit Item text','templatic-admin'); ?></label>
                     </th>
                     <td>
-                         <input type="text" class="regular-text" value="<?php if($edit_post){ echo stripslashes($edit_post[@$_REQUEST['post-type']]['labels']['edit_item']); } else { echo __('Edit Item',ADMINDOMAIN); } ?>" name="edit_item" id="edit_item">
-                         <p class="description"><?php echo __('Will be displayed on the post detail page while editing a post. By default it will display Edit Item.',ADMINDOMAIN); ?></p></div>
+                         <input type="text" class="regular-text" value="<?php if($edit_post){ echo stripslashes($edit_post[@$_REQUEST['post-type']]['labels']['edit_item']); } else { echo __('Edit Item','templatic-admin'); } ?>" name="edit_item" id="edit_item">
+                         <p class="description"><?php echo __('Will be displayed on the post detail page while editing a post. By default it will display Edit Item.','templatic-admin'); ?></p></div>
                     </td>
                </tr>
                <tr>
                     <th valign="top">
-                    	<label for="view_item" class="form-textfield-label"><?php echo __('View Item button text',ADMINDOMAIN); ?></label>
+                    	<label for="view_item" class="form-textfield-label"><?php echo __('View Item button text','templatic-admin'); ?></label>
                     </th>
                     <td>
-                         <input type="text" class="regular-text" value="<?php if($edit_post){ echo stripslashes($edit_post[@$_REQUEST['post-type']]['labels']['view_item']); } else { echo __('View Item',ADMINDOMAIN); } ?>" name="view_item" id="view_item">
-                         <p class="description"><?php echo __('Will be displayed on the post detail page after you submit the post. By default it will display View Item.',ADMINDOMAIN); ?></p></div>
+                         <input type="text" class="regular-text" value="<?php if($edit_post){ echo stripslashes($edit_post[@$_REQUEST['post-type']]['labels']['view_item']); } else { echo __('View Item','templatic-admin'); } ?>" name="view_item" id="view_item">
+                         <p class="description"><?php echo __('Will be displayed on the post detail page after you submit the post. By default it will display View Item.','templatic-admin'); ?></p></div>
                     </td>
                </tr>
                <tr>
                     <th valign="top">
-                    	<label for="search_items" class="form-textfield-label"><?php echo __('Search button text',ADMINDOMAIN); ?></label>
+                    	<label for="search_items" class="form-textfield-label"><?php echo __('Search button text','templatic-admin'); ?></label>
                     </th>
                     <td>
-                         <input type="text" class="regular-text" value="<?php if($edit_post){ echo stripslashes($edit_post[@$_REQUEST['post-type']]['labels']['search_items']); } else { echo __('Search Item',ADMINDOMAIN); } ?>" name="search_items" id="search_items">
-                         <p class="description"><?php echo __('Will be displayed on the Search button. By default it will display Search Items.',ADMINDOMAIN); ?></p></div>
+                         <input type="text" class="regular-text" value="<?php if($edit_post){ echo stripslashes($edit_post[@$_REQUEST['post-type']]['labels']['search_items']); } else { echo __('Search Item','templatic-admin'); } ?>" name="search_items" id="search_items">
+                         <p class="description"><?php echo __('Will be displayed on the Search button. By default it will display Search Items.','templatic-admin'); ?></p></div>
                     </td>
                </tr>
                <tr>
                     <th valign="top">
-                    	<label for="not_found" class="form-textfield-label"><?php echo __('No item found text',ADMINDOMAIN); ?></label>
+                    	<label for="not_found" class="form-textfield-label"><?php echo __('No item found text','templatic-admin'); ?></label>
                     </th>
                     <td>
-                         <input type="text" class="regular-text" value="<?php if($edit_post){ echo stripslashes($edit_post[@$_REQUEST['post-type']]['labels']['not_found']); } else { echo __('No Item Found',ADMINDOMAIN);; } ?>" name="not_found" id="not_found">
-                         <p class="description"><?php echo __('Will be displayed when there is no item in Posts or Pages. By default it will display No posts found/No pages found.',ADMINDOMAIN); ?></p></div>
+                         <input type="text" class="regular-text" value="<?php if($edit_post){ echo stripslashes($edit_post[@$_REQUEST['post-type']]['labels']['not_found']); } else { echo __('No Item Found','templatic-admin');; } ?>" name="not_found" id="not_found">
+                         <p class="description"><?php echo __('Will be displayed when there is no item in Posts or Pages. By default it will display No posts found/No pages found.','templatic-admin'); ?></p></div>
                     </td>
                </tr>
                <tr>
                     <th valign="top">
-                    	<label for="not_found_in_trash" class="form-textfield-label"><?php echo __('Not item found in Trash text',ADMINDOMAIN); ?></label>
+                    	<label for="not_found_in_trash" class="form-textfield-label"><?php echo __('Not item found in Trash text','templatic-admin'); ?></label>
                     </th>
                     <td>
-                         <input type="text" class="regular-text" value="<?php if($edit_post){ echo  stripslashes($edit_post[@$_REQUEST['post-type']]['labels']['not_found_in_trash']); } else { echo __('No item found in Trash',ADMINDOMAIN); }?>" name="not_found_in_trash" id="not_found_in_trash">
-                        <p class="description"><?php echo __('Will be displayed when there is no item in Trash. By default it will display No posts found in Trash/No pages found in Trash.',ADMINDOMAIN); ?></p></div>
+                         <input type="text" class="regular-text" value="<?php if($edit_post){ echo  stripslashes($edit_post[@$_REQUEST['post-type']]['labels']['not_found_in_trash']); } else { echo __('No item found in Trash','templatic-admin'); }?>" name="not_found_in_trash" id="not_found_in_trash">
+                        <p class="description"><?php echo __('Will be displayed when there is no item in Trash. By default it will display No posts found in Trash/No pages found in Trash.','templatic-admin'); ?></p></div>
                     </td>
                </tr>
           </tbody>
      </table>
-    <input type="submit" class="button button-primary button-hero" value="<?php echo __('Save Taxonomy',ADMINDOMAIN); ?>" name="submit-taxonomy" id="submit-1">
+    <input type="submit" class="button button-primary button-hero" value="<?php echo __('Save Taxonomy','templatic-admin'); ?>" name="submit-taxonomy" id="submit-1">
 </form>
 </div>
 <?php

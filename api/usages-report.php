@@ -119,6 +119,9 @@ function tmpl_get_site_usages() {
                 
         if(is_plugin_active('Tevolution-LocationManager/location-manager.php')){
             global $wpdb,$country_table,$multicity_table,$zones_table;
+			$country_table = $wpdb->prefix . "countries";
+			$zones_table = $wpdb->prefix . "zones";
+			$multicity_table = $wpdb->prefix . "multicity";
             $sql = "select count(*) as total_country from $country_table";
             $countryinfo = $wpdb->get_results($sql);
             $result['site_options']['total_country'] = $countryinfo[0]->total_country;

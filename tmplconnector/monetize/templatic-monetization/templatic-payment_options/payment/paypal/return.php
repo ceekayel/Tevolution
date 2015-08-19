@@ -43,7 +43,7 @@ global $page_title,$current_user; ?>
 <div id="hfeed">
 <?php do_action('templ_before_success_container_breadcrumb');?>	 
 
-<?php 
+<?php
 	if($_REQUEST['trans_id'] != "" && $_REQUEST['pid'] != ""){
 	global $wpdb,$transection_db_table_name;
 	$transection_db_table_name=$wpdb->prefix.'transactions';
@@ -58,7 +58,7 @@ global $page_title,$current_user; ?>
 		$filecontent = PAYMENT_SUCCESS_MSG;
 	}
 	
-	$filesubject = __('Payment procedure has been completed',DOMAIN);
+	$filesubject = __('Payment procedure has been completed','templatic');
 	
 	$store_name = get_option('blogname');
 	$order_id = $_REQUEST['pid'];
@@ -150,6 +150,7 @@ global $page_title,$current_user; ?>
 	$orderinfo = $wpdb->get_row($ordersql);
 	$pid = $orderinfo->post_id;
 	$payment_type = $orderinfo->payment_method;
+	$amount = $orderinfo->payable_amt;
 	$payment_date =  date_i18n(get_option('date_format'),strtotime($orderinfo->payment_date));
 	$user_detail = get_userdata($orderinfo->user_id); /* get user details */
 	$user_email = $user_detail->user_email;
@@ -176,32 +177,34 @@ global $page_title,$current_user; ?>
 		$transaction_details .= "--------------------------------------------------</br>\r\n";	
 	}else{
 		$transaction_details .= "--------------------------------------------------</br>\r\n";
-		$transaction_details .= __('Payment Details for',DOMAIN)." $post_name</br>\r\n";
+		$transaction_details .= __('Payment Details for','templatic')." $post_name</br>\r\n";
 		$transaction_details .= "--------------------------------------------------</br>\r\n";
 	}
 
 	if($txn_id)
-		$transaction_details .=     __('PayPal Transaction ID',DOMAIN).": $txn_id</br>\r\n";
+		$transaction_details .=     __('PayPal Transaction ID','templatic').": $txn_id</br>\r\n";
 	if($trans_id)
-		$transaction_details .=     __('Transaction ID',DOMAIN).": $tarns_id</br>\r\n";
+		$transaction_details .=     __('Transaction ID','templatic').": $tarns_id</br>\r\n";
+	if($amount)
+		$transaction_details .=     __('Amount','templatic').": ".fetch_currency_with_position($amount)."</br>\r\n";	
 	if($payment_status !='')
-		$transaction_details .=     __('Status',DOMAIN).": $payment_status</br>\r\n";
+		$transaction_details .=     __('Status','templatic').": $payment_status</br>\r\n";
 	if($payment_type !='')
-		$transaction_details .= 	__('Type',DOMAIN).": $payment_type</br>\r\n";
-	$transaction_details .= 		__('Date',DOMAIN).": $payment_date</br>\r\n";
+		$transaction_details .= 	__('Type','templatic').": $payment_type</br>\r\n";
+	$transaction_details .= 		__('Date','templatic').": $payment_date</br>\r\n";
 	if($txn_type !='')
-		$transaction_details .=         __('Method',DOMAIN).": $txn_type</br>\r\n";
+		$transaction_details .=         __('Method','templatic').": $txn_type</br>\r\n";
 	$transaction_details .= "--------------------------------------------------\r\n";
 	$transaction_details = $transaction_details;
 	$subject = $tmpdata['payment_success_email_subject_to_admin'];
 	if(!$subject)
 	{
-		$subject = __("Payment Success Confirmation Email",DOMAIN);
+		$subject = __("Payment Success Confirmation Email",'templatic');
 	}
 	$content = $tmpdata['payment_success_email_content_to_admin'];
 	if(!$content)
 	{
-		$content = __("<p>Howdy [#to_name#],</p><p>You have received a payment of [#payable_amt#] on [#site_name#]. Details are available below</p><p>[#transaction_details#]</p><p>Thanks,<br/>[#site_name#]</p>",DOMAIN);
+		$content = __("<p>Howdy [#to_name#],</p><p>You have received a payment of [#payable_amt#] on [#site_name#]. Details are available below</p><p>[#transaction_details#]</p><p>Thanks,<br/>[#site_name#]</p>",'templatic');
 	}
 	$store_name = '<a href="'.site_url().'">'.get_option('blogname').'</a>';
 	$fromEmail = get_option('admin_email');
@@ -231,34 +234,37 @@ global $page_title,$current_user; ?>
 		$transaction_details .= "--------------------------------------------------</br>\r\n";	
 	}
 	if($txn_id)
-		$transaction_details .=     __('PayPal Transaction ID',DOMAIN).": $txn_id</br>\r\n";
+		$transaction_details .=     __('PayPal Transaction ID','templatic').": $txn_id</br>\r\n";
 	if($trans_id)
-		$transaction_details .=     __('Transaction ID',DOMAIN).": $tarns_id</br>\r\n";
+		$transaction_details .=     __('Transaction ID','templatic').": $tarns_id</br>\r\n";
+	if($amount)
+		$transaction_details .=     __('Amount','templatic').": ".fetch_currency_with_position($amount)."</br>\r\n";	
 	if($payment_status !='')
-		$transaction_details .=     __('Status',DOMAIN).": $payment_status</br>\r\n";
+		$transaction_details .=     __('Status','templatic').": $payment_status</br>\r\n";
 	if($payment_type !='')
-		$transaction_details .= 	__('Type',DOMAIN).": $payment_type</br>\r\n";
-	$transaction_details .= 		__('Date',DOMAIN).": $payment_date</br>\r\n";
+		$transaction_details .= 	__('Type','templatic').": $payment_type</br>\r\n";
+	$transaction_details .= 		__('Date','templatic').": $payment_date</br>\r\n";
 	if($txn_type !='')
-		$transaction_details .=         __('Method',DOMAIN).": $txn_type</br>\r\n";
+		$transaction_details .=         __('Method','templatic').": $txn_type</br>\r\n";
 	$transaction_details .= "--------------------------------------------------\r\n";
 	$transaction_details = $transaction_details;
 	
 	$subject = $tmpdata['payment_success_email_subject_to_client'];
 	if(!$subject)
 	{
-		$subject = __("Payment Success Confirmation Email",DOMAIN);
+		$subject = __("Payment Success Confirmation Email",'templatic');
 	}
 	$content = $tmpdata['payment_success_email_content_to_client'];
 	if(!$content)
 	{
-		$content = __("<p>Hello [#to_name#]</p><p>Here's some info about your payment...</p><p>[#transaction_details#]</p><p>If you'll have any questions about this payment please send an email to [#admin_email#]</p><p>Thanks!,<br/>[#site_name#]</p>",DOMAIN);
+		$content = __("<p>Hello [#to_name#]</p><p>Here's some info about your payment...</p><p>[#transaction_details#]</p><p>If you'll have any questions about this payment please send an email to [#admin_email#]</p><p>Thanks!,<br/>[#site_name#]</p>",'templatic');
 	}
 	$store_name = '<a href="'.site_url().'">'.get_option('blogname').'</a>';
 	$search_array = array('[#to_name#]','[#transaction_details#]','[#site_name#]','[#admin_email#]');
 	$replace_array = array($to_name,$transaction_details,$store_name,get_option('admin_email'));
 	$content = str_replace($search_array,$replace_array,$content);
 	templ_send_email($fromEmail,$fromEmailName,$user_email,$user_login,$subject,$content,$extra='');
+
 	/*Payment success email: end	*/
 }
 else if(isset($_REQUEST['trans_id']) && $_REQUEST['trans_id'] != '' && @$_REQUEST['pid'] == '')

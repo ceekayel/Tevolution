@@ -18,20 +18,20 @@ if(!function_exists('tevolution_register_user')){
 		$user_email = apply_filters( 'user_registration_email', $user_email );
 		/* Check the username*/
 		if ( $user_login == '' )
-			$errors->add('empty_username', __('ERROR: Please enter a username.',DOMAIN));
+			$errors->add('empty_username', __('ERROR: Please enter a username.','templatic'));
 		elseif ( !validate_username( $user_login ) ) {
-			$errors->add('invalid_username', __('<strong>ERROR</strong>: This username is invalid.  Please enter a valid username.',DOMAIN));
+			$errors->add('invalid_username', __('<strong>ERROR</strong>: This username is invalid.  Please enter a valid username.','templatic'));
 			$user_login = '';
 		} elseif ( username_exists( $user_login ) )
-			$errors->add('username_exists', __('<strong>ERROR</strong>: This username is already registered, please choose another one.',DOMAIN));
+			$errors->add('username_exists', __('<strong>ERROR</strong>: This username is already registered, please choose another one.','templatic'));
 		/* Check the e-mail address*/
 		if ($user_email == '') {
-			$errors->add('empty_email', __('<strong>ERROR</strong>: Please type your e-mail address.',DOMAIN));
+			$errors->add('empty_email', __('<strong>ERROR</strong>: Please type your e-mail address.','templatic'));
 		} elseif ( !is_email( $user_email ) ) {
-			$errors->add('invalid_email', __('<strong>ERROR</strong>: The email address isn&#8217;t correct.',DOMAIN));
+			$errors->add('invalid_email', __('<strong>ERROR</strong>: The email address isn&#8217;t correct.','templatic'));
 			$user_email = '';
 		} elseif ( email_exists( $user_email ) )
-			$errors->add('email_exists', __('<strong>ERROR</strong>: This email is already registered, please choose another one.',DOMAIN));
+			$errors->add('email_exists', __('<strong>ERROR</strong>: This email is already registered, please choose another one.','templatic'));
 		do_action('register_post', $user_login, $user_email, $errors);		
 		
 		$tmpdata = get_option('templatic_settings');
@@ -46,7 +46,7 @@ if(!function_exists('tevolution_register_user')){
 			/*check the response is valid or not*/
 			if (!$responde_encode->success)
 			{
-				 $errors->add('captcha_wrong', __('Please fill the captcha form.',DOMAIN));
+				 $errors->add('captcha_wrong', __('Please fill the captcha form.','templatic'));
 			}
 		}
 		if ( $errors->get_error_code() )
@@ -114,13 +114,13 @@ if(!function_exists('tevolution_register_user')){
 			if($subject=="" && $client_message=="")
 			{
 				/*registration_email($user_id);*/
-				$client_message = __('[SUBJECT-STR]Thank you for registering![SUBJECT-END]<p>Dear [#user_name#],</p><p>Thank you for registering and welcome to [#site_name#]. You can proceed with logging in to your account.</p><p>Login here: [#site_login_url_link#]</p><p>Username: [#user_login#]</p><p>Password: [#user_password#]</p><p>Feel free to change the password after you login for the first time.</p><p>&nbsp;</p><p>Thanks again for signing up at [#site_name#]</p>',DOMAIN);
+				$client_message = __('[SUBJECT-STR]Thank you for registering![SUBJECT-END]<p>Dear [#user_name#],</p><p>Thank you for registering and welcome to [#site_name#]. You can proceed with logging in to your account.</p><p>Login here: [#site_login_url_link#]</p><p>Username: [#user_login#]</p><p>Password: [#user_password#]</p><p>Feel free to change the password after you login for the first time.</p><p>&nbsp;</p><p>Thanks again for signing up at [#site_name#]</p>','templatic');
 				$filecontent_arr1 = explode('[SUBJECT-STR]',$client_message);
 				$filecontent_arr2 = explode('[SUBJECT-END]',$filecontent_arr1[1]);
 				$subject = $filecontent_arr2[0];
 				if($subject == '')
 				{
-					$subject = __("Thank you for registering!",DOMAIN);
+					$subject = __("Thank you for registering!",'templatic');
 				}
 				
 				$client_message = $filecontent_arr2[1];
@@ -131,11 +131,11 @@ if(!function_exists('tevolution_register_user')){
 			
 			if($admin_subject=="")
 			{
-					$admin_subject = __("New user registration",DOMAIN);
+					$admin_subject = __("New user registration",'templatic');
 			}
 			if($admin_message=="")
 			{
-					$admin_message = __("<p>Dear admin,</p><p>A new user has registered on your site [#site_name#].</p><p>Login Credentials: [#site_login_url_link#]</p><p>Username: [#user_login#]</p><p>Password: [#user_password#]</p>",DOMAIN);
+					$admin_message = __("<p>Dear admin,</p><p>A new user has registered on your site [#site_name#].</p><p>Login Credentials: [#site_login_url_link#]</p><p>Username: [#user_login#]</p><p>Password: [#user_password#]</p>",'templatic');
 			}
 			
 			if(strstr(get_tevolution_login_permalink(),'?'))
@@ -146,7 +146,7 @@ if(!function_exists('tevolution_register_user')){
 			}
 			
 			$store_login_link = '<a href="'.$login_url_link.'">'.$login_url_link.'</a>';
-			$store_login = sprintf(__('<a href="'.$login_url_link.'">'.'here'.'</a>',DOMAIN));
+			$store_login = sprintf(__('<a href="'.$login_url_link.'">'.'here'.'</a>','templatic'));
 		
 			/* customer email */
 			$search_array = array('[#user_name#]','[#user_login#]','[#user_password#]','[#site_name#]','[#site_login_url#]','[#site_login_url_link#]');
@@ -159,7 +159,7 @@ if(!function_exists('tevolution_register_user')){
 			templ_send_email($fromEmail,$fromEmailName,$fromEmail,$fromEmailName,$admin_subject,$admin_message,$extra='');
 		}
 		if ( !$user_id ) {
-			$errors->add('registerfail', sprintf(__('<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the ',DOMAIN).'<a href="mailto:%s">webmaster</a> !', get_option('admin_email')));
+			$errors->add('registerfail', sprintf(__('<strong>ERROR</strong>: Couldn&#8217;t register you... please contact the ','templatic').'<a href="mailto:%s">webmaster</a> !', get_option('admin_email')));
 			return $errors;
 		}
 		else
@@ -182,7 +182,7 @@ $login_page_id = get_option('tevolution_login');
 if ( get_option('users_can_register') ) { ?>
 <div id="sign_up">  
 	<div class="registration_form_box">
-    <h3><?php _e('Sign Up',DOMAIN) ?> </h3>
+    <h3><?php _e('Sign Up','templatic') ?> </h3>
 <?php
 if(isset($_POST) && $_POST['action']=='register' && (isset( $_POST['tmpl_registration_nonce_field'] ) && wp_verify_nonce( $_POST['tmpl_registration_nonce_field'], 'tmpl_registration_action' ))){
 	
@@ -305,7 +305,7 @@ remove_filter( 'the_content', 'wpautop' , 12);
 			/* if social media login is enable then show the separation registration message */
 			if((isset($tmpdata['allow_facebook_login']) && $tmpdata['allow_facebook_login']==1) || (isset($tmpdata['allow_google_login']) && $tmpdata['allow_google_login']==1) || isset($tmpdata['allow_twitter_login']) && $tmpdata['allow_twitter_login']==1){
 				 echo "<p class='login_sep'>";
-				 _e('Or use your email address',DOMAIN);
+				 _e('Or use your email address','templatic');
 				 echo "</p>";
 			}
 			fetch_user_registration_fields('register','',$form_name);
@@ -325,11 +325,16 @@ remove_filter( 'the_content', 'wpautop' , 12);
 		
 
 			/* ENF OF CODE */?>
-      <input type="submit" name="registernow" value="<?php _e('Sign Up',DOMAIN);?>" class="b_registernow" id="registernow_form" />
+      <input type="submit" name="registernow" value="<?php _e('Sign Up','templatic');?>" class="b_registernow" id="registernow_form" />
     </form>
-	<?php include(TT_REGISTRATION_FOLDER_PATH . 'registration_validation.php');?>
+	<?php 
+        /* load media script if sing up form has custom field for media upload */
+        wp_register_script('media_upload_scripts', TEVOLUTION_PAGE_TEMPLATES_URL.'js/media_upload_scripts.js', array('jquery'));
+        wp_register_script('drag_drop_media_upload_scripts', TEVOLUTION_PAGE_TEMPLATES_URL.'js/jquery.uploadfile.js', array('jquery'),false);
+        wp_enqueue_script('drag_drop_media_upload_scripts');
+        include(TT_REGISTRATION_FOLDER_PATH . 'registration_validation.php');?>
   </div>
 </div>
 <?php }else{
-	echo '<p>';_e('Registration is disabled on this website.',DOMAIN);echo '</p>';
+	echo '<p>';_e('Registration is disabled on this website.','templatic');echo '</p>';
 } ?>
