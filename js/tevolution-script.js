@@ -730,6 +730,16 @@ jQuery('form#submit_form #register_form').live('click',function(){
 		jQuery('div#step-auth').addClass('complete');
 		if((parseFloat(jQuery('#total_price').val()) <=0 || jQuery('#total_price').val() == '' || jQuery('#package_free_submission').val() >0) )
 		{
+			/*Get the wp_editor content and append in submit form to get the wp_editor data on submit page */
+			jQuery('.wp-editor-container textarea').each(function(){
+				var name=jQuery(this).attr('id');
+				jQuery('<input>').attr({
+					type: 'hidden',
+					id: name,
+					name: name,
+					value: tinyMCE.get(name).getContent()
+				}).appendTo('#submit_form');
+			});
 			jQuery('#submit_form').submit();
 		}
 		else
@@ -1261,3 +1271,80 @@ jQuery(document).ready(function() {
 		}
 	});
 });
+
+/*add thousand seperator*/
+function tmpl_thousandseperator(amt)
+{
+	if(num_decimals == 0)
+	{
+		amt = parseFloat(amt).toFixed(2);
+	}
+	var parts = amt.split('.');
+	var part1 = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1"+thousands_sep);
+	var part2 = parts[1];
+	if(num_decimals == 0)
+	{
+		return part1;
+	}
+	else
+	{
+		return part1 + '.' + part2;
+	}
+}
+
+function toggle_post_type(){
+	var div1 = document.getElementById('toggle_postID');
+	if (div1.style.display == 'none') {
+		div1.style.display = 'block';
+	} else {
+		div1.style.display = 'none';
+	}
+	
+	if(document.getElementById('toggle_post_type').getAttribute('class') == 'paf_row toggleoff'){		
+		jQuery("#toggle_post_type").removeClass("paf_row toggleoff").addClass("paf_row toggleon");
+	} else {		
+		jQuery("#toggle_post_type").removeClass("paf_row toggleon").addClass("paf_row toggleoff");
+	}
+	
+	if(document.getElementById('toggle_post_type').getAttribute('class').search('toggleoff')!=-1 && document.getElementById('toggle_post_type').getAttribute('class').search('map_category_fullscreen') !=-1){		
+		jQuery("#toggle_post_type").removeClass("paf_row toggleoff map_category_fullscreen").addClass("paf_row toggleon map_category_fullscreen");
+	} 
+	if(document.getElementById('toggle_post_type').getAttribute('class').search('toggleon') !=-1 && document.getElementById('toggle_post_type').getAttribute('class').search('map_category_fullscreen') !=-1){
+		jQuery("#toggle_post_type").removeClass("paf_row toggleon map_category_fullscreen").addClass("paf_row toggleoff map_category_fullscreen");
+	}
+}
+
+
+/* Change listing paggination */
+jQuery('#listpagi .search_pagination .page-numbers').live('click',function(e){
+	e.preventDefault();
+	post_link=jQuery(this).attr('href');	
+	post_link= post_link.replace("#038;", "&"); 
+	jQuery('.search_result_listing').addClass('loading_results');
+	var from_data=jQuery(".tmpl_filter_results").serialize();
+	
+	jQuery.ajax({
+		url:post_link+'&'+from_data,
+		type:'POST',
+		async: true,
+		//data:url_data,
+		success:function(results){
+			jQuery('.search_result_listing').removeClass('loading_results');
+			jQuery('.search_result_listing').html(results);
+			jQuery("html, body").animate({ scrollTop: 0 }, 200);
+		}
+	});	
+	jQuery.ajax({
+		url:post_link+'&data_map=1&'+from_data,
+		type:'POST',
+		async: true,
+		dataType: 'json',
+		success:function(results){			
+			googlemaplisting_deleteMarkers();
+			markers=results.markers;			
+			templ_add_googlemap_markers(markers);
+			//jQuery('.search_result_listing').html(results);		
+		},		
+	});
+	return false;
+});	

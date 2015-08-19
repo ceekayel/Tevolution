@@ -1,7 +1,6 @@
 <?php
 /*
-NAME : SUBMIT EVENT CANCELLATION FILE
-DESCRIPTION : THIS FILE WILL BE CALLED IF THE USER CANCEL THE PROCESS OF SUBMITTING EVENT.
+ THIS FILE WILL BE CALLED IF THE USER CANCEL THE PROCESS OF SUBMITTING FORM.
 */
 add_action('wp_head','show_background_color');
 function show_background_color()
@@ -28,46 +27,81 @@ body.custom-background {
 }
 </style>
 <?php }
-$page_title = PAY_CANCELATION_TITLE;
-global $page_title;?>
-<?php get_header(); ?>
+
+
+global $page_title,$current_user;
+$page_title =  __('Payment Cancellation',DOMAIN);
+
+get_header(); ?>
 <?php if ( get_option( 'ptthemes_breadcrumbs' ) == 'Yes') {  ?>
 <div class="breadcrumb_in"><a href="<?php echo site_url(); ?>"><?php _e('Home'); ?></a> &raquo; <?php echo $page_title; ?></div><?php } ?>
-<div class="content-title"><?php echo $page_title; ?></div>
-<div id="content">
-<div class="post-content">
-<?php 
-$tmpdata = get_option('templatic_settings');
-$filecontent = stripslashes(get_option('post_payment_cancel_msg_content'));
-if(!$filecontent)
-{
-	$filecontent = PAY_CANCEL_MSG;
-}
-$store_name = '<a href="'.site_url().'">'.get_option('blogname').'</a>';
-$search_array = array('[#site_name#]','[#admin_email#]');
-$replace_array = array($store_name,get_option('admin_email'));
-$filecontent = str_replace($search_array,$replace_array,$filecontent);
-echo $filecontent;
-$post = get_post($_REQUEST['pid']);
-$user_info = get_userdata( $post->post_author );
-$fromEmail = $user_info->user_email;
-$fromEmailName = $user_info->user_login;
-$to = get_option('admin_email');
-$toname = stripslashes(get_option('blogname'));	
-$subject = $tmpdata['payment_cancelled_subject'];
-$payment_cancelled_content=$tmpdata['payment_cancelled_content'];
-$payment_cancelled_content=str_replace(array('[#post_type#]','[#transection_id#]'),array(ucfirst(get_post_type($_REQUEST['pid'])),$_REQUEST['trans_id']),$payment_cancelled_content);
-$filecontent1 = $payment_cancelled_content;
-$filecontent2 = $payment_cancelled_content;
-@templ_send_email($fromEmail,$fromEmailName,$to,$toname,$subject,$filecontent1,''); // email to admin
-if($fromEmail != $to)
-{
-	@templ_send_email($to,$toname,$fromEmail,$fromEmailName,$subject,$filecontent2,''); // email to client 
-}
-?> 
-</div> <!-- content #end -->
-</div>
-<div id="sidebar">
+
+<section id="content" class="large-9 small-12 columns">
+	
+	
+	<div class="post-content">
+	<?php if($current_user->ID !=''){ ?>
+	<h2><?php  _e('Payment Cancellation',DOMAIN);?></h2>
+	<?php 
+	
+	$tmpdata = get_option('templatic_settings');
+	$filecontent = stripslashes(get_option('post_payment_cancel_msg_content'));
+	if(!$filecontent)
+	{
+		$filecontent = PAY_CANCEL_MSG;
+	}
+	$store_name = '<a href="'.site_url().'">'.get_option('blogname').'</a>';
+	$search_array = array('[#site_name#]','[#admin_email#]');
+	$replace_array = array($store_name,get_option('admin_email'));
+	$filecontent = str_replace($search_array,$replace_array,$filecontent);
+	echo $filecontent;
+	echo ' <a href="'.site_url().'">';
+	_e('Go to Home',DOMAIN);
+	echo '</a>';
+	$post = get_post($_REQUEST['pid']);
+	$user_info = get_userdata( $post->post_author );
+	$fromEmail = $user_info->user_email;
+	$fromEmailName = $user_info->user_login;
+	$to = get_option('admin_email');
+	$toname = stripslashes(get_option('blogname'));	
+	$subject = $tmpdata['payment_cancelled_subject'];
+	if(!$subject)
+	{
+		$subject = 'Payment Cancelled';
+	}
+	$payment_cancelled_content=$tmpdata['payment_cancelled_content'];
+	if(!$payment_cancelled_content)
+	{
+		$payment_cancelled_content = '[#post_type#] has been cancelled with transaction id [#transection_id#]';
+	}
+	
+	$payment_cancelled_content=str_replace(array('[#post_type#]','[#transection_id#]'),array(ucfirst(get_post_type($_REQUEST['pid'])),$_REQUEST['trans_id']),$payment_cancelled_content);
+	$filecontent1 = $payment_cancelled_content;
+	$filecontent2 = $payment_cancelled_content;
+	@templ_send_email($fromEmail,$fromEmailName,$to,$toname,$subject,$filecontent1,''); /* email to admin*/
+	if($fromEmail != $to)
+	{
+		@templ_send_email($to,$toname,$fromEmail,$fromEmailName,$subject,$filecontent2,''); /* email to client */
+	}
+	
+	}else{
+		_e('You are not allowed to access this page.',DOMAIN);	
+	}
+	global $wpdb;
+	$tevolution_post_type = tevolution_get_post_type();
+	foreach($tevolution_post_type as $post_type)
+	{
+		delete_user_meta($current_user->ID,$post_type.'_package_select');
+		delete_user_meta($current_user->ID,$post_type.'_list_of_post');
+		delete_user_meta($current_user->ID,'package_selected');
+		delete_user_meta($current_user->ID,'total_list_of_post');
+		$transection_db_table_name=$wpdb->prefix.'transactions';
+		$transaction_insert = 'Delete from '.$transection_db_table_name.' where trans_id='.$_REQUEST['trans_id'].' and user_id='.$current_user->ID;
+		
+		$wpdb->query($transaction_insert);
+	}
+	?> 
+	</div> <!-- content #end -->
+</section>
 <?php get_sidebar(); ?>
-</div>
 <?php get_footer(); ?>

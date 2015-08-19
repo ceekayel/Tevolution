@@ -11,7 +11,7 @@
 	p { padding-bottom: 10px; }
 	.right-small {    height: 2.813rem;width: 2.813rem;}
 	body { height: 100% }
-	.supreme_wrapper { min-height: 100%; }
+	.supreme_wrapper { /* min-height: 100%; */ }
 	body.mobile-view .header-widget-wrap{ padding: 30px; margin: 0; float: left;}
 	body.admin-bar.mobile-view .header-widget-wrap{top: 60px!important;}
 	.mobile-view .large-8.columns { padding-left: 0; padding-right: 0; }
@@ -89,6 +89,10 @@
 	.mobile-view .filter_list_wrap,  .mobile-view .pfilter_list_wrap { padding-bottom: 40px; }
 	.full_map_page #map_canvas{max-height: inherit; height: 550px;}
 
+
+	.custom_fields_load{position:relative;}
+	.custom_fields_load:before{background-image:url(images/process-loader.gif);content:" ";display:block;height:70px;left:50%;margin-left:-15px;margin-top:-15px;position:absolute;top:3%;width:70px;z-index:10;}
+	.custom_fields_load:after{background-color:#fff;bottom:0;content:" ";display:block;left:0;opacity:0.7;filter:alpha(opacity=70);position:absolute;right:0;top:0;}
 	.mobile_listing_popup .widget { margin: 0; }
 
 	/* bredcrumb */
@@ -420,7 +424,8 @@
 	.mobile-view p.fees:before { content: "\f0d6"; }
 	.mobile-view p.property-price:before { content: "\f0d6"; }
 	.mobile-view p.area:before { content: "\f079"; }
-	
+	.mobile-view p.classified_tag:before { content: "\f058"; }
+
 	.list [class*="post"] p.address:before, .grid [class*="post"] p.address:before { font-size:  0.6667rem }
 	.claim-post-wraper .fav { display: none!important; }
 	body.mobile-view #content .claim-post-wraper ul li a:before { display: none; }
@@ -428,6 +433,7 @@
 	.mobile-view .claimed-listing h1.entry-title:before { top: 11px; }
 	.mobile-view .claimed-listing h1.entry-title:after { top: 17px; }
 	
+	body ul.detail-meta,body ul.detail-meta li{ margin: 0; padding: 0; width: 100%; list-style: none; display: inline-block;}
 	.mobile-view #content .claim-post-wraper > ul > li > a,.mobile-view .button, .mobile-view .uploadfilebutton, .mobile-view a.button, .mobile-view button, .mobile-view input[type="button"], .mobile-view input[type="reset"], .mobile-view input[type="submit"] { background-color: rgba(0,0,0,0.03); border:1px solid rgba(0,0,0,0.1); color: #666!important; padding:8px 15px !important; text-align: center; font-weight: normal;  margin: 0; font-size: 0.9375rem; line-height: 1.2; display: inline-block; -webkit-appearance: none; }
 /*	body.tevolution-directory.mobile-view .get_direction .b_getdirection { color: #666 !important; -webkit-appearance: none;}*/
 	body.tevolution-directory.mobile-view .get_direction .b_getdirection { color: #666; }
@@ -988,4 +994,4 @@
 
 /*@media only screen and (-webkit-min-device-pixel-ratio : 1.5), only screen and (min-device-pixel-ratio : 1.5) {
 	html { font-size: 65%;}
-}
+}*/

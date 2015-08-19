@@ -1,1155 +1,1265 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tevolution\n"
-"POT-Creation-Date: 2014-04-28 17:45+0530\n"
-"PO-Revision-Date: 2014-04-28 17:45+0530\n"
+"POT-Creation-Date: 2014-08-20 10:52+0530\n"
+"PO-Revision-Date: 2014-08-20 10:52+0530\n"
 "Last-Translator: \n"
 "Language-Team: Templatic <upendra@templatic.com>\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.4\n"
-"X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 1.6.7\n"
+"X-Poedit-Basepath: D:\\wamp\\www\\translationtesting\\wp-content\\plugins"
+"\\Tevolution\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: _e\n"
-"X-Poedit-SearchPath-0: C:\\wamp\\www\\nightlife\\wp-content\\plugins"
+"X-Poedit-SearchPath-0: D:\\wamp\\www\\translationtesting\\wp-content\\plugins"
 "\\Tevolution\n"
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/templates/archive-tevolution.php:67
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/templates/taxonomy-tevolution-tag.php:71
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/templates/taxonomy-tevolution.php:64
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/templates/archive-tevolution.php:67
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/templates/taxonomy-tevolution-tag.php:71
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/templates/taxonomy-tevolution.php:64
 msgid "Apologies, no results were found matching this search criteria."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/templatic.php:290
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/image_uploader.php:191
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/templatic.php:291
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:1293
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/image_uploader.php:193
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/tevolution_custom_fields_functions.php:549
 msgid "Upload Image"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/templatic.php:303
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/templatic.php:304
 msgid ""
 "Are you really sure want to DELETE this post? Deleted post can not be "
 "recovered later."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/templatic.php:304
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/templatic.php:305
 msgid "Deleting."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/templatic.php:307
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/templatic.php:308
 msgid "Deleting.."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/templatic.php:310
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/templatic.php:311
 msgid "Deleting..."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/claim_functions.php:457
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/claim_functions.php:709
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/claim_functions.php:724
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/claim_functions.php:520
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/claim_functions.php:794
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/claim_functions.php:809
 msgid "Your claim for this post has been sent successfully."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/claim_functions.php:580
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/claim_functions.php:589
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/claim_functions.php:655
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/claim_functions.php:664
 msgid "Claim Ownership"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/claim_widget.php:97
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/claim_widget.php:97
 msgid "Claim Ownership Is Not Enable"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/claim_widget.php:119
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/claim_widget.php:119
 msgid "Title"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:22
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:22
 msgid "Do you own this"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:23
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:23
 msgid "Verify your ownership for"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:27
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:27
 msgid "Full Name"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:28
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:28
 msgid "Your Email"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:29
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:29
 msgid "Contact No"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:30
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:30
 msgid "Your Claim"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:30
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:30
 msgid ""
 "Hello, I would like to notify you that I am the owner of this listing. I "
 "would like to verify its authenticity."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:33
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:718
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:33
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_tevlution_submit_form_page.php:251
 msgid "Submit"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:34
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:29
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:34
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:36
 msgid "Loading..."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:73
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:89
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:85
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:73
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:96
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:92
 msgid "Invalid captcha. Please try again."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:75
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:91
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:75
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:98
 msgid "You need to play the game to send the mail successfully."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:104
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:104
 msgid "This field is mandatory. Please enter your name."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:143
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:143
 msgid "Please enter your valid email address."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:160
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-claim_ownership/popup_claim_form.php:160
 msgid "Please enter your claim message."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/admin_manage_custom_fields_edit.php:452
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/admin_manage_custom_fields_edit.php:371
 msgid "Edit - "
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/admin_manage_custom_fields_edit.php:456
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/admin_manage_custom_fields_edit.php:378
 msgid "Back to manage custom fields"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/admin_manage_custom_fields_edit.php:531
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/ajax_custom_taxonomy.php:8
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/category.php:41
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/add_price_packages.php:191
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/templatic-connector.php:597
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/admin_manage_custom_fields_edit.php:467
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/ajax_custom_taxonomy.php:8
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/category.php:42
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/add_price_packages.php:142
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/templatic-connector.php:606
 msgid "Select All"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:859
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:963
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:976
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:1419
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:524
 msgid "Select at least one category for your "
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:899
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:542
+msgid "Min value"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:543
+msgid "Max value"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:617
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-widgets/templatic_metakey_search_widget.php:85
 msgid "Address"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:1047
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/submit_preview_buttons.php:230
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/submit_preview_buttons.php:235
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:695
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/submit_preview_buttons.php:235
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/submit_preview_buttons.php:240
 msgid "Go back and edit"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:1380
-msgid "Please Select"
-msgstr ""
-
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:1450
-msgid ""
-"Takes a original URL and automatically to fetch the embed HTML for it using "
-"oEmbed."
-msgstr ""
-
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:3332
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_form.php:256
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_form.php:270
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:2644
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_form.php:293
 msgid "Verify Captcha"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4060
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5299
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:404
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:3019
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4381
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:404
 msgid "Map"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4062
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5301
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:406
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:3021
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4383
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:406
 msgid "Location"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5035
-msgid "Accept terms and conditions."
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4106
+msgid "Accept Terms and Conditions."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5055
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4126
 msgid "Please accept Term and Conditions"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5056
-msgid "Please accept Term and Conditions."
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4127
+msgid "Please accept Terms and Conditions."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5240
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4322
 msgid "Package Type"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5246
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4328
 msgid "Validity"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5246
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:541
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4328
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:564
 msgid "Days"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5250
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4332
 msgid "Number of Posts"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5255
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:558
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4337
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:581
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:2259
 msgid "Recurring Charges"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5271
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:386
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4353
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:386
 msgid "Post Description"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5284
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:242
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:357
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4366
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:242
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:357
 msgid "Post Excerpt"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5591
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4679
 msgid ""
 "Safari will allow you to upload only one image, so we suggest you use some "
 "other browser."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5668
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5680
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5694
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:185
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4756
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4768
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:4782
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:185
 msgid "Information"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_preview.php:150
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5444
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:431
+msgid "Country"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5447
+msgid "State"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5450
+msgid "City"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5492
+msgid "Edit Video"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5767
+msgid "Category: "
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5774
+msgid "Tags: "
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_function.php:5781
+msgid "Author: "
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/custom_fields_preview.php:150
 msgid "Back to Top"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/image_uploader.php:27
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/image_uploader.php:28
 msgid "Uploading..."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/image_uploader.php:34
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/image_uploader.php:35
 msgid "Your image size must be less then"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/image_uploader.php:34
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/image_uploader.php:35
 msgid "kilobytes"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/image_uploader.php:41
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/image_uploader.php:52
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/image_uploader.php:42
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/image_uploader.php:53
 msgid "You can upload maximum 10 images"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/location_add_map.php:331
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/location_add_map.php:376
-msgid "Set Address on Map"
-msgstr ""
-
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/location_add_map.php:338
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/location_add_map.php:384
-msgid "Address Latitude"
-msgstr ""
-
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/location_add_map.php:340
-msgid "Enter latitude for Google Map perfection. e.g.  39.955823048131286"
-msgstr ""
-
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/location_add_map.php:344
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/location_add_map.php:390
-msgid "Address Longitude"
-msgstr ""
-
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/location_add_map.php:346
-msgid "Enter logngitude for Google Map perfection. e.g.  -75.14408111572266"
-msgstr ""
-
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/location_add_map.php:386
-msgid ""
-"Please enter latitude for google map perfection. eg.: 39.955823048131286"
-msgstr ""
-
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/location_add_map.php:392
-msgid ""
-"Please enter logngitude for google map perfection. eg.: -75.14408111572266"
-msgstr ""
-
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/post_upgrade_payment.php:68
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/post_upgrade_payment.php:68
 msgid "Select payment options"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:401
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/tevolution_custom_fields_functions.php:514
+msgid "Please Select"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/tevolution_custom_fields_functions.php:537
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/tevolution_custom_fields_functions.php:664
+msgid "You can drag images from your computer &amp; drop here in this box"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/tevolution_custom_fields_functions.php:538
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/tevolution_custom_fields_functions.php:665
+msgid "OR"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/tevolution_custom_fields_functions.php:793
+msgid "Select a category for your "
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_fields/tevolution_custom_fields_functions.php:814
+msgid "n which category you'd like to publish this "
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:401
 msgid "Uncategorized"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:416
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:416
 msgid "No Tags"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:598
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:598
 msgid "Price"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:676
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:676
 msgid "A new post has been submitted on your site"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:740
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:740
 msgid "A new post has been submitted"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:938
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:938
 msgid "Pending payment through Pre bank transfer"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:648
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:1067
+msgid "A New Upgrade Request of ID:#[#post_id#]"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:1133
+msgid "Payment Pending For Upgrade Request: #[#post_id#]"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:1201
+msgid "[#site_title#] Your new password"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:1269
+msgid "Claim to - [#post_title#]"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:1335
+msgid "Listing expiration Notification"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:1403
+msgid "Payment Cancelled"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:1469
+msgid "[#post_type#] updated of ID:#[#submition_Id#]"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/install.php:1535
+msgid "[#post_type#] renew of ID:#[#submition_Id#]"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:649
 msgid "Related"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1030
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1035
 msgid "Posted In"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1062
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1100
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1067
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1105
 msgid "Tagged In"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1402
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1408
 msgid "MAP"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1419
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1472
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:157
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1425
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1478
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:161
 msgid "Alphabetical"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1422
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1474
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1428
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1480
 msgid "Title Ascending"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1425
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1478
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1431
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1484
 msgid "Title Descending"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1429
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1482
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1435
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1488
 msgid "Publish Date Ascending"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1433
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1486
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1439
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1492
 msgid "Publish Date Descending"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1439
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1491
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1445
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1497
 msgid "Start Date low to high"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1443
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1495
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1449
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1501
 msgid "Start Date high to low"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1449
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1500
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/templatic-connector.php:1403
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1455
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1506
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/templatic-connector.php:1440
 msgid "Reviews"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1453
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1504
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1459
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1510
 msgid "Rating"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1457
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1507
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1463
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1513
 msgid "Random"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1516
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:156
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1522
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:160
 msgid "All"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1517
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1523
 msgid "A"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1518
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1524
 msgid "B"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1519
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1525
 msgid "C"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1520
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1526
 msgid "D"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1521
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1527
 msgid "E"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1522
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1528
 msgid "F"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1523
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1529
 msgid "G"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1524
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1530
 msgid "H"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1525
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1531
 msgid "I"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1526
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1532
 msgid "J"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1527
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1533
 msgid "K"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1528
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1534
 msgid "L"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1529
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1535
 msgid "M"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1530
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1536
 msgid "N"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1531
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1537
 msgid "O"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1532
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1538
 msgid "P"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1533
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1539
 msgid "Q"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1534
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1540
 msgid "R"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1535
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1541
 msgid "S"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1536
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1542
 msgid "T"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1537
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1543
 msgid "U"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1538
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1544
 msgid "V"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1539
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1545
 msgid "W"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1540
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1546
 msgid "X"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1541
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1547
 msgid "Y"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1542
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-custom_taxonomy/taxonomy_functions.php:1548
 msgid "Z"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/add_to_favourites.php:45
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/add_to_favourites.php:45
 msgid "Add to favorites"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/general_functions.php:386
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/general_functions.php:389
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/general_functions.php:494
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/general_functions.php:390
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/general_functions.php:393
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/general_functions.php:498
 msgid "Email sent successfully"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/general_functions.php:643
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/templatic-connector.php:356
-msgid "Facebook Share."
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/general_functions.php:742
+msgid "Pin"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/general_functions.php:655
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/templatic-connector.php:365
-msgid "Tweet"
-msgstr ""
-
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:10
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:10
 msgid "Send To Friend"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:15
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:15
 msgid "Friend&rsquo;s name"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:17
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:17
 msgid "Friend&rsquo;s email"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:19
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:19
 msgid "Your name"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:21
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:17
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:21
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:17
 msgid "Your email"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:23
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:21
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:23
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:21
 msgid "Subject"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:23
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:23
 msgid "Check out this post"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:25
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:25
 msgid "Comments"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:25
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:25
 msgid ""
 "Hello, I just stumbled upon this listing and thought you might like it. Just "
 "check it out."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:28
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:41
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:35
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:48
 msgid "Send"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:122
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:129
 msgid "Please enter your friend's name"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:152
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:159
 msgid "Please enter your friend's valid email address"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:168
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:175
 msgid "Please Enter Your Name"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:200
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:148
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:207
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:155
 msgid "Please enter your valid email address"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:216
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_frms.php:223
 msgid "Please Enter Comments"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:11
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:11
 msgid "Inquiry for"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:15
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:15
 msgid "Full name"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:19
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:19
 msgid "Contact number"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:22
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:22
 msgid "Inquiry email"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:25
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:25
 msgid " Message"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:27
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:27
 msgid ""
 "Hello, I would like to inquire more about this listing. Please let me know "
 "how can I get in touch with you. Waiting for your prompt reply?"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:116
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:123
 msgid "Please enter your full name"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:165
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:172
 msgid "Please enter subject line"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:182
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-generalization/popup_inquiry_frm.php:189
 msgid "Please enter message"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-manage_ip/manage_ip_functions.php:98
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_submit_form_page.php:466
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-manage_ip/manage_ip_functions.php:98
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_submit_form_page.php:489
 msgid ""
 "Apologies, your IP has been blocked for this domain. You are not able to use "
 "the submit form."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:365
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:680
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:715
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:377
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:708
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:743
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:1348
 msgid "Would you like to make this "
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:365
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:680
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:715
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:377
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:708
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:743
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:1348
 msgid "featured?"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:463
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:483
 msgid "Select a Package"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:530
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:553
 msgid "Package type"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:530
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:553
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:2244
 msgid "Pay per subscription"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:530
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:553
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:2250
 msgid "Pay per post"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:537
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:554
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:560
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:577
 msgid "Charges"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:541
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:561
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:564
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:584
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:2262
 msgid "Day"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:545
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:565
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:568
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:588
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:2266
 msgid "Month"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:549
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:569
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:572
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:592
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:2270
 msgid "Year"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:571
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:594
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:2272
 msgid "Cycle"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:683
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:598
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:2276
+msgid ""
+"This price package will be offer free trial periods or plan to bill the "
+"first installment of a recurring payment only for paypal payment gateway."
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:711
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:1353
 msgid "Yes &sbquo; feature this listing on homepage."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:685
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:713
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:1356
 msgid "Yes &sbquo; feature this listing on category page."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:707
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:742
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:735
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:770
 msgid "An additional amount will be charged to make this"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:707
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:735
 msgid "featured."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:707
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:735
 msgid "You have the option to feature your"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:707
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:735
 msgid "on home page or category page or both."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:742
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:770
 msgid "comment moderateable."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:752
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:780
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:1380
 msgid "Total price as per your selection."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:752
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:780
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:1380
 msgid "Final amount including discount will be displayed on preview page."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_js.php:177
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_js.php:186
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_js.php:341
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_js.php:346
-msgid "Free"
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:1253
+msgid "Select your pricing plan"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic-manage_coupon/install.php:105
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:1269
+msgid "Charges: "
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:1286
+msgid "Select"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:2219
+msgid "for a "
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:2241
+msgid " day listing."
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:2244
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:2250
+msgid "Package type: "
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/price_package_functions.php:2245
+msgid "Number of Posts: "
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic-manage_coupon/install.php:105
 msgid "Sorry! coupon code does not exist.Please try another coupon code."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic-manage_coupon/install.php:125
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic-manage_coupon/install.php:125
 msgid "Coupon Code"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic-manage_coupon/install.php:128
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic-manage_coupon/install.php:128
 msgid "Validate"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic-manage_coupon/install.php:130
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic-manage_coupon/install.php:130
 msgid "Enter coupon code here (optional)"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic-payment_options/payment/paypal/cancel.php:35
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic-payment_options/payment/paypal/return.php:40
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic-payment_options/payment/paypal/cancel.php:35
 msgid "Home"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic-payment_options/payment_cancel.php:33
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic-payment_options/payment_cancel.php:33
 msgid "Invalid procedure."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic-payment_options/payment_functions.php:58
-msgid "Select Payment Method"
-msgstr ""
-
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic_transaction_detail_report.php:26
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic_transaction_detail_report.php:26
 msgid "Transaction Report"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic_transaction_detail_report.php:29
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic_transaction_detail_report.php:29
 msgid "Transaction Detail"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic_transaction_detail_report.php:41
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic_transaction_detail_report.php:41
 msgid "Package Detail"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic_transaction_detail_report.php:64
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic_transaction_detail_report.php:64
 msgid "Transaction Status"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic_transaction_detail_report.php:85
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-monetization/templatic_transaction_detail_report.php:85
 msgid "User Information"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-ratings/get_rating.php:11
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-ratings/get_rating.php:11
 msgid "Please give rating"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-ratings/templatic_post_rating.php:147
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-ratings/templatic_post_rating.php:147
 msgid "Rate this by clicking a star below"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-ratings/templatic_post_rating.php:173
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-ratings/templatic_post_rating.php:173
 msgid "Your comment is awaiting moderation."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/js/login.js.php:37
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/js/login.js.php:37
 msgid "Please Enter Name"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/js/login.js.php:55
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/js/login.js.php:55
 msgid "Please Enter password"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/js/login.js.php:79
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/js/login.js.php:79
 msgid "Please Enter User name"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/js/login.js.php:96
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/js/login.js.php:96
 msgid "Please Enter Email ID"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:246
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:181
 msgid "Dashboard"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:249
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:94
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:184
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:67
 msgid "Edit profile"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:250
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:185
 msgid "Change password"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:254
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:189
 msgid "Logout"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:270
-msgid "ERROR: The password you entered for the username admin is incorrect. "
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:205
+msgid "The password you entered is incorrect. Please try again."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:281
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:216
 msgid "Username"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:284
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:713
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:97
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:219
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:749
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:276
 msgid "Password"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:291
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:105
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:226
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:285
 msgid "Remember me on this computer"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:295
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:29
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:112
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:231
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:197
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:294
 msgid "Sign In"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:299
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:703
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:235
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:736
 msgid "New User? Register Now"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:300
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:348
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:107
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:141
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:236
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:284
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:287
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:323
 msgid "Forgot password"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:352
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:410
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:288
 msgid "Email"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:356
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:151
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/login_box_widget.php:292
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:333
 msgid "Get New Password"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_form.php:233
-msgid "Sign Up Now"
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_form.php:265
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_form.php:315
+msgid "Sign Up"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_form.php:290
-msgid "Register Now"
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_form.php:321
+msgid "<p>Registration is disabled on this website.</p>"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_form.php:296
-msgid "<p>Registration is disabled on this website !</p>"
-msgstr ""
-
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:388
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:233
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:396
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:237
 msgid "Facebook"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:391
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:237
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:400
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:241
 msgid "Twitter"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:394
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:404
+msgid "Google Plus"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:408
 msgid "LinkedIn"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:401
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:411
+msgid "Contact Me"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:421
 msgid "Edit Profile"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:412
-msgid "Country"
-msgstr ""
-
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:479
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:499
 msgid "Total Listing"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:512
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:523
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:532
 msgid "You have subscribed to"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:514
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:525
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:534
 msgid "price package for"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:516
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:527
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:536
 msgid "Total number of posts:"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:518
-msgid "Submitted:"
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:538
+msgid "Submited:"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:520
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:540
 msgid "Remaining:"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:673
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:706
 msgid "Login or register"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:694
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:727
 msgid "Invalid Username/Password."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:697
-msgid "I &acute;m a"
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:730
+msgid "I am a"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:698
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:731
 msgid "Existing User"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:708
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:744
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:753
 msgid "Login"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_js.php:54
-msgid "Email Id already exist.Please enter another email"
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:1433
+msgid "Sign in with Facebook"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_js.php:61
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:1436
+msgid "Sign in with Google"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_functions.php:1439
+msgid "Sign in with Twitter"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_js.php:53
+msgid "Email address already exists, Please enter another email"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_js.php:60
 msgid "Your email address is verified."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_js.php:105
-msgid "User name already exist.Please enter another user name"
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_js.php:104
+msgid "Username already exists, Please use another username"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_js.php:112
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/registration_js.php:111
 msgid "Your user name is verified."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:93
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:271
 msgid "User name"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:145
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:327
 msgid "E-mail"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:171
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:353
 msgid "Please Enter E-mail"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:175
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/shortcodes_registration.php:357
 msgid "Please provide a valid email address"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:112
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:132
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:85
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:105
 msgid "Update"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:113
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:133
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:86
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:106
 msgid "Cancel"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:125
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:94
+msgid "Password changed successfully. Please login with your new password."
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:98
 msgid "New Password"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:129
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:102
 msgid "Confirm New Password"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:143
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:116
 msgid "Please enter New Password"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:149
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:122
 msgid "Please enter New Password  minimum 5 chars"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:155
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:128
 msgid "Please enter Confirm New Password"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:161
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:134
 msgid "Please enter Confirm New Password minimum 5 chars"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:167
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-registration/user_profile.php:140
 msgid "New Password and Confirm New Password should be same"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-widgets/templatic_advanced_search_widget.php:53
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-widgets/templatic_people_list_widget.php:85
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-widgets/templatic_advanced_search_widget.php:53
 msgid "Post"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-widgets/templatic_browse_by_tag_widget.php:45
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-widgets/templatic_browse_by_tag_widget.php:47
 msgid "No Tag Available"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-widgets/templatic_metakey_search_widget.php:73
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_advance_search.php:35
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_advance_search.php:83
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-widgets/templatic_metakey_search_widget.php:73
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_advance_search.php:35
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_advance_search.php:83
 msgid "Search"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-widgets/templatic_people_list_widget.php:78
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-widgets/templatic_people_list_widget.php:81
 msgid "Submitted"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-widgets/templatic_people_list_widget.php:81
-msgid "Posts"
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-widgets/templatic_people_list_widget.php:84
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:224
+msgid "Listings"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-widgets/templatic_people_list_widget.php:92
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-widgets/templatic_people_list_widget.php:88
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:227
+msgid "Listing"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-widgets/templatic_people_list_widget.php:97
 msgid "There is no user registered with"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-widgets/templatic_people_list_widget.php:92
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/monetize/templatic-widgets/templatic_people_list_widget.php:97
 msgid "role."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_advance_search.php:40
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_advance_search.php:40
 msgid "Tags"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_advance_search.php:67
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_advance_search.php:67
 msgid "Author"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_advance_search.php:69
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_advance_search.php:69
 msgid "Exact author"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:155
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:159
 msgid "Sort By"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:158
-msgid "Most Submitted"
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:162
+msgid "Most Submited"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:206
-msgid "View All My"
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:229
+msgid "No listings"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:210
-msgid "View My"
-msgstr ""
-
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:214
-msgid "No entries"
-msgstr ""
-
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:222
-msgid "Entries"
-msgstr ""
-
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:225
-msgid "Entry"
-msgstr ""
-
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:230
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:234
 msgid "Visit Website"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:241
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:245
 msgid "Linkedin"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:250
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:249
+msgid "Email Me"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:253
 msgid "View Profile"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:258
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:261
 msgid ""
 "This page is most likely empty now. It will be populated automatically as "
 "people register to your site."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:315
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:318
 msgid "Prev"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:329
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_people.php:332
 msgid "Next"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_post_upgrade.php:119
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_submit_form_page.php:447
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_post_upgrade.php:130
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_submit_form_page.php:465
 msgid "Next Step"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_submit_form_page.php:264
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_submit_form_page.php:271
 msgid "ERROR: Sorry, you are not allowed to edit this post."
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_submit_form_page.php:450
-msgid "Preview Submission"
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_submit_form_page.php:467
+msgid "Preview This"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_taxonomies_map.php:122
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_taxonomies_map.php:122
 msgid ""
 "<p>Your selected category do not have any records yet at your current "
 "location.</p>"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_taxonomies_map.php:126
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_taxonomies_map.php:126
 msgid "Title or Keyword"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/templatic-connector.php:601
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_tevlution_submit_form_page.php:125
+msgid "Enter your form details"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_tevlution_submit_form_page.php:203
+msgid "Login / Register"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/shortcodes/shortcode_tevlution_submit_form_page.php:245
+msgid "Payment"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/templatic-connector.php:356
+msgid "Facebook Share."
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/templatic-connector.php:365
+msgid "Tweet"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/templatic-connector.php:610
 msgid "Categories"
 msgstr ""
 
-#: C:\wamp\www\nightlife\wp-content\plugins\Tevolution/tmplconnector/templatic-connector.php:1401
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/templatic-connector.php:1438
 msgid "Review"
+msgstr ""
+
+#: D:\wamp\www\translationtesting\wp-content\plugins\Tevolution/tmplconnector/tevolution_ajax_results.php:113
+msgid "Apologies, but no results were found for the requested archive."
 msgstr ""

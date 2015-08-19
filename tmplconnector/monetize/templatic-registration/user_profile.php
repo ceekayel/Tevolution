@@ -1,4 +1,7 @@
 <?php
+/*
+ * edit profile form and save function
+ */
 global $current_user,$wpdb;
 if(isset($_POST['action']) && $_POST['action']=='user_profile')
 {
@@ -21,34 +24,7 @@ if(isset($_POST['action']) && $_POST['action']=='user_profile')
 		{
 			$fldkey = "$fkey";
 			$fldkey = $_POST["$fkey"];
-			
-			if($fval['type']=='upload')
-			{
-				if($_FILES[$fkey]['name'] && $_FILES[$fkey]['size']>0)
-				{
-					$dirinfo = wp_upload_dir();
-					$path = $dirinfo['path'];
-					$url = $dirinfo['url'];
-					$destination_path = $path."/";
-					$destination_url = $url."/";
-					
-					$src = $_FILES[$fkey]['tmp_name'];
-					$file_ame = date('Ymdhis')."_".$_FILES[$fkey]['name'];
-					$target_file = $destination_path.$file_ame;
-					if(move_uploaded_file($_FILES[$fkey]["tmp_name"],$target_file))
-					{
-						$image_path = $destination_url.$file_ame;
-					}else
-					{
-						$image_path = '';	
-					}
-				
-					$_POST[$fkey] = $image_path;
-					$fldkey = $image_path;
-				}
-				$fldkey = ( $fldkey ) ? $fldkey : @$_POST['prev_upload'];
-			}
-			update_user_meta($user_id, $fkey, $fldkey); // User Custom Metadata Here
+			update_user_meta($user_id, $fkey, $fldkey); /* User Custom Metadata Here */
 		}	
 		$user_facebook = $_REQUEST['facebook'];
 		$user_twitter = $_REQUEST['twitter'];
@@ -91,7 +67,6 @@ remove_filter( 'the_content', 'wpautop' , 12);
           <input type="hidden" name="user_id" value="<?php echo get_current_user_id();?>" />
           <input type="hidden" name="user_email_already_exist" id="user_email_already_exist" value="1" />
           <input type="hidden" name="user_fname_already_exist" id="user_fname_already_exist" value="1" />
-          <h3><?php _e('Edit profile',DOMAIN);?></h3>
           <?php
           if($_POST)
           {
@@ -134,7 +109,7 @@ remove_filter( 'the_content', 'wpautop' , 12);
      </form>
      <!-- end change password form -->
 </div>   
-<script type="text/javascript">
+<script  type="text/javascript" async >
      /* <![CDATA[ */
      function chk_form_pw()
      {
@@ -146,7 +121,7 @@ remove_filter( 'the_content', 'wpautop' , 12);
           }
           if(document.getElementById('new_passwd').value.length < 4 )
           {
-               alert("<?php _e('Please enter New Password  minimum 5 chars',DOMAIN) ?>");
+               alert("<?php _e('Please enter New Password minimum 5 chars',DOMAIN) ?>");
                document.getElementById('new_passwd').focus();
                return false;
           }

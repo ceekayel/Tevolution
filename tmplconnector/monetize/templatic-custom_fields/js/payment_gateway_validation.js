@@ -1,24 +1,24 @@
 var $checked_radio = jQuery.noConflict();
 	$checked_radio(document).ready(function () {
-		$checked_radio("#paynow").click(function(){
+		$checked_radio("#paynow").add("#submit_form_button").click(function(){
 			var selected = $checked_radio('input[name=paymentmethod]:checked').val();
 			if(selected=="authorizedotnet"){
-				if(validate_authorizedotnet()){return true;}else{return false;}
+				if(validate_authorizedotnet()){validate_gateway = true;return true;}else{validate_gateway = false;return false;}
 			}else if(selected=="eway"){
-				if(validate_eway()){return true;}else{return false;}
+				if(validate_eway()){validate_gateway = true;return true;}else{validate_gateway = false;return false;}
 			}else if(selected=="paypal_pro"){
-				if(validate_paypal_pro()){return true;}else{return false;}
+				if(validate_paypal_pro()){validate_gateway = true;return true;}else{validate_gateway = false;return false;}
 			}
 			else if(selected=="psigate"){
-				if(validate_psigate()){return true;}else{return false;}
+				if(validate_psigate()){validate_gateway = true;return true;}else{validate_gateway = false;return false;}
 			}else if(selected=="stripe"){
-				if(validate_stripe()){return true;}else{return false;}
+				if(validate_stripe()){validate_gateway = true;return true;}else{validate_gateway = false;return false;}
 			}
 			else if(selected=="Braintree"){
-				if(validate_braintree()){return true;}else{return false;}
+				if(validate_braintree()){validate_gateway = true;return true;}else{validate_gateway = false;return false;}
 			}
 			else if(selected=="inspirecommerce"){
-				if(validate_inspire_commerce()){return true;}else{return false;}
+				if(validate_inspire_commerce()){validate_gateway = true;return true;}else{validate_gateway = false;return false;}
 			}
 		})
 	 }); 

@@ -28,18 +28,16 @@ foreach($_FILES as $key=>$val)
 			$srch_arr = array(' ',"'",'"','?','*','!','@','#','$','%','^','&','(',')','+','=');
 			$replace_arr = array('_','','','','','','','','','','','','','','','');
 			
-			$fileName1 = pathinfo($_FILES[$key]["name"], PATHINFO_FILENAME).'_'.rand(0,9999).'.'.pathinfo($_FILES[$key]["name"], PATHINFO_EXTENSION);
-			
-			$fileName = $name = str_replace($srch_arr,$replace_arr,$fileName1);
-			
+			$fileName = $name = str_replace($srch_arr,$replace_arr,$_FILES[$key]["name"]);
 			/*save the images in tmp folder of parent theme directory*/
-			
 			if(!move_uploaded_file($_FILES[$key]["tmp_name"],$uploaddir.$fileName))
 			{
 				$ret[]= 'error';
 				echo json_encode($ret);exit;
 			}
 			
+			$filename = $uploaddir.$fileName;
+
 			/* Check the type of tile. We'll use this as the 'post_mime_type'.*/
 			$filetype = wp_check_filetype( basename( $filename ), null );
 
@@ -65,7 +63,6 @@ foreach($_FILES as $key=>$val)
 
 			/* Generate the metadata for the attachment, and update the database record.*/
 			$attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
-			
 			wp_update_attachment_metadata( $attach_id, $attach_data );
 			
 			/* copy the image from tmp folder to wordpress folder */
@@ -74,7 +71,7 @@ foreach($_FILES as $key=>$val)
 			$url = $wp_upload_dir['url'];
 			$destination_path = $wp_upload_dir['path'].'/';
 			
-			$name = str_replace($srch_arr,$replace_arr,$fileName1);
+			$name = str_replace($srch_arr,$replace_arr,$_FILES[$key]['name']);
 			$tmp_name = $_FILES[$key]['tmp_name'];
 			$target_path = $destination_path . str_replace(',','',$name);
 			$extension_file = array('.php','.js');

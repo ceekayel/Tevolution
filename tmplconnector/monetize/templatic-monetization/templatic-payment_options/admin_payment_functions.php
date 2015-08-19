@@ -118,7 +118,7 @@ function tmpl_currency_settings(){ ?>
 			update_option('tmpl_price_decimal_sep',$_REQUEST['tmpl_price_decimal_sep']);
 		}	
 		?>
-		<script type="text/javascript">
+		<script type="text/javascript" async >
 		function check_currency_form()
 		{
 			jQuery.noConflict();

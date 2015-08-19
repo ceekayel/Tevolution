@@ -7,6 +7,13 @@ if(!is_admin() && !strstr($_SERVER['REQUEST_URI'],'/wp-admin/' ) || isset($_REQU
 	add_filter('mce_buttons','tmpl_mce_buttons');
 	add_filter('mce_buttons_2','tmpl_mce_buttons_2');
 }
+
+/* This use category wise filter field to show menu in post_content */
+if(!function_exists('tmpl_mce_buttons')){
+    function tmpl_mce_buttons(){
+            return array('bold', 'italic', 'strikethrough', 'bullist', 'numlist', 'blockquote', 'hr', 'link', 'unlink');
+    }
+}
 /*
  * This function user for get the tevolution custom fields on wpml language wise post join filter
  */
@@ -352,7 +359,7 @@ function display_custom_post_field_plugin($custom_metaboxes,$session_variable,$p
 			echo '</div>';
 		}else{
 			$label = "<label class=".$labelclass.">".$site_title.$is_required."</label>";
-			if((tmplCompFld($site_title) != tmplCompFld('category')) && (tmplCompFld($site_title) != tmplCompFld('Multi City')))
+		if((tmplCompFld($site_title) != tmplCompFld('Multi City')))
 				echo $label;
 		}
 			
@@ -383,7 +390,7 @@ function display_custom_post_field_plugin($custom_metaboxes,$session_variable,$p
 				
 				if(function_exists('tmpl_wp_is_mobile') && !tmpl_wp_is_mobile()){
 					?>     
-					<script type="text/javascript">
+					<script type="text/javascript" async >
 						jQuery(function(){
 							var pickerOpts = {						
 								showOn: "both",
@@ -622,9 +629,6 @@ function display_custom_post_field_plugin($custom_metaboxes,$session_variable,$p
 					<p><?php _e('OR',DOMAIN); ?></p>
                  </div>
 					<?php
-					
-					
-					
 					echo '<div class="tmpl_single_uploader">';
 						do_action('tmpl_custom_fields_'.$name.'_before');
 						$wp_upload_dir = wp_upload_dir();?>
@@ -642,7 +646,7 @@ function display_custom_post_field_plugin($custom_metaboxes,$session_variable,$p
                             <?php } ?>
 							<input type="hidden" name="submitted" value="1">
 						</div>
-						<script>
+						<script type="text/javascript" async >
 							var image_thumb_src = '<?php echo  $wp_upload_dir['url'];?>/';
 							jQuery(document).ready(function(){
 								var settings = {
@@ -950,7 +954,7 @@ function display_custom_category_field_plugin($custom_metaboxes,$session_variabl
 		$_PostTypeName = $PostTypeObject->labels->name;
 		?>
         <div class="form_row clearfix">	  
-            <label><?php _e('Select Categories',DOMAIN).$is_required; ?></label>
+            <label><?php _e('Select Category',DOMAIN).$is_required; ?></label>
             <div class="category_label"><?php include(TEMPL_MONETIZE_FOLDER_PATH.'templatic-custom_fields/category.php');?></div>
             <?php echo $is_required_msg;?>
             <?php if($admin_desc!=""):?>
@@ -1053,7 +1057,7 @@ function tmpl_get_tevolution_submit_from_preview(){
 	do_action('before_tevolution_submit_'.$post_type.'_preview');
 	
 	get_template_part( 'tevolution-single', $post_type.'-preview'); 
-	
+        
 	do_action('after_tevolution_submit_'.$post_type.'_preview');
 	
 	die();
@@ -1140,11 +1144,11 @@ if(!function_exists('tmpl_get_submitfrm_link')){
 		{
 		/* query to get the submit form link, it will check the "submit_post_type" meta key is available with the value of pot type pass in arg*/
 		$args=array('post_type'=>'page','posts_per_page'=>-1,
-				'meta_query'     => array('relation' => 'AND',
-						   array('key' => 'submit_post_type','value' => $post_type,'compare' => '=='),
-						   array('key' => 'is_tevolution_submit_form','value' => '1','compare' => '==')
-						),
-				);
+                                                            'meta_query'     => array('relation' => 'AND',
+                                                                                   array('key' => 'submit_post_type','value' => $post_type,'compare' => '=='),
+                                                                                   array('key' => 'is_tevolution_submit_form','value' => '1','compare' => '==')
+                                                                                ),
+                                                  );
 		$post_query = new WP_Query($args);
 		$PostTypeObject = get_post_type_object($post_type);
 		$_PostTypelabel = $PostTypeObject->labels->name;
@@ -1152,7 +1156,7 @@ if(!function_exists('tmpl_get_submitfrm_link')){
 		if($post_query->have_posts()){
 			while ($post_query->have_posts()) { $post_query->the_post();
 				$submit_link = __(' Head over to the ',THEME_DOMAIN);
-				$submit_link .='<a href="'.get_permalink().'" target="_blank">'.__('Submit ',DOMAIN)." ".ucfirst($_PostTypelabel)." ".__('Form',DOMAIN).'</a>';	
+				$submit_link .='<a href="'.get_permalink().'" target="_blank">'.__('Submit',DOMAIN)." ".ucfirst($_PostTypelabel)." ".__('Form',DOMAIN).'</a>';	
 				$submit_link .= __( ' to add one.', THEME_DOMAIN );
 			}
 		}
@@ -1182,6 +1186,7 @@ function tmpl_submit_form_recaptcha_validation(){
 				$send_data['recaptcha_error']= __('Please fill the captcha form.',DOMAIN);
 			}else{
 				$send_data['recaptcha_error']=true;
+				$_SESSION['gotit'] = true;
 			}
 		}else{
 			$send_data['recaptcha_error']= __('Please fill the captcha form.',DOMAIN);
@@ -1557,26 +1562,19 @@ function tmpl_fetch_heading_post_type($post_type){
 we create the separate function because we needs want the variables name without heading type*/
 if(!function_exists('tmpl_single_page_default_custom_field')){
 function tmpl_single_page_default_custom_field($post_type){
-	$custom_post_type = tevolution_get_post_type();
 	
 	/* check its detail page or preview page */
-	if((is_single() || $_GET['page']=='preview') && $post_type !=''){
+	if((is_single() || $_REQUEST['ptype']=='preview') && $post_type !=''){
 		global $wpdb,$post,$tmpl_flds_varname,$pos_title;
 		
-		$cus_post_type = $post_type;
-		$heading_type = tmpl_fetch_heading_post_type($post_type);
-		$tmpl_flds_varname = array();
-		global $wpdb,$post,$posttitle;
 		$cur_lang_code=(is_plugin_active('sitepress-multilingual-cms/sitepress.php'))? ICL_LANGUAGE_CODE :'';
 		
 		remove_all_actions('posts_where');		
-		$post_query = null;
 		remove_action('pre_get_posts','event_manager_pre_get_posts');
 		remove_action('pre_get_posts','directory_pre_get_posts',12);
 		add_filter('posts_join', 'custom_field_posts_where_filter');
 
-
-		$args = array( 'post_type' => 'custom_fields',
+		$args = apply_filters('tmpl_custom_fileds_query',array( 'post_type' => 'custom_fields',
 					'posts_per_page' => -1	,
 					'post_status' => array('publish'),
 					'meta_query' => array('relation' => 'AND',
@@ -1600,18 +1598,17 @@ function tmpl_single_page_default_custom_field($post_type){
 					'meta_key' => 'sort_order',
 					'orderby' => 'meta_value',
 					'order' => 'ASC'
-		);
+		),$post_type);
 	
 		/* save the data on transient to get the fast results */
-		$post_query = get_transient( '_tevolution_query_single'.trim($post_type).trim($heading_key).$cur_lang_code );
+                $post_query = null;
+		$post_query = get_transient( '_tevolution_query_single'.trim($post_type).$cur_lang_code );
 		if ( false === $post_query && get_option('tevolution_cache_disable')==1 ) {
 			$post_query = new WP_Query($args);
-			set_transient( '_tevolution_query_single'.trim($post_type).trim($heading_key).$cur_lang_code, $post_query, 12 * HOUR_IN_SECONDS );
+			set_transient( '_tevolution_query_single'.trim($post_type).$cur_lang_code, $post_query, 12 * HOUR_IN_SECONDS );
 		}elseif(get_option('tevolution_cache_disable')==''){
 			$post_query = new WP_Query($args);
 		}
-
-		
 		
 		/* Join to make the custom fields WPML compatible */
 		remove_filter('posts_join', 'custom_field_posts_where_filter');
@@ -1619,26 +1616,30 @@ function tmpl_single_page_default_custom_field($post_type){
 		$tmpl_flds_varname='';
 		if($post_query->have_posts())
 		{
+			/* Only related field option get - reduce query */
+			$multi_option = array('multicheckbox','radio','select');
 			while ($post_query->have_posts()) : $post_query->the_post();
 				$ctype = get_post_meta($post->ID,'ctype',true);
 				$post_name=get_post_meta($post->ID,'htmlvar_name',true);
 				$style_class=get_post_meta($post->ID,'style_class',true);
-				$option_title=get_post_meta($post->ID,'option_title',true);
-				$option_values=get_post_meta($post->ID,'option_values',true);
+				
+                $option_title=  in_array($ctype,$multi_option) ? '' : get_post_meta($post->ID,'option_title',true);
+				$option_values= in_array($ctype,$multi_option) ? '' : get_post_meta($post->ID,'option_values',true);
+				
 				$default_value=get_post_meta($post->ID,'default_value',true);
 				$tmpl_flds_varname[$post_name] = array( 'type'=>$ctype,
-											'label'=> $post->post_title,
-											'style_class'=>$style_class,
-											'option_title'=>$option_title,
-											'option_values'=>$option_values,
-											'default'=>$default_value,
-											);			
+														'label'=> $post->post_title,
+														'style_class'=>$style_class,
+														'option_title'=>$option_title,
+														'option_values'=>$option_values,
+														'default'=>$default_value,
+													);			
 			endwhile;
 			wp_reset_query();
 		}
 		return $tmpl_flds_varname;
 	}
-}
+    }
 }
 /* Return User name while submit form as a guest user */
 function get_user_name_plugin($fname,$lname='')
@@ -1653,13 +1654,14 @@ function get_user_name_plugin($fname,$lname='')
 	}
 	$nicename = strtolower(str_replace(array("'",'"',"?",".","!","@","#","$","%","^","&","*","(",")","-","+","+"," "),array('','','','-','','-','-','','','','','','','','','','-','-',''),$uname));
 	$nicenamecount = $wpdb->get_var("select count(user_nicename) from $wpdb->users where user_nicename like \"$nicename\"");
-	if($nicenamecount=='0')
-	{
-		return trim($nicename);
-	}else
+	if($nicenamecount > 1)
 	{
 		$lastuid = $wpdb->get_var("select max(ID) from $wpdb->users");
 		return $nicename.'-'.$lastuid;
+	}else
+	{
+		
+		return trim($nicename);
 	}
 }
 /* 
@@ -1973,7 +1975,7 @@ function tmpl_fields_detail_informations($not_show = array('title'),$title_text 
 					if($i==0 && $key_value !=''){ 
 					if($is_edit =='')
 					{
-						/*	echo apply_filters('tmpl_custom_fields_listtitle','<h2 class="custom_field_headding">'.$tmpl_key.'</h2>');*/
+						echo apply_filters('tmpl_custom_fields_listtitle','<h2 class="custom_field_headding">'.$tmpl_key.'</h2>');
 						$field= get_post_meta(get_the_ID(),$k,true);	
 						if($i==0 && $field!='' && $key != 'field_label'){echo apply_filters('tmpl_custom_fields_listtitle','<h2 class="custom_field_headding">'.$heading_key.'</h2>');;$i++;}
 						if($field!='' && $key == 'field_label'){echo apply_filters('tmpl_custom_fields_listtitle','<h2 class="custom_field_headding">'.$val['label'].'</h2>');$i++;}
@@ -2207,9 +2209,10 @@ function tmpl_show_on_detail($cur_post_type,$heading_type){
 /*
  * Save data for upgrade post from transaction approved.
  */
-add_action('tranaction_upgrade_post','tranaction_upgrade_post');
-function tranaction_upgrade_post($orderId)
+add_action('tranaction_upgrade_post','tranaction_upgrade_post',10,2);
+function tranaction_upgrade_post($orderId,$transID='')
 {
+	global $wpdb;
 	$catids_arr = array();
 	$my_post = array();
 	$pid = $orderId; /* it will be use when going for RENEW */
@@ -2360,5 +2363,30 @@ function tranaction_upgrade_post($orderId)
 					$monetize_settings = $monetization->templ_set_price_info($last_postid,$pid,$payable_amount,$alive_days,$payment_method,$coupon,$featured_type);
 	
 			}
+			$transection_db_table_name=$wpdb->prefix.'transactions';
+			if($upgrade_post['featured_type'] == 'both')
+			{
+				$transaction_update = $wpdb->query("update $transection_db_table_name set payforfeatured_h = 1 , payforfeatured_c = 1 where trans_id =$transID");
+				update_post_meta($pid, 'featured_c', 'c');
+				update_post_meta($pid, 'featured_h', 'h');
+				update_post_meta($pid, 'featured_type', 'both');
+			}
+			if($upgrade_post['featured_type'] == 'h')
+			{
+				$transaction_update = $wpdb->query("update $transection_db_table_name set payforfeatured_h = 1  where trans_id  =$transID");
+				update_post_meta($pid, 'featured_c', 'c');
+				update_post_meta($pid, 'featured_type', 'c');
+			}
+			if($upgrade_post['featured_type'] == 'c')
+			{
+				$transaction_update = $wpdb->query("update $transection_db_table_name set  payforfeatured_c = 1 where trans_id  =$transID");
+				update_post_meta($pid, 'featured_h', 'h');
+				update_post_meta($pid, 'featured_type', 'h');
+			}
+			else
+			{
+				update_post_meta($pid, 'featured_type', 'none');
+			}
+
 }
 ?>

@@ -14,7 +14,7 @@
 			if(is_array(@$_REQUEST['post_type'])){
 				$post_type = array_merge($post_type1,@$_REQUEST['post_type']); // if there is multiple posttypes in URL
 			}else{
-				$post_type = array('post'); // singe post type
+				$post_type = $_REQUEST['post_type']; // singe post type
 			}
 			
 			if(isset($_REQUEST['relation']) && $_REQUEST['relation'] !=''){
@@ -27,7 +27,7 @@
 
 		
 			$meta_query = $get_meta ;    
-			/* set the query for search from post meta ( custom fields )*/
+			/* set the query for search from post meta ( custom fields )*/			
 			$query->set( 'post_type',$post_type );
 			$query->set( 'post_status',array('publish') );
 			$query->set( 'relation','OR' );
@@ -42,6 +42,7 @@ Name: tmpl_get_search_term_query
 Desc: Search sub queries( if search with space )
 */
 function tmpl_get_search_term_query($keyword,$field){
+
 	if(preg_match('/\s/',$keyword))
 		$query_search = explode(' ',$keyword);
 	if(preg_match('/\s/',$keyword)){
@@ -54,12 +55,16 @@ function tmpl_get_search_term_query($keyword,$field){
 						}else{
 							$rel='';
 						}
-						$tquery .= " $field like \"%$key%\" ".$rel; 
+						if($key!=''){
+							$tquery .= " $field like \"%$key%\" ".$rel; 
+						}
 					}
 				}
 				
 	}else{
-				$tquery = "$field like \"%$keyword%\"";
+		if($keyword!=''){
+			$tquery = "$field like \"%$keyword%\"";
+		}
 	}
 	return $tquery;
  }
@@ -68,8 +73,11 @@ function tmpl_get_search_term_query($keyword,$field){
  Desc: Return search query
  */
  function templatic_search_query_where($where){
-	global $wpdb;
-	$keyword = esc_html(get_search_query() );
+	global $wpdb,$wp_query,$current_cityinfo;
+	
+	$keyword = esc_html(get_search_query() );	
+	$keyword = (!empty($keyword)) ? $keyword : ((isset($_REQUEST['s'])) ? $_REQUEST['s'] : '');
+	
 	if(preg_match('/\s/',$keyword))
 		$query_search = explode(' ',$keyword);
 
@@ -78,8 +86,10 @@ function tmpl_get_search_term_query($keyword,$field){
 	}else{
 		$post_type = @$_REQUEST['post_type']; // singe post type
 	}
+	/* fetch listing according to city */
+	$in_city = '';
 	if(@$_GET['search_in_city'] ==1){
-		$where .= " AND $wpdb->posts.ID in (select pm.post_id from $wpdb->postmeta pm where pm.meta_key ='post_city_id' and FIND_IN_SET( ".$_SESSION['post_city_id'].", pm.meta_value ))";	
+		$in_city = " AND $wpdb->posts.ID in (select pm.post_id from $wpdb->postmeta pm where pm.meta_key ='post_city_id' and FIND_IN_SET( ".$_SESSION['post_city_id'].", pm.meta_value ))";	
 	}
 
 	if(isset($_REQUEST['relation']) && $_REQUEST['relation'] !=''){
@@ -93,10 +103,10 @@ function tmpl_get_search_term_query($keyword,$field){
 	if(!empty($_GET['mkey'])){
 		foreach($_GET['mkey'] as  $v){
 			if($v != 'cats' && $v != 'reviews' && $v != 'tags' && $v != 'post_city_id'){
-			
 				$fquery = tmpl_get_search_term_query($keyword,'pm.meta_value');
-				
-				$fields1 = $wpdb->get_col("select pm.post_id from $wpdb->postmeta pm ,$wpdb->posts p where p.ID = pm.post_id and  p.post_status = 'publish' and p.post_type IN ('".$post_type."') and pm.meta_key like \"%$v%\" and ( {$fquery} ) ");
+				if($fquery){
+					$fields1 = $wpdb->get_col("select pm.post_id from $wpdb->postmeta pm ,$wpdb->posts p where p.ID = pm.post_id and  p.post_status = 'publish' and p.post_type IN ('".$post_type."') and pm.meta_key like \"%$v%\" and ( {$fquery} ) ");
+				}
 				$srch_fields[] = $fields1;
 				$fquery='';
 			}
@@ -104,7 +114,7 @@ function tmpl_get_search_term_query($keyword,$field){
 	} 
 
 
-	if(!empty($srch_fields)){
+	if(!empty($srch_fields) && $srch_fields[0] != ''){
 		$fvalueds =  implode(',', array_map('implode', array_fill(0, count($srch_fields), ','), $srch_fields));
 		$srch_fields = array_filter(explode(',',$fvalueds));
 	}else{
@@ -119,11 +129,30 @@ function tmpl_get_search_term_query($keyword,$field){
 			$multicity_table = $wpdb->prefix . "multicity";	
 			
 			$cityquery = tmpl_get_search_term_query($keyword,'cityname');
-
-			$cities = $wpdb->get_col("SELECT city_id FROM $multicity_table where {$cityquery} ");
-			$cities = rtrim(implode(',',$cities));
-			if(!empty($cities)){
-				$incities = $wpdb->get_col("select pm.post_id from $wpdb->postmeta pm ,$wpdb->posts p where p.ID = pm.post_id and p.post_status = 'publish' and p.post_type IN ('".$post_type."') and pm.meta_key ='post_city_id' and FIND_IN_SET( ".$cities.", pm.meta_value )");
+			$city_ids=$wpdb->get_results("SELECT GROUP_CONCAT(distinct meta_value) as city_ids from {$wpdb->prefix}postmeta where `meta_key` ='post_city_id' group by {$wpdb->prefix}postmeta.post_id");
+				if($city_ids[0]->city_ids){
+					foreach($city_ids as $ids){
+						$cities.=$ids->city_ids.",";
+					}
+					$cities=str_replace(",","','",substr($cities,0,-1));
+					
+				}
+			$cities1 = array_unique(explode(',',$cities));
+			$cities = implode(',',$cities1);
+			
+			$cityquery = tmpl_get_search_term_query($keyword,'cityname');
+			
+			if($cityquery !=''){
+				$cities2 = $wpdb->get_col("SELECT city_id FROM $multicity_table where {$cityquery} and city_id IN ('$cities')");
+			}else{
+				$cities2 = $wpdb->get_col("SELECT city_id FROM $multicity_table where city_id IN ('$cities')");
+			}
+		
+			$cities = "'".rtrim(implode(',',$cities2))."'";
+			if(!empty($cities1)){
+				if($cities !=''){
+					$incities = $wpdb->get_col("select pm.post_id from $wpdb->postmeta pm ,$wpdb->posts p where p.ID = pm.post_id and p.post_status = 'publish' and p.post_type IN ('".$post_type."') and pm.meta_key ='post_city_id' and FIND_IN_SET(".$cities.", pm.meta_value )");
+				}
 			}
 			if(empty($incities)){ $incities = array(); }
 		}
@@ -134,9 +163,17 @@ function tmpl_get_search_term_query($keyword,$field){
 		if(in_array('cats',@$_GET['mkey']) || in_array('tags',@$_GET['mkey'])){ 
 			$tquery = tmpl_get_search_term_query($keyword,'c.name');
 			if(@$_GET['search_in_city'] ==1){
-				$cats = $wpdb->get_col("select tr.object_id from $wpdb->terms c,$wpdb->term_taxonomy tt,$wpdb->term_relationships tr,$wpdb->posts p, $wpdb->postmeta pm where ( {$tquery } ) and c.term_id=tt.term_id and tt.term_taxonomy_id=tr.term_taxonomy_id and tr.object_id=p.ID and p.post_status = 'publish' and p.post_type IN ('".$post_type."') and p.ID=pm.post_id and pm.meta_key ='post_city_id' and FIND_IN_SET( ".$_SESSION['post_city_id'].", pm.meta_value ) group by  p.ID");
+				if($tquery !=''){
+					$cats = $wpdb->get_col("select tr.object_id from $wpdb->terms c,$wpdb->term_taxonomy tt,$wpdb->term_relationships tr,$wpdb->posts p, $wpdb->postmeta pm where ( {$tquery } ) and c.term_id=tt.term_id and tt.term_taxonomy_id=tr.term_taxonomy_id and tr.object_id=p.ID and p.post_status = 'publish' and p.post_type IN ('".$post_type."') and p.ID=pm.post_id and pm.meta_key ='post_city_id' and FIND_IN_SET( ".$_SESSION['post_city_id'].", pm.meta_value ) group by  p.ID");
+				}else{
+					$cats = $wpdb->get_col("select tr.object_id from $wpdb->terms c,$wpdb->term_taxonomy tt,$wpdb->term_relationships tr,$wpdb->posts p, $wpdb->postmeta pm where c.term_id=tt.term_id and tt.term_taxonomy_id=tr.term_taxonomy_id and tr.object_id=p.ID and p.post_status = 'publish' and p.post_type IN ('".$post_type."') and p.ID=pm.post_id and pm.meta_key ='post_city_id' and FIND_IN_SET( ".$_SESSION['post_city_id'].", pm.meta_value ) group by  p.ID");
+				}
 			}else{
-				$cats = $wpdb->get_col("select tr.object_id from $wpdb->terms c,$wpdb->term_taxonomy tt,$wpdb->term_relationships tr,$wpdb->posts p where ( {$tquery } ) and c.term_id=tt.term_id and tt.term_taxonomy_id=tr.term_taxonomy_id and tr.object_id=p.ID and p.post_status = 'publish' and p.post_type IN ('".$post_type."') group by  p.ID");
+				if($tquery !=''){
+					$cats = $wpdb->get_col("select tr.object_id from $wpdb->terms c,$wpdb->term_taxonomy tt,$wpdb->term_relationships tr,$wpdb->posts p where ( {$tquery } ) and c.term_id=tt.term_id and tt.term_taxonomy_id=tr.term_taxonomy_id and tr.object_id=p.ID and p.post_status = 'publish' and p.post_type IN ('".$post_type."') group by  p.ID");
+				}else{
+					$cats = $wpdb->get_col("select tr.object_id from $wpdb->terms c,$wpdb->term_taxonomy tt,$wpdb->term_relationships tr,$wpdb->posts p where c.term_id=tt.term_id and tt.term_taxonomy_id=tr.term_taxonomy_id and tr.object_id=p.ID and p.post_status = 'publish' and p.post_type IN ('".$post_type."') group by  p.ID");
+				}
 			}
 			$srch_arr = $cats;
 			//$where .= " ".$relation."  ($wpdb->posts.ID in ($srch_arr))";
@@ -148,7 +185,11 @@ function tmpl_get_search_term_query($keyword,$field){
 	
 			$cquery = tmpl_get_search_term_query($keyword,'comment_content');
 			
-			$comments = $wpdb->get_col("SELECT $wpdb->comments.comment_post_ID FROM $wpdb->comments,$wpdb->posts p WHERE comment_approved = '1' and ( {$cquery} ) and p.ID =$wpdb->comments.comment_post_ID and  p.post_type IN ('".$post_type."')");
+			if($cquery !=''){
+				$comments = $wpdb->get_col("SELECT $wpdb->comments.comment_post_ID FROM $wpdb->comments,$wpdb->posts p WHERE comment_approved = '1' and ( {$cquery} ) and p.ID =$wpdb->comments.comment_post_ID and  p.post_type IN ('".$post_type."')");
+			}else{
+				$comments = $wpdb->get_col("SELECT $wpdb->comments.comment_post_ID FROM $wpdb->comments,$wpdb->posts p WHERE comment_approved = '1' and p.ID =$wpdb->comments.comment_post_ID and  p.post_type IN ('".$post_type."')");
+			}
 			if(!empty($srch_arr)){
 				$srch_arr = array_merge($srch_arr,$comments);
 			}else{
@@ -183,8 +224,9 @@ function tmpl_get_search_term_query($keyword,$field){
 			$all_pids_arr1 = $all_pids_arr[0];
 		endif;
 		if(!empty($all_pids_arr1))
-			$where .= " ".$relation." ($wpdb->posts.ID in ($all_pids_arr1))";
-		
+			$where .= " $relation ($wpdb->posts.ID in ($all_pids_arr1)) ".$in_city;
+		else
+			$where .= $in_city;
 	}else{
 		if(!empty($srch_arr)){
 			if($cats ==''){ $cats = array(''); }
@@ -229,11 +271,12 @@ function tmpl_get_search_term_query($keyword,$field){
 			
 			if(is_array($srch_arr)){ $srch_arr = implode(',',$srch_arr);}
 			if(!empty($srch_arr) || $srch_arr !='')
-				$where .= " ".$relation." ($wpdb->posts.ID in ($srch_arr))";
-		}
-	}	
-	
-
+				$where .= " ".$relation." ($wpdb->posts.ID in ($srch_arr)) ".$in_city;
+			else
+				$where .= $in_city;
+		}else
+				$where .= $in_city;
+	}
     return $where;
  }
 ?>

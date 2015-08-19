@@ -20,13 +20,21 @@ function templatic_save_settings() {
    {		
 		/* POST BLOCKED IP ADDRESSES */
 			/* CALL A FUNCTION TO SAVE IP DATA */	
-		if(function_exists('insert_ip_address_data'))
-			insert_ip_address_data($_POST['block_ip']);
-		
-		//Saving general settings data: Start
+		if(function_exists('insert_ip_address_data')){
+			foreach(explode(',',$_POST['block_ip']) as $ips){
+				$ipsss[] = trim(preg_replace('/\s+/', '', $ips));
+			}
+			$ipsss = implode(',',$ipsss);
+			insert_ip_address_data($ipsss);
+		}
+		/*Saving general settings data: Start*/
 		
 			
-		if(isset($_REQUEST['tab']) && $_REQUEST['tab']=="security-settings"){
+		if(isset($_REQUEST['tab']) && $_REQUEST['tab']=="security-settings" || $_REQUEST['tab']==""){
+			$_POST['site_key']=($_POST['site_key'])?$_POST['site_key']:'';
+			$_POST['secret']=($_POST['secret'])?$_POST['secret']:'';
+			$_POST['comments_theme']=($_POST['comments_theme'])?$_POST['comments_theme']:'';
+			$_POST['captcha_language']=($_POST['captcha_language'])?$_POST['captcha_language']:'';
 			$_POST['user_verification_page']=isset($_POST['user_verification_page'])?$_POST['user_verification_page']:array();		
 			$_POST['templatic-is_allow_ssl']=isset($_POST['templatic-is_allow_ssl'])?$_POST['templatic-is_allow_ssl']:'No';
 		}	
@@ -52,31 +60,44 @@ function templatic_save_settings() {
 			$_POST['allow_autologin_after_reg']=isset($_POST['allow_autologin_after_reg'])?$_POST['allow_autologin_after_reg']:array();
 			
 			$_POST['templatic_view_counter']=isset($_POST['templatic_view_counter'])?$_POST['templatic_view_counter']:'No';
-			$_POST['pippoint_oncategory']=isset($_POST['pippoint_oncategory'])?$_POST['pippoint_oncategory']:'';
+			$_POST['pippoint_oncategory']=isset($_POST['pippoint_oncategory'])?$_POST['pippoint_oncategory']:'0';
 			
-			$_POST['google_map_full_width']=isset($_POST['google_map_full_width'])?$_POST['google_map_full_width']:array();
+			$_POST['google_map_show']=isset($_POST['google_map_show'])?$_POST['google_map_show']:'No';
+			$_POST['google_map_full_width']=isset($_POST['google_map_full_width'])?$_POST['google_map_full_width']:'No';
+			$_POST['google_map_hide']=isset($_POST['google_map_hide'])?$_POST['google_map_hide']:'No';
 			
-			$_POST['category_map']=isset($_POST['category_map'])?$_POST['category_map']:'';
-			$_POST['direction_map']=isset($_POST['direction_map'])?$_POST['direction_map']:'';
-			$_POST['category_googlemap_widget']=isset($_POST['category_googlemap_widget'])?$_POST['category_googlemap_widget']:'';
+			$_POST['direction_map']=isset($_POST['direction_map'])?$_POST['direction_map']:'No';
+			$_POST['category_googlemap_widget']=isset($_POST['category_googlemap_widget'])?$_POST['category_googlemap_widget']:'no';
 			
 			$_POST['templatic-category_custom_fields']=isset($_POST['templatic-category_custom_fields'])?$_POST['templatic-category_custom_fields']:'No';
 			
 			$_POST['claim_post_type_value']=isset($_POST['claim_post_type_value'])?$_POST['claim_post_type_value']:'';		
 			$_POST['listing_hide_excerpt']=(isset($_POST['listing_hide_excerpt']))?$_POST['listing_hide_excerpt']:array();		
 			$_POST['related_post_type']=(isset($_POST['related_post_type']))?$_POST['related_post_type']:array();
+			
+			$_POST['allow_facebook_login']=isset($_POST['allow_facebook_login'])?$_POST['allow_facebook_login']:'';
+			$_POST['facebook_key']=isset($_POST['facebook_key'])?$_POST['facebook_key']:'';
+			$_POST['facebook_secret_key']=isset($_POST['facebook_secret_key'])?$_POST['facebook_secret_key']:'';
+			$_POST['allow_google_login']=isset($_POST['allow_google_login'])?$_POST['allow_google_login']:'';
+			$_POST['google_key']=isset($_POST['google_key'])?$_POST['google_key']:'';
+			$_POST['google_secret_key']=isset($_POST['google_secret_key'])?$_POST['google_secret_key']:'';
+			$_POST['allow_twitter_login']=isset($_POST['allow_twitter_login'])?$_POST['allow_twitter_login']:'';
+			$_POST['twitter_key']=isset($_POST['twitter_key'])?$_POST['twitter_key']:'';
+			$_POST['twitter_secret_key']=isset($_POST['twitter_secret_key'])?$_POST['twitter_secret_key']:'';
 		}
 		foreach($_POST as $key=>$val)
 		{
 			$settings[$key] = ($_POST[$key] || $_POST[$key]==0) ? $_POST[$key] : '';
 			update_option('templatic_settings',$settings);
 		}
-		//Saving general settings data: Start
+		/* Saving general settings data: Start */
    }
+   
+   do_action('templatic_save_extra_settings');
 }
 
 
-// general setting tab filter
+/* general setting tab filter */
 add_filter('templatic_general_settings_tab', 'general_setting',10); 
 function general_setting($tabs ) {
 	
@@ -87,7 +108,7 @@ function general_setting($tabs ) {
 /*
  * Create email setting data action
  */
-add_action('templatic_general_data','email_setting_data',10);
+add_action('templatic_general_data_email','email_setting_data',10);
 function email_setting_data($column)
 {
 	$tmpdata = get_option('templatic_settings');		
@@ -95,10 +116,11 @@ function email_setting_data($column)
 	{
 		case 'email':	
 			?>
+		
 			<thead>
 				<tr>
 					<th class="first-th">
-						<label for="email_type" class="form-textfield-label"><?php echo __('Email Type',ADMINDOMAIN); ?></label>
+						<label for="email_type" class="form-textfield-label"><?php echo __('Email Templates',ADMINDOMAIN); ?></label>
 					</th>
 					
 					<th class="last-th">
@@ -138,19 +160,19 @@ function email_setting_data($column)
 								<td width="90%" style="line-height:10px">
 									<?php
 									$settings =   array(
-													'wpautop' => false, // use wpautop?
-													'media_buttons' => false, // show insert/upload button(s)
-													'textarea_name' => 'mail_friend_description', // set the textarea name to something different, square brackets [] can be used here
-													'textarea_rows' => '7', // rows="..."
+													'wpautop' => false, /* use wpautop?*/
+													'media_buttons' => false, /* show insert/upload button(s)*/
+													'textarea_name' => 'mail_friend_description', /* set the textarea name to something different, square brackets [] can be used here*/
+													'textarea_rows' => '7', /* rows="..."*/
 													'tabindex' => '',
-													'editor_css' => '<style>.wp-editor-wrap{width:640px;margin-left:0px;}</style>', // intended for extra styles for both visual and HTML editors buttons, needs to include the <style> tags, can use "scoped".
-													'editor_class' => '', // add extra class(es) to the editor textarea
-													'teeny' => true, // output the minimal editor config used in Press This
-													'dfw' => true, // replace the default fullscreen with DFW (supported on the front-end in WordPress 3.4)
-													'tinymce' => true, // load TinyMCE, can be used to pass settings directly to TinyMCE using an array()
-													'quicktags' => true // load Quicktags, can be used to pass settings directly to Quicktags using an array()
+													'editor_css' => '<style>.wp-editor-wrap{width:640px;margin-left:0px;}</style>', /* intended for extra styles for both visual and HTML editors buttons, needs to include the <style> tags, can use "scoped".*/
+													'editor_class' => '', /* add extra class(es) to the editor textarea*/
+													'teeny' => true, /* output the minimal editor config used in Press This*/
+													'dfw' => true, /* replace the default fullscreen with DFW (supported on the front-end in WordPress 3.4)*/
+													'tinymce' => true, /* load TinyMCE, can be used to pass settings directly to TinyMCE using an array()*/
+													'quicktags' => true /* load Quicktags, can be used to pass settings directly to Quicktags using an array()*/
 												);	
-									// default settings
+									/* default settings*/
 									if($tmpdata['mail_friend_description'] != ""){
 										$content = stripslashes($tmpdata['mail_friend_description']);
 									}else{
@@ -204,22 +226,22 @@ function email_setting_data($column)
 								<td width="90%" style="line-height:10px">
 									<?php
 									$settings =   array(
-													'wpautop' => false, // use wpautop?
-													'media_buttons' => false, // show insert/upload button(s)
-													'textarea_name' => 'send_inquirey_email_description', // set the textarea name to something different, square brackets [] can be used here
-													'textarea_rows' => '7', // rows="..."
+													'wpautop' => false, /* use wpautop?*/
+													'media_buttons' => false, /* show insert/upload button(s)*/
+													'textarea_name' => 'send_inquirey_email_description', /* set the textarea name to something different, square brackets [] can be used here*/
+													'textarea_rows' => '7', /* rows="..."*/
 													'tabindex' => '',
-													'editor_css' => '<style>.wp-editor-wrap{width:640px;margin-left:0px;}</style>', // intended for extra styles for both visual and HTML editors buttons, needs to include the <style> tags, can use "scoped".
-													'editor_class' => '', // add extra class(es) to the editor textarea
-													'teeny' => true, // output the minimal editor config used in Press This
-													'dfw' => true, // replace the default fullscreen with DFW (supported on the front-end in WordPress 3.4)
-													'tinymce' => true, // load TinyMCE, can be used to pass settings directly to TinyMCE using an array()
-													'quicktags' => true // load Quicktags, can be used to pass settings directly to Quicktags using an array()
+													'editor_css' => '<style>.wp-editor-wrap{width:640px;margin-left:0px;}</style>', /* intended for extra styles for both visual and HTML editors buttons, needs to include the <style> tags, can use "scoped".*/
+													'editor_class' => '', /* add extra class(es) to the editor textarea*/
+													'teeny' => true, /* output the minimal editor config used in Press This*/
+													'dfw' => true, /* replace the default fullscreen with DFW (supported on the front-end in WordPress 3.4)*/
+													'tinymce' => true, /* load TinyMCE, can be used to pass settings directly to TinyMCE using an array()*/
+													'quicktags' => true /* load Quicktags, can be used to pass settings directly to Quicktags using an array()*/
 												);	
 									if($tmpdata['send_inquirey_email_description'] != ""){
 										$content = stripslashes($tmpdata['send_inquirey_email_description']);
 									}else{
-										$content = '<p>Hello [#to_name#],</p><p>This is an inquiry regarding the following post: <b>[#post_title#]</b></p><p><b>Subject: [#frnd_subject#]</b></p><p>Link : <b>[#post_title#]</b> </p><p>Contact number : [#contact#]</p><p>[#frnd_comments#]</p><p>Thank you,<br />[#your_name#]</p>';
+										$content = '<p>Hello [#to_name#],</p><p>'.__('This is an inquiry regarding the following post',DOMAIN).': <b>[#post_title#]</b></p><p><b>'.__('Subject',DOMAIN).': [#frnd_subject#]</b></p><p>'.__('Link',DOMAIN).' : <b>[#post_title#]</b> </p><p>'.__('Contact number',DOMAIN).' : [#contact#]</p><p>[#frnd_comments#]</p><p>'.__('Thank you',DOMAIN).',<br />[#your_name#]</p>';
 									}
 									wp_editor( $content, 'send_inquirey_email_description', $settings);
 								?>
@@ -237,6 +259,7 @@ function email_setting_data($column)
 								</td>
 							</tr>
 						</table>
+						
 					</td>
 				</tr>
 <?php	break;
@@ -248,6 +271,7 @@ function email_setting_data($column)
  */
 @$tabs = apply_filters('templatic_general_settings_tab',$tabs);	
 echo '<div class="wrap"><div id="icon-options-general" class="icon32"><br></div>'; 
+
 ?>
 <h2><?php echo __('Tevolution Settings',ADMINDOMAIN);?></h2>
 <h2 class="nav-tab-wrapper">
@@ -264,38 +288,7 @@ foreach( $tabs as $tab => $name ){
 }
 echo '</h2>';
 /* Finish the general setting menu main tabs */
-/*
- * create the general setting sub tabs
- */
-if($current_tab=='security-settings'):
-	$i=0;	
-	/*Add Filter for create the general setting sub tab for Captcha setting */	 
-	
-	add_filter('templatic_general_settings_tab', 'email_setting_tab',12); 
-	function email_setting_tab($tabs){
-		$tabs['email']='Email Settings';
-		return $tabs;
-	}
-	
-	/*Apply filter for create the general setting subtabs */
-	/*
-	 * if you want to create new subtabs in general setting menu then use 'templatic_general_settings_subtabs' filter hook function and pass the subtabs array in filter hook function and return subtabs array.
-	 */	 
-	@$sub_tabs = apply_filters('templatic_general_settings_subtabs',$sub_tabs);	
-	
-	if(isset($sub_tabs) && $sub_tabs!=''){
-	foreach($sub_tabs as $key=>$value)
-	{	
-		if($i==0)
-			$sab_key=$key;				
-		$current=isset($_REQUEST['sub_tab'])?$_REQUEST['sub_tab']:$sab_key;
-		$class = (isset($current) && ($key == $current)) ? ' nav-tab-active' : '';				
-		echo "<a id='$key' class='nav-tab$class' href='?page=templatic_settings&tab=general&sub_tab=$key'>$value</a>";	
-		$i++;
-	}
-	}
-	
-endif;
+
 
 /* Display the message */
 if(isset($_REQUEST['updated']) && $_REQUEST['updated'] == 'true' ): ?>
@@ -304,58 +297,78 @@ if(isset($_REQUEST['updated']) && $_REQUEST['updated'] == 'true' ): ?>
 	</div>
 <?php endif; ?>
 <!--Finish the display message-->
+
 <div class="templatic_settings">
-    <form method="post" class="form_style" action="<?php admin_url( 'themes.php?page=templatic_settings' ); ?>">
+	<?php
+	
+	if(isset($_REQUEST['tab']) && $_REQUEST['tab'] =='email' ){
+		$frm_id = "email_setting_form";  ?>
+		<p class="tevolution_desc">
+			<?php echo __('Use this section to manage outgoing emails and content messages generated by Tevolution. The outgoing ("From") email address can be changed from WordPress ',ADMINDOMAIN);?>
+			<a href="<?php echo admin_url('options-general.php');?>"><?php echo __("General Settings",ADMINDOMAIN);?></a>
+		</p>
+	<?php
+	}else{
+		$frm_id = "general_setting_form";
+	}
+	?>
+    <form method="post" name="general_setting_form" id="<?php echo $frm_id; ?>" class="form_style" action="<?php admin_url( 'themes.php?page=templatic_settings' ); ?>">
+	
 	<?php 
 		$tmpdata = get_option('templatic_settings');
 		if(isset($_REQUEST['tab']) && $_REQUEST['tab'] =='email'){ 
 		?>
-		<table class="form-table email-wide-table widefat">
+		<div class="wp-filter tev-sub-menu" >
+			<ul id="tev_email_settings" class="filter-links">
+				<li class="active"><a id="email_settings" href="javascript:void(0);" class="current"><?php echo __('Emails',ADMINDOMAIN); ?></a></li>
+				<li><a id="notifications_settings" href="javascript:void(0);"><?php echo __('Notifications',ADMINDOMAIN); ?></a></li>
+			</ul>
+		</div>
+		<!-- Email settings start -->
+		<div id="email_settings" class="tmpl-email-settings active-tab">
+		<table class="form-table email-wide-table email-settings">
 		<tbody>
-			       	<tr>					
-                    <td>
-						<p class="tevolution_desc">
-							<?php echo __('Use this section to manage outgoing emails and messages generated by Tevolution. The outgoing ("From") email address can be changed from',ADMINDOMAIN);?>
-							<a href="<?php echo admin_url('options-general.php');?>"><?php echo __("General Settings",ADMINDOMAIN);?></a>
-						</p>
-                       <table>						
-							<tr>
-                                <th><label><?php echo __('Function for sending email',ADMINDOMAIN);?></label></th>
-                                <td>
-                                    <div class="input_wrap"> <label for="php_mail"><input type="radio" id="php_mail" name="php_mail" value="php_mail" <?php if(isset($tmpdata['php_mail']) && $tmpdata['php_mail'] == 'php_mail'){?>checked="checked"<?php }?> />&nbsp;<?php echo __('PHP - mail()',ADMINDOMAIN);?></label>&nbsp;&nbsp;&nbsp;&nbsp;
-									<label for="wp_smtp"><input type="radio" id="wp_smtp" name="php_mail" <?php if(isset($tmpdata['php_mail']) && $tmpdata['php_mail'] == 'wp_smtp'){?> checked="checked"<?php }?> value="wp_smtp" />&nbsp;<?php echo __('WordPress - wp_mail()',ADMINDOMAIN);?>
-                                    </label></div>
-                                   <p class="description"><?php echo __("Tevolution uses mail() by default. Change the setting to wp_mail() only if you're using a third-party plugin for modifying outgoing emails.",ADMINDOMAIN); ?></p>
-                                </td>
-							</tr>
-                        </table>
-                  
-                    	 <table >	
-                         	<tr>
-                            	<th><label><?php echo __('Enable additional forms',ADMINDOMAIN);?></label></th>
-                                <td>
-								<div class="input_wrap"> <label for="send_to_frnd"><input type="checkbox" id="send_to_frnd" name="send_to_frnd" value="send_to_frnd" <?php if(isset($tmpdata['send_to_frnd']) && $tmpdata['send_to_frnd'] == 'send_to_frnd'){?>checked="checked"<?php }?> />&nbsp;<?php echo __('Send to Friend',ADMINDOMAIN);?></label>&nbsp;&nbsp;&nbsp;&nbsp;<br/><label for="send_inquiry"><input type="checkbox" id="send_inquiry" name="send_inquiry" <?php if(isset($tmpdata['send_inquiry']) && $tmpdata['send_inquiry'] == 'send_inquiry'){?> checked="checked"<?php }?> value="send_inquiry" /><?php echo __('Send Inquiry',ADMINDOMAIN);?>
-								</label>
-                                </div>
-								<p class="description"><?php echo __('These forms appear as links on detail pages. They open on click.',ADMINDOMAIN); ?></p>
-							</td>
-                            </tr>
-                         </table>
-                    </td>
-                </tr>
-				</tbody>
-	</table>
+			<tr>					
+			<td>
+			
+			<table>						
+				<tr>
+					<th><label><?php echo __('Outgoing Emails Method',ADMINDOMAIN);?></label></th>
+					<td>
+						<div class="input_wrap"> <label for="php_mail"><input type="radio" id="php_mail" name="php_mail" value="php_mail" <?php if(isset($tmpdata['php_mail']) && $tmpdata['php_mail'] == 'php_mail'){?>checked="checked"<?php }?> />&nbsp;<?php echo __('PHP - mail()',ADMINDOMAIN);?></label>&nbsp;&nbsp;&nbsp;&nbsp;
+						<label for="wp_smtp"><input type="radio" id="wp_smtp" name="php_mail" <?php if(isset($tmpdata['php_mail']) && $tmpdata['php_mail'] == 'wp_smtp'){?> checked="checked"<?php }?> value="wp_smtp" />&nbsp;<?php echo __('WordPress - wp_mail()',ADMINDOMAIN);?>
+						</label></div>
+					   <p class="description"><?php echo __("Tevolution uses mail() by default. Change the setting to wp_mail() only if you're using a third-party plugin for modifying outgoing emails.",ADMINDOMAIN); ?></p>
+					</td>
+				</tr>
+			</table>
+
+			 <table >	
+				<tr>
+					<th><label><?php echo __('Detail Page Forms',ADMINDOMAIN);?></label></th>
+					<td>
+					<div class="input_wrap"> <label for="send_to_frnd"><input type="checkbox" id="send_to_frnd" name="send_to_frnd" value="send_to_frnd" <?php if(isset($tmpdata['send_to_frnd']) && $tmpdata['send_to_frnd'] == 'send_to_frnd'){?>checked="checked"<?php }?> />&nbsp;<?php echo __('Send to Friend',ADMINDOMAIN);?></label>&nbsp;&nbsp;&nbsp;&nbsp;<br/><label for="send_inquiry"><input type="checkbox" id="send_inquiry" name="send_inquiry" <?php if(isset($tmpdata['send_inquiry']) && $tmpdata['send_inquiry'] == 'send_inquiry'){?> checked="checked"<?php }?> value="send_inquiry" /><?php echo __('Send Inquiry',ADMINDOMAIN);?>
+					</label>
+					</div>
+				</td>
+				</tr>
+                
+                <tr>
+				<td colspan="2">
+					<p style="clear: both;" class="submit">
+				  <input type="submit" value="<?php echo __('Save All Settings',ADMINDOMAIN);?>" class="button button-primary button-hero" name="Submit">
+				  <input type="hidden" value="Y" name="settings-submit">
+				</p>
+				</td>
+				</tr>
+			 </table>
+			</td>
+			</tr>
+		</tbody>
+		</table>
 		
 	<?php	}
-	
-	if(isset($_REQUEST['tab']) && $_REQUEST['tab'] =='email' ){
-		$tclass= 'widefat post email-wide-table';
-	}else{
-		$tclass= 'email-wide-table form-table';
-	}
-	?>
-    <table class="<?php echo $tclass; ?>">
-    <?php
+
 		$j=0;
 		$i=0;
     	foreach( $tabs as $tab => $name ){
@@ -363,22 +376,27 @@ if(isset($_REQUEST['updated']) && $_REQUEST['updated'] == 'true' ): ?>
 				$tab_key=$tab;					
 			
 			if($current_tab=='general'): /* Display the general setting subtabs menu */
-				//display general s etting tab wise displaydata
+				/*display general setting tab wise displaydata*/
 				do_action('templatic_general_setting_data');
 			endif;
-			if(isset($_REQUEST['tab']) && $_REQUEST['tab']==$tab):				
-				do_action('templatic_general_data',$tab); /* add action hook 'templatic_general_data' for show the general setting tabs data. pass the general setting tabs key. */		
+			if(isset($_REQUEST['tab']) && $_REQUEST['tab']==$tab):	
+				if($tab =='email'){
+				?>
+				<table class="widefat post email-wide-table">
+					<?php
+					do_action('templatic_general_data_'.$tab,$tab); /* add action hook 'templatic_general_data' for show the general setting tabs data. pass the general setting tabs key. */	
+					?>
+				</table>
+				<?php
+				}else{
+					do_action('templatic_general_data_'.$tab,$tab); /* add action hook 'templatic_general_data' for show the general setting tabs data. pass the general setting tabs key. */					
+				}
 			endif;
+			
 			$tab_key="";
 			$current_tab='';
 			$j++;
 		}	
     ?>
-    	</table>
-    <p class="submit" style="clear: both;">
-      <input type="submit" name="Submit"  class="button-primary" value="<?php echo __('Save All Settings',ADMINDOMAIN);?>" />
-      <input type="hidden" name="settings-submit" value="Y" />
-    </p>
     </form>
-</div>
 </div>

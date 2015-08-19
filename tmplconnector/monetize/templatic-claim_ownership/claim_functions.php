@@ -1,6 +1,12 @@
 <?php
-/* NAME :ADD A DASHBOARD METABOX
-DESCRIPTION : THIS FUNCTION WILL ADD A METABOX IN WORDPRESS DASHBOARD */
+/*
+ * function related to claim any post
+ */
+global $pagenow;
+/* 
+	This function will add a metabox for latest claims listing in word press dashboard 
+*/
+
 function add_claim_dashboard_metabox()
 {
 	global $wp_meta_boxes,$current_user;
@@ -9,14 +15,12 @@ function add_claim_dashboard_metabox()
 		@$wp_meta_boxes['dashboard']['side']['core']['dashboard_secondary'];
 	}
 }
-/* EOF - CLAIM DASHBOARD METABOX */
 
-/* NAME : FETCH CLAIMS
-DESCRIPTION : THIS FUNCTION FETCHES CLAIMS IN A METABOX DISPLAYING ON WORDPRESS DASHBOARD */
+/*  this function fetches claims in a metabox displaying on wordpress dashboard */
 function fetch_claims()
 {
 	global $wpdb,$claim_db_table_name; ?>
-	<script type="text/javascript">
+	<script type="text/javascript" async >
 	/* <![CDATA[ */
 	function confirmSubmit(str) {
 			var answer = confirm("<?php echo DELETE_CONFIRM_ALERT; ?>");
@@ -35,6 +39,10 @@ function fetch_claims()
 	}
 	/* ]]> */
 	</script>
+                         <!--this style added for hide loader in owner claim at dashboard-->
+                        <style type="text/css">
+                              body.index-php #TB_window{background: #fcfcfc !important;}
+                         </style>
 	<?php /* DISPLAY CLAIM DATA IN TABLE */
 	echo "<table class='widefat'>
 	<thead>
@@ -44,7 +52,7 @@ function fetch_claims()
 		<th>".STATUS."</th>
 		<th>".ACTION_TEXT."</th>
 	</tr></thead>";
-	$claim_post_ids = $wpdb->get_col("SELECT ID FROM $wpdb->posts WHERE post_type = 'claim'");	
+	$claim_post_ids = $wpdb->get_col("SELECT ID FROM $wpdb->posts WHERE post_type = 'claim' ORDER BY post_date DESC LIMIT 0,7");	
 	if(count($claim_post_ids) != 0)
 	{
 		$counter =0;
@@ -52,6 +60,7 @@ function fetch_claims()
 			$data = get_post_meta($claim_post_id,'post_claim_data',true);			
 			/* FETCH CLAIM DATA */			
 			$post_id = $data['post_id'];
+			$auth_data= get_userdata($data['author_id']);
 			$post_title = $data['post_title'];
 			$claimer_name = $data['claimer_name'];
 			$name = str_word_count($claimer_name,1);
@@ -69,22 +78,49 @@ function fetch_claims()
                     <td><?php echo $claimer_name;?>: <?php echo $claimer_email;?></td>                    
                	<?php if($status == 'approved' && get_post_meta($post_id,'is_verified',true) == 1) :?>
                     	<td id="verified"><?php echo YES_VERIFIED; ?></td>
-                    <?php elseif($status == 'declined') : ?>   
-                    	<td id="declined"><?php echo DECLINED; ?></td>
+                    <?php elseif($status == 'declined') : ?>
+						<td id="declined"><?php echo DECLINED; ?></td>
                     <?php else : ?>
                     	<td id="unapproved"><?php echo PENDING; ?></td>
                     <?php endif;?>
                     <td>
-                    	<a href="javascript:void(0);claimer_showdetail('<?php echo $claim_post_id;?>');"><img src="<?php echo plugin_dir_url( __FILE__ ); ?>images/details.png" alt="<?php echo DETAILS_CLAIM; ?>" title="<?php echo DETAILS_CLAIM; ?>" border="0" /></a> &nbsp;&nbsp;
+                    	<a href="#TB_inline?width=600&height=600&inlineId=claimed_win_<?php echo $claim_post_id;?>" id="claimed_w_<?php echo $claim_post_id;?>" class="thickbox" title="<?php echo __('View claim details',ADMINDOMAIN);  ?>"><i class="fa fa-info"></i></a>&nbsp;&nbsp;
 						<?php if($status == 'approved' && get_post_meta($post_id,'is_verified',true) == 1){ ?>
-							<a href="<?php echo site_url().'/wp-admin/post.php?post='.$post_id.'&action=edit&verified=no&clid='.$claim_post_id;?>" title="<?php echo VERIFY_CLAIM; ?>"><img style="width:16px; height:16px;" src="<?php echo plugin_dir_url( __FILE__ ); ?>images/close.gif" alt="<?php echo VERIFY_CLAIM; ?>" border="0" /></a>&nbsp;&nbsp;
+							<a href="<?php echo site_url().'/wp-admin/post.php?post='.$post_id.'&action=edit&decline=yes&clid='.$claim_post_id;?>" title="<?php echo DECLINE_CLAIM; ?>"><i class="fa fa-close"></i></a>&nbsp;&nbsp;
 						<?php }else{ ?>
-							<a href="<?php echo site_url().'/wp-admin/post.php?post='.$post_id.'&action=edit&verified=yes&clid='.$claim_post_id .'&user='.$name[0]?>" title="<?php echo VERIFY_CLAIM; ?>"><img style="width:16px; height:16px;" src="<?php echo plugin_dir_url( __FILE__ ); ?>images/accept.png" alt="<?php echo VERIFY_CLAIM; ?>" border="0" /></a>&nbsp;&nbsp;
+							<a href="<?php echo site_url().'/wp-admin/post.php?post='.$post_id.'&action=edit&verified=yes&clid='.$claim_post_id .'&user='.$claimer_name?>" title="<?php echo VERIFY_CLAIM; ?>"><i class="fa fa-check-circle"></i></a>&nbsp;&nbsp;
 						<?php } ?>
-                         <a href="javascript:void(0);" onclick="return confirmSubmit(<?php echo $claim_post_id; ?>);" title="<?php echo DELETE_CLAIM; ?>"><img src="<?php echo plugin_dir_url( __FILE__ ); ?>images/delete.png" alt="<?php echo DELETE_CLAIM; ?>" border="0" /></a>
+                         <a href="javascript:void(0);" onclick="return confirmSubmit(<?php echo $claim_post_id; ?>);" title="<?php echo DELETE_CLAIM; ?>"><i class="fa fa-minus-circle"></i></a>
                     </td>
                </tr>
-			<tr id='<?php echo "comments_".$claim_post_id; ?>' style='display:none; padding:5px;'><td colspan="7"><?php echo $msg; ?> </td></tr>
+
+			<div id="claimed_win_<?php echo $claim_post_id; ?>" class="clm_cls" style="display:none;width:400px; height:400px;">
+				
+				<h2><?php echo __('Author Details',ADMINDOMAIN); ?></h2>
+				<p class="tev_description">
+					<?php echo  "<strong>".__('Name',ADMINDOMAIN)."</strong>"; echo ": ".$auth_data->display_name; ?>
+				</p>
+				<p class="tev_description">
+					<?php echo  "<strong>".__('Email',ADMINDOMAIN)."</strong>"; echo ": ".$auth_data->user_email; ?>
+				</p>
+				
+				
+				<h2><?php echo __('Claimer Details',ADMINDOMAIN); ?></h2>
+				<p class="tev_description">
+					<?php echo "<strong>".__('Name',ADMINDOMAIN)."</strong>"; echo ": ".$data['claimer_name']; ?>
+				</p>
+				<p class="tev_description">
+					<?php echo "<strong>".__('Email',ADMINDOMAIN)."</strong>"; echo ": ".$data['claimer_email']; ?>
+				</p>
+				<p class="tev_description">
+					<?php echo "<strong>".__('Conatct No.',ADMINDOMAIN)."</strong>"; echo ": ".$data['claimer_contact']; ?>
+				</p>
+				<p class="tev_description">
+					<?php echo "<strong>".__('Message',ADMINDOMAIN)."</strong>"; echo ": ".$data['claim_msg']; ?>
+				</p>
+				<?php do_action('tmpl_extra_claiming_details',$data); ?>
+			</div>
+	
 		<?php
 		$c = $counter ++;
 		endforeach;
@@ -96,16 +132,15 @@ function fetch_claims()
 	echo "</table>";
 }
 
-/* DELETING THE CLAIM ON CLICK OF DELETE BUTTON OF DASHBOARD METABOX */
+/* deleting the claim on click of delete button of dashboard metabox */
 if(isset($_REQUEST['poid']) && @$_REQUEST['poid'] != "")
 {
 	global $wpdb,$post;
 	$vclid = $_REQUEST['poid'];
 	wp_delete_post($vclid,true);
 }
-/* EOF - FETCH CLAIMS IN DASHBOARD METABOX */
-/* NAME : ADD METABOX IN POSTS
-DESCRIPTION : THIS FUNCTION WILL ADD A METABOX ON ADD/EDIT PAGE OF EVERY POST */
+/* eof - fetch claims in dashboard metabox */
+/* this function will add a metabox on add/edit page of every post */
 function add_claim_metabox_posts ()
 {
 	global $post,$wpdb,$post_id;	
@@ -128,7 +163,7 @@ function add_claim_metabox_posts ()
 		}
 	}
 }
-/* EOF - ADD METABOX IN POSTS */
+/* while approve the claim for recurring events insert the recurring post as per start date and end date */
 function add_verified_user_recurring($post_id)
 {
 	$args =array( 'post_type'      => 'event',
@@ -170,10 +205,9 @@ function add_verified_user_recurring($post_id)
 		wp_reset_query();
 	}
 }
-/* NAME : FETCH META OPTIONS
-DESCRIPTION : THIS FUNCTION WILL FETCH THE CLAIM DATA IN POST'S METABOX */
+/*  this function will fetch the claim data in post add/edit page */
 function fetch_meta_options()
-{	
+{
 	global $wpdb,$post;
 	$claim_status = "";	
 	/* VERIFY THE USER */
@@ -189,7 +223,7 @@ function fetch_meta_options()
 			$title = get_the_title(@$post_id);
 			$claim_post_id =$post_id; /* claimed post id */
 			$claim_post_type = array(
-				 'post_title' => 'Claim for - '.$title.'',
+				 'post_title' => __('Claim for - ',ADMINDOMAN).$title.'',
 				 'post_content' => ''.$claim_post_id.'',
 				 'post_excerpt' => 'approved',
 				 'post_status' => 'publish',
@@ -211,7 +245,7 @@ function fetch_meta_options()
 				    'claim_status' => 'approved'
 				);		
 			update_post_meta($claim_id,'post_claim_data',$claim_post); /* UPDATING THE WHOLE CLAIM DATA ARRAY */
-			$clid = $claim_id; // claim id
+			$clid = $claim_id;
 			
 	
 			add_post_meta($post_id,'is_verified',1);
@@ -220,8 +254,9 @@ function fetch_meta_options()
 		}
 		/* End verify the claim */
 		$_REQUEST['user'];
-		/* UPDATE CLAIM STATUS WHEN THE ADMIN VERIFIES THE AUTHOR */
+		/* update claim status when the admin verifies the author */
 		$data = get_post_meta($clid, 'post_claim_data',true);
+		
 		$post_id = $data['post_id'];
 		$request_uri = $data['request_uri'];
 		$link_url = $data['link_url'];
@@ -244,7 +279,7 @@ function fetch_meta_options()
 				    'claimer_contact' => $claimer_contact ,
 				    'claim_msg' => $claim_msg,
 				    'claim_status' => 'approved'
-				);		
+				);			
 		update_post_meta($clid,'post_claim_data',$claim_post); /* UPDATING THE WHOLE CLAIM DATA ARRAY */
 		
 		$event_type = get_post_meta($post_id,'event_type',true);
@@ -252,17 +287,41 @@ function fetch_meta_options()
 		{
 			add_verified_user_recurring($post_id);
 		}
+		/* post does not verify from claim listing */
+		update_post_meta($post_id,'is_verified',1);
 		
-		add_post_meta($post_id,'is_verified',1);
-		if(isset($sclid) && $sclid!=''){
-			update_post_meta($claim_post_id,'is_verified',1);
-		}else{
-			update_post_meta($claim_post_id,'is_verified',0);
-		}
 		$wpdb->update( $wpdb->posts, array('post_excerpt' => 'approved'), array('ID' => $clid));
-		if ($claimer_id != '' && $claimer_id != '0' && $_REQUEST['user']){
-			add_verified_user($clid); /* CALL A FUNCTION TO ADD VERIFIED USER */
-		}		
+
+		if ( get_option('users_can_register') ):
+			if (($claimer_id == '' || $claimer_id == '0' ) && $_REQUEST['user']){
+				$post_aurhot_id = add_verified_user($clid); /* call a function to add verified user */
+			}
+			else
+			{
+				if(isset($_REQUEST['verify']) && $_REQUEST['verify'] == 'self')
+				{
+					add_verified_user($post_id); /* call a function to add verified user */	
+					$post_aurhot_id = $current_user->ID;
+				}
+				else
+				{
+					$post_aurhot_id = add_verified_user($clid); /* call a function to add verified user */
+				}
+			}
+		else:
+			$post_aurhot_id = add_verified_user($clid); /* call a function to add verified user */
+		endif;
+		/* select author name in drop down which have been selected. */
+
+		?>
+        <script type="text/javascript" async>
+			jQuery(window).load(function(e) {
+				var author = "<?php echo $post_aurhot_id; ?>";
+				jQuery("#post_author_override option[value='"+author+"']").attr('selected', 'selected');
+            });
+		</script>
+        <?php
+
 	}
 	elseif((isset($_REQUEST['verified']) && $_REQUEST['verified'] == 'no') && (isset($_REQUEST['clid']) && $_REQUEST['clid']))
 	{
@@ -278,7 +337,7 @@ function fetch_meta_options()
 		global $current_user;
 		$clid = $_REQUEST['clid'];
 		$_REQUEST['user'];
-		/* UPDATE CLAIM STATUS WHEN THE ADMIN DECLINES THE AUTHOR */
+		/* update claim status when the admin declines the author */
 		$data = get_post_meta($clid, 'post_claim_data',true);
 		$post_id = $data['post_id'];
 		$request_uri = $data['request_uri'];
@@ -292,16 +351,16 @@ function fetch_meta_options()
 		$claim_status = $data['claim_status'];
 		$claim_msg = $data['claim_msg'];
 		$post = array('post_id' => $post_id,
-					  'request_uri' => $request_uri,
-					  'link_url' => $link_url,
-					  'claimer_id' => $claimer_id,
-					  'author_id' => $author_id,
-					  'post_title' => $post_title,
-					  'claimer_name' => $claimer_name,
-					  'claimer_email' => $claimer_email,
-					  'claimer_contact' => $claimer_contact ,
-					  'claim_msg' => $claim_msg,
-					  'claim_status' => 'declined');
+                                                                                'request_uri' => $request_uri,
+                                                                                'link_url' => $link_url,
+                                                                                'claimer_id' => $claimer_id,
+                                                                                'author_id' => $author_id,
+                                                                                'post_title' => $post_title,
+                                                                                'claimer_name' => $claimer_name,
+                                                                                'claimer_email' => $claimer_email,
+                                                                                'claimer_contact' => $claimer_contact ,
+                                                                                'claim_msg' => $claim_msg,
+                                                                                'claim_status' => 'declined');
 		update_post_meta($clid,'post_claim_data',$post); /* UPDATING THE WHOLE CLAIM DATA ARRAY */
 		if(isset($sclid) && $sclid!=''){
 			update_post_meta($post_id,'is_verified',1);
@@ -318,9 +377,8 @@ function fetch_meta_options()
 		global $post;
 	
 		$post_id = $data['post_id'];
-		echo "<p>1 user has claimed for this post.</p>";
+		echo "<p>".__('1 user has claimed for this post.',ADMINDOMAIN)."</p>";
 		?>
-		<!-- <h4><img src="<?php //echo plugin_dir_url( __FILE__ ); ?>images/verified.png" alt="<?php //echo YES_VERIFIED;?>" border="0" align="middle" style="position:relative; top:-4px; margin-right:5px;" /> <?php //echo POST_VERIFIED_TEXT; ?></h4> -->
 		
 		<a href="<?php echo site_url().'/wp-admin/post.php?post='.$_REQUEST['post'].'&action=edit&verified=no&clid='.$clid;?>" title="<?php echo REMOVE_CLAIM_REQUEST; ?>"><?php echo REMOVE_CLAIM_REQUEST; ?></a>
 	<?php 
@@ -334,19 +392,19 @@ function fetch_meta_options()
 		if(count($post_claim_id) == '')
 		{ 
 			echo "<p>" . NO_CLAIM . "</p>"; ?>
-			<a href="<?php echo site_url().'/wp-admin/post.php?post='.$post->ID.'&action=edit&verified=yes&sclid=1&user='.$current_user->ID;?>" title="<?php echo __('Set as verify',ADMINDOMAIN); ?>" class="verify_this">
+			<a href="<?php echo site_url().'/wp-admin/post.php?post='.$post->ID.'&verify=self&action=edit&verified=yes&sclid=1&user='.$current_user->ID;?>" title="<?php echo __('Set as verify',ADMINDOMAIN); ?>" class="verify_this">
 					<strong><?php echo __('Self Verify',ADMINDOMAIN); ?></strong>
 			</a>
 			<?php
-			
+			do_action('tmpl_extra_claim_details');
 		}
 		else
 		{
-			/* CONDITION TO DISPLAY THE COUNT OF CLAIMS IN METABOX */
+			/* condition to display the count of claims in metabox */
 			if(count($post_claim_id) == 1) :
-				echo "<p>" . count($post_claim_id). " user has claimed for this post.</p>";
+				echo "<p>" . count($post_claim_id). " ".__('user has claimed for this post.',DOMAIN)."</p>";
 			else :
-				echo "<p>" . count($post_claim_id). " users have claimed for this post.</p>";
+				echo "<p>" . count($post_claim_id). " ".__('users have claimed for this post.',DOMAIN)."</p>";
 			endif;
 			?>
           
@@ -359,39 +417,39 @@ function fetch_meta_options()
 					$name = str_word_count($claim_user['claimer_name'],1);?>
 					<ul>
 						<li>
-							<a href="<?php echo site_url().'/wp-admin/post.php?post='.$post->ID.'&action=edit&verified=yes&clid='.$val.'&user='.$name[0];?>" title="<?php echo VERIFY_CLAIM; ?>" class="verify_this">
+							<a id="verify_claim" href="<?php echo site_url().'/wp-admin/post.php?post='.$post->ID.'&action=edit&verified=yes&clid='.$val.'&user='.$name[0];?>" title="<?php echo VERIFY_CLAIM; ?>" class="verify_this">
 								<strong><?php echo VERIFY_CLAIM; ?></strong>
 							</a> / 
-							<a href="<?php echo site_url().'/wp-admin/post.php?post='.$post->ID.'&action=edit&decline=yes&clid='.$val.'&user='.$name[0];?>" title="<?php echo DECLINE_CLAIM; ?>" class="verify_this">
+							<a id="decline_claim" href="<?php echo site_url().'/wp-admin/post.php?post='.$post->ID.'&action=edit&decline=yes&clid='.$val.'&user='.$name[0];?>" title="<?php echo DECLINE_CLAIM; ?>" class="verify_this">
 								<strong><?php echo DECLINE_CLAIM; ?></strong>
 							</a>
 					<?php $current_link = get_author_posts_url(@$user_data->ID);
 						if($user_data != '' && $data['claimer_id'] != '0') {?>
-							<a href="<?php echo $current_link; ?> "><?php echo $user_data->display_name; ?></a>
+							<a href="<?php echo $current_link; ?>"><?php echo $user_data->display_name; ?></a>
 					<?php } else { echo $name[0]; }?>
 						</li>
 					</ul>
                     <?php
+					do_action('tmpl_extra_claim_details');
 					else:
 					?>
                       <a href="<?php echo site_url().'/wp-admin/post.php?post='.$_REQUEST['post'].'&action=edit&verified=no&clid='.$val;?>" title="<?php echo REMOVE_CLAIM_REQUEST; ?>"><?php echo REMOVE_CLAIM_REQUEST; ?></a>
                     <?php
 					
-					endif;// Finish claim status pending if condition 
-		endforeach; // finish post claim id foreach
+					endif; /* Finish claim status pending if condition  */
+		endforeach; /* finish post claim id foreach */
 		} 
 	}
+	
 }
-/* EOF - FETCH META OPTIONS */
-/* NAME : ADD THE VERIFIED USER
-DESCRIPTION : THIS FUNTION WILL ADD A USER WHO HAS BEEN VERIFIED FOR THE CLAIMED POST */
+/* this funtion will add a user who has been verified for the claimed post */
 function add_verified_user($clid)
 {
 	global $wpdb,$post;
 	$data = get_post_meta($clid,'post_claim_data',true);
 	get_post_meta($clid,'is_verified',true);
 	$user_name = $data['claimer_name'];
-	$name = str_word_count($user_name,1);
+	$name = $user_name;
 	$user_email = $data['claimer_email'];
 	$get_user_data_by_id = '';
 	$user_has_flag = 0;
@@ -405,15 +463,15 @@ function add_verified_user($clid)
 		$post_title = $get_post_data->post_title;
 	}
 	
-	if( $name[0] !="" ){
-		$get_current_user = get_user_by( 'login', $name[0] );
+	if( $user_name !="" ){
+		$get_current_user = get_user_by( 'login', $user_name );
 		
 		if( @$get_current_user->ID > 0 ){
 			$get_user_data_by_id = @$get_current_user->ID;
 			$user_has_flag = 1;
 		}else{
 			$user_pass = wp_generate_password(12,false);
-			$get_user_data_by_id = wp_create_user( $name[0], $user_pass, $user_email );
+			$get_user_data_by_id = wp_create_user( $user_name, $user_pass, $user_email );
 			$user_has_flag = 0;
 		}
 	}
@@ -421,26 +479,26 @@ function add_verified_user($clid)
 	{
 		$user_info = get_userdata($get_user_data_by_id);
 		$user_login = $user_info->user_login;		
-		//$user_pass = $user_info->user_pass;
+		/* $user_pass = $user_info->user_pass; */
 		$post_url_link = '<a href="'.$_REQUEST['link_url1'].'">'.$post_title.'</a>';
-		$email_subject = "Claim verified for - ".$post_title;
+		$email_subject = __("Claim verified for - ",DOMAIN).$post_title;
 		$fromEmail = get_option('admin_email');
 		$fromEmailName = stripslashes(get_option('blogname'));			
 		
-		$msg = '<p>Dear '.$user_login.',</p>';
-		$msg .= '<p>The Claim for the <a href="'.get_permalink($_REQUEST['post']).'">'.$post_title.'</a> has been verified.</p>';
+		$msg = '<p>'.__('Dear',DOMAIN).$user_login.',</p>';
+		$msg .= '<p>'.__('The Claim for the',DOMAIN).' <a href="'.get_permalink($_REQUEST['post']).'">'.$post_title.'</a>'.__(' has been verified.',DOMAIN).'</p>';
 		if( $user_has_flag == 0 ){
-			$msg .= '<p>You can login with the following credentials : </p>
-					 <p>Username: [#user_login#]</p>
-					 <p>Password: [#user_password#]</p>
-					 <p>You can login from [#site_login_url#] or copy this link and paste it to your browser\'s address bar: [#site_login_url_link#]</p>';
+			$msg .= '<p>'.__('You can login with the following credentials :',DOMAIN). '</p>';
+			$msg .= '<p>'.__('Username:',DOMAIN).' [#user_login#]</p>';
+			$msg .= '<p>'.__('Password:',DOMAIN).' [#user_password#]</p>';
+			$msg .= "<p>".__("You can login from [#site_login_url#] or copy this link and paste it to your browser's address bar: ",DOMAIN)."[#site_login_url_link#]</p>";
 		}
-		$msg .= '<p>Thanks,<br/> [#site_name#] </p>';
+		$msg .= '<p>'.__('Thanks,',DOMAIN).'<br/> [#site_name#] </p>';
 		$client_message =  $msg;
 		$subject = $email_subject;
 		$yourname_link = $yourname;
 		if(function_exists('get_tevolution_login_permalink')){
-			$store_login = '<a href="'.get_tevolution_login_permalink().'">Click Login</a>';
+			$store_login = '<a href="'.get_tevolution_login_permalink().'">'.__('Click Login',DOMAIN).'</a>';
 			$store_login_link = get_tevolution_login_permalink();
 		}else{
 			$store_login='';
@@ -469,7 +527,7 @@ function add_verified_user($clid)
 	$author_id = $data['post_author_id'];
 	$claim_status = $data['claim_status'];
 	$claim_msg = $data['claim_msg'];
-	$post = array('post_id' => $post_id,
+	$post_data = array('post_id' => $post_id,
 				  'request_uri' => $request_uri,
 				  'link_url' => $link_url,
 				  'claimer_id' => $user_id,
@@ -480,21 +538,16 @@ function add_verified_user($clid)
 				  'claimer_contact' => $claimer_contact ,
 				  'claim_msg' => $claim_msg,
 				  'claim_status' => $claim_status);
-	update_post_meta($post->ID,'post_claim_data',$post); /* UPDATING THE WHOLE CLAIM DATA ARRAY */
+	update_post_meta($post->ID,'post_claim_data',$post_data); /* UPDATING THE WHOLE CLAIM DATA ARRAY */
 	
 	/* UPDATING THE POST TABLE */
 	$wpdb->get_results("Update $wpdb->posts set post_author ='".$user_id."' where ID = '".$post_id."' and post_status  = 'publish'");
+	return $get_user_data_by_id;
 }
-/* EOF - ADD VERIFIED USER */
-/* NAME :ADD A WIDGET
-DESCRIPTION : THIS FUNCTION WILL REGISTER THE WIDGET OF CLAIM OWNERSHIP */
-function add_claim_widget()
-{
-	register_widget('claim_widget');
-}
-/* EOF - ADD A WIDGET */
-/* NAME : POST CLAIM FORM VALUES
-DESCRIPTION : THIS FUNCTION POSTS THE DATA OF THE CLAIM FORM, CREATES A POST AND SAVES DATA IN POSTMETA */
+
+/*
+	this function posts the data of the claim form, creates a post and saves data in postmeta
+*/
 function insert_claim_ownership_data($post_details)
 {
 	global $wpdb,$General,$upload_folder_path,$post;
@@ -503,29 +556,27 @@ function insert_claim_ownership_data($post_details)
 		/* CODE TO CHECK WP-RECAPTCHA */
 		$tmpdata = get_option('templatic_settings');
 		$display = $tmpdata['user_verification_page'];
-		if( $tmpdata['recaptcha'] == 'recaptcha')
+	
+		if(in_array('claim',$display))
 		{
-			if(file_exists(get_tmpl_plugin_directory().'wp-recaptcha/recaptchalib.php') && is_plugin_active('wp-recaptcha/wp-recaptcha.php') && in_array('claim',$display))
+			/*fetch captcha private key*/
+			$privatekey = $tmpdata['secret'];
+			/*get the response from captcha that the entered captcha is valid or not*/
+			$response = wp_remote_get("https://www.google.com/recaptcha/api/siteverify?secret=".$privatekey."&response=".$_REQUEST["g-recaptcha-response"]."&remoteip=".getenv("REMOTE_ADDR"));
+			/*decode the captcha response*/
+			$responde_encode = json_decode($response['body']);
+			/*check the response is valid or not*/
+			if (!$responde_encode->success)
 			{
-				require_once( get_tmpl_plugin_directory().'wp-recaptcha/recaptchalib.php');
-				$a = get_option("recaptcha_options");
-				$privatekey = $a['private_key'];
-				$resp = recaptcha_check_answer ($privatekey,
-							getenv("REMOTE_ADDR"),
-							$post_details["recaptcha_challenge_field"],
-							$post_details["recaptcha_response_field"]);
-									
-				if ($resp->is_valid )
-				{
-					echo "<script>alert("._e('Your claim for this post has been sent successfully.',DOMAIN).");</script>";
-				}
-				else
-				{
-					echo "<script>alert('Invalid captcha. Please try again.');</script>";
-					return false;	
-				}	 
+				echo "<script>alert("._e('Your claim for this post has been sent successfully.',DOMAIN).");</script>";
 			}
+			else
+			{
+				echo "<script>alert(".__('Invalid captcha. Please try again.',DOMAIN).")</script>";
+				return false;	
+			}	 
 		}
+
 		/* END OF CODE - CHECK WP-RECAPTCHA */
 		
 		/* POST CLAIM FORM VALUES */
@@ -553,7 +604,7 @@ function insert_claim_ownership_data($post_details)
 		/* INSERTING CLAIM POST TYPE IN POST TABLE */
 		$id = get_the_title($post->ID);
 		$claim_post_type = array(
-			 'post_title' => 'Claim for - '.$id.'',
+			 'post_title' => __('Claim for - ',ADMINDOMAN).$id.'',
 			 'post_content' => ''.$claim_post_id.'',
 			 'post_status' => 'publish',
 			 'post_author' => 1,
@@ -574,14 +625,14 @@ function insert_claim_ownership_data($post_details)
 		
 		if(@$email_subject == '' )
 		{
-			$email_subject = "Claim to - [#post_title#]";
+			$email_subject = __("New Claim Submitted",ADMINDOMAIN);
 		}
 		
 		$subject_search_array = array('[#post_id#]');
 		$subject_replace_array = array($post_id);
 		if(@$claim=='')
 		{
-			$claim =  '<p>Dear admin,</p><br/><p> [#claim_name#] has claimed for this post</p><p>[#message#]</p><p>Link :[#post_title#]</p><p>From : [#your_name#]</p><p>Email: [#claim_email#]<p>Phone Number : [#your_number#]</p>';
+			$claim =  __('<p>Dear admin,</p><p>[#claim_name#] has submitted a claim for the post below.</p><p>[#message#]</p><p>Link: [#post_title#]</p><p>From:  [#your_name#]</p><p>Email: [#claim_email#]<p>Phone Number: [#your_number#]</p>',ADMINDOMAIN);
 		}
 		$filecontent_arr1 = $claim;
 		$filecontent_arr2 = $filecontent_arr1;
@@ -590,49 +641,29 @@ function insert_claim_ownership_data($post_details)
 		$post_url_link = '<a href="'.$_REQUEST['link_url'].'">'.$post_title.'</a>';
 		$yourname_link = __($yourname,DOMAIN);
 		$search_array = array('[#to_name#]','[#post_title#]','[#message#]','[#your_name#]','[#your_number#]','[#post_url_link#]');
-		$replace_array = array($to_name,$post_url_link,$message,$yourname_link,$your_number,$post_url_link);
-		$client_message = str_replace($search_array,$replace_array,$client_message);
-		
-		/* CHECK THE PLAYTHRU */
-		if(file_exists(get_tmpl_plugin_directory().'are-you-a-human/areyouahuman.php') && is_plugin_active('are-you-a-human/areyouahuman.php')  && in_array('claim',$display) && $tmpdata['recaptcha'] == 'playthru')
-		{
-			require_once( get_tmpl_plugin_directory().'are-you-a-human/areyouahuman.php');
-			require_once(get_tmpl_plugin_directory().'are-you-a-human/includes/ayah.php');
-			$ayah = new AYAH();
-			/* The form submits to itself, so see if the user has submitted the form.
-			Use the AYAH object to get the score. */
-			$score = $ayah->scoreResult();
-		
-			if($score)
-			{
-				/* send mail */
-				templ_send_email($youremail,$yourname,$to_email,$to_name,$subject,$client_message,$extra='');
-			}
-			else
-			{
-				echo "<script>alert('You need to play the game to send the mail successfully.');</script>";
-				return false;
-			}
-		}
-		else
-		{
-			/* CALL A MAIL FUNCTION */
-			templ_send_email($youremail,$yourname,$to_email,$to_name,$subject,$client_message,$extra='');
-		}
+		$replace_array = array($to_name,$post_title,$message,$yourname_link,$your_number,$post_url_link);
+		$client_message = str_replace($search_array,$replace_array,$client_message);		
+	
+		/* CALL A MAIL FUNCTION */
+		templ_send_email($youremail,$yourname,$to_email,$to_name,$subject,$client_message,$extra='');
+
 	}
 }
 /*
- * Function Name: Claim Ownership
+ * Claimed listing - this function will return the listing is claimed or not 
  *
  */
-function claim_ownership(){
+
+add_shortcode('claim_ownership','tmpl_claim_ownership');
+function tmpl_claim_ownership(){
 	global $post,$wpdb;
 	if(is_single() || is_page() && !is_page_template('page-template_form.php') ) :
 		insert_claim_ownership_data($_POST);
 		
 		if(get_post_meta($post->ID,'is_verified',true) == 1)
-		{ ?>
-			<p class="i_verfied"><?php echo OWNER_VERIFIED; ?></p>
+		{ 
+		?>
+			
 		<?php
 		}else
 		{ 
@@ -648,41 +679,32 @@ function claim_ownership(){
 						$user_ip = $data['claimer_ip']; /* FETCH IP ADDRESS OF CLAIMED POST */
 						if($current_ip == $user_ip && $user_ip != '')
 						{ ?>
-							<p class="claimed"><?php echo ALREADY_CLAIMED; ?></p>
+							<p class="claimed"><?php _e(ALREADY_CLAIMED,DOMAIN); ?></p>
 						<?php 
 						}else{?>					
-						<a href="#claim_listing" id="trigger_id" title="claim_ownership" class="i_claim c_sendtofriend" ><?php _e('Claim Ownership',DOMAIN);;?></a>
+						<a href="javascript:void(0)" id="trigger_id" title="<?php _e('Claim For This',DOMAIN); echo " ".ucfirst($post->post_type);?>" data-reveal-id="tmpl_claim_listing" class="i_claim c_sendtofriend" ><?php _e('Claim Ownership',DOMAIN);;?></a>
 						<?php
-							add_action('wp_footer','tevolution_claim_form'); // action for footer to include claim listing form   ?>
+							add_action('wp_footer','tevolution_claim_form'); /* action for footer to include claim listing form   */
+						?>
 						<?php }
 					}
 				}
 			}else{ 
-				add_action('wp_footer','tevolution_claim_form'); // action for footer to include claim listing form  
+				add_action('wp_footer','tevolution_claim_form'); /* action for footer to include claim listing form */
 				?>			
-				<a href="#claim_listing" id="trigger_id" title="claim_ownership" class="i_claim c_sendtofriend"><?php _e('Claim Ownership',DOMAIN);;?></a>
+				<a href="javascript:void(0)" id="trigger_id" title="<?php _e('Claim For This Listing',DOMAIN); ?>" data-reveal-id="tmpl_claim_listing" class="i_claim c_sendtofriend"><?php _e('Claim Ownership',DOMAIN);;?></a>
 				<?php
 			}
 		}
 	endif;
 }
 /*
-Name:tevolution_claim_form
-Desc: include the claim ownership form in footer
+	Include the claim ownership form in footer
 */
 function tevolution_claim_form(){
-	?>
-		<script>
-		jQuery(document).ready(function(){
-			jQuery('#trigger_id').on('click', function(){ 
-				jQuery('html,body').scrollTop(0);
-				jQuery('#claim_listing').scrollTop(0);
-			}); 
-		});
-		</script>
-	<?php
 	include_once (TEMPL_MONETIZE_FOLDER_PATH . "templatic-claim_ownership/popup_claim_form.php");
 }
+/* while claim a listing from front end insert the data in post table*/
 add_action('wp_ajax_tevolution_claimowner_ship','tevolution_claimowner_ship');
 add_action('wp_ajax_nopriv_tevolution_claimowner_ship','tevolution_claimowner_ship');
 function tevolution_claimowner_ship(){
@@ -690,38 +712,38 @@ function tevolution_claimowner_ship(){
 	global $wpdb,$General,$upload_folder_path,$post;
 	if(@$_REQUEST['claimer_name'])
 	{
-		/* CODE TO CHECK WP-RECAPTCHA */
+		/* code to check wp-recaptcha */
 		$tmpdata = get_option('templatic_settings');
 		$display = $tmpdata['user_verification_page'];
-		if( $tmpdata['recaptcha'] == 'recaptcha')
+				
+		if(is_array($display) && in_array('claim',$display))
 		{
-			if(file_exists(get_tmpl_plugin_directory().'wp-recaptcha/recaptchalib.php') && is_plugin_active('wp-recaptcha/wp-recaptcha.php') && in_array('claim',$display))
+			/*fetch captcha private key*/
+			$privatekey = $tmpdata['secret'];
+			/*get the response from captcha that the entered captcha is valid or not*/
+			$response = wp_remote_get("https://www.google.com/recaptcha/api/siteverify?secret=".$privatekey."&response=".$_REQUEST["g-recaptcha-response"]."&remoteip=".getenv("REMOTE_ADDR"));
+			/*decode the captcha response*/
+			$responde_encode = json_decode($response['body']);
+			/*check the response is valid or not*/
+			if (!$responde_encode->success)
 			{
-				require_once( get_tmpl_plugin_directory().'wp-recaptcha/recaptchalib.php');
-				$a = get_option("recaptcha_options");
-				$privatekey = $a['private_key'];
-				$resp = recaptcha_check_answer ($privatekey,
-							getenv("REMOTE_ADDR"),
-							$_REQUEST["recaptcha_challenge_field"],
-							$_REQUEST["recaptcha_response_field"]);
-									
-				if (!$resp->is_valid )
-				{
-					echo '1';
-					exit;
-					echo "<script>alert('Invalid captcha. Please try again.');</script>";
-					return false;	
-				}	 
-			}
+				echo '1';
+				exit;
+				echo "<script>alert(".__('Invalid captcha. Please try again.',DOMAIN).");</script>";
+				return false;	
+			}	 
 		}
-		/* END OF CODE - CHECK WP-RECAPTCHA */
+		
+		do_action('tmpl_before_submit_claim',$_REQUEST);
+		
+		/* end of code - check wp-recaptcha */
 		
 		/* POST CLAIM FORM VALUES */
 		$yourname = $_REQUEST['claimer_name'];
 		$youremail = $_REQUEST['claimer_email'];
 		$your_number = $_REQUEST['claimer_contact'];
 		$c_number = $_REQUEST['claimer_contact'];
-		$message = $_REQUEST['claim_msg'];
+		$message = stripslashes($_REQUEST['claim_msg']);
 		$claim_post_id = $_REQUEST['post_id'];
 		$post_title = $_REQUEST['post_title'];
 		$user_id = $current_user->ID;
@@ -738,37 +760,38 @@ function tevolution_claimowner_ship(){
 		
 		$user_ip = $_SERVER["REMOTE_ADDR"];
 		
-		/* INSERTING CLAIM POST TYPE IN POST TABLE */
+		/* inserting claim post type in post table */
 		$id = get_the_title($post->ID);
 		$claim_post_type = array(
-			 'post_title' => 'Claim for - '.$id.'',
+			 'post_title' => __('Claim for - ',ADMINDOMAN).$id.'',
 			 'post_content' => ''.$claim_post_id.'',
 			 'post_status' => 'publish',
 			 'post_author' => 1,
 			 'post_type' => "claim",
 			);
 		$post_id = wp_insert_post( $claim_post_type ); /* INSERT QUERY */
-		/* INSERTING CLAIM INFORMATION IN POST META TABLE */
+		
+		/* inserting claim information in post meta table */
 		add_post_meta($post_id, 'post_claim_data', $_REQUEST);
-		/* END OF CODE - INSERT VALUES */
+		/* end of code - insert values */
 		$q = $wpdb->get_row("SELECT * FROM $wpdb->users WHERE ID = 1");
 		$to_email = get_option('admin_email');
 		$to_name = $q->user_login;
 		$tmpdata = get_option('templatic_settings');
-		$email_content =  @stripslashes($tmpdata['claim_ownership_subject']);
-		$email_subject =  @stripslashes($tmpdata['claim_ownership_content']);
+		$email_subject =  @stripslashes($tmpdata['claim_ownership_subject']);
+		$email_content =  @stripslashes($tmpdata['claim_ownership_content']);
 		$site_name = '<a href="'.site_url().'">'.get_option('blogname').'</a>';
 		if(@$email_content == '')
 		{
-			$email_subject = "Claim to - [#post_title#]";
+			$email_subject = __("New Claim Submitted",ADMINDOMAIN);
 		}
 		if(@$email_content == '')
 		{
-				$email_content = '<p>Dear admin,</p><br/><p> [#claim_name#] has claimed for this post</p><p>[#message#]</p><p>Link :[#post_title#]</p><p>From : [#your_name#]</p><p>Email: [#claim_email#]<p>Phone Number : [#your_number#]</p>';		
+				$email_content = __('<p>Dear admin,</p><br/><p> [#claim_name#] has claimed for this post</p><p>[#message#]</p><p>Link: [#post_title#]</p><p>From: [#your_name#]</p><p>Email: [#claim_email#]<p>Phone Number: [#your_number#]</p>',ADMINDOMAIN);		
 		}
-		$post_url_link = '<a href="'.$_REQUEST['link_url'].'">'.$post_title.'</a>';
+		$post_url_link = '<a href="'.get_permalink($claim_post_id).'">'.$post_title.'</a>';
 		$subject_search_array = array('[#post_title#]');
-		$subject_replace_array = array($post_url_link);
+		$subject_replace_array = array($post_title);
 		$email_subject = str_replace($subject_search_array,$subject_replace_array,$email_subject);
 		$subject = $email_subject;
 		
@@ -777,40 +800,271 @@ function tevolution_claimowner_ship(){
 		$replace_array = array($yourname,$to_name,$post_url_link,$message,$yourname_link,$your_number,$post_url_link,$youremail);
 		$client_message = str_replace($search_array,$replace_array,$email_content);
 		
-		/* CHECK THE PLAYTHRU */
-		if(file_exists(get_tmpl_plugin_directory().'are-you-a-human/areyouahuman.php') && is_plugin_active('are-you-a-human/areyouahuman.php')  && in_array('claim',$display) && $tmpdata['recaptcha'] == 'playthru')
-		{
-			require_once( get_tmpl_plugin_directory().'are-you-a-human/areyouahuman.php');
-			require_once(get_tmpl_plugin_directory().'are-you-a-human/includes/ayah.php');
-			$ayah = new AYAH();
-			/* The form submits to itself, so see if the user has submitted the form.
-			Use the AYAH object to get the score. */
-			$score = $ayah->scoreResult();
-		
-			if($score)
-			{
-				/* send mail */
-				_e('Your claim for this post has been sent successfully.',DOMAIN);
-				templ_send_email($youremail,$yourname,$to_email,$to_name,$subject,$client_message,$extra='');
-				exit;
-			}
-			else
-			{
-				echo '2';
-				exit;
-				echo "<script>alert('You need to play the game to send the mail successfully.');</script>";
-				return false;
-			}
-		}
-		else
-		{
-			/* CALL A MAIL FUNCTION */
-			_e('Your claim for this post has been sent successfully.',DOMAIN);
-			templ_send_email($youremail,$yourname,$to_email,$to_name,$subject,$client_message,$extra='');
-			exit;
+		/* call a mail function */
+		_e('Your claim for this post has been sent successfully.',DOMAIN);
+		templ_send_email($youremail,$yourname,$to_email,$to_name,$subject,$client_message,$extra='');
+		exit;
 			
-		}
+		
 	}
 	
+}
+
+
+/*************************** LOAD THE BASE CLASS *******************************
+
+ * The WP_List_Table class isn't automatically available to plugins, so we need
+ * to check if it's available and load it if necessary.
+ */
+
+	if(!class_exists('Tmpl_WP_List_Table')){
+            include_once( WP_PLUGIN_DIR . '/Tevolution/templatic.php');
+        }
+	
+	class templ_claimlist_table extends Tmpl_WP_List_Table
+	{
+		/*
+			fetch all the data and store them in an array 
+			Call a function that will return all the data in an array and we will assign that result to a variable $_posttaxonomy. FIRST OF ALL WE WILL FETCH DATA FROM POST META TABLE STORE THEM IN AN ARRAY $_posttaxonomy 
+		*/
+		function fetch_claimpost_data( $_posttaxonomy,$claim_post_id)
+		{ 
+			$clid  = $claim_post_id;
+			$author_id  = $_posttaxonomy['author_id'];
+			$auth_data = get_userdata($author_id);
+			$post_id  = $_posttaxonomy['post_id'];
+			$title  = $_posttaxonomy['post_title'];
+			$claimant = $_posttaxonomy['claimer_name'];
+			$claim_date = $_posttaxonomy['poublish_date'];
+			$status = $_posttaxonomy['claim_status'];
+			$action ='';
+			global $wpdb;
+			$data = get_post_meta($claim_post_id,'post_claim_data',true);		
+			/* FETCH CLAIM DATA */			
+			$post_id = $data['post_id'];
+			$post_title = $data['post_title'];
+			$claimer_name = $data['claimer_name'];
+			$name = str_word_count($claimer_name,1);
+		
+			$edit_url = get_permalink($_posttaxonomy['post_id']);
+		
+			if($status == 'approved' && get_post_meta($post_id,'is_verified',true) == 1) :
+				$status = YES_VERIFIED; 
+			elseif($status == 'declined') :
+				$status = DECLINED;
+			else : 
+				$status = PENDING;
+			endif;
+			
+			global $wpdb,$claim_db_table_name; 
+			?>
+			<script type="text/javascript" async >
+			/* <![CDATA[ */
+			function confirmSubmit(str) {
+					var answer = confirm("<?php echo DELETE_CONFIRM_ALERT; ?>");
+					if (answer){
+						window.location = "<?php echo site_url(); ?>/wp-admin/index.php?poid="+str;
+						alert('<?php echo ENTRY_DELETED; ?>');
+					}
+				}
+			
+			/* ]]> */
+			</script>
+			
+			<?php
+			$action = '';
+			$action .='<a href="#TB_inline?width=600&height=600&inlineId=claimed_details_'.$clid.'" id="claimed_'.$clid.'" class="thickbox" title="'.__('View claim details',ADMINDOMAIN).'"><i class="fa fa-info"></i></a> &nbsp;&nbsp;';
+			if($status == 'Verified' && get_post_meta($post_id,'is_verified',true) == 1){ 
+				$action .='<a href='.site_url().'/wp-admin/post.php?post='.$post_id.'&action=edit&decline=yes&clid='.$clid.' title='.DECLINE_CLAIM.'><i class="fa fa-close"></i></a>&nbsp;&nbsp;';
+			}else{
+				$action .='<a href='.site_url().'/wp-admin/post.php?post='.$post_id.'&action=edit&verified=yes&clid='.$clid.'&user='.$claimer_name.' title='.VERIFY_CLAIM.'><i class="fa fa-check-circle"></i></a>&nbsp;&nbsp;';
+			} 
+			$action .= '<a href="javascript:void(0);confirmSubmit('.$clid.');"><i class="fa fa-minus-circle"></i></a>';
+			$claim_post_data = get_post($clid);
+			$claim_post_date = $claim_post_data->post_date;
+			$meta_data = array(
+				'ID'		=> $claim_post_id,
+				'post_id'	=> $post_id,
+				'post_title'	=> '<strong><a href="'.$edit_url.'">'.$title.'</a></strong>',
+				'claimant' 	=> $claimant,
+				'claim_date' => date_i18n( get_option( 'date_format' ), strtotime( $claim_post_date ) ),
+				'status' 	=> $status,
+				'action' 	=> $action
+				);?>
+				<div id="claimed_details_<?php echo $clid; ?>" style="display:none;width:400px; height:400px;">
+					<h2><?php echo __('Author Details',ADMINDOMAIN); ?></h2>
+					<p class="tev_description">
+						<?php echo  "<strong>".__('Name',ADMINDOMAIN)."</strong>"; echo ": ".$auth_data->display_name; ?>
+					</p>
+					<p class="tev_description">
+						<?php echo  "<strong>".__('Email',ADMINDOMAIN)."</strong>"; echo ": ".$auth_data->user_email; ?>
+					</p>
+					
+					
+					<h2><?php echo __('Claimer Details',ADMINDOMAIN); ?></h2>
+					<p class="tev_description">
+						<?php echo "<strong>".__('Name',ADMINDOMAIN)."</strong>"; echo ": ".$_posttaxonomy['claimer_name']; ?>
+					</p>
+					<p class="tev_description">
+						<?php echo "<strong>".__('Email',ADMINDOMAIN)."</strong>"; echo ": ".$_posttaxonomy['claimer_email']; ?>
+					</p>
+					<p class="tev_description">
+						<?php echo "<strong>".__('Conatct No.',ADMINDOMAIN)."</strong>"; echo ": ".$_posttaxonomy['claimer_contact']; ?>
+					</p>
+					<p class="tev_description">
+						<?php echo "<strong>".__('Message',ADMINDOMAIN)."</strong>"; echo ": ".$_posttaxonomy['claim_msg']; ?>
+					</p>
+					<?php do_action('tmpl_extra_claiming_details',$_posttaxonomy); ?>
+				</div>
+			<?php
+			return $meta_data;
+		}
+		
+		/* fetch taxonomy data */
+		function taxonomy_data()
+		{
+			global $post,$wpdb;
+			$claim_posts =array();
+			$claim_post_ids = $wpdb->get_col("SELECT ID FROM $wpdb->posts WHERE post_type = 'claim' AND post_status = 'publish' order by ID desc");	
+			if(count($claim_post_ids) != 0)
+			{
+				$counter =0;
+				foreach ($claim_post_ids as $claim_post_id){
+					$data = get_post_meta($claim_post_id,'post_claim_data',true);			
+					$claim_posts[] = $this->fetch_claimpost_data($data,$claim_post_id);
+				}
+			}		
+			
+			return $claim_posts;
+		}
+		/* eof - fetch taxonomy data */
+		
+		/* define the columns for the table */
+		function get_columns()
+		{
+			$columns = array(
+				'cb' => '<input type="checkbox" />',
+				'post_id' => __('ID',ADMINDOMAIN),
+				'post_title' => __('Claim On',ADMINDOMAIN),
+				'claimant' => __('Claimant',ADMINDOMAIN),
+				'claim_date' => __('Date',ADMINDOMAIN),
+				'status' => __('Status',ADMINDOMAIN),
+				'action' => __('Action',ADMINDOMAIN)
+				);
+			return $columns;
+		}
+		
+		function process_bulk_action()
+		{ 
+			/* Detect when a bulk action is being triggered... */
+			if('delete' === $this->current_action() )
+			{
+				 foreach($_REQUEST['checkbox'] as $postid){
+					 wp_delete_post($postid);
+				  }
+				 $url = site_url().'/wp-admin/admin.php';
+				 wp_redirect($url."?page=ownership_listings&claim_msg=delsuccess");
+				 exit;
+			}
+		}
+		
+		function prepare_items()
+		{
+			$per_page = $this->get_items_per_page('clistings_per_page', 10);
+			$columns = $this->get_columns(); /* call function to get the columns */
+			$hidden = array();
+			$sortable = array();
+			$sortable = $this->get_sortable_columns(); /* get the sortable columns */
+			$this->_column_headers = array($columns, $hidden, $sortable);
+			$this->process_bulk_action(); /* function to process the bulk actions */
+			$data = $this->taxonomy_data(); /* retirive the package data */
+			
+			/* function that sorts the columns */
+			function usort_reorder($a,$b)
+			{
+				$orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'title'; /*If no sort, default to title*/
+				$order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; /*If no order, default to asc*/
+				$result = strcmp($a[$orderby], $b[$orderby]); /*Determine sort order*/
+				return ($order==='asc') ? $result : -$result; /*Send final sort direction to usort*/
+			}
+			
+			$current_page = $this->get_pagenum(); /* get the pagination */
+			$total_items = count($data); /* calculate the total items */
+			if(is_array($data))
+				$this->found_data = array_slice($data,(($current_page-1)*$per_page),$per_page); /* trim data for pagination*/
+			$this->items = $this->found_data; 
+			/* assign sorted data to items to be used elsewhere in class */
+			/* register pagination options */
+			
+			$this->set_pagination_args( array(
+				'total_items' => $total_items,      /* WE have to calculate the total number of items */
+				'per_page'    => $per_page         /* WE have to determine how many items to show on a page */
+			) );
+		}
+		
+		/* To avoid the need to create a method for each column there is column_default that will process any column for which no special method is defined */
+		function column_default( $item, $column_name )
+		{
+			switch( $column_name )
+			{
+				case 'cb':
+				case 'post_id':
+				case 'post_title':
+				case 'claimant':
+				case 'claim_date':
+				case 'status':
+				case 'action':
+				return $item[ $column_name ];
+				default:
+				return print_r( $item, true ) ; /* Show the whole array for troubleshooting purposes */
+			}
+		}
+		
+		/* define the columns to be sorted */
+		
+		function get_sortable_columns()
+		{
+			$sortable_columns = array(
+				'title' => array('title',true)
+				);
+			return $sortable_columns;
+		}
+		
+		/* define the links displaying below the title */
+		
+		function column_title($item)
+		{
+			return '';
+		}
+		
+		/* define the bulk actions */
+		
+		function get_bulk_actions()
+		{
+			$actions = array(
+				'delete' => 'Delete permanently'
+				);
+			return $actions;
+		}
+		
+		/* check box to select all the taxonomies */
+		
+		function column_cb($item)
+		{
+			return sprintf(
+				'<input type="checkbox" name="checkbox[]" id="checkbox[]" value="%s" />', $item['ID']
+				);
+		}
+	}
+/* Add verified budge on detail page */
+
+add_action('after_title_h1','tmpl_after_title_returns');
+
+function tmpl_after_title_returns(){
+	global $post;
+	if(get_post_meta($post->ID,'is_verified',true) == 1){
+	?>
+		<span  data-tooltip aria-haspopup="true" data-options="disable_for_touch:true" class="fa-stack has-tip tip-right" title="<?php echo __('Verified',DOMAIN);?>"><i class="fa fa-certificate fa-stack-2x"></i><i class="fa fa-check fa-stack-1x"></i></span>
+	<?php } 
 }
 ?>

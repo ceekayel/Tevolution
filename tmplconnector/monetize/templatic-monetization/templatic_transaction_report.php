@@ -1,4 +1,7 @@
 <?php
+/*
+ * transaction list for backend
+ */
 if(!defined('PLEASE_SELECT')) 
 	define('PLEASE_SELECT',__('Please Select',DOMAIN));
 global $wpdb,$transection_db_table_name,$external_queries;
@@ -18,7 +21,7 @@ if(isset($_REQUEST['Search']) && $_REQUEST['Search'])
 		$transsql_select = "select * ";
 		$transsql_count = "select count(t.trans_id) ";
 		$transsql_from= " from $transection_db_table_name as t $select_post_table";
-		$transsql_conditions = " where 1=1 ";
+		$transsql_conditions = " where 1=1 AND payable_amt > 0 AND (package_type is NULL OR package_type=0)";
 		if(@$_REQUEST['id'])
 		{
 			$id = @$_REQUEST['id'];
@@ -38,6 +41,34 @@ if(isset($_REQUEST['Search']) && $_REQUEST['Search'])
 		{
 			$srch_payment = @$_REQUEST['srch_payment'];
 			$transsql_conditions .= " and t.payment_method like \"$srch_payment\"";
+		}
+		if(@$_REQUEST['srch_pkg_type'])
+		{
+			$srch_pkg_type = @$_REQUEST['srch_pkg_type'];
+			$args = array(
+						'post_type' => apply_filters('tmpl_post_type','monetization_package'),
+						'posts_per_page' => -1	,
+						'post_status' => array('publish'),
+						'meta_query' => array(
+								array(
+									'key' => apply_filters('tmpl_search_package_type','package_type'),
+									'value' => @$_REQUEST['srch_pkg_type'],
+									'compare' => '==',
+									'type'=> 'number'
+								)
+							),
+						'order' => 'ASC'
+						);
+			$packages = new wp_Query($args);
+			
+			if($packages->have_posts())
+			{
+				while ($packages->have_posts()) : $packages->the_post(); echo $packages->ID;
+					$packages_ids[] = "'".$post->ID."'";
+				endwhile;
+			}
+			$packages_ids = rtrim(implode(',',$packages_ids),',');
+			$transsql_conditions .= " and t.package_id IN ($packages_ids)";
 		}
 		
 		if(@$_REQUEST['srch_payid'])
@@ -70,22 +101,26 @@ if(isset($_REQUEST['Search']) && $_REQUEST['Search'])
 		if( @$external_queries != "" ){
 			$transsql_conditions .= $external_queries;
 		}
+	
 		$_SESSION['query_string'] = $transsql_select.$transsql_from.$transsql_conditions;
 		
 }else{
-	unset($_SESSION['query_string']);
-	global $post,$wpdb,$transection_db_table_name;	
-	$post_table = $wpdb->prefix."posts";
-	$select_post_table = '';
-	if(@$_REQUEST['post_types'] || @$_REQUEST['type']){
-		$select_post_table = " , $post_table as p ";
-	}	
-	$transsql_select = "select * ";
-	$transsql_count = "select count(t.trans_id) ";
-	$transsql_from= " from $transection_db_table_name as t $select_post_table";
-	$transsql_conditions = " where 1=1 AND package_type is NULL";
-	$_SESSION['query_string'] = $transsql_select.$transsql_from.$transsql_conditions;
+		if(!isset($_REQUEST['paged']) && $_REQUEST['paged'] ==''){
+			unset($_SESSION['query_string']);
+			global $post,$wpdb,$transection_db_table_name;	
+			$post_table = $wpdb->prefix."posts";
+			$select_post_table = '';
+			if(@$_REQUEST['post_types'] || @$_REQUEST['type']){
+				$select_post_table = " , $post_table as p ";
+			}	
+			$transsql_select = "select * ";
+			$transsql_count = "select count(t.trans_id) ";
+			$transsql_from= " from $transection_db_table_name as t $select_post_table";
+			$transsql_conditions = " where 1=1  AND  payable_amt > 0 AND (package_type is NULL OR package_type=0)";
+			$_SESSION['query_string'] = $transsql_select.$transsql_from.$transsql_conditions;
+		}
 }
+
 if(isset($_REQUEST['Reset']) && $_REQUEST['Reset']!= '')
 {
 	unset($_SESSION['query_string']);
@@ -98,7 +133,7 @@ if(isset($_REQUEST['Reset']) && $_REQUEST['Reset']!= '')
 		$transsql_select = "select * ";
 		$transsql_count = "select count(t.trans_id) ";
 		$transsql_from= " from $transection_db_table_name as t $select_post_table";
-		$transsql_conditions = " where 1=1 AND package_type is NULL";
+		$transsql_conditions = " where 1=1  AND payable_amt > 0 AND (package_type is NULL OR package_type=0)";
 		$_SESSION['query_string'] = $transsql_select.$transsql_from.$transsql_conditions;
 }
 if(isset($_REQUEST['trans_setting']) &&  $_REQUEST['trans_setting'] != '')
@@ -112,44 +147,15 @@ if(isset($_REQUEST['trans_setting']) &&  $_REQUEST['trans_setting'] != '')
 	}
 }
 include(TEMPL_MONETIZATION_PATH."admin_transaction_class.php");	/* class to fetch transaction class */
-//----------------------------------------------------
 ?>
-<script>
-function change_transstatus(tid,post_id){
-		if (tid=="")
-	  {
-	  document.getElementById("p_status_"+tid).innerHTML="";
-	  return;
-	  }
-	  if (window.XMLHttpRequest)
-	  {// code for IE7+, Firefox, Chrome, Opera, Safari
-	  xmlhttp=new XMLHttpRequest();
-	  }else{// code for IE6, IE5
-	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	  }
-		xmlhttp.onreadystatechange=function()
-	  {
-	    if (xmlhttp.readyState==4 && xmlhttp.status==200)
-		{
-		document.getElementById("p_status_"+tid).innerHTML=xmlhttp.responseText;
-		}
-	  }
-	  url = "<?php echo plugin_dir_url( __FILE__ ); ?>ajax_update_status.php?post_id="+post_id+"&trans_id="+tid;
-	  xmlhttp.open("GET",url,true);
-	  xmlhttp.send();
-}
-</script>
 <div class="wrap">
 <div class="icon32 icon32-posts-post" id="icon-edit"></div>
 <h2><?php echo __('Transaction Report',ADMINDOMAIN);?></h2>
-<p class="tevolution_desc"> <?php echo __('Whatever sales are done on your site are recorded and displayed here as the transactions. Few things that you can perform here are easily changing the payment status manually (if you want), search for particular transaction using the below given fields, sort your all transactions according to your payment gateway by clicking the column "Payment Method" and last but not the least, you can also export all your transactions to CSV file. <a href="javascript:void(0);" title="Plugins" id="trans_color_setting">You can change transcation color settings from here.</a>.',ADMINDOMAIN);?></p>
-	<div class="tevolution_normal ordersearch">
-		<div id="poststuff">
-		<div class="postbox">
-				<h3 class="hndle"><span><?php echo __('Generate Transaction Report',ADMINDOMAIN)?></span></h3>
+<p class="tevolution_desc"> <?php echo __('Whatever sales are done on your site are recorded and displayed here as the transactions. Few things that you can perform here are easily changing the payment status manually (if you want), search for particular transaction using the below given fields, sort your all transactions according to your payment gateway by clicking the column "Payment Method" and last but not the least, you can also export all your transactions to CSV file.',ADMINDOMAIN);?></p>
+	<div class="tevolution_normal">
 	<div class="transaction_page_set">
     <form method="post" action="" name="ordersearch_frm">
-        <table class="form-table" cellspacing="1" cellpadding="4" border="0" >
+		<table class="form-table" cellspacing="1" cellpadding="4" border="0" >
             <?php	do_action('add_fields_before_transaction_fields');		?>
 			<tr>
 				<th valign="center"><?php echo __('Search by transaction ID',ADMINDOMAIN); ?></th>
@@ -165,10 +171,10 @@ function change_transstatus(tid,post_id){
 			$i = 0;
 			?>
 				<select name="post_types" id="post_types"  >
-				<option value="0"><?php echo PLEASE_SELECT; ?></option>
+				<option value="0"><?php echo __('Please select',ADMINDOMAIN); ?></option>
 			<?php
             foreach ($custom_post_types as $content_type=>$content_type_label) { ?>
-            	<option value="<?php echo $content_type; ?>" <?php if(isset($_REQUEST['post_types']) && $_REQUEST['post_types']== content_type ) {?> selected="selected" <?php } ?>><?php echo $content_type_label['label']; ?></option>                    
+            	<option value="<?php echo $content_type; ?>" <?php if(isset($_REQUEST['post_types']) && $_REQUEST['post_types']== $content_type ) {?> selected="selected" <?php } ?>><?php echo $content_type_label['label']; ?></option>                    
             <?php
 			}
 				$i++;	
@@ -180,14 +186,14 @@ function change_transstatus(tid,post_id){
 				<?php
 					$targetpage = site_url("/wp-admin/admin.php?page=transcation");
 					$paymentsql = "select * from $wpdb->options where option_name like 'payment_method_%' order by option_id";
-					$paymentinfo = $wpdb->get_results($paymentsql);
+					$paymentinfo = $wpdb->get_results($paymentsql);					
 					if($paymentinfo)
 					{
 						foreach($paymentinfo as $paymentinfoObj)
 						{
 							$paymentInfo = unserialize($paymentinfoObj->option_value);
-							$paymethodKeyarray[$paymentInfo['key']] = $paymentInfo['key'];
-							ksort($paymethodKeyarray);
+							$paymethodKeyarray[$paymentInfo['key']] = $paymentInfo['name'];
+							ksort($paymethodKeyarray);							
 						}
 					} ?>
 					<select name="srch_payment" >
@@ -197,12 +203,24 @@ function change_transstatus(tid,post_id){
 						{
 							foreach($paymethodKeyarray as $key=>$value) {
 								if($value) { ?>
-								<option value="<?php echo $value;?>" <?php if($value == @$_REQUEST['srch_payment']){?> selected<?php }?>><?php echo __(ucfirst($value),ADMINDOMAIN); ?></option>
+								<option value="<?php echo $key;?>" <?php if($key == @$_REQUEST['srch_payment']){?> selected<?php }?>><?php echo __(ucfirst($value),ADMINDOMAIN); ?></option>
 						<?php	} 	
 							}
 						}?>
 					</select><p class="description"><?php echo __('Select the payment method (gateway), using which transactions have been done.', ADMINDOMAIN);?></p></td>
             </tr>
+			<tr>
+				<th valign="center"><?php echo __('Package type',ADMINDOMAIN); ?></th>
+				<td valign="center" colspan="4">
+					<select name="srch_pkg_type" >
+						<option value=""> <?php echo __('Select Package Type',ADMINDOMAIN); ?> </option>
+						<option value="1" <?php if(@$_REQUEST['srch_pkg_type'] == 1){ ?> selected<?php } ?> > <?php echo __('Single Submission',ADMINDOMAIN); ?> </option>
+						<option value="2" <?php if(@$_REQUEST['srch_pkg_type'] == 2){ ?> selected<?php } ?> > <?php echo __('Subscription',ADMINDOMAIN); ?> </option>
+						<?php do_action('tmpl_package_type'); ?>
+					</select>
+						
+				</td>
+			</tr>
 			<tr>	
 				<th valign="center"><?php echo __('Name/Email',ADMINDOMAIN); ?></th>
 				<td valign="center" colspan="4"><input type="text" class="regular-text" value="" name="srch_name" id="srch_name" /><br /><p class="description"><?php echo __('Enter the name or email Id using which transactions have been done', ADMINDOMAIN);?></p></td>
@@ -243,25 +261,13 @@ function change_transstatus(tid,post_id){
         	</tr>
 			
             <tr style="border-top: 1px solid #ccc; "><br/>
-            	<td colspan="2"><p><?php echo __('Export the transaction data from here ',ADMINDOMAIN); ?>&nbsp;&nbsp;<a class="button-primary" href="<?php echo plugin_dir_url( __FILE__ ).'export_transaction.php';?>" title="Export To CSV" class="i_export"><?php echo __('Export To CSV',ADMINDOMAIN);?></a></p></td>
+            	<td colspan="2"><p><?php echo __('Export the transaction data from here ',ADMINDOMAIN); ?>&nbsp;&nbsp;<a class="button button-primary button-hero" href="<?php echo plugin_dir_url( __FILE__ ).'export_transaction.php';?>" title="Export To CSV" class="i_export"><?php echo __('Export To CSV',ADMINDOMAIN);?></a></p></td>
             </tr>
     </table>
 	</form>
 	</div>
+
 	</div>
-	</div>
-	</div>
-	<?php add_action('admin_footer','trans_color_setting_script');
-	function trans_color_setting_script()
-	{
-		?>
-	<script>
-		jQuery( "#trans_color_setting" ).click(function() {
-			jQuery( '#trans_frm_id' ).toggle();
-		});
-	</script>
-	<?php 
-	} ?>
 	<div style="display:none;" id="trans_frm_id" class="tevolution_normal ordersearch" class="tevolution_normal ordersearch">
 		<div id="poststuff">
 			<div class="postbox">
@@ -310,7 +316,7 @@ function change_transstatus(tid,post_id){
 			 </tr>
 			 <tr>
 				<td></td>
-				<td><p style="clear: both;" class="submit"><input type="submit" value="<?php echo __('Save All Settings',ADMINDOMAIN);?>" class="button-primary" name="trans_setting"></td>
+				<td><p style="clear: both;" class="submit"><input type="submit" value="<?php echo __('Save All Settings',ADMINDOMAIN);?>" class="button button-primary button-hero" name="trans_setting"></td>
 			 </tr>
 		</table>	
 	</form>
@@ -328,7 +334,7 @@ $templ_list_table->display();
 </form>
 <?php
 echo '</div>'; ?>
-<script>
+<script type="text/javascript" async>
 function reportshowdetail(custom_id)
 {
 	if(document.getElementById('reprtdetail_'+custom_id).style.display=='none')

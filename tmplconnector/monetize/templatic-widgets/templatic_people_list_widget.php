@@ -3,15 +3,15 @@
  * Create the templatic browse by categories widget
  */
 	
- // =============================== Top Agents Widget ======================================
+ /* =============================== Top Agents Widget ======================================*/
 class tevolution_author_listing extends WP_Widget {
 	function tevolution_author_listing() {
-	//Constructor
-		$widget_ops = array('classname' => 'widget tevolution_author_listing', 'description' => __("Shows authors with their thumbnails and the number of posts they've submitted. Works best in sidebar areas.",ADMINDOMAIN) );
+	/*Constructor*/
+		$widget_ops = array('classname' => 'widget-twocolumn tevolution_author_listing', 'description' => __("Shows authors with their thumbnails and the number of posts they've submitted. Works best in sidebar areas.",ADMINDOMAIN) );
 		$this->WP_Widget('tevolution_author_listing', __('T &rarr; Display Authors',ADMINDOMAIN), $widget_ops);
 	}
 	function widget($author_listing_args, $instance) {
-	// prints the widget
+	/* prints the widget*/
 		extract($author_listing_args, EXTR_SKIP);
 		echo $author_listing_args['before_widget'];
 		global $wp_roles;
@@ -21,7 +21,7 @@ class tevolution_author_listing extends WP_Widget {
 		$role = empty($instance['role']) ? 'subscriber' : apply_filters('widget_role', $instance['role']);
 		$role_name = $wp_roles->roles[$role]['name']; 
   			?>
-            <div class="featured_agent">
+            
             <?php if($title) { 
 					echo $author_listing_args['before_title'].$title.$author_listing_args['after_title'];
 			} ?>
@@ -40,6 +40,7 @@ class tevolution_author_listing extends WP_Widget {
 							endforeach;
 						}
 						$args->query_from = str_replace("post_type = 'post' AND", "post_type IN ($custom_post_type'post') AND ", $args->query_from);   
+						$args->query_where = $args->query_where . ' AND post_count  > 0 '; 
 					}
 				}
 				 add_action('pre_user_query','user_query_count_post_type');
@@ -67,6 +68,10 @@ class tevolution_author_listing extends WP_Widget {
 					{
 						foreach($listpeoples as $key => $val)
 						{ 	$user_id = $val->ID;
+							$submited_user_count= tevolution_get_posts_count($val->ID);
+						/*	if($submited_user_count > 0)*/
+							{
+							
 						?>
 							<li class="clearfix">
 									<a href="<?php echo get_author_posts_url($val->ID);?>">
@@ -78,30 +83,31 @@ class tevolution_author_listing extends WP_Widget {
 						   
 								<div class="author_info">
 									<p class="title"><a href="<?php echo get_author_posts_url($val->ID);?>"><?php echo $val->display_name; ?> </a></p>
-									<p class="post-count"><?php _e('Submitted',DOMAIN)?>: <?php echo tevolution_get_posts_count($val->ID); ?> <?php 
-									if(tevolution_get_posts_count($val->ID) > 1)
+									<p class="post-count"><?php _e('Submitted',DOMAIN)?>: <?php echo $submited_user_count; ?> <?php 
+									if($submited_user_count > 1 || $submited_user_count==0)
 									{
 										_e('Listings',DOMAIN);
 									}
-									elseif(tevolution_get_posts_count($val->ID) <= 1)
+									elseif($submited_user_count <= 1)
 									{
 										_e('Listing',DOMAIN);
 									} ?>  </p>
 									<?php do_action('tmpl_user_info',$val->ID); ?>
 								</div>
 							</li>
-					<?php }
+					<?php 	}
+						}
 					}
 					else
 					{ 
 						echo '<div>'; _e('There is no user registered with',DOMAIN)." "; echo "&nbsp;".$role_name." "; _e('role.',DOMAIN); echo '</div>';
 					}?>
         <?php
-	    echo '</ul></div>';
+	    echo '</ul>';
 		echo $author_listing_args['after_widget'];
 	}
 	function update($new_instance, $old_instance) {
-	//save the widget
+	/*save the widget*/
  		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['category'] = strip_tags($new_instance['category']);
@@ -111,7 +117,7 @@ class tevolution_author_listing extends WP_Widget {
 		return $instance;
 	}
 	function form($instance) {
- 	//widgetform in backend
+ 	/*widgetform in backend*/
 		global $wp_roles;
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'category' => '', 'no_user' => '','role'=>'' ) );
 		$title = strip_tags($instance['title']);

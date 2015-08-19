@@ -368,7 +368,16 @@ jQuery(document).ready(function(){
 	var home_featured_price = jQuery('#featured_h').val();
 	var category_price_set = 'false';
 	/*loop for category price calculation both for select box and for checkbox*/
-	jQuery(".category_label input[name^='category'], .category_label input[name='selectall'],.category_label select[name^='category']").live('click', function() {
+	jQuery(".category_label input[name^='category'], .category_label input[name='selectall'],.category_label select[name^='category']").live('change', function() {	
+		/* for all check box check or not */
+		jQuery("#submit_form input[name^='category']").change(function(){
+			var a = jQuery("#submit_form input[name='category[]']");
+			if(a.length == a.filter(":checked").length){
+				jQuery("#submit_form #selectall").prop('checked', true);
+			}else{
+				jQuery("#submit_form #selectall").prop('checked', false);
+			}
+		});
 		
 		final_cat_price = 0;
 		var total_price = jQuery('#total_price').val();
@@ -613,6 +622,7 @@ jQuery(document).ready(function(){
 					jQuery('#currency_before_result_price').css('display','block');
 					jQuery('#result_price').css('display','block');
 					jQuery('#result_price').html(thousandseperator((parseFloat(total_price)).toFixed(num_decimals)).replace('.',decimal_sep).replace(' ',''));
+
 				}
 				else
 				{

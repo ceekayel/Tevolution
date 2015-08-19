@@ -1,7 +1,7 @@
 <?php
 
 /*************************** LOAD THE BASE CLASS *******************************
- * The Tmpl_WP_List_Table class isn't automatically available to plugins, so we need
+ * The WP_List_Table class isn't automatically available to plugins, so we need
  * to check if it's available and load it if necessary.
  */
  
@@ -59,7 +59,6 @@ function tmpl_tevolution_custom_sort_order(){
 if(!class_exists('Tmpl_WP_List_Table')){
     include_once( WP_PLUGIN_DIR . '/Tevolution/templatic.php');
 }
-
 
 class custom_fields_list_table extends Tmpl_WP_List_Table
 {
@@ -161,29 +160,29 @@ class custom_fields_list_table extends Tmpl_WP_List_Table
 		 
 		 
 		/* Finish WPML language code  */
-		$meta_data = array(
-						'ID'=> $post_id,
-						'title'	=> '<strong><a href="'.$edit_url.'">'.$fields_label.'</a></strong><input type="hidden" name="custom_sort_order[]" value="' . esc_attr( $post_id ) . '" />',
-						'icl_translations' => $country_url,
-						'html_var' => $html_var,
-						'show_in_post_type' 	=> $show_in_post_type,
-						'type' => $type,
-						'heading_type' => ($type!='heading_type')?$heading_type:'',
-						'sort_order' =>$sort_order,
-						'active' 	=> $active,	
-			);
+		$meta_data = apply_filters('tmpl_fileds_column_value',array(
+                                                                                'ID'=> $post_id,
+                                                                                'title'	=> '<strong><a href="'.$edit_url.'">'.$fields_label.'</a></strong><input type="hidden" name="custom_sort_order[]" value="' . esc_attr( $post_id ) . '" />',
+                                                                                'icl_translations' => $country_url,
+                                                                                'html_var' => $html_var,
+                                                                                'show_in_post_type' => $show_in_post_type,
+                                                                                'type' => $type,
+                                                                                'heading_type' => ($type!='heading_type')?$heading_type:'',
+                                                                                'sort_order' =>$sort_order,
+                                                                                'active' 	=> $active,	
+			),$post_id);
 		}else
 		{
-			$meta_data = array(
-							'ID'=> $post_id,
-							'title'	=> '<strong><a href="'.$edit_url.'">'.$fields_label.'</a></strong><input type="hidden" name="custom_sort_order[]" value="' . esc_attr( $post_id ) . '" />',			
-							'show_in_post_type' 	=> $show_in_post_type,
-							'html_var' => $html_var,
-							'type' => $type,
-							'heading_type' => ($type!='heading_type')?$heading_type:'',
-							'sort_order' =>$sort_order,
-							'active' 	=> $active,
-			);
+                                                            $meta_data = apply_filters('tmpl_fileds_column_value',array(
+                                                                      'ID'=> $post_id,
+                                                                      'title'	=> '<strong><a href="'.$edit_url.'">'.$fields_label.'</a></strong><input type="hidden" name="custom_sort_order[]" value="' . esc_attr( $post_id ) . '" />',			
+                                                                      'show_in_post_type' 	=> $show_in_post_type,
+                                                                      'html_var' => $html_var,
+                                                                      'type' => $type,
+                                                                      'heading_type' => ($type!='heading_type')?$heading_type:'',
+                                                                      'sort_order' =>$sort_order,
+                                                                      'active'  => $active,
+                                                            ),$post_id);
 		}
 		return $meta_data;
 	}
@@ -308,7 +307,7 @@ class custom_fields_list_table extends Tmpl_WP_List_Table
 				);
 		}else
 		{
-			$columns = array(
+			$columns = apply_filters('tmpl_fileds_column',array(
 			'cb' => '<input type="checkbox" />',
 			'title' => __('Field name',ADMINDOMAIN),			
 			'show_in_post_type' => __('Shown in post-type',ADMINDOMAIN),
@@ -317,7 +316,7 @@ class custom_fields_list_table extends Tmpl_WP_List_Table
 			'heading_type' => __('Heading Type',ADMINDOMAIN),
 			'sort_order' => __('Sort Order',ADMINDOMAIN),
 			'active' => __('Status',ADMINDOMAIN),
-			);
+			));
 		}
 		return $columns;
 	}
@@ -404,11 +403,18 @@ class custom_fields_list_table extends Tmpl_WP_List_Table
 	
 	function column_title($item)
 	{
+		/* array for fields which are not deletable */
+		$exclude_del_array = apply_filters('tmpl_not_deletable_fileds',array('category','post_title','map_view','basic_inf','post_content','post_excerpt','post_images'));
+		
 		$is_editable = get_post_meta($item['ID'],'is_edit',true);
 		$is_deletable = get_post_meta($item['ID'],'is_delete',true);		
 		$action1 = array( 'edit' => sprintf('<a href="?page=%s&ctab=%s&action=%s&field_id=%s">Edit</a>',$_REQUEST['page'],'custom_fields','addnew',$item['ID']));
 		
-		$action2 = array('delete' => sprintf('<a href="?page=%s&ctab=%s&pagetype=%s&field_id=%s" onclick="return confirm(\'Are you sure for deleteing custom field?\')">Delete Permanently</a>','custom_setup','custom_fields','delete',$item['ID']));		
+		if(!in_array($item['html_var'],$exclude_del_array))
+			$action2 = array('delete' => sprintf('<a href="?page=%s&ctab=%s&pagetype=%s&field_id=%s" onclick="return confirm(\'Are you sure for deleteing custom field?\')">Delete Permanently</a>','custom_setup','custom_fields','delete',$item['ID']));
+		else	
+			$action2 = array('delete' => sprintf(__('Not Deletable',ADMINDOMAIN),'custom_setup','custom_fields','delete',$item['ID']));
+			
 		$actions = array_merge($action1,$action2);
 		return sprintf('%1$s %2$s', $item['title'], $this->row_actions($actions , $always_visible = false) );
 	}

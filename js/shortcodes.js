@@ -1,3 +1,6 @@
+/*
+ * add script for tevolution shortcode
+ */
 jQuery(document).ready(function($) {
 
 
@@ -34,17 +37,10 @@ jQuery(document).ready(function($) {
 						onclick: function() {
 							editor.insertContent(this.value());
 						}
-					},
-					{
-						text: 'Advance Search Form',
-						value: '[advance_search_page post_type="your post type slug"]',
-						onclick: function() {
-							editor.insertContent(this.value());
-						}
-					},
+					},					
 					{
 						text: 'User Listing',
-						value: '[tevolution_author_list role="" users_per_page=""]',
+						value: '[tevolution_author_list role="" users_per_page="" display_author_has_no_post="0"]',
 						onclick: function() {
 							editor.insertContent(this.value());
 						}

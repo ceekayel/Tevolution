@@ -1,7 +1,6 @@
 <?php
-define('ADD_FAVOURITE_TEXT',__('Add to favorite',DOMAIN));
 define('REMOVE_FAVOURITE_TEXT',__('Added',DOMAIN));
-//This function would add properly to favorite listing and store the value in wp_usermeta table user_favorite field
+/* This function would add properly to favorite listing and store the value in wp_usermeta table user_favorite field */
 function add_to_favorite($post_id,$language='')
 {
 	global $current_user,$post;
@@ -13,10 +12,10 @@ function add_to_favorite($post_id,$language='')
 	$user_meta_data = get_user_meta($current_user->ID,'user_favourite_post',true);
 	$user_meta_data[]=$post_id;
 	update_user_meta($current_user->ID, 'user_favourite_post', $user_meta_data);
-	echo '<a href="javascript:void(0);" class="removefromfav" onclick="javascript:addToFavourite(\''.$post_id.'\',\'remove\');">'.__('Added',DOMAIN).'</a>';
+	echo '<a href="javascript:void(0);" class="removefromfav added" data-id='.$post_id.' onclick="javascript:addToFavourite(\''.$post_id.'\',\'remove\');"><i class="fa fa-heart"></i>'.__('Added',DOMAIN).'</a>';
 	
 }
-//This function would remove the favorited property earlier
+/* This function would remove the favorited property earlier */
 function remove_from_favorite($post_id,$language='')
 {
 	global $current_user,$post;
@@ -41,122 +40,117 @@ function remove_from_favorite($post_id,$language='')
 		$user_meta_data	= $user_new_data;
 	}
 	update_user_meta($current_user->ID, 'user_favourite_post', $user_meta_data); 	
-	echo '<a class="addtofav" href="javascript:void(0);"  onclick="javascript:addToFavourite(\''.$post_id.'\',\'add\');">';
-	_e('Add to favorite',DOMAIN); 
+	echo '<a class="addtofav removed" href="javascript:void(0);" data-id='.$post_id.'  onclick="javascript:addToFavourite(\''.$post_id.'\',\'add\');"><i class="fa fa-heart-o"></i>';
+	_e('Add to favorites',DOMAIN); 
 	echo '</a>';
 }
 /*
-Name :tevolution_favourite_html
-Description : add to favourite HTML code LIKE addtofav link and remove to fav link
+	add to favourite HTML code LIKE addtofav link and remove to fav link
 */
 function tevolution_favourite_html($user_id='',$post='')
 {
-	global $current_user,$post;
-	$post_id = $post->ID;
-	$add_to_favorite = __('Add to favorite',DOMAIN);
-	$added = __('Added',DOMAIN);
-	if(function_exists('icl_register_string')){
-		icl_register_string(DOMAIN,'tevolution'.$add_to_favorite,$add_to_favorite);
-		$add_to_favorite = icl_t(DOMAIN,'tevolution'.$add_to_favorite,$add_to_favorite);
-		icl_register_string(DOMAIN,'tevolution'.$added,$added);
-		$added = icl_t(DOMAIN,'tevolution'.$added,$added);
-	}
-	$user_meta_data = get_user_meta($current_user->ID,'user_favourite_post',true);
-	if($post->post_type !='post'){
-		if(is_tax()){ $class=""; }else{ if(!isset($_GET['post_type']) && @$_GET['post_type']==''){ $class=""; }else{ $class="";  } }  
-		if($user_meta_data && in_array($post_id,$user_meta_data))
-		{
-			?>
-		<span id="tmplfavorite_<?php echo $post_id;?>" class="fav fav_<?php echo $post_id;?>"  > <a href="javascript:void(0);" class="removefromfav <?php echo $class; ?> small_btn" onclick="javascript:addToFavourite('<?php echo $post_id;?>','remove');"><?php echo $added;?></a>   </span>    
-			<?php
-		}else{
-		?>
-		<span id="tmplfavorite_<?php echo $post_id;?>" class="fav fav_<?php echo $post_id;?>"><a href="javascript:void(0);" class="addtofav <?php echo $class; ?> small_btn"  onclick="javascript:addToFavourite('<?php echo $post_id;?>','add');"><?php echo $add_to_favorite;?></a></span>
-		<?php } 
-	}
-}
- /*Add action wp_footer for add to attend event script */
-add_action('wp_footer', 'tevolution_addtoattendevent_script'); 
-function tevolution_addtoattendevent_script()
-{
-	if(is_404()){
-		return '';
-	}
-	
-
-	?>
-    <script type="text/javascript">
-	/* <![CDATA[ */
-	function addToFavourite(post_id,action)
-	{
-		<?php 
-		global $current_user;
-		if($current_user->ID==''){ 
-			if(function_exists('get_tevolution_register_permalink')){
-				$link =  get_tevolution_register_permalink();
-			}else{
-				$link = site_url();
-			}
-		?>
-	
-		window.location.href="<?php echo $link; ?>";
-		<?php 
-		} else {
-		$language='';
-		if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
-			global $sitepress;
-			$current_lang_code= ICL_LANGUAGE_CODE;
-			$language="&language=".$current_lang_code;
+	if(function_exists('tmpl_wp_is_mobile') && !tmpl_wp_is_mobile()){
+		global $current_user,$post;
+		$post_id = $post->ID;
+		$add_to_favorite = __('Add to favorites',DOMAIN);
+		$added = __('Added',DOMAIN);
+		if(function_exists('icl_register_string')){
+			icl_register_string(DOMAIN,'tevolution'.$add_to_favorite,$add_to_favorite);
+			$add_to_favorite = icl_t(DOMAIN,'tevolution'.$add_to_favorite,$add_to_favorite);
+			icl_register_string(DOMAIN,'tevolution'.$added,$added);
+			$added = icl_t(DOMAIN,'tevolution'.$added,$added);
 		}
-		?>
-		var fav_url; 
-		if(action == 'add')
-		{
-				fav_url = '<?php echo plugin_dir_url( __FILE__ ); ?>/ajax_event.php?ptype=favorite&action=add&pid='+post_id+"<?php echo $language;?>";
-			
-		}
-		else
-		{
-				fav_url = '<?php echo plugin_dir_url( __FILE__ ); ?>/ajax_event.php?ptype=favorite&action=removed&pid='+post_id+"<?php echo $language;?>";
-			//	document.getElementById('post-'+post_id).style.display='none';	
-			
-		}
-	
-		var $ac = jQuery.noConflict();
-		$ac.ajax({	
-			url: fav_url ,
-			type: 'GET',
-			dataType: 'html',
-			timeout: 20000,
-			error: function(){
-				alert("Error loading user's attending event.");
-			},
-			success: function(html){	
-			<?php 
-			if(isset($_REQUEST['sort']) && $_REQUEST['sort']=='favourites')
-			{ ?>
-				document.getElementById('post-'+post_id).style.display='none';	
+		$user_meta_data = get_user_meta($current_user->ID,'user_favourite_post',true);
+		if($post->post_type !='post'){
+			if(is_tax()){ $class=""; }else{ if(!isset($_GET['post_type'])){ $class=""; }else{ $class="";  } }  
+			if($user_meta_data && in_array($post_id,$user_meta_data))
+			{
+				
+				?>
+				<span id="tmplfavorite_<?php echo $post_id;?>" class="fav fav_<?php echo $post_id;?>"  > <a href="javascript:void(0);"  id="tmpl_login_frm_<?php echo $post_id; ?>" data-id='<?php echo $post_id; ?>'  class="removefromfav <?php echo $class; ?> small_btn" onclick="javascript:addToFavourite('<?php echo $post_id;?>','remove');"><?php echo $added;?></a>   </span>    
 				<?php
-			}
+			}else{
+				
+				if($current_user->ID ==''){
+					$data_reveal_id ='data-reveal-id="tmpl_reg_login_container"';
+				}else{
+					$data_reveal_id ='';
+				}
+				
 			?>
-				jQuery('.fav_'+post_id).html(html);
-			}
-		});
-		return false;
-		<?php } ?>
+				<span id="tmplfavorite_<?php echo $post_id;?>" class="fav fav_<?php echo $post_id;?>"><a href="javascript:void(0);" <?php echo $data_reveal_id; ?> id="tmpl_login_frm_<?php echo $post_id; ?>" data-id='<?php echo $post_id; ?>'  class="addtofav <?php echo $class; ?> small_btn"  onclick="javascript:addToFavourite('<?php echo $post_id;?>','add');"><?php echo $add_to_favorite;?></a></span>
+			<?php } 
+		}
 	}
-	/* ]]> */
-	</script>
-	<?php
-		
 }
 add_action('init','tev_add_to_favourites',11);
 /* Add this to add to favourites only if current theme is support */
 function tev_add_to_favourites(){
 	global $current_user;
-	if(current_theme_supports('tevolution_my_favourites') ){
-		
+	if(current_theme_supports('tevolution_my_favourites') && !DOING_AJAX){
+		global $post;
 		add_action('templ_post_title','tevolution_favourite_html',11,@$post);
 	}
 }
+/*
+*add post id while add to favorite as a logout user
+*/
+add_action('wp_footer','add_post_id_add_to_fav',99);
+function add_post_id_add_to_fav()
+{
+	global $current_user;
+	if($current_user->ID == '')
+	{
+		?>
+        <script type="text/javascript" async >
+			jQuery(function() {
+				jQuery('.addtofav').live('click',function(){
+					post_id = jQuery(this).attr('data-id');
+					/*add  html while login to add to favorite*/
+					jQuery('#tmpl_login_frm form#loginform').append('<input type="hidden" name="post_id" value="'+post_id+'" />');
+					jQuery('#tmpl_login_frm form#loginform').append('<input type="hidden" name="addtofav" value="addtofav" />');
+					jQuery('#tmpl_login_frm form#loginform [name=redirect_to]').val(jQuery(location).attr('href'));
+					/*add  html while register to add to favorite*/
+					jQuery('#tmpl_sign_up form#userform').append('<input type="hidden" name="post_id" value="'+post_id+'" />');
+					jQuery('#tmpl_sign_up form#userform').append('<input type="hidden" name="addtofav" value="addtofav" />');
+					jQuery('#tmpl_sign_up form#userform [name=reg_redirect_link]').val(jQuery(location).attr('href'));
+				});
+			});
+		</script>
+       	<?php
+	}
+}
+/*
+* update user while add to favorite when he/she login or register.
+*/
+add_filter('tevolution_register_redirect','tmpl_add_fav_logout_user',10,2);
+add_filter('tevolution_login_redirect','tmpl_add_fav_logout_user',10,2);
+function tmpl_add_fav_logout_user($redirect_url,$user)
+{
+	if(isset($_POST['addtofav']) && $_POST['addtofav'] == 'addtofav' && isset($_POST['post_id']) && $_POST['post_id'] != '')
+	{
+		if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
+			global  $sitepress;
+			$sitepress->switch_lang($language);
+		}
+		$user_meta_data = array();
+		$user_meta_data = get_user_meta($current_user->ID,'user_favourite_post',true);
+		$user_meta_data[]= $_POST['post_id'];
+		update_user_meta($user->ID, 'user_favourite_post', $user_meta_data);
+	}
+	if(isset($_POST['reg_redirect_link']) && $_POST['reg_redirect_link'] != '')
+	{
+		$return_url = $_POST['reg_redirect_link'];
+	}
+	elseif(isset($_POST['redirect_to']) && $_POST['redirect_to'] != '')
+	{
+		$return_url = $_POST['redirect_to'];
+	}
+	else
+	{
+		$return_url = $redirect_url;
+	}
+	return $return_url;
+}
+
 ?>

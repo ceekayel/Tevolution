@@ -1,3 +1,6 @@
+/*
+ * validation while adding user custom field
+ */
 function chk_userfield_form()
 {
 	jQuery.noConflict();

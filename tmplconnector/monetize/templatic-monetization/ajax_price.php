@@ -1,4 +1,7 @@
 <?php
+/*
+ * ajax category wise prcie package
+ */
 define( 'DOING_AJAX', true );
 require("../../../../../../wp-load.php");
 if(isset($_REQUEST['pkid'])){
@@ -60,7 +63,7 @@ global  $price_db_table_name,$wpdb ;
 	}
 	$returnstring = "";
 	
-	//go through the array, using a unique identifier to mark the start of each new record
+	/*go through the array, using a unique identifier to mark the start of each new record*/
 	for($i=0;$i<$rawrsize;$i++)
 	{
 		

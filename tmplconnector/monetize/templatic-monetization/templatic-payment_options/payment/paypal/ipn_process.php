@@ -8,7 +8,7 @@ DESCRIPTION : THIS FILE WILL BE CALLED ON SUCCESSFUL PAYMENT VIA PAYPAL. THE COD
 global $wpdb;
 
 $paypal=get_option('payment_method_paypal');
-//$url = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
+/*$url = 'https://www.sandbox.paypal.com/cgi-bin/webscr';*/
 $url = 'https://www.paypal.com/cgi-bin/webscr';
 $raw_post_data = file_get_contents('php://input');
 $raw_post_data='cmd=_notify-validate&'.$raw_post_data;
@@ -24,7 +24,7 @@ foreach ($raw_post_array as $keyval) {
   }
 }
  
-//new Code
+/*new Code*/
 $arg=array('method' => 'POST',
 		 'timeout' => 45,
 		 'redirection' => 5,
@@ -34,9 +34,9 @@ $arg=array('method' => 'POST',
 	);
 
 $response = wp_remote_get($url,$arg );
-//Finish New Code
+/*Finish New Code*/
 
-// read the IPN message sent from PayPal and prepend 'cmd=_notify-validate'
+/* read the IPN message sent from PayPal and prepend 'cmd=_notify-validate'*/
 if(!is_wp_error( $response ) && trim($response['body'])=='VERIFIED' && $response['response']['code']==200) {
 	global $wpdb,$transection_db_table_name,$current_user;
 	$transection_db_table_name=$wpdb->prefix.'transactions';
@@ -53,8 +53,8 @@ if(!is_wp_error( $response ) && trim($response['body'])=='VERIFIED' && $response
 			if(isset($_POST['payment_status']) && $_POST['payment_status']=='Completed'){				
 				$sql = "select max(trans_id) as trans_id,status from $transection_db_table_name where post_id = $postid";
 				$sql_data = $wpdb->get_row($sql);				
-				$wpdb->query("UPDATE $transection_db_table_name set payment_date='".date("Y-m-d H:i:s")."' where trans_id=$sql_data->trans_id");				
-				$wpdb->query("UPDATE $wpdb->posts SET post_status='publish' where ID = ".$postid);
+				$wpdb->query("UPDATE $transection_db_table_name set status=1,payment_date='".date("Y-m-d H:i:s")."' where trans_id=$sql_data->trans_id");				
+				$wpdb->query("UPDATE $wpdb->posts SET post_date='".date("Y-m-d H:i:s")."',post_status='publish' where ID = ".$postid);
 			}
 			break;
 		case 'recurring_payment':
@@ -64,8 +64,8 @@ if(!is_wp_error( $response ) && trim($response['body'])=='VERIFIED' && $response
 					$user_id = $current_user->ID;
 					$sql = "select max(trans_id) as trans_id,status from $transection_db_table_name where post_id = $postid";
 					$sql_data = $wpdb->get_row($sql);
-					$wpdb->query("UPDATE $transection_db_table_name set payment_date='".date("Y-m-d H:i:s")."' where trans_id=$sql_data->trans_id");	
-					$wpdb->query("UPDATE $wpdb->posts SET post_status='publish' where ID = '".$postid."'");
+					$wpdb->query("UPDATE $transection_db_table_name set status=1,payment_date='".date("Y-m-d H:i:s")."' where trans_id=$sql_data->trans_id");	
+					$wpdb->query("UPDATE $wpdb->posts SET post_date='".date("Y-m-d H:i:s")."',post_status='publish' where ID = '".$postid."'");
 				break;
 				default:
 			}

@@ -1,4 +1,7 @@
 <?php
+/*
+ * show map on success page.
+ */
 if(!function_exists('preview_address_google_map'))
 {
     function preview_address_google_map_plugin($latitute,$longitute,$address,$map_type='Road Map')
@@ -9,16 +12,14 @@ if(!function_exists('preview_address_google_map'))
 	if($map_type=='Satellite Map') { $map_type = SATELLITE; } elseif($map_type=='Terrain Map') { $map_type = TERRAIN; }  else { $map_type = ROADMAP; }
 	 
 	 
-	$term_icon = get_bloginfo('template_directory').'/library/map/icons/pin.png';
+	$term_icon = apply_filters('tmpl_default_map_icon',get_bloginfo('template_directory').'/library/map/icons/pin.png');
 	
 	wp_print_scripts( 'google-maps-apiscript' );
-	wp_print_scripts( 'google-clusterig-v3' );
 	wp_print_scripts( 'google-clusterig' );
-	wp_print_scripts( 'google-infobox-v3' );
 	
-	$google_map_customizer=get_option('google_map_customizer');// store google map customizer required formate.
+	$google_map_customizer=get_option('google_map_customizer');/* store google map customizer required formate.*/
     ?>   
-    <script type="text/javascript">
+    <script type="text/javascript" async >
 	/* <![CDATA[ */
 	var infoBubble;
 	var map ;
@@ -43,7 +44,7 @@ if(!function_exists('preview_address_google_map'))
 		var myLatLng = new google.maps.LatLng(<?php echo $latitute;?>, <?php echo $longitute;?>);
 		var Marker = new google.maps.Marker({
 			position: myLatLng,
-			icon: '<?php echo TEMPL_PLUGIN_URL; ?>/images/pin.png',
+			icon: '<?php echo apply_filters('tmpl_default_map_icon',TEMPL_PLUGIN_URL.'images/pin.png'); ?>',
 			map: map
 		});		
 		/*var content = '<?php echo $address;?>';
@@ -55,16 +56,16 @@ if(!function_exists('preview_address_google_map'))
 			infowindow.open(map,Marker);
 		});*/
 			 
-                //New infobundle			
+                /* New infobundle */
 			 infoBubble = new InfoBubble({maxWidth:210,minWidth:210,minHeight:"auto",padding:0,content:'<?php echo $address;?>',borderRadius:0,borderWidth:0,borderColor:"none",overflow:"visible",backgroundColor:"#fff",
 			  });			
-			//finish new infobundle
+			/*finish new infobundle*/
 			infoBubble.open(map, Marker); 
                 google.maps.event.addListener(Marker, 'click', function() {
 					infoBubble.open(map, Marker);
 				});
 			infoBubble.open(map, Marker);
-			//End
+			/*End*/
 		<?php if($street_map=='Street map'):?>
 			 panorama = new google.maps.StreetViewPanorama(document.getElementById('map_canvas'));	
 			var sv = new google.maps.StreetViewService();	
@@ -91,7 +92,7 @@ if(!function_exists('preview_address_google_map'))
 			
 			google.maps.event.addListener(marker, 'click', function() {
 				var markerPanoID = data.location.pano;
-				// Set the Pano to use the passed panoID
+				/* Set the Pano to use the passed panoID*/
 				panorama.setPano(markerPanoID);
 					panorama.setPov({
 					heading: 270,

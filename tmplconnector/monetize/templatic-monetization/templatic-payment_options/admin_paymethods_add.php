@@ -1,4 +1,7 @@
 <?php
+/*
+ * edit the payment gateway option
+ */
 global $wpdb;
 if($_POST)
 {
@@ -12,6 +15,7 @@ if($_POST)
 			$payment_method = trim($_POST['payment_method']);
 			$display_order = trim($_POST['display_order']);
 			$paymet_isactive = $_POST['paymet_isactive'];
+			$paymet_mode = $_POST['paypal_mode'];
 			
 			if($payment_method)
 			{
@@ -19,6 +23,7 @@ if($_POST)
 			}
 			$option_value['display_order'] = $display_order;
 			$option_value['isactive'] = $paymet_isactive;
+			$option_value['paypal_mode'] = $paymet_mode;
 			
 			$paymentOpts = $option_value['payOpts'];
 			for($o=0;$o<count($paymentOpts);$o++)
@@ -29,7 +34,6 @@ if($_POST)
 			$option_value_str = serialize($option_value);
 		}
 	}
-	
 	$updatestatus = "update $wpdb->options set option_value= '$option_value_str' where option_id='".$_GET['id']."'";
 	$wpdb->query($updatestatus);
 	$location = site_url()."/wp-admin/admin.php";
@@ -56,7 +60,7 @@ if(isset($_GET['status']) && $_GET['status']!= '')
 ?>
 <div class="wrap">
 <h2><?php echo sprintf(__('%s Settings',ADMINDOMAIN),$option_value['name']); ?> 
-<a class="add-new-h2" href="<?php echo site_url();?>/wp-admin/admin.php?page=monetization&tab=payment_options" name="btnviewlisting"  title="<?php echo __('Back to Payment Options List',ADMINDOMAIN);?>"/><?php echo __('&laquo; Back to Payment Options List',ADMINDOMAIN); ?></a>
+<a class="add-new-h2" href="<?php echo site_url();?>/wp-admin/admin.php?page=monetization&tab=payment_options" name="btnviewlisting"  title="<?php echo __('Back to Payment Options List',ADMINDOMAIN);?>"/><?php echo __('Back to Payment Options List',ADMINDOMAIN); ?></a>
 </h2>
  <?php if(isset($_GET['msg']) && $_GET['msg']!=''){ ?>
   <div class="updated fade below-h2" id="message" style="padding:5px; font-size:12px;" >
@@ -83,6 +87,13 @@ if(isset($_GET['status']) && $_GET['status']!= '')
             <option value="0" <?php if($option_value['isactive']=='0' || $option_value['isactive']==''){?> selected="selected" <?php }?>><?php echo __('Deactivate',ADMINDOMAIN);?></option>
           </select><p class="description"><?php echo __('Active status will show this payment method on your site',ADMINDOMAIN);?></p>
 	</td>
+	<tr>
+		<th><?php echo __('Use in test mode?',ADMINDOMAIN);?></th>
+		<td>
+			<input type="checkbox" name="paypal_mode" id="paypal_mode" value="1" <?php if($option_value['paypal_mode'] == 1){echo 'checked';}?>> 
+			<p class="description"><?php echo __('Check this if you want to use paypal in test mode.',ADMINDOMAIN); ?></p>
+		</td>
+		</tr>
 	</tr>
 	<tr>
 		<th><?php echo __('Position (Display order)',ADMINDOMAIN); ?></th>
@@ -95,7 +106,6 @@ if(isset($_GET['status']) && $_GET['status']!= '')
 	for($i=0;$i<count($paymentOpts);$i++)
 	{
 		$payOpts = $paymentOpts[$i];
-		//print_r($payOpts);
 	?>
 		<tr>
 		<th><?php echo sprintf(__('%1$s',ADMINDOMAIN),__($payOpts['title'],ADMINDOMAIN));?></th>
@@ -118,7 +128,7 @@ if(isset($_GET['status']) && $_GET['status']!= '')
 							<label><input type="radio" name="<?php echo $payOpts['fieldname'];?>" id="<?php echo $payOpts['fieldname'];?>"  <?php if($payOpts['value']!="" && $payOpts['value']==$values){echo "checked='checked'";};?> value="<?php echo $values;?>"  /> <?php echo $values;?></label>
 				<?php 	}
 					}else{
-						echo "<i>Please add 'options' parameter to your plugin's install.php file to use radio button feature. <br/>
+						echo "<i>".__("Please add 'options' parameter to your plugin's install.php file to use radio button feature.",ADMINDOMAIN)." <br/>
 							  <code>
 								<b>	eg: 'options'		=>	array('Male','Female'),	</b>
 							  </code></i>";
@@ -139,7 +149,7 @@ if(isset($_GET['status']) && $_GET['status']!= '')
 		</tr>
 	<?php } ?>	
 	<tr><td colspan="2">
-	<input type="submit" name="submit" value="<?php echo __('Save all changes',ADMINDOMAIN); ?>" onclick="return chk_form();" class=" button-primary" />
+	<input type="submit" name="submit" value="<?php echo __('Save all changes',ADMINDOMAIN); ?>" onclick="return chk_form();" class=" button-primary button button-hero" />
 	</td></tr>
 	</tbody>	
 	</table>

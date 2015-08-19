@@ -1,5 +1,8 @@
 <?php
-define('USERNAME_TEXT',__('User name',DOMAIN));
+/*
+ * define registration cosntant
+ */
+define('USERNAME_TEXT',__('Username',DOMAIN));
 define('PERSONAL_INFO_TEXT',__('Personal Information',DOMAIN));
 define('FIRST_NAME_TEXT',__('Full Name',DOMAIN));
 define('REGISTRATION_MESSAGE',__('(Note: A password will be e-mailed to you for future reference.)',DOMAIN));
@@ -14,7 +17,7 @@ define('REGISTER_BUTTON',__('Register',DOMAIN));
 define('DASHBOARD_TEXT',__('Dashboard',DOMAIN));
 define('LOGOUT_TEXT',__('Logout',DOMAIN));
 define('SIGN_IN_PAGE_TITLE',__('Sign In',DOMAIN));
-define('INVALID_USER_PW_MSG',__('Invalid Username/Password.',DOMAIN));
+define('INVALID_USER_PW_MSG',__('Incorrect Username/Password.',DOMAIN));
 define('REG_COMPLETE_MSG',__('Registration complete. Please check your e-mail for login details.',DOMAIN));
 define('NEW_PW_EMAIL_MSG',__('We just sent you a new password. Kindly check your e-mail now.',DOMAIN));
 define('EMAIL_CONFIRM_LINK_MSG',__('A confirmation link has been sent to you via email. Kindly check your e-mail now.',DOMAIN));
@@ -27,7 +30,6 @@ define('REGISTRATION_SUCCESS_MSG',__('Thank you for registration! Please check y
 define('REGISTRATION_ACTIVATION_MSG',__('Your account has been activated successfully, your login details has been sent to your email id.',DOMAIN));
 define('INVALIDCAPTCHA',__('Invalid Captcha.',DOMAIN));
 define('INVALIDPLAY',__('Please play the game to register.',DOMAIN));
-//profile.php
 define('EDIT_PROFILE_TITLE',__('Edit Profile',DOMAIN));
 define('CONFIRM_PASSWORD_TEXT',__('Confirm Password',DOMAIN));
 define('EDIT_BUTTON',__('Edit',DOMAIN));
@@ -37,5 +39,18 @@ define('ALREADY_EXIST_MSG',__('Email already exists, please choose another.',DOM
 define('PW_NO_MATCH_MSG',__('Password and Confirm Password should same.',DOMAIN));
 define('SIGN_IN_USING_SOCIAL_PROFILE',__('Sign in using social profile',DOMAIN));
 define('PROFILE_EDIT_TEXT',__('Edit Profile',DOMAIN));
-define('PLEASE_SELECT',__('Please select',DOMAIN));
+define('FRIEND_NAME_VALIDATION',__('Please enter your friend\'s name',DOMAIN));
+define('FRIEND_EMAIL_VALIDATION',__('Please enter your friend\'s valid email address',DOMAIN));
+define('CAPTCHA_INVALID',__('Invalid captcha. Please try again.',DOMAIN));
+define('ENTER_FULL_NAME',__('Please enter your full name',DOMAIN));
+define('ENTER_VALID_EMAIL',__('Please enter your valid email address',DOMAIN));
+define('ENTER_SUBJECT_LINE',__('Please enter subject line',DOMAIN));
+define('ENTER_MESSAGE',__('Please enter message',DOMAIN));
+define('ENTER_COMMENTS',__('Please Enter Comments',DOMAIN));
+define('ENTER_CLAIM_MESSAGE',__('Please enter your claim message.',DOMAIN));
+define('INCORRECT_USER',__('Incorrect username',DOMAIN));
+define('USER_AVAILABLE',__('This username is available.',DOMAIN));
+define('USER_EXISTS',__('The username you entered already exists, please try a different one',DOMAIN));
+define('EMAIL_CORRECT',__('The email address is correctly entered.',DOMAIN));
+define('EMAIL_EXISTS',__('Email address already exists, Please enter another email',DOMAIN));
 ?>

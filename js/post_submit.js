@@ -26,7 +26,7 @@ jQuery(document).ready(function(event){
 			}).appendTo('#submit_form');
 		});
 		/* submit form after payment gateway condition is satisfied*/
-		if(validate_gateway)
+		if(jQuery('#total_price').val() <=0 || validate_gateway)
 		{
 			jQuery('#submit_form').submit();
 		}
@@ -169,6 +169,7 @@ jQuery(document).ready(function(event){
 			async: true,
 			data:'action=tmpl_tevolution_submit_from_package_featured_option&front_end=1&pkg_subscribed='+pkg_subscribed+'&' + submit_from,
 			success:function(results){
+				
 				if(jQuery('#package_free_submission').val() <= 0 || jQuery('#package_free_submission').val() == '' || jQuery('#completed').val() == 'completed' || pkg_type==1 || upgrade == 'upgrade' )
 				{
 					jQuery('#show_featured_option').css('display','block');
@@ -485,6 +486,7 @@ jQuery(document).ready(function(event){
 			async: true,
 			data:'action=tmpl_tevolution_submit_from_category&' + submit_from,
 			success:function(results){
+				
 				jQuery('#submit_category_box').html(results);
 				jQuery('#submit_category_box').css('opacity','');
 				jQuery('#submit_category_box').removeClass('overlay_opacity');
@@ -497,6 +499,7 @@ jQuery(document).ready(function(event){
 			async: true,
 			data:'action=tmpl_tevolution_submit_from_package_featured_option&front_end=1&' + submit_from,
 			success:function(results){
+				
 				if(jQuery('#package_free_submission').val() <= 0 || jQuery('#package_free_submission').val() == '' || pkg_type==1 || upgrade == 'upgrade')
 				{
 					jQuery('#show_featured_option').css('display','block');
@@ -614,33 +617,35 @@ if(cat_fields ==1){
 				}
 			},
 			success:function(results){
+				
+				
+				
 				if(typeof tinyMCE !== 'undefined') tinyMCE.triggerSave();
 				jQuery('#submit_form_custom_fields').removeClass('custom_fields_load');
 				jQuery('#submit_form_custom_fields').html(results);
-				
-				
-				jQuery( ".sort_options select,#searchform select,#submit_form select,.search_filter select,.tmpl_search_property select,.widget_location_nav select,#srchevent select,#header_location .location_nav select,.horizontal_location_nav select,.widget select" ).wrap( "<div class='select-wrap'></div>" );
-				jQuery( ".peoplelisting li" ).wrapInner( "<div class='peopleinfo-wrap'></div>");
-				if (!jQuery.browser.opera) {
-					   // select element styling
-					  jQuery('.sort_options select,#searchform select,#submit_form select,.search_filter select,.tmpl_search_property select,.widget_location_nav select,#srchevent select,#header_location .location_nav select,.horizontal_location_nav select,.widget select').each(function(){
-					var title = jQuery(this).attr('title');
-					/*check multiple select attribute if its found then return script */
-					if(jQuery(this).attr('multiple')=='multiple'){
-						return ;	
-					}
-					var title = jQuery('option:selected',this).text();
-					jQuery(this)
-						.css({'z-index':10,'opacity':0,'-khtml-appearance':'none'})
-						.after('<span class="select">' + title + '</span>')
-						.change(function(){
-							val = jQuery('option:selected',this).text();
-										jQuery(this).next().text(val);
-							})
-					  });
+				if (jQuery( "#submit_form select" ).parent('a').length == 0){
+				jQuery( "#submit_form select" ).wrap( "<div class='select-wrap'></div>" );
+					jQuery( ".peoplelisting li" ).wrapInner( "<div class='peopleinfo-wrap'></div>");
+					if (!jQuery.browser.opera) {
+						   // select element styling
+						  jQuery('.sort_options select,#searchform select,#submit_form select,.search_filter select,.tmpl_search_property select,.widget_location_nav select,#srchevent select,#header_location .location_nav select,.horizontal_location_nav select,.widget select').each(function(){
+						var title = jQuery(this).attr('title');
+						/*check multiple select attribute if its found then return script */
+						if(jQuery(this).attr('multiple')=='multiple'){
+							return ;	
+						}
+						var title = jQuery('option:selected',this).text();
+						jQuery(this)
+							.css({'z-index':10,'opacity':0,'-khtml-appearance':'none'})
+							.after('<span class="select">' + title + '</span>')
+							.change(function(){
+								val = jQuery('option:selected',this).text();
+											jQuery(this).next().text(val);
+								})
+						  });
 
-				  };
-				
+					  };
+				}	  
 				if(jQuery.isFunction(initialize)){					
 					initialize();					
 					changeMap();

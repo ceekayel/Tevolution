@@ -1,12 +1,18 @@
+<?php
+/*
+ * validation for submit form
+ */
+?>
 <script type="text/javascript">
+var front_submission=0;
 jQuery.noConflict();
 jQuery(document).ready(function(){
 //<![CDATA[
 <?php
 global $validation_info;
 $js_code = '';
-//$js_code .= '//global vars ';
-$js_code .= 'var submit_form = jQuery("#submit_form");'; //form Id
+/*$js_code .= '//global vars ';*/
+$js_code .= 'var submit_form = jQuery("#submit_form");'; /*form Id*/
 $jsfunction = array();
 for($i=0;$i<count($validation_info);$i++) {
 	$title = $validation_info[$i]['title'];
@@ -35,8 +41,8 @@ for($i=0;$i<count($validation_info);$i++) {
 	{
 		$msg = sprintf(__("%s",DOMAIN),$text);
 	}
-	$category_can_select_validation_msg = __("You cannot select more than ",TFM_DOMAIN); // message used for while submitting a form with category selected greater than the number of category selection for particualr price package.
-	$category_can_select_validation_message = __(" categories with this package.",TFM_DOMAIN); // message used for while submitting a form with category selected greater than the number of category selection for particualr price package.
+	$category_can_select_validation_msg = __("You cannot select more than ",DOMAIN); /* message used for while submitting a form with category selected greater than the number of category selection for particular price package. */ 
+	$category_can_select_validation_message = __(" categories with this package.",DOMAIN); /* message used for while submitting a form with category selected greater than the number of category selection for particular price package.*/ 
 	if($type == 'multicheckbox' || $type=='checkbox' || $type=='radio' || $type=='post_categories' || $type=='upload')
 	{
 		$js_code .= '
@@ -44,7 +50,7 @@ for($i=0;$i<count($validation_info);$i++) {
 		{
 			if("'.$type.'" != "upload")
 			  {
-				var chklength = jQuery("#'.$name.'").length;
+				var chklength = jQuery("#submit_form #'.$name.'").length;
 			  }
 			if("'.$type.'" =="multicheckbox")
 			  {
@@ -77,7 +83,7 @@ for($i=0;$i<count($validation_info);$i++) {
 				    if($text !='' && $type=='upload'){
 					   $umsg = $text;
 					}else{
-					   $umsg = "You are uploading invalid file type. Allowed file types are : txt, pdf, doc, xls, csv, docx, xlsx, zip, rar";
+					   $umsg = __("You are uploading invalid file type. Allowed file types are",DOMAIN)." : txt, pdf, doc, xls, csv, docx, xlsx, zip, rar";
 					}
 				   $js_code .= 'jQuery("#'.$name.'_error").html("'.$umsg.'");
 				   return false;
@@ -90,7 +96,7 @@ for($i=0;$i<count($validation_info);$i++) {
 			chk_'.$name.' = document.getElementsByName("'.$name.'[]");
 			if("'.$name.'" == "category"){
 				chk_'.$name.' = document.getElementsByName("'.$name.'[]");
-			}
+			}			
 			if(chklength == 0){
 				if ((chk_'.$name.'.checked == false)) {
 					flag = 1;	
@@ -113,9 +119,9 @@ for($i=0;$i<count($validation_info);$i++) {
 				if("'.$name.'" == "category"){
 					document.getElementById("'.$espan.'").innerHTML = "'.$msg.'";
 				}else{
-					'.$espan.'.text("'.$msg.'");
+					jQuery("#'.$espan.'").text("'.$msg.'");
 				}
-				'.$espan.'.addClass("message_error2");
+				jQuery("#'.$espan.'").addClass("message_error2");
 				 return false;
 			}
 			else{
@@ -134,12 +140,13 @@ for($i=0;$i<count($validation_info);$i++) {
 						{
 							
 							document.getElementById("category_error").innerHTML = "'.$category_can_select_validation_msg.' "+document.getElementById("category_can_select").value+"'.$category_can_select_validation_message.' ";
+							jQuery("#'.$espan.'").addClass("message_error2");
 							return false;
 						}
 					}
 				}	
-				'.$espan.'.text("");
-				'.$espan.'.removeClass("message_error2");
+				jQuery("#'.$espan.'").text("");
+				jQuery("#'.$espan.'").removeClass("message_error2");
 				return true;
 			}
 		}
@@ -147,11 +154,13 @@ for($i=0;$i<count($validation_info);$i++) {
 	}else {
 		$js_code .= '
 		function validate_'.$name.'()
-		{';
+		{
+			
+			';
 			if($validation_type == 'email') {
 				$js_code .= '
-				var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-				if(jQuery("#'.$name.'").val() == "" && '.$is_required.') { ';
+				var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;				
+				if(jQuery("#submit_form #'.$name.'").val() == "" && '.$is_required.') {';
 				if($text){
 					$emsg = $text;
 				}else{
@@ -159,98 +168,98 @@ for($i=0;$i<count($validation_info);$i++) {
 				}
 			
 				$js_code .= $name.'.addClass("error");
-					'.$espan.'.text("'.$emsg.'");
-					'.$espan.'.addClass("message_error2");
+					jQuery("#'.$espan.'").text("'.$emsg.'");
+					jQuery("#'.$espan.'").addClass("message_error2"); 					
 				return false;';
-				$js_code .= ' } else if(!emailReg.test(jQuery("#'.$name.'").val().replace(/\s+$/,"")) && jQuery("#'.$name.'").val()) { ';
+				$js_code .= ' } else if(typeof jQuery("#submit_form #'.$name.'").val()!=="undefined" && '.$is_required.' && !emailReg.test(jQuery("#submit_form #'.$name.'").val().replace(/\s+$/,""))  ) { ';
 					if($text){
 						$emsg = $text;
 					}else{
 						$emsg = __("Please provide your email address",DOMAIN);
 					}
 					$js_code .= $name.'.addClass("error");
-					'.$espan.'.text("'.$emsg.'");
-					'.$espan.'.addClass("message_error2");
+					jQuery("#'.$espan.'").text("'.$emsg.'");
+					jQuery("#'.$espan.'").addClass("message_error2");					
 					return false;';
 				$js_code .= '
 				} else {
 					'.$name.'.removeClass("error");
-					'.$espan.'.text("");
-					'.$espan.'.removeClass("message_error2");
+					jQuery("#'.$espan.'").text("");
+					jQuery("#'.$espan.'").removeClass("message_error2");
 					return true;
 				}';
 			} if($validation_type == 'phone_no'){
 				$js_code .= '
 				var phonereg = /^((\+)?[1-9]{1,2})?([-\s\.])?((\(\d{1,4}\))|\d{1,4})(([-\s\.])?[0-9]{1,12}){1,2}$/;
-				if(jQuery("#'.$name.'").val() == "" && '.$is_required.') { ';
+				if(jQuery("#submit_form #'.$name.'").val() == "" && '.$is_required.') { ';
 					$msg = $text;
 					$js_code .= $name.'.addClass("error");
-					'.$espan.'.text("'.$msg.'");
-					'.$espan.'.addClass("message_error2");
+					jQuery("#'.$espan.'").text("'.$msg.'");
+					jQuery("#'.$espan.'").addClass("message_error2");					
 				return false;';
-				$js_code .= ' } else if(!phonereg.test(jQuery("#'.$name.'").val()) && jQuery("#'.$name.'").val()) { ';
-					$msg = "Enter Valid Phone No.";
+				$js_code .= ' } else if(!phonereg.test(jQuery("#submit_form #'.$name.'").val()) && jQuery("#submit_form #'.$name.'").val()) { ';
+					$msg = __("Enter Valid Phone No.",DOMAIN);
 					$js_code .= $name.'.addClass("error");
-					'.$espan.'.text("'.$msg.'");
-					'.$espan.'.addClass("message_error2");
+					jQuery("#'.$espan.'").text("'.$msg.'");
+					jQuery("#'.$espan.'").addClass("message_error2");					
 					return false;';
 				$js_code .= '
 				} else {
 					'.$name.'.removeClass("error");
-					'.$espan.'.text("");
-					'.$espan.'.removeClass("message_error2");
+					jQuery("#'.$espan.'").text("");
+					jQuery("#'.$espan.'").removeClass("message_error2");
 					return true;
 				}';
 			}if($validation_type == 'digit'){
 				$js_code .= '
-				var digitreg = /^\d*[0-9](|.\d*[0-9]|,\d*[0-9])?$/;
-				if(jQuery("#'.$name.'").val() == "" && '.$is_required.') { ';
+				var digitreg = /^[0-9]+$/;
+				if(jQuery("#submit_form #'.$name.'").val() == "" && '.$is_required.') { ';
 					$msg = trim($text);
 				$js_code .= $name.'.addClass("error");
-					'.$espan.'.text("'.$msg.'");
-					'.$espan.'.addClass("message_error2");
+					jQuery("#'.$espan.'").text("'.$msg.'");
+					jQuery("#'.$espan.'").addClass("message_error2");					
 				return false;';
-				$js_code .= ' } else if(!digitreg.test(jQuery("#'.$name.'").val())) { ';
-					$msg = "This field allow only digit.";
+				$js_code .= ' } else if(jQuery("#submit_form #'.$name.'").val() && !digitreg.test(jQuery("#submit_form #'.$name.'").val()) && '.$is_required.') { ';
+					$msg = __("Values must be all numbers.",DOMAIN);
 					$js_code .= $name.'.addClass("error");
-					'.$espan.'.text("'.$msg.'");
-					'.$espan.'.addClass("message_error2");
+					jQuery("#'.$espan.'").text("'.$msg.'");
+					jQuery("#'.$espan.'").addClass("message_error2");					
 					return false;';
 				$js_code .= '
 				} else {
 					'.$name.'.removeClass("error");
-					'.$espan.'.text("");
-					'.$espan.'.removeClass("message_error2");
+					jQuery("#'.$espan.'").text("");
+					jQuery("#'.$espan.'").removeClass("message_error2");
 					return true;
 				}';
 			}
 			if($type == 'texteditor'){
-				$js_code .= 'if(jQuery("#'.$name.'").css("display") == "none")
+				$js_code .= 'if(jQuery("#submit_form #'.$name.'").css("display") == "none")
 				{
 				if(tinyMCE.get("'.$name.'").getContent().replace(/<[^>]+>/g, "") == "") { ';
 					$msg = $text;
 				$js_code .= $name.'.addClass("error");
-					'.$espan.'.text("'.$msg.'");
-					'.$espan.'.addClass("message_error2");
+					jQuery("#'.$espan.'").text("'.$msg.'");
+					jQuery("#'.$espan.'").addClass("message_error2");					
 				return false;';
 				$js_code .= ' }  else {
 					'.$name.'.removeClass("error");
-					'.$espan.'.text("");
-					'.$espan.'.removeClass("message_error2");
+					jQuery("#'.$espan.'").text("");
+					jQuery("#'.$espan.'").removeClass("message_error2");					
 					return true;
 				}
 				}else
 				{
-					if(jQuery("#'.$name.'").val() == "")
+					if(jQuery("#submit_form #'.$name.'").val() == "")
 					{
-						'.$espan.'.text("'.$msg.'");
-						'.$espan.'.addClass("message_error2");
+						jQuery("#'.$espan.'").text("'.$msg.'");
+						jQuery("#'.$espan.'").addClass("message_error2");						
 						return false;
 					}
 					else
 					{
-						'.$espan.'.text("");
-						'.$espan.'.removeClass("message_error2");
+						jQuery("#'.$espan.'").text("");
+						jQuery("#'.$espan.'").removeClass("message_error2");
 						return true;
 					}
 				}';
@@ -260,12 +269,12 @@ for($i=0;$i<count($validation_info);$i++) {
 				{
 					if("'.$msg.'" == "")
 					{
-						jQuery("#post_images_error").html("Please upload atleast one image here..");
+						jQuery("#post_images_error").html("'.__("Please upload at least 1 image to the gallery !",DOMAIN).'");						
 						return false;
 					}
 					else
 					{
-						jQuery("#post_images_error").html("'.$msg.'");
+						jQuery("#post_images_error").html("'.$msg.'");						
 						return false;
 					}
 				}';
@@ -274,40 +283,41 @@ for($i=0;$i<count($validation_info);$i++) {
 			{
 				$js_code .= '
 				{
-					 if(jQuery("#'.$name.'").val() < jQuery("#st_date").val() || jQuery("#'.$name.'").val() == "")
+					 if(jQuery("#submit_form #'.$name.'").val() < jQuery("#submit_form #st_date").val() || jQuery("#submit_form #'.$name.'").val() == "")
 					{
 						';
 						$js_code .= $name.'.addClass("error");
-						'.$espan.'.text("'.$msg.'");
-						'.$espan.'.addClass("message_error2");
+						jQuery("#'.$espan.'").text("'.$msg.'");
+						jQuery("#'.$espan.'").addClass("message_error2");						
 						return false;
 					}
 					else
 					{
 						'.$name.'.removeClass("error");
-						'.$espan.'.text("");
-						'.$espan.'.removeClass("message_error2");
+						jQuery("#'.$espan.'").text("");
+						jQuery("#'.$espan.'").removeClass("message_error2");
 						return true;
 					}
 				}';
 			}
-		$js_code .= 'if(jQuery("#select_category").val() == "")';
+		$js_code .= 'if((!jQuery("#select_category").val() || jQuery("#select_category").val()=="") && "'.$name.'"=="category")';
 		$js_code .= '
 			{
-				'.$espan.'.text("'.$msg.'");
-				'.$espan.'.addClass("message_error2");
+				
+				jQuery("#'.$espan.'").text("'.$msg.'");
+				jQuery("#'.$espan.'").addClass("message_error2");				
 				return false;
 			}';
-		$js_code .= 'if(jQuery("#'.$name.'").val() == "" && '.$is_required.')';
+		$js_code .= 'if(jQuery("#submit_form #'.$name.'").val() == "" && '.$is_required.')';
 		$js_code .= '
 			{
-				'.$espan.'.text("'.$msg.'");
-				'.$espan.'.addClass("message_error2");
+				jQuery("#'.$espan.'").text("'.$msg.'");
+				jQuery("#'.$espan.'").addClass("message_error2");				
 				return false;
 			}
 			else{
-				'.$espan.'.text("");
-				'.$espan.'.removeClass("message_error2");
+				jQuery("#'.$espan.'").text("");
+				jQuery("#'.$espan.'").removeClass("message_error2");				
 				return true;
 			}
 		}
@@ -319,20 +329,20 @@ for($i=0;$i<count($validation_info);$i++) {
 		function validate_'.$name.'_range_type()
 		{
 			
-			var value=jQuery("#'.$name.'").val();
-			var min_value=jQuery("#'.$name.'").attr("min");
-			var max_value=jQuery("#'.$name.'").attr("max");
+			var value=jQuery("#submit_form #'.$name.'").val();
+			var min_value=jQuery("#submit_form #'.$name.'").attr("min");
+			var max_value=jQuery("#submit_form #'.$name.'").attr("max");
 			if(parseInt(value) < parseInt(min_value)){	
 				jQuery("#'.$espan.'_range_type").remove();
-				jQuery("#'.$name.'").after("<span id=\"'.$espan.'_range_type\" class=\"message_error2\">'.__('Please select a value that higher than',DOMAIN).' "+min_value+"</span>");				
+				jQuery("#submit_form #'.$name.'").after("<span id=\"'.$espan.'_range_type\" class=\"message_error2\">'.__('Please select a value that higher than',DOMAIN).' "+min_value+"</span>");				
 				return false;
 			}else if(parseInt(value) > parseInt(max_value)){				
 				jQuery("#'.$espan.'_range_type").remove();
-				jQuery("#'.$name.'").after("<span id=\"'.$espan.'_range_type\" class=\"message_error2\">'.__('Please select a value that lower than',DOMAIN).' "+max_value+"</span>");				
+				jQuery("#submit_form #'.$name.'").after("<span id=\"'.$espan.'_range_type\" class=\"message_error2\">'.__('Please select a value that lower than',DOMAIN).' "+max_value+"</span>");				
 				return false;
 			}else if(isNaN(parseInt(value)) && value!=""){				
 				jQuery("#'.$espan.'_range_type").remove();
-				jQuery("#'.$name.'").after("<span id=\"'.$espan.'_range_type\" class=\"message_error2\">'.__('Please enter a number',DOMAIN).'</span>");				
+				jQuery("#submit_form #'.$name.'").after("<span id=\"'.$espan.'_range_type\" class=\"message_error2\">'.__('Please enter a number',DOMAIN).'</span>");				
 				return false;
 			}else{				
 				jQuery("#'.$espan.'_range_type").remove();
@@ -340,31 +350,21 @@ for($i=0;$i<count($validation_info);$i++) {
 			}
 			
 		}';
-		$js_code .= $name.'.blur(validate_'.$name.'_range_type); ';
-		$js_code .= $name.'.keyup(validate_'.$name.'_range_type); ';
+		/*$js_code .= $name.'.blur(validate_'.$name.'_range_type); ';*/
+		/*$js_code .= $name.'.keyup(validate_'.$name.'_range_type); ';*/
+		
+		$js_code .= $name.'.live("focus blur keyup change", function(event){validate_'.$name.'_range_type()});'."\r\n";
 	}
-	//$js_code .= '//On blur ';	
-	$js_code .= $name.'.blur(validate_'.$name.'); ';
-	//$js_code .= '//On key press ';
-	$js_code .= $name.'.keyup(validate_'.$name.'); ';
-	if($name=='category' && $type=='checkbox')
-	{
-		$js_code .= "jQuery('.checkbox').click(function(){
-										validate_".$name."()
-											});"; 
+	/*$js_code .= 'On blur ';	*/
+	/*$js_code .= $name.'.blur(validate_'.$name.'); ';*/
+	/*$js_code .= 'On key press ';*/
+	/*$js_code .= $name.'.keyup(validate_'.$name.'); ';*/
+	if($name=='category'){
+		$js_code .='jQuery("input[name^=category],.category_label input[name^=selectall],select[name^=category]").live("blur keyup change click", function(event){validate_'.$name.'()});'."\r\n";	
 	}
-	if($type=='select' || $type=='radio')
-	{
-		$js_code .= "jQuery('#".$validation_name."').change(function(){
-										validate_".$validation_name."()
-											});"; 
-	}
-	if($type=='radio')
-	{
-		$js_code .= "jQuery('input').change(function(){
-										validate_".$validation_name."()
-											});"; 
-	}
+	$js_code .='jQuery("#submit_form #'.$name.'").live("blur keyup", function(event){validate_'.$name.'()});'."\r\n";
+	 
+	
 	$jsfunction[] = 'validate_'.$name.'()';
 }
 if($jsfunction)
@@ -373,10 +373,10 @@ if($jsfunction)
 }else{
 	$jsfunction_str='';
 }
-//$js_code .= '//On Submitting ';
-$js_code .= '	
-submit_form.submit(function()
-{
+/* $js_code .= 'On Submitting '; */
+/* $js_code .= 'submit_form.submit(function() */
+$js_code .= 'jQuery("#continue_submit_from").on("click",function (e)
+{	
 	var package_select = jQuery("input[name=package_select]");	
 	var package_type=package_select.attr("type");
 	if (document.getElementsByName("package_select").length >0){
@@ -385,26 +385,44 @@ submit_form.submit(function()
 			if (!jQuery("input:radio[name=package_select]:checked").val())
 			 {
 				jQuery("#all_packages_error").html("'.__(PRICE_PACKAGE_ERROR,DOMAIN).'");
-				return false; // add comment return false nothing add and directoly submit then only price package error will be shown
+				return false; /* add comment return false nothing add and directoly submit then only price package error will be shown*/
 			 }
 			else
 			{
 				jQuery("#all_packages_error").html("");
 			}
 		}
-}';
+	
+	}
+	
+	/* Check terms and condition validation */
+	if(jQuery("#term_and_condition").length){		
+		if(!jQuery("#term_and_condition").attr("checked"))		
+		{
+			jQuery("#terms_error").html("'.__('Please accept Terms and Conditions.',DOMAIN).'");			
+			return false; /* add comment return false nothing add and directoly submit then only term condition error will be shown*/
+		}else{
+			jQuery("#terms_error").html("");	
+		}
+	}
+	';
 	$js_code=apply_filters('submit_form_validation',$js_code);
 	if($jsfunction_str !=''){
-	$js_code.='if('.$jsfunction_str.')
-	{
-		jQuery("#common_error").html("");
-		return true
-	}
-	else
-	{
-		jQuery("#common_error").html("'.__('Oops!, looks like you forgot to enter a value in some compulsory field',DOMAIN).'");
-		return false;
-	}';
+		$js_code.='if('.$jsfunction_str.')
+		{
+			jQuery("#common_error").html("");			
+			if(recaptcha==1){
+				/* Recaptcha validation function to check captcha validation */
+				var check_validation=recaptcha_validation();				
+				return check_validation;
+			}
+			return true;
+		}
+		else
+		{
+			jQuery("#common_error").html("'.__('Oops! Please make sure you have filled all the mandatory fields.',DOMAIN).'");
+			return false;
+		}';
 	}
 	$js_code.='
 });
@@ -413,5 +431,34 @@ $js_code .= '
 });';
 echo $js_code;
 ?>
+function hide_error(){
+	if(jQuery("#term_and_condition").attr("checked"))
+	{
+		jQuery("#terms_error").html("");
+	}
+}
+
+if(recaptcha==1){
+	function recaptcha_validation(){
+		var submit_from = jQuery('form#submit_form').serialize();
+		var output;
+		jQuery.ajax({
+			url:ajaxUrl,
+			type:'POST',
+			async: false,
+			data:submit_from+'&action=submit_form_recaptcha_validation',
+		})
+		.done(function(results){			
+			if(results==1){
+				jQuery("#common_error").html('');
+				output= true;
+			}else{
+				jQuery("#common_error").html(results);
+				output= false;
+			}			
+		});	
+		return output;
+	}
+}
 //]]>
 </script>

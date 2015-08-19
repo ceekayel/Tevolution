@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 /*
 * fetch the count for google, facebook, pinterest share for particular post.
 */
@@ -72,8 +73,7 @@
     curl_close($ch);
     
     if ($errmsg != '' || $err != '') {
-      /*print_r($errmsg);
-      print_r($errmsg);*/
+
     }
     return $content;
   }

@@ -1,3 +1,8 @@
+<?php 
+/*
+* Display login form for get the plugin update only for purchased user
+*/
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 	<head>
@@ -16,7 +21,7 @@
 	</head>
      <?php
 	global $current_user;
-	$self_url = esc_url(add_query_arg( array( 'slug' => 'tevolution', 'action' => 'tevolution' , '_ajax_nonce' => wp_create_nonce( 'tevolution' ), 'TB_iframe' => true ), admin_url( 'admin-ajax.php' ) ));
+	$self_url = esc_url( add_query_arg( array( 'slug' => 'tevolution', 'action' => 'tevolution' , '_ajax_nonce' => wp_create_nonce( 'tevolution' ), 'TB_iframe' => true ), admin_url( 'admin-ajax.php' ) ));
 	if(isset($_POST['templatic_login']) && isset($_POST['templatic_username']) && $_POST['templatic_username']!=''  && isset($_POST['templatic_password']) && $_POST['templatic_password']!='')
 	{ 
 		$arg=array(
@@ -33,7 +38,7 @@
 		$response = wp_remote_post('http://templatic.com/members/login_api.php',$arg );	
 	
 		if( is_wp_error( $response ) ) {
-		  	$warnning_message="Invalid UserName or password. are you using templatic member username and password?";
+		  	$warnning_message = __("Invalid UserName or password. are you using templatic member username and password?",ADMINDOMAIN);
 		} else { 
 		  	$data = json_decode($response['body']);
 		}
@@ -57,12 +62,12 @@
 				$download_link=$data_product[PLUGIN_NAME];
 			}else
 			{
-				$warnning_message=" Oops, we have a problem. The information you provided is either incorrect or you don't have ".PLUGIN_NAME." available inside the account. If you think everything should be ok with your account, please <a href='http://templatic.com/contact'>contact us.</a>";
+				$warnning_message = __("Oops, we have a problem. The information you provided is either incorrect or you don't have",ADMINDOMAIN).' '.PLUGIN_NAME.' '.__('available inside the account. If you think everything should be ok with your account, please',ADMINDOMAIN)." <a href='http://templatic.com/contact'>".__('contact us.',ADMINDOMAIN)."</a>";
 			}
 		}
 	}else{
 		if(isset($_POST['templatic_login']) && ($_POST['templatic_username'] =='' || $_POST['templatic_password']=='')){
-		$warnning_message="Invalid UserName or password. Please enter templatic member's username and password."; }
+		$warnning_message = __("Invalid UserName or password. Please enter templatic member's username and password.",ADMINDOMAIN); }
 	}
 	?>
      <body style="padding:40px;">
@@ -70,7 +75,7 @@
            <div id='pblogo'>
                <img src="<?php echo esc_url( plugins_url( '/tmplconnector/monetize/images/templatic.png', __FILE__ ) ); ?>" style="margin-right: 50px;" />
 		   </div> 
-          <div class='wrap templatic_login'>
+          <div class='wrap templatic_login' style="width:95%;">
            <?php
 		if(isset($warnning_message) && $warnning_message!='')
 		{?>
@@ -86,7 +91,7 @@
                <form action="<?php echo $self_url;?>" name="" method="post">
                    <table>
 					<tr>
-					<td><label><?php echo __('User name: ',ADMINDOMAIN); ?></label></td>
+					<td><label><?php echo __('Username: ',ADMINDOMAIN); ?></label></td>
 					<td><input type="text" name="templatic_username"  /></td>
 					</tr>
 					<tr>
@@ -104,7 +109,7 @@
           <?php else:								
 				 $file=PLUGIN_FOLDER_NAME.'/templatic.php';
 		 		 $download= wp_nonce_url( self_admin_url('update.php?action=upgrade-plugin&plugin=').$file, 'upgrade-plugin_' . $file);
-				 echo '<p><b>Important!</b> Clicking on "Update Now" will overwrite all files. If you customized the '.PLUGIN_NAME.' code in any way please abort the update process and backup now.</p> <p><a href="https://codex.wordpress.org/WordPress_Backups">Click here</a> for tips on how to backup your files and database.</p><a href="'.$download.'"  target="_parent" class="button button-primary">Update Now</a>';
+				 echo '<a href="'.$download.'"  target="_parent" class="button button-primary">'.__('Update Now',ADMINDOMAIN).'</a>';
 			 endif;?>
           </div>
 <?php

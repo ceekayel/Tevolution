@@ -1,4 +1,7 @@
 <?php
+/*
+ * insert option for prebanktransfer in database while plugin activation
+ */
 $paymentmethodname = 'prebanktransfer'; 
 if($_REQUEST['install']==$paymentmethodname)
 {
@@ -20,7 +23,7 @@ if($_REQUEST['install']==$paymentmethodname)
 	$paymethodinfo = array(
 						"name" 		=> __('Pre Bank Transfer',ADMINDOMAIN),
 						"key" 		=> $paymentmethodname,
-						"isactive"	=>	'1', // 1->display,0->hide
+						"isactive"	=>	'1', /* 1->display,0->hide */
 						"display_order"=>'6',
 						"payOpts"	=>	$payOpts,
 						);

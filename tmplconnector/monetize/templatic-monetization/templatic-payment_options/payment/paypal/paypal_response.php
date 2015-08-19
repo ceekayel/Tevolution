@@ -1,32 +1,70 @@
 <?php
+/*
+ * send response to paypal as from submit form
+ */
 global $trans_id;
-define('PAYPAL_MSG',__('Processing for Paypal, Please wait ....',DOMAIN));
+define('PAYPAL_MSG',__('Processing for PayPal, Please wait ....',DOMAIN));
 $paymentOpts = templatic_get_payment_options($_REQUEST['paymentmethod']);
+/* get all settings in pay pal */
+$paypal_options = get_option('payment_method_paypal');
 $merchantid = $paymentOpts['merchantid'];
 
 if($_REQUEST['page'] == 'upgradenow'){
 	$suburl ="&upgrade=pkg";
 }
 
-$returnUrl = site_url("/")."?ptype=return&pmethod=paypal&trans_id=".$trans_id.$suburl;
-$cancel_return = site_url("/")."?ptype=cancel&pmethod=paypal&trans_id=".$trans_id;
-$notify_url = site_url("/")."?ptype=notifyurl&pmethod=paypal&trans_id=".$trans_id;
+/* Wpml language plugin wise url change in return url, cancle url and notify url */
+if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
+	global $sitepress;
+	if(isset($_REQUEST['lang'])){
+		$url = site_url().'/?page=paynow&lang='.$_REQUEST['lang'];
+	}elseif($sitepress->get_current_language()){
+		
+		if($sitepress->get_default_language() != $sitepress->get_current_language()){
+			$url = site_url().'/'.$sitepress->get_current_language();
+		}else{
+			$url = site_url();
+		}	
+	}else{
+		$url = site_url();
+	}
+	
+	if(strstr($url,'?'))
+	{
+		$returnUrl = apply_filters('tmpl_returnUrl',$url."&ptype=return&pmethod=paypal&trans_id=".$trans_id.$suburl);
+		$cancel_return = apply_filters('tmpl_cancel_return',$url."&ptype=cancel&pmethod=paypal&trans_id=".$trans_id);
+		$notify_url = apply_filters('tmpl_notify_url',$url."&ptype=notifyurl&pmethod=paypal&trans_id=".$trans_id);
+	}else
+	{ 
+		$returnUrl = apply_filters('tmpl_returnUrl',$url."?ptype=return&pmethod=paypal&trans_id=".$trans_id.$suburl);
+		$cancel_return = apply_filters('tmpl_cancel_return',$url."?ptype=cancel&pmethod=paypal&trans_id=".$trans_id);
+		$notify_url = apply_filters('tmpl_notify_url',$url."?ptype=notifyurl&pmethod=paypal&trans_id=".$trans_id);
+	}	
+}else{
+	$returnUrl = apply_filters('tmpl_returnUrl',site_url("/")."?ptype=return&pmethod=paypal&trans_id=".$trans_id.$suburl);
+	$cancel_return = apply_filters('tmpl_cancel_return',site_url("/")."?ptype=cancel&pmethod=paypal&trans_id=".$trans_id);
+	$notify_url = apply_filters('tmpl_notify_url',site_url("/")."?ptype=notifyurl&pmethod=paypal&trans_id=".$trans_id);
+}
+
 $currency_code = templatic_get_currency_type();
 global $payable_amount,$post_title,$last_postid;
+$payable_amount = number_format((float)$payable_amount, 2, '.', ''); /* shows 2 desimal points as per paypals price forlmat */
 $post = get_post($last_postid);
-$post_title = $post->post_title;
-$user_info = get_userdata($post->post_author);
-$address1 = get_post_meta($post->post_author,'address');
-$address2 = get_post_meta($post->post_author,'area');
-$country = get_post_meta($post->post_author,'add_country');
-$state = get_post_meta($post->post_author,'add_state');
-$city = get_post_meta($post->post_author,'add_city');
-if($_REQUEST['page'] == 'upgradenow'){
-	$price_package_id=$_SESSION['upgrade_post']['package_select'];
+$post_title = apply_filters('tmpl_trans_title',$post->post_title);
+$user_info = apply_filters('tmpl_trans_user_info',get_userdata($post->post_author));
+$address1 = apply_filters('tmpl_trans_address1',get_post_meta($post->post_author,'address'));
+$address2 = apply_filters('tmpl_trans_address2',get_post_meta($post->post_author,'area'));
+$country = apply_filters('tmpl_trans_country',get_post_meta($post->post_author,'add_country'));
+$state = apply_filters('tmpl_trans_state',get_post_meta($post->post_author,'add_state'));
+$city = apply_filters('tmpl_trans_state',get_post_meta($post->post_author,'add_city'));
+
+if($_REQUEST['page'] == 'upgradenow' || $_REQUEST['post_viewer_package']){
+	$price_package_id=$_REQUEST['pkg_id'];
 }
 else{
 	$price_package_id=get_post_meta($last_postid,'package_select',true);
 }
+
 $package_amount=get_post_meta($price_package_id,'package_amount',true);
 $validity=get_post_meta($price_package_id,'validity',true);
 $validity_per=get_post_meta($price_package_id,'validity_per',true);
@@ -49,13 +87,19 @@ if($recurring==1){
 	}
 				
 	$c_recurrence=$rec_type;
-	//$c_duration='FOREVER';
+	/*$c_duration='FOREVER';*/
 	$c_duration=$billing_cycle.' '.$cycle;	
 	
 }
+
+/* set url according to paypal mode selected in payment setting */
+if($paypal_options['paypal_mode'] == 1){ /* if test mode */
+	$action_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
+}else{ /* if live mode */
+	$action_url = 'https://www.paypal.com/cgi-bin/webscr';
+}
 ?>
-<form name="frm_payment_method" action="https://www.paypal.com/cgi-bin/webscr" method="post">
-<!--form name="frm_payment_method" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post"-->
+<form name="frm_payment_method" action="<?php echo $action_url;?>" method="post">
 <input type="hidden" name="business" value="<?php echo $merchantid;?>"/>
 <input type="hidden" name="address1" value="<?php echo $address1[0]; ?>" >
 <input type="hidden" name="address2" value="<?php echo $address2[0]; ?>" >
@@ -101,10 +145,10 @@ if($recurring==1){
 <input type="hidden" name="rm" value="2">
 </form>
 <div class="wrapper" >
-<div class="clearfix container_message" style=" width:100%;text-align:center;">
+<div class="clearfix container_message payment_processing_msg" style=" width:100%;text-align:center; height: 100%; margin-top: -10px; position: relative; top: 50%;">
 	<h2 class="head2"><?php _e(PAYPAL_MSG);?></h2>
  </div>
 </div>
-<script>
+<script type="text/javascript" async>
 setTimeout("document.frm_payment_method.submit()",50); 
 </script> <?php exit;?>

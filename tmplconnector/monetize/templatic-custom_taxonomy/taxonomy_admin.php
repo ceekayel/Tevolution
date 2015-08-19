@@ -257,7 +257,7 @@ function tevolution_taxonomy_price_package(){
 				if($posttype==$post_type){
 					$taxonomies = get_object_taxonomies( (object) array( 'post_type' => $post_type,'public'   => true, '_builtin' => true ));
 		?>
-          	<script type="text/javascript">
+          	<script type="text/javascript" async >
 			jQuery(document).ready(function(){	
 			   jQuery('input:checkbox[name^="tax_input"]').click(function(){								
 				/*var value=jQuery('input:checkbox[name^="tax_input"]').val();*/

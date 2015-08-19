@@ -2,16 +2,15 @@
 /**
  * Shortcodes init
  */
-/*Advance search shortcode*/
-	include_once('shortcode_advance_search.php');
 /*Submit form page shortcode*/
-	include_once('shortcode_submit_form_page.php');
+include_once('shortcode_submit_form_page.php');
 /* People listing shortcode */
-	include_once('shortcode_people.php');
+include_once('shortcode_people.php');
 /* People listing shortcode */
-	include_once('shortcode_post_upgrade.php');
+include_once('shortcode_post_upgrade.php');
 	
-	include_once('shortcode_taxonomies_map.php');
+include_once('shortcode_taxonomies_map.php');
+
 function tevolution_map_page($atts)
 {
 	
@@ -28,7 +27,7 @@ function tevolution_map_page($atts)
 			);
 	ob_start();
 	remove_filter( 'the_content', 'wpautop' , 12);
-	//fetch the category by post type
+	/*fetch the category by post type*/
 		$taxonomies = get_object_taxonomies( (object) array( 'post_type' => $post_type,'public'   => true, '_builtin' => true ));	
 	$cat_args = array(
 				'taxonomy'=>$taxonomies[0],
@@ -65,10 +64,8 @@ function display_google_map($catinfo_arr,$atts,$catname_arr)
 	
 	wp_print_scripts( 'google-maps-apiscript');
 	wp_print_scripts( 'google-clusterig');
-	wp_print_scripts( 'google-clusterig-v3');	
-	wp_print_scripts( 'google-infobox-v3');	
 	
-	$google_map_customizer=get_option('google_map_customizer');// store google map customizer required formate.
+	$google_map_customizer=get_option('google_map_customizer');/* store google map customizer required formate.*/
 	?>
      <script type="text/javascript">
 		var CITY_MAP_CENTER_LAT= '<?php echo $latitude?>';
@@ -81,7 +78,7 @@ function display_google_map($catinfo_arr,$atts,$catname_arr)
 		var zoom_option = '<?php echo $map_display; ?>';
 		var markers = {<?php echo $catinfo_arr;?>};
 		
-		//var markers = '';
+		/*var markers = '';*/
 		var map = null;
 		var mgr = null;
 		var mc = null;
@@ -147,13 +144,13 @@ function display_google_map($catinfo_arr,$atts,$catname_arr)
 					}
 					mgr.addMarkers( markers[level], 0 );
 					
-					//New infobundle			
+					/*New infobundle			*/
 					 infoBubble = new InfoBubble({
 						maxWidth:210,minWidth:210,minHeight:"auto",padding:0,content:details.message,borderRadius:0,borderWidth:0,borderColor:"none",overflow:"visible",backgroundColor:"#fff"
 					  });			
-					//finish new infobundle
+					/*finish new infobundle*/
 			
-			//Start			
+			/*Start			*/
                 google.maps.event.addListener(markers, "click", function (e) {														    
 					infoBubble.open(map, details.message);					
                 });
@@ -172,7 +169,7 @@ function display_google_map($catinfo_arr,$atts,$catname_arr)
 			  }
 		   });
 		   
-			// but that message is not within the marker's instance data 
+			/* but that message is not within the marker's instance data */
 			function attachMessage(marker, msg) {
 			  	var myEventListener = google.maps.event.addListener(marker, 'click', function() {
 					infoBubble.setContent( msg );
@@ -200,12 +197,12 @@ function display_google_map($catinfo_arr,$atts,$catname_arr)
 				if($catname->term_icon != '')
 						$term_icon=$catname->term_icon;
 					else	
-						$term_icon=TEMPL_PLUGIN_URL."tmplconnector/monetize/images/pin.png";
+						$term_icon=apply_filters('tmpl_default_map_icon',TEMPL_PLUGIN_URL."tmplconnector/monetize/images/pin.png");
 				
 				 ?>
                          <label>
                          <input type="checkbox" value="<?php echo $catname->name;?>" checked="checked" id="<?php echo $catname->slug;?>" name="<?php echo $catname->slug;?>">
-                         <img height="14" width="8" alt="" src="<?php echo $term_icon;?>"> <?php echo esc_attr(urldecode($catname->slug));?>
+                         <img height="14" width="8" alt="" src="<?php echo $term_icon;?>"> <?php echo esc_attr(urldecode($catname->name));?>
                          </label> 
                     <?php endforeach;?>
                </div>
@@ -218,7 +215,7 @@ function display_google_map($catinfo_arr,$atts,$catname_arr)
 	 var maxMap = document.getElementById( 'triggermap' );		
 		google.maps.event.addDomListener(maxMap, 'click', showFullscreen);
 		function showFullscreen() {
-			  // window.alert('DIV clicked');
+			  /* window.alert('DIV clicked');*/
 				jQuery('#map_canvas').toggleClass('map-fullscreen');
 				jQuery('.map_category').toggleClass('map_category_fullscreen');
 				jQuery('.map_post_type').toggleClass('map_category_fullscreen');
@@ -230,7 +227,7 @@ function display_google_map($catinfo_arr,$atts,$catname_arr)
 				jQuery('#triggermap').toggleClass('triggermap_fullscreen');
 				
 				jQuery('.TopLeft').toggleClass('TopLeft_fullscreen');		
-					 //map.setCenter(darwin);
+					 /*map.setCenter(darwin);*/
 					 window.setTimeout(function() { 
 					var center = map.getCenter(); 
 					google.maps.event.trigger(map, 'resize'); 
@@ -305,8 +302,8 @@ function get_categories_postinfo($catname_arr,$post_type,$map_image_size='thumbn
 					$lat = get_post_meta($ID,'geo_latitude',true);
 					$lng = get_post_meta($ID,'geo_longitude',true);					
 					$address = str_replace($srcharr,$replarr,(get_post_meta($ID,'address',true)));
-					//$contact = str_replace($srcharr,$replarr,(get_post_meta($ID,'contact',true)));
-					//$timing = str_replace($srcharr,$replarr,(get_post_meta($ID,'timing',true)));		
+					/*$contact = str_replace($srcharr,$replarr,(get_post_meta($ID,'contact',true)));*/
+					/*$timing = str_replace($srcharr,$replarr,(get_post_meta($ID,'timing',true)));		*/
 					/*Fetch the image for display in map */
 					if ( has_post_thumbnail()){
 						$post_img = wp_get_attachment_image_src( get_post_thumbnail_id(), $map_image_size);						
@@ -328,7 +325,7 @@ function get_categories_postinfo($catname_arr,$post_type,$map_image_size='thumbn
 					if($cat->term_icon != '')
 						$term_icon=$cat->term_icon;
 					else	
-						$term_icon=TEMPL_PLUGIN_URL."tmplconnector/monetize/images/pin.png";	
+						$term_icon=apply_filters('tmpl_default_map_icon',TEMPL_PLUGIN_URL."tmplconnector/monetize/images/pin.png");
 						
 					$name_title=html_entity_decode($title);
 					if(!isset($more)){ $more='...'; } 
@@ -366,7 +363,7 @@ function tev_email_encode( $atts, $email ){
 		return '<a href="'.antispambot("mailto:".$email).'">'.antispambot($email).'</a>';
 		}
 }
-add_shortcode( 'email', 'tev_email_encode' ); // protect from spambot
+add_shortcode( 'email', 'tev_email_encode' ); /* protect from spambot*/
 /**
  * Shortcode creation
  **/

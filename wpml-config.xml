@@ -6,7 +6,9 @@
             <key name="send_inquirey_email_sub" />
             <key name="send_inquirey_email_description" />
             <key name="registration_success_email_subject" />
-            <key name="registration_success_email_content" />
+			<key name="registration_success_email_content" />
+			<key name="admin_registration_success_email_subject" />
+            <key name="admin_registration_success_email_content" />
             <key name="post_submited_success_email_subject" />
             <key name="post_submited_success_email_content" />
             <key name="payment_success_email_subject_to_client" />
@@ -33,6 +35,8 @@
 			<key name="payment_cancelled_content" />
 			<key name="update_listing_notification_content" />
 			<key name="renew_listing_notification_content" />
+			<key name="pending_listing_notification_subject" />
+			<key name="pending_listing_notification_content" />
         </key>
     </admin-texts>    
 </wpml-config>

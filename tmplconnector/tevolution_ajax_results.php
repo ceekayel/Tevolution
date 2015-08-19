@@ -294,6 +294,7 @@ function tmpl_search_map_latitude_longitude($posts_clauses){
 		$posts_clauses['where'].=" AND ((pml.meta_value > ".$sw_lat."  AND  pml.meta_value < ".$ne_lat.") AND (pmlng.meta_value > ".$ne_lng."  AND  pmlng.meta_value <".$sw_lng.") )";
 	}
 	if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
+		add_filter('posts_join', 'templ_search_map_where_filter');
 		$language = ICL_LANGUAGE_CODE;
 		$posts_clauses['where'].=" AND t.language_code='".$language."'";
 	}
@@ -323,10 +324,17 @@ function tmpl_tevolution_autocomplete_callBack(){
 			$args = array('page' => 1,'number' => 5,'search' => $_REQUEST['search_text'],'hide_empty' => 0) ;
 			$terms_results = get_terms( $taxonomies[0], $args );
 			$taxonomy_obj = get_taxonomy($taxonomies[0]);
+			$taxonomy_label = $taxonomy_obj->labels->name;
+			if(function_exists('icl_t')){
+				icl_register_string(DOMAIN,$taxonomy_label,$taxonomy_label);
+				$taxonomy_label = icl_t(DOMAIN,$taxonomy_label,$taxonomy_label);
+			}else{
+				$taxonomy_label = @$taxonomy_label;
+			}
 			foreach($terms_results as $term){
 				$resultsTerms[] = array(
 					'label' => html_entity_decode(str_replace("&#8217;","'",$term->name)),
-					'title' => '<label>'.$term->name.'</label> <span class="type">'.$taxonomy_obj->labels->name.'</span>',
+					'title' => '<label>'.$term->name.'</label> <span class="type">'.$taxonomy_label.'</span>',
 					'url'   => get_term_link($term->slug,$term->taxonomy),
 				);
 			}
@@ -340,10 +348,17 @@ function tmpl_tevolution_autocomplete_callBack(){
 			$args = array('page' => 1,'number' => 5,'search' => $_REQUEST['search_text'],'hide_empty' => 0) ;
 			$terms_results = get_terms( $taxonomies[1], $args );
 			$taxonomy_obj = get_taxonomy($taxonomies[1]);
+			$taxonomy_label = $taxonomy_obj->labels->name;
+			if(function_exists('icl_t')){
+				icl_register_string(DOMAIN,$taxonomy_label,$taxonomy_label);
+				$taxonomy_label = icl_t(DOMAIN,$taxonomy_label,$taxonomy_label);
+			}else{
+				$taxonomy_label = @$taxonomy_label;
+			}
 			foreach($terms_results as $term){
 				$resultsTerms[] = array(
 					'label' => html_entity_decode(str_replace("&#8217;","'",$term->name)),
-					'title' => '<label>'.$term->name.'</label> <span class="type">'.$taxonomy_obj->labels->name.'</span>',
+					'title' => '<label>'.$term->name.'</label> <span class="type">'.$taxonomy_label.'</span>',
 					'url'   => get_term_link($term->slug,$term->taxonomy),
 				);
 			}
@@ -370,7 +385,7 @@ function tmpl_tevolution_autocomplete_callBack(){
 			if(get_the_title()!=''){
 				$obj = get_post_type_object( get_post_type() );
 				$resultsPosts[] = array(
-					'label' => html_entity_decode(str_replace("&#8217;","'",get_the_title())),
+					'label' => html_entity_decode(str_replace(array("&#8217;","&#8216;"),array("'","'"),get_the_title())),
 					'title' => '<label>'.get_the_title().'</label> <span class="type">'.ucfirst($obj->labels->singular_name).'</span>',
 					'url'   => get_the_permalink(get_the_ID()),
 				);
@@ -465,4 +480,16 @@ function tmpl_tevolution_autocomplete_address_callBack(){
 	/* Finish Address */	
 	echo json_encode( array( 'results' => $resultsPosts) );
 	exit;
+}
+
+function templ_search_map_where_filter($join)
+{
+	global $wpdb, $pagenow, $wp_taxonomies,$ljoin,$sitepress;
+	$language_where='';
+	if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
+		$language = $sitepress->get_default_language();
+		$join .= " {$ljoin} JOIN {$wpdb->prefix}icl_translations t ON {$wpdb->posts}.ID = t.element_id			
+			AND t.element_type IN ('post_'{$post_type}) JOIN {$wpdb->prefix}icl_languages l ON t.language_code=l.code AND l.active=1 AND t.language_code='".$language."'";
+	}	
+	return $join;
 }

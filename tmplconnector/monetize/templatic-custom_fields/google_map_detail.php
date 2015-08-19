@@ -63,7 +63,7 @@ $google_map_customizer=get_option('google_map_customizer');/* store google map c
 
 /*if(!is_page())*/
 { ?>
-	<script type="text/javascript">
+	<script type="text/javascript" async >
 	function get_googlemap_directory(){
 		set_direction_map();
 	}

@@ -1,4 +1,9 @@
 <?php
+/*
+ * class to show the transaction listing
+ */
+global $pagenow;
+
 if(!class_exists('Tmpl_WP_List_Table')){
     include_once( WP_PLUGIN_DIR . '/Tevolution/templatic.php');
 }
@@ -15,11 +20,14 @@ class wp_list_transaction extends Tmpl_WP_List_Table
 		$post_table = $wpdb->prefix."posts";
 		$transactions = $wpdb->prefix."transactions";
 		if( $_SESSION['query_string'] == ""){
-			$_SESSION['query_string'] = "select * from $transactions as t where 1=1 AND package_type is NULL";
+			$_SESSION['query_string'] = "select * from $transactions as t where 1=1 AND  payable_amt > 0 AND (package_type is NULL OR package_type=0)";
 		}
+		
+		
 		$transinfo_count = $wpdb->get_results($_SESSION['query_string']);
 		
-		$transsql_limit=" order by t.trans_id desc";		
+		$transsql_limit=" group by t.trans_id order by t.trans_id desc";	
+
 		$transinfo = $wpdb->get_results($_SESSION['query_string'].$transsql_limit);
 		
 		$trans_total_pages = count($transinfo_count);
@@ -38,7 +46,7 @@ class wp_list_transaction extends Tmpl_WP_List_Table
 				$post_type_label = @$post_type_object->labels->name;
 				
 				$featured_text = '';
-				//Check for featured posts: start
+				/*Check for featured posts: start*/
 				$featured_type = @get_post_meta($post->ID,'featured_type',true);
 				if( 'h' == $featured_type ){
 					$featured_text = '<div>'.__("Featured",ADMINDOMAIN).': '.__("Home",ADMINDOMAIN).'</div>';
@@ -49,16 +57,17 @@ class wp_list_transaction extends Tmpl_WP_List_Table
 				}else{
 					$featured_text = '';
 				}
-				//Check for featured posts: end
+				/*Check for featured posts: end*/
 				
-				//Check for post is recurring: Start
-				//TODO: Need to make entry in post meta table, 
-				// whether currently inserting post is recurring or not 
+				/*Check for post is recurring: Start*/
+				/*TODO: Need to make entry in post meta table, */
+				/* whether currently inserting post is recurring or not */
 				$is_recurring = ( @get_post_meta($post_package->ID,'recurring',true)) ? '<div>'.__("Recurring",ADMINDOMAIN).'</div>' : '';				
-				//Check for post is recurring: End
+				/*Check for post is recurring: End*/
 				
 				$color_taxonomy = 'trans_post_type_colour_'.$post_type;
 				$color_taxonomy_value = '';
+				
 				$package = ( @$post_package->post_title)?'<a target="_blank" href="'.site_url().'/wp-admin/admin.php?page=monetization&action=edit&package_id='.$post_package->ID.'&tab=packages">'.$post_package->post_title.'</a>' :'-';
 				if(isset($tmpdata[$color_taxonomy]) && $tmpdata[$color_taxonomy]!= '') { $color_taxonomy_value = $tmpdata[$color_taxonomy]; } 
 				
@@ -73,19 +82,17 @@ class wp_list_transaction extends Tmpl_WP_List_Table
 					$trans_id ='';
 				}
 				$transaction_data[] =  array(
-										'ID'			  => $transinfoObj->trans_id,
-										'post_title'	  => '<a href="'.site_url().'/wp-admin/post.php?post='.$transinfoObj->post_id.'&action=edit">'.$transinfoObj->post_title.'</a>'.$trans_id,
-										'title'		  => '<a href="'.site_url().'/wp-admin/user-edit.php?user_id='.$transinfoObj->user_id.'">'.$transinfoObj->billing_name.'</a><div>'.__('Email:',ADMINDOMAIN).' '.$transinfoObj->pay_email.'</div>',
-										'post_type'	  => '<label style="color:'.$color_taxonomy_value.'">'.$post_type_label.'<label>',
-										'payment_method' => __($transinfoObj->payment_method,ADMINDOMAIN),
-										'package' 	  => $package.$featured_text.$is_recurring,
-										'amount' 		  => fetch_currency_with_position($transinfoObj->payable_amt,2),
-										'post_id' 	  => $transinfoObj->post_id,
-										'tran_date' 	  => date_i18n(get_option("date_format"),strtotime($transinfoObj->payment_date)),
-										'exp_date' 	  => $expired_date,
-										
-										'status' 		  => tmpl_get_transaction_status($transinfoObj->trans_id,$transinfoObj->post_id),
-										
+                                                                                                                                  'ID'      => $transinfoObj->trans_id,
+                                                                                                                                  'title'    => '<a href="'.site_url().'/wp-admin/user-edit.php?user_id='.$transinfoObj->user_id.'">'.$transinfoObj->billing_name.'</a><div>'.__('Email:',ADMINDOMAIN).' '.$transinfoObj->pay_email.'</div>'.$trans_id,
+                                                                                                                                  'post_type'	  => '<label style="color:'.$color_taxonomy_value.'">'.$post_type_label.'<label>',
+                                                                                                                                  'payment_method' => __($transinfoObj->payment_method,ADMINDOMAIN),
+                                                                                                                                  'package' 	  => apply_filters('tmpl_transaction_package_type',$package.$featured_text.$is_recurring,$transinfoObj->payforpackage),
+                                                                                                                                  'amount'    => fetch_currency_with_position($transinfoObj->payable_amt,2),
+                                                                                                                                  'post_id'  => $transinfoObj->post_id,
+                                                                                                                                  'tran_date'  => date_i18n(get_option("date_format"),strtotime($transinfoObj->payment_date)),
+                                                                                                                                  'exp_date'  => $expired_date,
+                                                                                                                                  'status'   => tmpl_get_transaction_status($transinfoObj->trans_id,$transinfoObj->post_id),
+
 					);
 			endforeach;
 		}
@@ -99,15 +106,12 @@ class wp_list_transaction extends Tmpl_WP_List_Table
 	{
 		$columns = array(
 					'cb'            => '<input type="checkbox" />',
-					'post_title'    => __('Title',ADMINDOMAIN),
-					'title'         => __('Author',ADMINDOMAIN),
-					'post_type'     => __('Posted In',ADMINDOMAIN),
-					'payment_method'=> __('Payment Method',ADMINDOMAIN),
+					'title'         => __('User',ADMINDOMAIN),
 					'package'       => __('Price Package',ADMINDOMAIN),
 					'amount'        => __('Amount',ADMINDOMAIN),
-					'tran_date'     => __('Pay On',ADMINDOMAIN),
-					'exp_date'      => __('Exp. Date',ADMINDOMAIN),
-					
+					'payment_method'=> __('Payment Method',ADMINDOMAIN),
+					'tran_date'     => __('Paid On',ADMINDOMAIN),
+					'exp_date'      => __('Exp. Date',ADMINDOMAIN),					
 					'status'        => __('Status',ADMINDOMAIN),
 				);
 		$columns = apply_filters('transaction_column_fields',$columns);
@@ -116,7 +120,6 @@ class wp_list_transaction extends Tmpl_WP_List_Table
 	/**/
 	function process_bulk_action()
 	{ 
-		//Detect when a bulk action is being triggered...
 		if( 'pending' === $this->current_action() )
 		{
 			global $post,$wpdb,$transection_db_table_name;
@@ -181,6 +184,26 @@ class wp_list_transaction extends Tmpl_WP_List_Table
 			
 			<script type="text/javascript">document.frm_transaction.submit();</script>
        <?php
+		}if( 'cancel' === $this->current_action() )
+		{
+			global $post,$wpdb,$transection_db_table_name;
+			$cids = $_REQUEST['cf'];
+			foreach( $cids as $cid )
+			{
+				$cid = explode(",",$cid);
+				$my_post['ID'] = $cid[1];
+				$my_post['post_status'] = 'draft';
+				wp_update_post( $my_post );
+				$trans_status = $wpdb->query("update $transection_db_table_name SET status = 2 where trans_id = '".$cid[0]."'");
+			}
+			$url = site_url().'/wp-admin/admin.php';
+			?>
+			
+			
+			<input type="hidden" value="transcation" name="page"><input type="hidden" value="delsuccess" name="usermetamsg">
+			
+			<script type="text/javascript">document.frm_transaction.submit();</script>
+	<?php		
 		}
 	}
         
@@ -196,16 +219,16 @@ class wp_list_transaction extends Tmpl_WP_List_Table
 		$this->_column_headers = array($columns, $hidden, $sortable);
 		
 		$this->process_bulk_action(); /* FUNCTION TO PROCESS THE BULK ACTIONS */
-		//$action = $this->current_action();
+		/*$action = $this->current_action();*/
 		$data = $this->fetch_transction(); /* RETIRIVE THE TRANSACTION DATA */
 		
 		/* FUNCTION THAT SORTS THE COLUMNS */
 		function usort_reorder($a,$b)
 		{
-            $orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : ''; //If no sort, default to title
-            $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : ''; //If no order, default to asc
-            $result = strcmp($a[$orderby], $b[$orderby]); //Determine sort order
-            return ($order==='desc') ? $result : -$result; //Send final sort direction to usort
+            $orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : ''; /*If no sort, default to title*/
+            $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : ''; /*If no order, default to asc*/
+            $result = strcmp($a[$orderby], $b[$orderby]); /*Determine sort order*/
+            return ($order==='desc') ? $result : -$result; /*Send final sort direction to usort*/
         }
 		if(is_array($data) && isset($_REQUEST['orderby']) && isset($_REQUEST['order'])){
        		usort( $data, 'usort_reorder');
@@ -218,8 +241,8 @@ class wp_list_transaction extends Tmpl_WP_List_Table
 		$this->items = $this->found_data; /* ASSIGN SORTED DATA TO ITEMS TO BE USED ELSEWHERE IN CLASS */
 		
 		$this->set_pagination_args( array(
-            'total_items' => $total_items,      //WE have to calculate the total number of items
-            'per_page'    => $per_page         //WE have to determine how many items to show on a page
+            'total_items' => $total_items,      /*WE have to calculate the total number of items*/
+            'per_page'    => $per_page         /*WE have to determine how many items to show on a page*/
         ) );
 	}
 	
@@ -241,7 +264,7 @@ class wp_list_transaction extends Tmpl_WP_List_Table
 			case 'status':
 			return $item[ $column_name ];
 			default:
-			return print_r( $item, true ) ; //Show the whole array for troubleshooting purposes
+			return print_r( $item, true ) ; /*Show the whole array for troubleshooting purposes*/
 		}
 	}
 	
@@ -261,9 +284,11 @@ class wp_list_transaction extends Tmpl_WP_List_Table
 	function get_bulk_actions()
 	{
 		$actions = array(
-			'confirm' => 'Confirmed',
-			apply_filters('delete_tevolution_transaction_filter_value','delete') => apply_filters('delete_tevolution_transaction_filter_text','Delete'),
-			'pending' => 'Pending'
+			'pending' => 'Pending',
+			'confirm' => APPROVED_TEXT,
+			'cancel'=>ORDER_CANCEL_TEXT,
+			apply_filters('delete_tevolution_transaction_filter_value','delete') => apply_filters('delete_tevolution_transaction_filter_text','Delete')
+			
 			);
 		return $actions;
 	}
@@ -274,5 +299,5 @@ class wp_list_transaction extends Tmpl_WP_List_Table
 			'<input type="checkbox" name="cf[]" value="%2s" />', $item['ID'].",".$item['post_id']
 			);
 	}		
-	
-} ?>
+}
+?>

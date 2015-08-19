@@ -1,7 +1,6 @@
 <?php
 /*
-Name : listing_fields_collection
-Desc : Return the collection for category listing page
+ Return the collection for category listing page
 */
 function listing_fields_collection()
 {
@@ -48,8 +47,7 @@ function listing_fields_collection()
 }
 /* EOF */
 
-/* NAME : custom fields for detail page
-DESCRIPTION : this function wil return the custom fields of the post detail page */
+/* This function wil return the custom fields of the post detail page */
 function details_field_collection()
 {
 	global $wpdb,$post,$htmlvar_name;
@@ -99,8 +97,7 @@ function details_field_collection()
 
 add_action('tmpl_detail_page_custom_fields_collection','detail_fields_colletion');
 /*
-Name : detail_fields_colletion
-Desc : Return the collection for detail/single page
+	Return the collection for detail/single page
 */
 function detail_fields_colletion()
 {
@@ -212,7 +209,7 @@ function detail_fields_colletion()
 											}
 										}
 										
-										if($val_label ==''){ $val_label = get_post_meta($single_pos_id,$post->post_name,true); } // if title not set then display the value
+										if($val_label ==''){ $val_label = get_post_meta($single_pos_id,$post->post_name,true); } /* if title not set then display the value*/
 											
 										echo "<li class='".$style_class."'><p class='tevolution_field_title label'>".$post->post_title." : </p> <p class='tevolution_field_title'> ".$val_label."</p></li>";
 
@@ -222,7 +219,7 @@ function detail_fields_colletion()
 								 {
 									 if(get_post_meta($post->ID,'ctype',true) == 'upload')
 									 {
-									 	echo "<li class='".$style_class."'><p class='tevolution_field_title label'>".$post->post_title." : </p> <p class='tevolution_field_title'> Click here to download File <a href=".get_post_meta($single_pos_id,$post->post_name,true).">Download</a></p></li>";
+									 	echo "<li class='".$style_class."'><p class='tevolution_field_title label'>".$post->post_title." : </p> <p class='tevolution_field_title'> ".__('Click here to download File',ADMINDOMAIN)." <a href=".get_post_meta($single_pos_id,$post->post_name,true).">".__('Download',ADMINDOMAIN)."</a></p></li>";
 									 }
 									 else
 									 {
@@ -304,7 +301,7 @@ function detail_fields_colletion()
 				if($post->post_name != 'post_excerpt' && $post->post_name != 'post_content' && $post->post_name != 'post_title' && $post->post_name != 'post_images' && $post->post_name != 'post_category')
 				{
 					echo '<div class="title-container clearfix">';	
-					//echo '<h1>'.POST_DETAIL.'</h1>';
+					/*echo '<h1>'.POST_DETAIL.'</h1>';*/
 					$CustomFieldHeading = apply_filters('CustomFieldsHeadingTitle',POST_DETAIL);
 					
 					if(function_exists('icl_register_string')){
@@ -321,7 +318,7 @@ function detail_fields_colletion()
 					echo '</div>';
 					$i++;
 				}			
-			endwhile;wp_reset_query();	//Finish this while loop for display POST_DETAIL	  		
+			endwhile;wp_reset_query();	/*Finish this while loop for display POST_DETAIL	  		*/
 			  ?>              
 		<?php echo "<div class='grid02 rc_rightcol clearfix'>";
                 echo "<ul class='list'>";
@@ -448,50 +445,13 @@ function detail_fields_colletion()
 }
 /* EOF */
 
-/* add action for send to friend and send inquiry email */
-
-add_action('templ_after_post_content','send_friend_inquiry_email');
-
-/*
- * Function Name: send_friend_inquiry_email
- * Return : display button for send to friend and inquiry mail
- */
-
-function send_friend_inquiry_email()
-{
-	global $post;
-	$link='';
-	if (is_single() && ($post->post_type!='post' && $post->post_type!='page')) {
-		$link.='<div style="display: none; opacity: 0.5;" id="lean_overlay"></div>';
-		$tmpdata = get_option('templatic_settings');	
-		if(isset($tmpdata['send_to_frnd'])&& $tmpdata['send_to_frnd']=='send_to_frnd')
-		{
-			
-			$claim_content_link='<a class="small_btn tmpl_mail_friend" rel="leanModal_email_friend" href="#basic-modal-content" id="send_friend_id"  title="Mail to a friend" >'.__('Send to friend',DOMAIN).'</a>&nbsp;&nbsp;';				
-			send_email_to_friend();
-			$link.= $claim_content_link;
-		}
-		if(isset($tmpdata['send_inquiry'])&& $tmpdata['send_inquiry']=='send_inquiry')
-		{			
-			$claim_content_link='<a class="small_btn tmpl_mail_friend" rel="leanModal_send_inquiry"  href="#inquiry_div" title="Send Inquiry" id="send_inquiry_id" >'.__('Send inquiry',DOMAIN).'</a>&nbsp;&nbsp;';	
-			send_inquiry();			
-			$link.= $claim_content_link;
-		}
-		
-		echo '<div class="send_inquiry">'.$link.'</div>';
-	}
-}
-/* End function */
-
-
 /*
  *  add action for display single post image gallery
  */
 add_action('templ_post_single_image','single_post_image_gallery');
 /*
- * Function Name: single_post_image_gallery
- * Return : display the single post image gallery in detail page.
- */
+ Display the single post image gallery in detail page.
+*/
 function single_post_image_gallery()
 {
 	global $post;
@@ -525,7 +485,7 @@ function single_post_image_gallery()
                 <div class="title-container">
                     <h2>
 						<?php 
-							//_e(MORE_PHOTOS.' '.$single_gallery_post_type,DOMAIN) 
+							/*_e(MORE_PHOTOS.' '.$single_gallery_post_type,DOMAIN) */
 							$msg = __("More Photos of",DOMAIN).' '.$single_gallery_post_type;
 							if(function_exists('icl_register_string')){
 								icl_register_string(DOMAIN,$msg,$msg);
@@ -622,6 +582,7 @@ function related_post_by_categories()
 	}
 
 	if(is_plugin_active('sitepress-multilingual-cms/sitepress.php') && (!empty($tmpdata['related_post_type']) && in_array($post->post_type,$tmpdata['related_post_type']))){
+		remove_action( 'parse_query', array( $sitepress, 'parse_query' ) );
 		add_filter('posts_where', array($sitepress,'posts_where_filter'),10,2);	
 	}
 	
@@ -705,256 +666,19 @@ function related_post_by_categories()
      <?php
 	wp_reset_query();
 	else:
-   		//echo apply_filters('related_post_not_found',sprintf(__('No Related %s found.',DOMAIN),$post->post_type));   //uncomment if you want to show this message.
+   		/*echo apply_filters('related_post_not_found',sprintf(__('No Related %s found.',DOMAIN),$post->post_type));   //uncomment if you want to show this message.*/
 	endif;
 }
 /* EOF - related posts */
 
-/*************************** LOAD THE BASE CLASS *******************************
-
- * The Tmpl_WP_List_Table class isn't automatically available to plugins, so we need
- * to check if it's available and load it if necessary.
- */
-if(!class_exists('Tmpl_WP_List_Table')){
-    include_once( WP_PLUGIN_DIR . '/Tevolution/templatic.php');
-}
-
-class taxonmy_list_table extends Tmpl_WP_List_Table
-{
-	/***** FETCH ALL THE DATA AND STORE THEM IN AN ARRAY *****
-	* Call a function that will return all the data in an array and we will assign that result to a variable $_posttaxonomy. FIRST OF ALL WE WILL FETCH DATA FROM POST META TABLE STORE THEM IN AN ARRAY $_posttaxonomy */
-	function fetch_taxonomy_data( $_posttaxonomy)
-	{ 
-		$tax_label  = $_posttaxonomy['labels']['name'];
-		$tax_desc = (isset($_posttaxonomy['description']))?$_posttaxonomy['description'] :'';
-		$tax_category = $_posttaxonomy['taxonomies'][0];
-		$tax_tags = $_posttaxonomy['taxonomies'][1];
-		$tax_slug = $_posttaxonomy['query_var'];
-		
-		$edit_url = admin_url("admin.php?page=custom_taxonomy&action=edit-type&amp;post-type=$tax_slug");
-		$meta_data = array(
-			'title'	=> '<strong><a href="'.$edit_url.'">'.$tax_label.'</a></strong>',
-			'tax_desc' 	=> $tax_desc,
-			'tax_category' => $tax_category,
-			'tax_tags' 	=> $tax_tags,
-			'tax_slug' 	=> $tax_slug
-			);
-		return $meta_data;
-	}
-	/* FETCH TAXONOMY DATA */
-	function taxonomy_data()
-	{
-		global $post;
-		$taxonomy_data =array();
-		$posttaxonomy = get_option("templatic_custom_post");
-		if($posttaxonomy):
-			foreach($posttaxonomy as $key=>$_posttaxonomy):
-						$taxonomy_data[] = $this->fetch_taxonomy_data($_posttaxonomy);
-			endforeach;
-		endif;
-		return $taxonomy_data;
-	}
-	/* EOF - FETCH TAXONOMY DATA */
-	
-	/* DEFINE THE COLUMNS FOR THE TABLE */
-	function get_columns()
-	{
-		$columns = array(
-			'cb' => '<input type="checkbox" />',
-			'title' => __('Post Type Name',ADMINDOMAIN),
-			'tax_desc' => __('Description',ADMINDOMAIN),
-			'tax_category' => __('Taxonomy Name',ADMINDOMAIN),
-			'tax_tags' => __('Tags',ADMINDOMAIN)
-			);
-		return $columns;
-	}
-	
-	function process_bulk_action()
-	{ 
-		//Detect when a bulk action is being triggered...
-		if('delete' === $this->current_action() )
-		{
-			 $_SESSION['custom_msg_type'] = 'delete';
-			 $post_type = get_option("templatic_custom_post");
-			 $taxonomy = get_option("templatic_custom_taxonomy");
-			 $tag = get_option("templatic_custom_tags");
-			 foreach($_REQUEST['checkbox'] as $tax_post_type)
-			  {
-				 $taxonomy_slug = $post_type[$tax_post_type]['slugs'][0];
-				 $tag_slug = $post_type[$tax_post_type]['slugs'][1];
-				 
-				 unset($post_type[$tax_post_type]);
-				 unset($taxonomy[$taxonomy_slug]);
-				 unset($tag[$tag_slug]);
-				 update_option("templatic_custom_post",$post_type);
-				 update_option("templatic_custom_taxonomy",$taxonomy);
-				 update_option("templatic_custom_tags",$tag);
-				 if(file_exists(get_template_directory()."/taxonomy-".$taxonomy_slug.".php"))
-					unlink(get_template_directory()."/taxonomy-".$taxonomy_slug.".php");
-				 if(file_exists(get_template_directory()."/taxonomy-".$tag_slug.".php"))
-					unlink(get_template_directory()."/taxonomy-".$tag_slug.".php");
-				 if(file_exists(get_template_directory()."/single-".$post_type.".php"))
-					unlink(get_template_directory()."/single-".$post_type.".php");
-			 }	 
-			 wp_redirect(admin_url("admin.php?page=custom_taxonomy"));
-			 $_SESSION['custom_msg_type'] = 'delete';
-			 exit;
-		}
-	}
-    
-	function prepare_items()
-	{
-		$per_page = $this->get_items_per_page('taxonomy_per_page', 10);
-		$columns = $this->get_columns(); /* CALL FUNCTION TO GET THE COLUMNS */
-        $hidden = array();
-		$sortable = array();
-        $sortable = $this->get_sortable_columns(); /* GET THE SORTABLE COLUMNS */
-		$this->_column_headers = array($columns, $hidden, $sortable);
-		$this->process_bulk_action(); /* FUNCTION TO PROCESS THE BULK ACTIONS */
-		$data = $this->taxonomy_data(); /* RETIRIVE THE PACKAGE DATA */
-		
-		/* FUNCTION THAT SORTS THE COLUMNS */
-		function usort_reorder($a,$b)
-		{
-            $orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'title'; //If no sort, default to title
-            $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
-            $result = strcmp($a[$orderby], $b[$orderby]); //Determine sort order
-            return ($order==='asc') ? $result : -$result; //Send final sort direction to usort
-        }
-		if(is_array($data))
-	        usort( $data, 'usort_reorder');
-		
-		$current_page = $this->get_pagenum(); /* GET THE PAGINATION */
-		$total_items = count($data); /* CALCULATE THE TOTAL ITEMS */
-		if(is_array($data))
-			$this->found_data = array_slice($data,(($current_page-1)*$per_page),$per_page); /* TRIM DATA FOR PAGINATION*/
-		$this->items = $this->found_data; /* ASSIGN SORTED DATA TO ITEMS TO BE USED ELSEWHERE IN CLASS */
-		/* REGISTER PAGINATION OPTIONS */
-		
-		$this->set_pagination_args( array(
-            'total_items' => $total_items,      //WE have to calculate the total number of items
-            'per_page'    => $per_page         //WE have to determine how many items to show on a page
-        ) );
-	}
-	
-	/* To avoid the need to create a method for each column there is column_default that will process any column for which no special method is defined */
-	function column_default( $item, $column_name )
-	{
-		switch( $column_name )
-		{
-			case 'cb':
-			case 'title':
-			case 'tax_desc':
-			case 'tax_category':
-			case 'tax_tags':
-			case 'tax_slug':
-			return $item[ $column_name ];
-			default:
-			return print_r( $item, true ) ; //Show the whole array for troubleshooting purposes
-		}
-	}
-	
-	/* DEFINE THE COLUMNS TO BE SORTED */
-	function get_sortable_columns()
-	{
-		$sortable_columns = array(
-			'title' => array('title',true)
-			);
-		return $sortable_columns;
-	}
-	
-	/* DEFINE THE LINKS DISPPLAYING BELOW THE TITLE */
-	function column_title($item)
-	{
-		$actions = array(
-			'edit' => sprintf('<a href="?page=%s&action=%s&post-type=%s">Edit</a>',$_REQUEST['page'],'edit-type',$item['tax_slug']),
-			'delete' => sprintf('<a href="?page=%s&post-type=%s">Delete Permanently</a>','delete-type',$item['tax_slug'])
-			);
-		
-		return sprintf('%1$s %2$s', $item['title'], $this->row_actions($actions , $always_visible = false) );
-	}
-	
-	/* DEFINE THE BULK ACTIONS */
-	function get_bulk_actions()
-	{
-		$actions = array(
-			'delete' => 'Delete permanently'
-			);
-		return $actions;
-	}
-	
-	/* CHECKBOX TO SELECT ALL THE TAXONOMIES */
-	function column_cb($item)
-	{ 
-		return sprintf(
-			'<input type="checkbox" name="checkbox[]" id="checkbox[]" value="%s" />', $item['tax_slug']
-			);
-	}
-}
-
-/* NAME : FETCH CUSTOM POST TYPES
-DESCRIPTION : THIS FUNCTION WILL FETCH ALL THE POST TYPES */
-function fetch_post_types_labels()
-{
-	$types = get_post_types('','objects');
-	return $types;
-}
-
-/* FILTERS TO ADD A COLUMN ON ALL USRES PAGE */
-add_filter('manage_users_columns', 'add_test_column');
-add_filter('manage_users_custom_column', 'view_test_column', 10, 3);
-
-/* FUNCTION TO ADD A COLUMN */
-function add_test_column($columns)
-{
-	$types = fetch_post_types_labels();
-	foreach($types as $key => $values )
-	{
-		if(!($key == 'post' || $key == 'page' || $key == 'attachment' || $key == 'revision' || $key == 'nav_menu_item') && in_array($key,tevolution_get_post_type()))
-		{
-			foreach( $values as $label => $val)
-			{ 
-				if($val->name != '')
-				{
-					$columns[$key] = $val->name;
-				}
-			}
-		}
-	}	
-	return $columns;
-}
-
-/* FUNCTION TO DISPLAY NUMBER OF ARTICLES */
-function view_test_column($out, $column_name, $user_id)
-{
-	global $wpdb,$articles;
-	switch ( $column_name )
-	{
-		case $column_name : 
-			$result = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE post_type = '".strtolower($column_name)."' AND post_author = ".$user_id." AND post_status = 'publish'");
-			if( count($result) > 0 )
-			{
-				$articles = "<a href='edit.php?post_type=".strtolower($column_name)."&author=".$user_id."' class='edit' title='View posts by this author'>".count($result)."</a>";
-			}
-			else
-			{
-				$articles = count($result);
-			}
-		break;
-	}
-	return $articles; 
-}
-/* EOF - ADD COLUMN ON ALL USERS PAGE */
-
 /*
- * Function Name: the_breadcrumb
- * Return : Display the breadcrumb
- */
+	Display the breadcrumb
+*/
 function the_breadcrumb() {
 	if (!is_home()) {
 		echo '<div class="breadcrumb"><a href="';
 		echo get_option('home');
-		echo '">Home';
+		echo '">'.__('Home',DOMAIN);
 		echo "</a>";
 		if (is_category() || is_single() || is_archive()) {
 			the_category('title_li=');
@@ -976,19 +700,20 @@ function the_breadcrumb() {
 /*
  * Add Action display for single post page next previous pagination before comment
  */
-
-add_action('tmpl_single_post_pagination','single_post_pagination');
+if(!strstr($_SERVER['REQUEST_URI'],'/wp-admin/') && (!isset($_REQUEST['slider_search']) && @$_REQUEST['slider_search'] ==''))
+{ 
+	add_action('tmpl_single_post_pagination','single_post_pagination');
+}
 /*
- * Function Name: single_post_pagination
- * Return : Display the next and previous  pagination in single post page
- */
+	Display the next and previous  pagination in single post page
+*/
 function single_post_pagination()
 {
 	global $post;	
 	?>
     <div class="pos_navigation clearfix">
-        <div class="post_left fl"><?php previous_post_link('%link',__('<i>Previous</i>',DOMAIN).' '.' %title') ?></div>
-        <div class="post_right fr"><?php next_post_link('%link','%title '.' '.__('<i>Next</i>',DOMAIN) ) ?></div>
+        <div class="post_left fl"><?php previous_post_link('%link','<i class="fa fa-angle-left"></i>  %title') ?></div>
+        <div class="post_right fr"><?php next_post_link('%link','%title <i class="fa fa-angle-right"></i>' ) ?></div>
     </div>
     <?php
 }
@@ -1001,8 +726,10 @@ function category_post_categories_tags()
 {
 	/* global $post;		
 	the_taxonomies(array('before'=>'<p class="bottom_line"><span class="i_category">','sep'=>'</span>&nbsp;&nbsp;<span class="i_tag">','after'=>'</span></p>')); */
+	global $wp_query, $post,$htmlvar_name;
+	/* get all the custom fields which select as " Show field on listing page" from back end */	
 	
-	global $post,$htmlvar_name;
+	
 	$taxonomies = get_object_taxonomies( (object) array( 'post_type' => $post->post_type,'public'   => true, '_builtin' => true ));	
 	$terms = get_the_terms($post->ID, $taxonomies[0]);
 	$sep = ",";
@@ -1030,8 +757,8 @@ function category_post_categories_tags()
 	if(!empty($terms) && (!empty($htmlvar_name['basic_inf']['category']) || !empty($htmlvar_name['category'])))
 	{
 		echo '<p class="bottom_line"><span class="i_category">';
-		_e('Posted In',DOMAIN); echo " ".$taxonomy_category;
-		echo '</p></span>';
+		echo apply_filters('tmpl_taxonomy_title'.get_post_type(),"<span>".__('Posted In',DOMAIN))."</span>"; echo " ".$taxonomy_category;
+		echo '</span></p>';
 	}
 	global $post;
 	$taxonomies = get_object_taxonomies( (object) array( 'post_type' => $post->post_type,'public'   => true, '_builtin' => true ));	
@@ -1062,8 +789,8 @@ function category_post_categories_tags()
 	if(!empty($tag_terms) && (!empty($htmlvar_name['basic_inf']['category']) || !empty($htmlvar_name['category'])))
 	{
 		echo '<p class="bottom_line"><span class="i_category">';
-		_e('Tagged In',DOMAIN); echo " ".$taxonomy_tag;
-		echo '</p></span>';
+		_e(apply_filters('tmpl_tags_title_'.get_post_type(),'Tagged In'),DOMAIN); echo " ".$taxonomy_tag;
+		echo '</span></p>';
 	}
 }
 
@@ -1165,10 +892,12 @@ function tmpl_category_page_image()
 	?>
     <?php if($thumb_img):?>
 						<a href="<?php the_permalink();?>" class="post_img">
+							<?php do_action('inside_listing_image'); ?>
 							<img src="<?php echo $thumb_img; ?>"  alt="<?php echo $img_alt; ?>" title="<?php echo $img_title; ?>" />
 						</a>
     <?php else:?>
 					<a href="<?php the_permalink();?>" class="post_img no_image_avail">
+						<?php do_action('inside_listing_image'); ?>
 						<img src="<?php echo CUSTOM_FIELDS_URLPATH; ?>/images/img_not_available.png" alt="" height="156" width="180"  />
 					</a>	
     <?php endif;
@@ -1178,18 +907,23 @@ function tmpl_category_page_image()
 add_action('templ_taxonomy_content','templ_taxonomy_category_content');
 function templ_taxonomy_category_content()
 { 
-	global $htmlvar_name;
+	global $wp_query,$post,$htmlvar_name;
+	$post_type = get_post_type();
 	
+	if(isset($_REQUEST['custom_post']) && $_REQUEST['custom_post'] !=''){
+		$post_type = $_REQUEST['custom_post'];
+	}
+	/* get all the custom fields which select as " Show field on listing page" from back end */	
 	$tmpdata = get_option('templatic_settings');	
-	if(@$tmpdata['listing_hide_excerpt']=='' || !in_array(get_post_type(),@$tmpdata['listing_hide_excerpt'])){
+	if(@$tmpdata['listing_hide_excerpt']=='' || !in_array($post_type,@$tmpdata['listing_hide_excerpt'])){
 		if(function_exists('supreme_prefix')){
 			$theme_settings = get_option(supreme_prefix()."_theme_settings");
 		}else{
 			$theme_settings = get_option("supreme_theme_settings");
-		} 
+		}
 		if($theme_settings['supreme_archive_display_excerpt'] && (!empty($htmlvar_name['post_excerpt']) || !empty($htmlvar_name['post_excerpt']) || !empty($htmlvar_name['basic_inf']['post_excerpt'])) ){
 			echo '<div itemprop="description" class="entry-summary">';
-			if(function_exists('tevolution_excerpt_length')){	
+			if(!function_exists('tevolution_excerpt_length')){	
 				if($theme_settings['templatic_excerpt_length']){
 					$length = $theme_settings['templatic_excerpt_length'];
 				}
@@ -1202,7 +936,7 @@ function templ_taxonomy_category_content()
 				the_excerpt();
 			}
 			echo '</div>';
-		}elseif(!empty($htmlvar_name['post_content']) || !empty($htmlvar_name['basic_inf']['post_content'])){
+		}elseif(!empty($htmlvar_name['post_content']) || !empty($htmlvar_name['basic_inf']['post_content'])){ 
 			echo '<div itemprop="description" class="entry-content">';
 			the_content(); 
 			echo '</div>';
@@ -1223,16 +957,17 @@ function templ_featured_ordering(){
 		add_filter('posts_orderby', 'home_page_feature_listing_orderby');
 
 }
-/* FEATURED POSTS FILTER FOR LISTING PAGE */
+
+/* featured posts filter for listing page */
 function feature_filter_order($orderby)
 {
 	global $wpdb,$wp_query;	
-	if((is_category() || is_tax()) && $wp_query->tax_query->queries[0]['taxonomy'] != 'product_cat')
+	if((is_category() || is_tax() || is_archive()) && $wp_query->tax_query->queries[0]['taxonomy'] != 'product_cat')
 	 {
 		
 		if (isset($_REQUEST['tevolution_sortby']) && ($_REQUEST['tevolution_sortby'] == 'title_asc' || $_REQUEST['tevolution_sortby'] == 'alphabetical'))
 		{
-			$orderby= "$wpdb->posts.post_title ASC,(select distinct $wpdb->postmeta.meta_value from $wpdb->postmeta where $wpdb->postmeta.post_id=$wpdb->posts.ID and $wpdb->postmeta.meta_key = 'featured_c' AND $wpdb->postmeta.meta_value = 'c') DESC";
+			$orderby= "$wpdb->posts.post_title ASC,(select distinct $wpdb->postmeta.meta_value from $wpdb->postmeta where $wpdb->postmeta.post_id=$wpdb->posts.ID and $wpdb->postmeta.meta_key = 'featured_c' AND $wpdb->postmeta.meta_value = 'c') ASC";
 		}
 		elseif (isset($_REQUEST['tevolution_sortby']) && $_REQUEST['tevolution_sortby'] == 'title_desc' )
 		{
@@ -1259,12 +994,13 @@ function feature_filter_order($orderby)
 		}
 		else
 		{
-			$orderby = " (SELECT $wpdb->postmeta.meta_value from $wpdb->postmeta where ($wpdb->posts.ID = $wpdb->postmeta.post_id) AND $wpdb->postmeta.meta_key = 'featured_c' AND $wpdb->postmeta.meta_value = 'c') DESC,$wpdb->posts.post_date DESC";
+			$orderby = " (SELECT DISTINCT $wpdb->postmeta.meta_value from $wpdb->postmeta where ($wpdb->posts.ID = $wpdb->postmeta.post_id) AND $wpdb->postmeta.meta_key = 'featured_c' AND $wpdb->postmeta.meta_value = 'c') DESC,$wpdb->posts.post_date DESC";
 		}
 	 }
 	 return $orderby;
 }
-/* FETCH FEATURED POSTS FILTER FOR HOME PAGE */
+
+/* fetch featured posts filter for home page */
 function home_page_feature_listing( &$query)
 {	
 	if(isset($_REQUEST['post_type']) && $_REQUEST['post_type'] !=''):
@@ -1282,19 +1018,19 @@ function home_page_feature_listing( &$query)
 				$merge = array_merge($home_listing_type_value,$attach);
 				
 			if($post_type=='booking_custom_field'):
-				$query->set('post_type',$post_type); // set custom field post type
+				$query->set('post_type',$post_type); /* set custom field post type*/
 			else:
-				$query->set('post_type', @$merge); // set post type events 
+				$query->set('post_type', @$merge); /* set post type events */
 			endif;
 		}
-		$query->set('post_status',array('publish')); // set post type events 
+		$query->set('post_status',array('publish')); /* set post type events */
 	}else{
 
 		remove_action('pre_get_posts', 'home_page_feature_listing');
 	}
 }
 
-/* SORT FEATURED POSTS FILTER FOR HOME PAGE */
+/* sort featured posts filter for home page */
 function home_page_feature_listing_orderby($orderby)
 {
 	global $wpdb,$wp_query;
@@ -1338,9 +1074,7 @@ function templ_custom_field_display($custom_field,$pos_title)
 }
 
 /*
- * Function Name:get_templ_image
- * Argument : post id and image size
- * Return : image src if featured image in available
+	get the image path 
  */
 function get_templ_image($post_id,$size='thumbnail') {
 
@@ -1359,259 +1093,248 @@ function get_templ_image($post_id,$size='thumbnail') {
 }
 
 
-/*
- * Function Name: templ_after_categories_description
- *
- */
-
-add_action('templ_after_categories_description','templ_after_categories_sort_by');
-add_action('templ_after_archive_title','templ_after_categories_sort_by');
-function templ_after_categories_sort_by(){
-	global $wpdb,$wp_query;
-	$current_term = $wp_query->get_queried_object();
-	$templatic_settings=get_option('templatic_settings');
+/* return the sorting options and views button*/
+function tmpl_archives_sorting_opt(){
+	global $wpdb,$wp_query,$sort_post_type;
 	
-	/*custom post type ter, link */
-	if(!is_tax() && is_archive() && !is_search())
-	{			
-		$post_type=(get_post_type()!='')? get_post_type() : get_query_var('post_type');
-		$permalink = get_post_type_archive_link($post_type);
-		$permalink=str_replace('&tevolution_sortby=alphabetical&sortby='.$_REQUEST['sortby'],'',$permalink);
-	}elseif(is_search()){
-		$search_query_str=str_replace('&tevolution_sortby=alphabetical&sortby='.$_REQUEST['sortby'],'',$_SERVER['QUERY_STRING']);
-		$permalink=get_bloginfo('siteurl')."?".$search_query_str;
-	}else{
-		$permalink =  get_term_link( $current_term->slug, $current_term->taxonomy );
-		$permalink=str_replace('&tevolution_sortby=alphabetical&sortby='.$_REQUEST['sortby'],'',$permalink);
-	}
-	$post_type=get_post_type_object( get_post_type());
+	if(!is_search()){
+		$post_type = (get_post_type()!='')? get_post_type() : get_query_var('post_type');
+		$sort_post_type = apply_filters('tmpl_tev_sorting_for_'.$post_type,$post_type);
 		
-	if(false===strpos($permalink,'?')){
-	    $url_glue = '?';
 	}else{
-		$url_glue = '&amp;';	
+		/* on search page what happens if user search with multiple post types */
+		if(isset($_REQUEST['post_type'])){
+			if(is_array($_REQUEST['post_type']) && count($_REQUEST['post_type'])==1){
+				$sort_post_type= $_REQUEST['post_type'][0];
+			}else{
+				$sort_post_type= $_REQUEST['post_type'];
+			}
+		}
+			if(!$cur_post_type){
+				$sort_post_type='directory';
+			}
+		
 	}
-	//wp_enqueue_script( 'toggle-script', TEVOLUTION_PAGE_TEMPLATES_URL.'js/script.js' );
-	?>
-     <script src="<?php echo TEVOLUTION_PAGE_TEMPLATES_URL.'js/script.js';?>"></script>
-     <?php
-	if(have_posts()!=''):
-	?>
-     
-     <div class='tevolution_manager_tab clearfix'>
-     	<div class="sort_options">
-		<ul class='view_mode viewsbox'>
-			<li><a class='switcher first gridview' id='gridview' href='#'><?php _e(GRID_VIEW_TEXT);?></a></li>
-			<li><a class='switcher last listview active' id='listview' href='#'><?php _e(LIST_VIEW_TEXT); ?></a></li>
-			<?php if($templatic_settings['category_googlemap_widget']=='yes'):?> <li><a class='map_icon' id='event_map' href='#'><?php _e('MAP',DOMAIN);?></a></li><?php endif;?>
-		</ul>	
 	
-	<?php 
-	if(isset($_REQUEST['tevolution_sortby']) && $_REQUEST['tevolution_sortby']=='alphabetical'){
+	$templatic_settings=get_option('templatic_settings');
+	$googlemap_setting=get_option('city_googlemap_setting');
+	
+	/*custom post type link */
+	$current_posttype = get_post_type();
+	
+	if(empty($current_posttype)){
+		$current_posttype = $wp_query->query['post_type'];
+	}
+		
+	if(!is_tax() && is_archive() && !is_search())
+	{
+		$current_term = $wp_query->get_queried_object();		
+		$permalink = get_post_type_archive_link($current_posttype);
+		$permalink=str_replace('&'.$sort_post_type.'_sortby=alphabetical&sortby='.$_REQUEST['sortby'],'',$permalink);
+	}elseif(is_search()){
+		$search_query_str=str_replace('&'.$sort_post_type.'_sortby=alphabetical&sortby='.@$_REQUEST['sortby'],'',$_SERVER['QUERY_STRING']);
+		$permalink= site_url()."?".$search_query_str;
+	}else{
+		$current_term = $wp_query->get_queried_object();
+		$permalink=($current_term->slug) ?  get_term_link($current_term->slug, $current_term->taxonomy):'';
+		if(isset($_REQUEST['sortby']) && $_REQUEST['sortby']!='')
+			$permalink=str_replace('&'.$sort_post_type.'_sortby=alphabetical&sortby='.$_REQUEST['sortby'],'',$permalink);
+		
+	}
+	
+	$post_type= get_post_type_object( get_post_type());
+	
+	/* get all the request url and con-cat with permalink to get the exact results */
+	foreach($_GET as $key=>$val){
+		if($key !='' && !strstr($key,'_sortby')){
+			$req_uri .= $key."=".$val."&";
+		}
+	}
+	
+	/* permalink */
+	if(false===strpos($permalink,'?')){
+	    $url_glue = '?'.$req_uri;
+	}else{
+		$url_glue = '&amp;'.$req_uri;	
+	}
+	
+	/* no grid view list view if no results found */
+	
+	if($wp_query->found_posts!=0){
+	?>
+	<div class='directory_manager_tab clearfix'>
+	<div class="sort_options">
+	<?php if(have_posts()!='' && current_theme_supports('tmpl_show_pageviews')): ?>
+		<ul class='view_mode viewsbox'>
+			<?php if(function_exists('tmpl_wp_is_mobile') && tmpl_wp_is_mobile()){ 
+				$templatic_settings['category_googlemap_widget']; if(isset($templatic_settings['category_googlemap_widget']) && $templatic_settings['category_googlemap_widget']=='yes'){
+				?>
+				<li><a class='switcher last listview  <?php if($templatic_settings['default_page_view']=="listview"){echo 'active';}?>' id='listview' href='#'><?php _e('LIST VIEW',DIR_DOMAIN);?></a></li>
+				<li><a class='map_icon <?php if($templatic_settings['default_page_view']=="mapview"){echo 'active';}?>' id='locations_map' href='#'><?php _e('MAP',DIR_DOMAIN);?></a></li>
+			<?php }	
+			}else{ ?>
+				<li><a class='switcher first gridview <?php if($templatic_settings['default_page_view']=="gridview"){echo 'active';}?>' id='gridview' href='#'><?php _e('GRID VIEW',DIR_DOMAIN);?></a></li>
+				<li><a class='switcher last listview  <?php if($templatic_settings['default_page_view']=="listview"){echo 'active';}?>' id='listview' href='#'><?php _e('LIST VIEW',DIR_DOMAIN);?></a></li>
+				<?php $templatic_settings['category_googlemap_widget']; if(isset($templatic_settings['category_googlemap_widget']) && $templatic_settings['category_googlemap_widget']=='yes'):?> 
+				<li><a class='map_icon <?php if($templatic_settings['default_page_view']=="mapview"){echo 'active';}?>' id='locations_map' href='#'><?php _e('MAP',DIR_DOMAIN);?></a></li>
+				<?php endif;
+			}
+			?>
+		</ul>	
+	<?php endif;
+
+	if(isset($_GET[$sort_post_type.'_sortby']) && $_GET[$sort_post_type.'_sortby']=='alphabetical'){
 		$_SESSION['alphabetical']='1';	
 	}else{
 		unset($_SESSION['alphabetical']);
 	}
-	if($templatic_settings['sorting_type']!='normal' && !empty($templatic_settings['sorting_option'])){
-		
-		if(!empty($templatic_settings['sorting_option'])){
-	?>
-          <form action="" method="get" id="tevolution_sorting" name="tevolution_sorting">
-               <select name="tevolution_sortby" id="tevolution_sortby" onchange="sort_as_set(this.value)">
-                    <option value=""><?php echo sprintf(__('Sort %s',DOMAIN) ,$post_type->labels->name);?></option>
-                    
-                    <option value="alphabetical" <?php echo ((isset($_REQUEST['tevolution_sortby']) && $_REQUEST['tevolution_sortby']=="alphabetical") || (isset($_SESSION['alphabetical']) && $_SESSION['alphabetical']==1))? 'selected':'';?>><?php _e('Alphabetical',DOMAIN);?></option>
-                    
-                    <?php if(!empty($templatic_settings['sorting_option']) && in_array('title_asc',$templatic_settings['sorting_option'])):?>
-                    <option value="title_asc" <?php echo (isset($_REQUEST['tevolution_sortby']) && $_REQUEST['tevolution_sortby']=="title_asc")? 'selected':'';?>><?php _e('Title Ascending',DOMAIN);?></option>
-                    <?php endif;?>
-                    <?php if(!empty($templatic_settings['sorting_option']) && in_array('title_desc',$templatic_settings['sorting_option'])):?>
-                    <option value="title_desc" <?php echo (isset($_REQUEST['tevolution_sortby']) && $_REQUEST['tevolution_sortby']=="title_desc")? 'selected':'';?>><?php _e('Title Descending',DOMAIN);?></option>
-                    <?php endif;?>
-                    
-                    <?php if(!empty($templatic_settings['sorting_option']) && in_array('date_asc',$templatic_settings['sorting_option'])):?>
-                    <option value="date_asc" <?php echo (isset($_REQUEST['tevolution_sortby']) && $_REQUEST['tevolution_sortby']=="date_asc")? 'selected':'';?>><?php _e('Publish Date Ascending',DOMAIN);?></option>
-                    <?php endif;?>
-                    
-                    <?php if(!empty($templatic_settings['sorting_option']) && in_array('date_desc',$templatic_settings['sorting_option'])):?>
-                    <option value="date_desc" <?php echo (isset($_REQUEST['tevolution_sortby']) && $_REQUEST['tevolution_sortby']=="date_desc")? 'selected':'';?>><?php _e('Publish Date Descending',DOMAIN);?></option>
-                    <?php endif;?>
-                    
-
-                    <?php if(get_post_type()=='event'):?>
-                    	<?php if(!empty($templatic_settings['sorting_option']) && in_array('stdate_low_high',$templatic_settings['sorting_option'])):?>
-                         <option value="stdate_low_high" <?php echo (isset($_REQUEST['tevolution_sortby']) && $_REQUEST['tevolution_sortby']=="stdate_low_high")? 'selected':'';?>><?php _e('Start Date low to high',DOMAIN);?></option>
-                         <?php endif;?>
-                         
-                    	<?php if(!empty($templatic_settings['sorting_option']) && in_array('stdate_high_low',$templatic_settings['sorting_option'])):?>     
-                         <option value="stdate_high_low" <?php echo (isset($_REQUEST['tevolution_sortby']) && $_REQUEST['tevolution_sortby']=="stdate_high_low")? 'selected':'';?>><?php _e('Start Date high to low',DOMAIN);?></option>
-                         <?php endif;?>
-                    <?php endif;?>
-                    <?php do_action('sorting_option',get_post_type());?>
-                    
-                     <?php if(!empty($templatic_settings['sorting_option']) && in_array('reviews',$templatic_settings['sorting_option'])):?>
-                     <option value="reviews" <?php echo (isset($_REQUEST['tevolution_sortby']) && $_REQUEST['tevolution_sortby']=="reviews")? 'selected':'';?>><?php _e('Reviews',DOMAIN);?></option>
-                    <?php endif;?>
-                    
-                    <?php if(!empty($templatic_settings['sorting_option']) && in_array('rating',$templatic_settings['sorting_option'])):?>
-                     <option value="rating" <?php echo (isset($_REQUEST['tevolution_sortby']) && $_REQUEST['tevolution_sortby']=="rating")? 'selected':'';?>><?php _e('Rating',DOMAIN);?></option>
-                    <?php endif;?>
-                    
-                    <?php if(!empty($templatic_settings['sorting_option']) && in_array('random',$templatic_settings['sorting_option'])):?>
-                     <option value="random" <?php echo (isset($_POST['tevolution_sortby']) && $_POST['tevolution_sortby']=="random")? 'selected':'';?>><?php _e('Random',DOMAIN);?></option>
-                     <?php endif;?>
-               </select>
-          </form>		 
-     <?php
-		}
-	}
 	
+	if(!empty($templatic_settings['sorting_option'])){
+
+		/* take "directory" as a post type if additional post type is detected */
+		$exclude_arr = apply_filters('exclude_sorting_posttypes',array('event','property','classified'));
+		if(!in_array(get_post_type(),$exclude_arr)){
+			$sort_post_type_name = 'directory';
+		}	
+		else{	
+			$sort_post_type_name = get_post_type();
+		}
+		
+		$sel_sort_by = $_REQUEST[$sort_post_type_name.'_sortby'];
+		$sel_class = 'selected=selected';
+		
+	?>
+		<div class="tev_sorting_option">
+			<form action="<?php if(function_exists('tmpl_directory_full_url')){ echo tmpl_directory_full_url('directory'); } ?>" method="get" id="<?php echo $sort_post_type.'_sortby_frm'; ?>" name="<?php echo $sort_post_type.'_sortby_frm'; ?>">
+               <select name="<?php echo $sort_post_type_name.'_sortby'; ?>" id="<?php echo $sort_post_type_name.'_sortby'; ?>" onchange="sort_as_set(this.value)" class="tev_options_sel">
+				<option <?php if(!$sel_sort_by){ echo $sel_class; } ?>><?php _e('Sort By',DOMAIN); ?></option>
+				<?php
+					do_action('tmpl_before_sortby_title_alphabetical');
+					if(!empty($templatic_settings['sorting_option']) && in_array('title_alphabetical',$templatic_settings['sorting_option'])):?>
+						<option value="alphabetical" <?php if($sel_sort_by =='alphabetical'){ echo $sel_class; } ?>><?php _e('Alphabetical',DIR_DOMAIN);?></option>
+				<?php endif;
+					do_action('tmpl_after_sortby_title_alphabetical');
+					
+					do_action('tmpl_before_sortby_title_asc');
+					if(!empty($templatic_settings['sorting_option']) && in_array('title_asc',$templatic_settings['sorting_option'])):?>
+						<option value="title_asc" <?php if($sel_sort_by =='title_asc'){ echo $sel_class; } ?>><?php _e('Title Ascending',DIR_DOMAIN);?></option>
+				<?php endif;
+					do_action('tmpl_after_sortby_title_asc');
+					
+					do_action('tmpl_before_sortby_title_desc');
+					if(!empty($templatic_settings['sorting_option']) && in_array('title_desc',$templatic_settings['sorting_option'])):?>
+						<option value="title_desc" <?php if($sel_sort_by =='title_desc'){ echo $sel_class; } ?>><?php _e('Title Descending',DIR_DOMAIN);?></option>
+				<?php endif;
+					do_action('tmpl_after_sortby_title_desc');
+				
+					do_action('tmpl_before_sortby_date_asc');
+					if(!empty($templatic_settings['sorting_option']) && in_array('date_asc',$templatic_settings['sorting_option'])):?>
+						<option value="date_asc" <?php if($sel_sort_by =='date_asc'){ echo $sel_class; } ?>><?php _e('Publish Date Ascending',DIR_DOMAIN);?></option>
+				<?php endif;
+					do_action('tmpl_after_sortby_date_asc');
+					
+					do_action('tmpl_before_date_desc');
+					if(!empty($templatic_settings['sorting_option']) && in_array('date_desc',$templatic_settings['sorting_option'])):?>
+						<option value="date_desc" <?php if($sel_sort_by =='date_desc'){ echo $sel_class; } ?>><?php _e('Publish Date Descending',DIR_DOMAIN);?></option>
+				<?php endif;
+					do_action('tmpl_after_sortby_date_desc');
+					
+					do_action('tmpl_before_sortby_reviews');
+					if(!empty($templatic_settings['sorting_option']) && in_array('reviews',$templatic_settings['sorting_option'])):?>
+						<option value="reviews" <?php if($sel_sort_by =='reviews'){ echo $sel_class; } ?>><?php _e('Reviews',DIR_DOMAIN);?></option>
+				<?php endif;
+					do_action('tmpl_after_sortby_reviews');
+					
+					do_action('tmpl_before_sortby_rating');
+					if(!empty($templatic_settings['sorting_option']) && in_array('rating',$templatic_settings['sorting_option'])):?>
+						<option value="rating" <?php if($sel_sort_by =='rating'){ echo $sel_class; } ?>><?php _e('Rating',DIR_DOMAIN);?></option>
+				<?php endif;
+					do_action('tmpl_after_sortby_rating');
+					
+					do_action('tmpl_before_sortby_random');
+					if(!empty($templatic_settings['sorting_option']) && in_array('random',$templatic_settings['sorting_option'])):?>
+						<option value="random" <?php if($sel_sort_by =='random'){ echo $sel_class; } ?>><?php _e('Random',DIR_DOMAIN);?></option>
+				<?php endif;
+					do_action('tmpl_after_sortby_random');
+					?>             
+			  </select>
+			 </form>
+             <?php add_action('wp_footer','sorting_option_of_listing'); ?>
+		</div>
+    <?php
+	}
+
 	?>
      	</div><!--END sort_options div -->
-     </div><!-- END directory_manager_tab Div -->
-     <?php endif;?>
-    <?php if($templatic_settings['sorting_type']=='normal' && !empty($templatic_settings['sorting_option'])){?>
-    <div class="normal_sorting_option">
-    	<ul class="sorting_option">
-          	<li><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical'; ?>"><?php _e('Alphabetical',DOMAIN);?></a></li>
-          	<?php if(!empty($templatic_settings['sorting_option']) && in_array('title_asc',$templatic_settings['sorting_option'])):?>
-          	<li><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=title_asc'; ?>"><?php _e('Title Ascending',DOMAIN);?></a></li>
-               <?php endif;?>
-               
-               <?php if(!empty($templatic_settings['sorting_option']) && in_array('title_desc',$templatic_settings['sorting_option'])):?>
-			<li><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=title_desc'; ?>"><?php _e('Title Descending',DOMAIN);?></a></li>
-               <?php endif;?>
-               
-               <?php if(!empty($templatic_settings['sorting_option']) && in_array('date_asc',$templatic_settings['sorting_option'])):?>
-               <li><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=date_asc'; ?>"><?php _e('Publish Date Ascending',DOMAIN);?></a></li>
-               <?php endif;?>
-               
-               <?php if(!empty($templatic_settings['sorting_option']) && in_array('date_desc',$templatic_settings['sorting_option'])):?>
-               <li><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=date_desc'; ?>"><?php _e('Publish Date Descending',DOMAIN);?></a></li>
-               <?php endif;?>
-               
-               <?php if(get_post_type()=='event'):?>
-				<?php if(!empty($templatic_settings['sorting_option']) && in_array('stdate_low_high',$templatic_settings['sorting_option'])):?>
-                    <li><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=stdate_low_high'; ?>"><?php _e('Start Date low to high',DOMAIN);?></a></li>
-                    <?php endif;?>
-                    
-                    <?php if(!empty($templatic_settings['sorting_option']) && in_array('stdate_high_low',$templatic_settings['sorting_option'])):?>
-                    <li><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=stdate_high_low'; ?>"><?php _e('Start Date high to low',DOMAIN);?></a></li>
-                    <?php endif;?>
-               <?php endif;?>
-               
-                <?php if(!empty($templatic_settings['sorting_option']) && in_array('reviews',$templatic_settings['sorting_option'])):?>
-               <li><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=reviews'; ?>"><?php _e('Reviews',DOMAIN);?></a></li>
-               <?php endif;?> 
-               
-               <?php if(!empty($templatic_settings['sorting_option']) && in_array('rating',$templatic_settings['sorting_option'])):?>
-               <li><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=rating'; ?>"><?php _e('Rating',DOMAIN);?></a></li>
-               <?php endif;?> 
-               <?php if(!empty($templatic_settings['sorting_option']) && in_array('random',$templatic_settings['sorting_option'])):?>
-               <li><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=random'; ?>"><?php _e('Random',DOMAIN);?></a></li>
-               <?php endif;?>             
-          </ul>
-    </div>
-    <?php }?> 
-     
-    <?php if((isset($_REQUEST['tevolution_sortby']) && $_REQUEST['tevolution_sortby']=='alphabetical') || (isset($_SESSION['alphabetical']) && $_SESSION['alphabetical']==1)):?>
+    </div><!-- END directory_manager_tab Div -->
+	<?php
+	}
+	
+	
+	/* On archive and category pages - alphabets order should display even there is no post type pass in argument  */
+	$exclude_arr = array('event','property','classified');
+	if(isset($_REQUEST['alpha_sort_post_type']) && $_REQUEST['alpha_sort_post_type'] != '')
+		$sort_post_type = $_REQUEST['alpha_sort_post_type'];
+	if(!in_array($sort_post_type,$exclude_arr))
+		$sort_post_type = 'directory';
+	else	
+		$sort_post_type = $sort_post_type;
+	if(!$sort_post_type){ $sort_post_type="directory"; }
+	if((isset($_REQUEST[$sort_post_type.'_sortby']) && $_REQUEST[$sort_post_type.'_sortby']=='alphabetical') || (isset($_SESSION['alphabetical']) && $_SESSION['alphabetical']==1)):
+	
+	$alphabets = array(__('A',DIR_DOMAIN),__('B',DIR_DOMAIN),__('C',DIR_DOMAIN),__('D',DIR_DOMAIN),__('E',DIR_DOMAIN),__('F',DIR_DOMAIN),__('G',DIR_DOMAIN),__('H',DIR_DOMAIN),__('I',DIR_DOMAIN),__('J',DIR_DOMAIN),__('K',DIR_DOMAIN),__('L',DIR_DOMAIN),__('M',DIR_DOMAIN),__('N',DIR_DOMAIN),__('O',DIR_DOMAIN),__('P',DIR_DOMAIN),__('Q',DIR_DOMAIN),__('R',DIR_DOMAIN),__('S',DIR_DOMAIN),__('T',DIR_DOMAIN),__('U',DIR_DOMAIN),__('V',DIR_DOMAIN),__('W',DIR_DOMAIN),__('X',DIR_DOMAIN),__('Y',DIR_DOMAIN),__('Z',DIR_DOMAIN));
+	/*show all result when we click on all in alphabetical sort order*/
+	$all = str_replace('?sortby='.$_REQUEST['sortby'].'&','/?',$url_glue);
+	?>
     <div id="directory_sort_order_alphabetical" class="sort_order_alphabetical">
 	    <ul>
-			<li class="<?php echo (!isset($_REQUEST['sortby']))?'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical';?>"><?php _e('All',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='a')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=a';?>"><?php _e('A',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='b')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=b';?>"><?php _e('B',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='c')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=c';?>"><?php _e('C',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='d')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=d';?>"><?php _e('D',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='e')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=e';?>"><?php _e('E',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='f')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=f';?>"><?php _e('F',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='g')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=g';?>"><?php _e('G',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='h')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=h';?>"><?php _e('H',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='i')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=i';?>"><?php _e('I',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='j')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=j';?>"><?php _e('J',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='k')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=k';?>"><?php _e('K',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='l')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=l';?>"><?php _e('L',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='m')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=m';?>"><?php _e('M',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='n')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=n';?>"><?php _e('N',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='o')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=o';?>"><?php _e('O',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='p')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=p';?>"><?php _e('P',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='q')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=q';?>"><?php _e('Q',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='r')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=e';?>"><?php _e('R',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='s')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=s';?>"><?php _e('S',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='t')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=t';?>"><?php _e('T',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='u')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=u';?>"><?php _e('U',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='v')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=v';?>"><?php _e('V',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='w')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=w';?>"><?php _e('W',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='x')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=x';?>"><?php _e('X',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='y')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=y';?>"><?php _e('Y',DOMAIN);?></a></li>
-			<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby']=='z')? 'active':''?>"><a href="<?php echo $permalink.$url_glue . 'tevolution_sortby=alphabetical&sortby=z';?>"><?php _e('Z',DOMAIN);?></a></li>
+			<li class="<?php echo (!isset($_REQUEST['sortby']))?'active':''?>"><a href="<?php echo remove_query_arg('sortby',$permalink.$all.$sort_post_type.'_sortby=alphabetical');?>"><?php _e('All',DIR_DOMAIN);?></a></li>
+			<?php
+			foreach($alphabets as &$value){ 
+				$key = $value;
+				$val = strtolower($key);
+				?>
+				<li class="<?php echo (isset($_REQUEST['sortby']) && $_REQUEST['sortby'] == $val)? 'active':''?>"><a href="<?php echo $permalink.$url_glue .$sort_post_type.'_sortby=alphabetical&sortby='.$val.'&alpha_sort_post_type='.$sort_post_type;?>"><?php echo $key; ?></a></li>
+				<?php 
+			} ?>
 	    </ul>
     </div>
     <?php endif;
-
 }
-
-
-/*
- * Function Name: tevolution_taxonomy_price_package
- * Return: display the category wise display price package from backend
- */
-add_action('admin_footer', 'tevolution_taxonomy_price_package');
-function tevolution_taxonomy_price_package(){
-	global $pagenow,$post;			
-		/* Tevolution Custom Post Type custom field meta box */
-	if($pagenow=='post.php' || $pagenow=='post-new.php'){			
-		if(isset($_REQUEST['post_type']) && $_REQUEST['post_type']!=''){
-			$posttype=$_REQUEST['post_type'];
-		}else{
-			$posttype=(get_post_type(@$_REQUEST['post']))? get_post_type(@$_REQUEST['post']) :'post';
-		}
-		$post_type_post['post']= (array)get_post_type_object( 'post' );			
-		$custom_post_types=get_option('templatic_custom_post');
-		$custom_post_types=array_merge($custom_post_types,$post_type_post);
-		foreach($custom_post_types as $post_type => $value){
-				if($posttype==$post_type){
-					$taxonomies = get_object_taxonomies( (object) array( 'post_type' => $post_type,'public'   => true, '_builtin' => true ));
-		?>
-          	<script type="text/javascript">
-			jQuery(document).ready(function(){	
-			   jQuery('input:checkbox[name^="tax_input"]').click(function(){								
-				//var value=jQuery('input:checkbox[name^="tax_input"]').val();
-				var val='';
-				jQuery('input:checkbox[name^="tax_input"]:checkbox:checked').each(function(i){
-						val+= jQuery(this).val()+',';
-				});				
+function sorting_option_of_listing()
+{
+	?>
+    <script type="text/javascript" async >
+		function sort_as_set(val)
+		{
+			<?php 
+			global $sort_post_type;
+			$current_post_type = get_post_type();
+			$addons_posttype = tmpl_addon_name(); /* all tevolution addons' post type as key and folter name as a value */
+			$exclude_arr = apply_filters('exclude_sorting_posttypes',array('event','property','classified'));
+			if(!in_array($current_post_type, $exclude_arr)){
+				$sort_post_type = 'directory';
+			}else{
+				$sort_post_type = $current_post_type;
+			}
 				
-				 var value=val.substr(0,val.length-1);			
-				 var url;
-				 var post_type='<?php echo $post_type?>';
-				 var taxonomy='<?php echo $taxonomies[0];?>';
-				 url="<?php echo TEMPL_PLUGIN_URL;?>/tmplconnector/monetize/templatic-monetization/ajax_price.php?pckid="+value+"&post_type="+post_type+"&taxonomy="+taxonomy+'&is_backend=1'				 
-				 jQuery.ajax({
-					   url: url, 
-					   type: "GET",
-					   cache: false,
-					   success: function (html) {
-							if(html==''){								
-								jQuery('table#tvolution_price_package_fields #ajax_packages_checkbox').remove();
-							}else{
-								jQuery('table#tvolution_price_package_fields td div.backedn_package').add(html);
-							}
-					   }      
-				    });
-				 
-			});
-		});
-			</script>
-          <?php
-				}
+			if(function_exists('tmpl_directory_full_url')){ ?>
+			if(document.getElementById('<?php echo $sort_post_type; ?>_sortby').value)
+			{
+				<?php if(strstr(tmpl_directory_full_url($sort_post_type),'?')): ?>
+					window.location = '<?php echo tmpl_directory_full_url($sort_post_type); ?>'+'&'+'<?php echo $sort_post_type; ?>'+'_sortby='+val;
+				<?php else: ?>
+					window.location = '<?php echo tmpl_directory_full_url($sort_post_type); ?>'+'?'+'<?php echo $sort_post_type; ?>'+'='+val;
+				<?php endif; ?>
+			}
+			<?php } ?>
 		}
-	}
+	</script>
+    <?php
 }
 
-
 /*
- * Name: tevolution_taxonomy_price_package
- * Description: return the label of taxonomy for archive page title.
+	Return the label of taxonomy for archive page title.
  */
 add_filter('tevolution_archive_page_title','tevolution_archive_page_title');
 function tevolution_archive_page_title()
@@ -1635,7 +1358,9 @@ function tmpl_get_related_posts_query(){
 	$related_post =  @$tmpdata['related_post'];
 	$related_post_numbers =  ( @$tmpdata['related_post_numbers'] ) ? @$tmpdata['related_post_numbers'] : 3;
 	$taxonomies = get_object_taxonomies( (object) array( 'post_type' => $post->post_type,'public'   => true, '_builtin' => true ));	
-	remove_all_actions('posts_where');	
+	remove_all_actions('posts_where');
+	
+	if($post->ID !=''){
 	if($related_post=='tags')
 	{		
 		 $terms = wp_get_post_terms($post->ID, $taxonomies[1], array("fields" => "ids"));	
@@ -1650,8 +1375,7 @@ function tmpl_get_related_posts_query(){
 							'operator'  => 'IN'
 						)            
 					 ),
-			'posts_per_page'=> apply_filters('tmpl_related_post_per_page',$related_post_numbers),			
-			'ignore_sticky_posts'=>1,
+			'posts_per_page'=> apply_filters('tmpl_related_post_per_page',$related_post_numbers),
 			'orderby'      => 'RAND',
 			'post__not_in' => array($post->ID)
 		);
@@ -1670,24 +1394,111 @@ function tmpl_get_related_posts_query(){
 							'operator'  => 'IN'
 						)            
 					 ),
-			'posts_per_page'=> apply_filters('tmpl_related_post_per_page',$related_post_numbers),			
-			'ignore_sticky_posts'=>1,
+			'posts_per_page'=> apply_filters('tmpl_related_post_per_page',$related_post_numbers),
 			'orderby'      => 'RAND',
 			'post__not_in' => array($post->ID)
 		);
 	}
-
-	if(is_plugin_active('sitepress-multilingual-cms/sitepress.php') && (!empty($tmpdata['related_post_type']) && in_array($post->post_type,$tmpdata['related_post_type']))){
+	}
+	if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
+		remove_action( 'parse_query', array( $sitepress, 'parse_query' ) );
 		add_filter('posts_where', array($sitepress,'posts_where_filter'),10,2);	
 	}
 	
-	if(is_plugin_active('Tevolution-LocationManager/location-manager.php') && (!empty($tmpdata['related_post_type']) && in_array($post->post_type,$tmpdata['related_post_type']))){
+	if(is_plugin_active('Tevolution-LocationManager/location-manager.php') ){
 		add_filter('posts_where', 'location_related_posts_where_filter');
 	}
-	if(is_plugin_active('Tevolution-LocationManager/location-manager.php') && (!empty($tmpdata['related_post_type']) && in_array($post->post_type,$tmpdata['related_post_type']))){
+	$my_query = new wp_query($postQuery);
+	
+	if(is_plugin_active('Tevolution-LocationManager/location-manager.php')){
 		remove_filter('posts_where', 'location_related_posts_where_filter');
 	}
 	
-	return $my_query = new wp_query($postQuery);
+	return $my_query;
  }
+/*hide sort option while map view is selected.*/
+add_action('wp_footer','hide_archive_sort_option');
+function hide_archive_sort_option()
+{
+	global $posts,$wp_query;
+
+	if((is_tax() || is_archive()) && !empty($posts))
+	{
+	?>
+    <script type="text/javascript" async>
+		jQuery(window).load(function () {
+			if(jQuery('#locations_map').hasClass('active'))
+			{
+				jQuery('.tev_sorting_option').css('display','none');
+				jQuery('#directory_sort_order_alphabetical').css('display','none');
+			}
+			else
+			{
+				jQuery('.tev_sorting_option').css('display','');
+				jQuery('#directory_sort_order_alphabetical').css('display','');
+			}
+			jQuery('.viewsbox a.listview').click(function(e){
+				jQuery('.tev_sorting_option').css('display','');
+				jQuery('#directory_sort_order_alphabetical').css('display','');
+			});
+			jQuery('.viewsbox a.gridview').click(function(e){
+				jQuery('.tev_sorting_option').css('display','');
+				jQuery('#directory_sort_order_alphabetical').css('display','');
+			});
+			jQuery('.viewsbox a#locations_map').click(function(e){
+				jQuery('.tev_sorting_option').css('display','none');
+				jQuery('#directory_sort_order_alphabetical').css('display','none');
+			});
+		});
+	</script>
+    <?php
+	}
+}
+
+
+/* Pass the custom post types for feeds */
+
+if(!function_exists('directory_myfeed_request')){
+	function directory_myfeed_request($qv) {
+		if (isset($qv['feed']))
+			$qv['post_type'] = get_post_types();
+		return $qv;
+	}
+}
+add_filter('request', 'directory_myfeed_request');
+
+/* category page and search page excerpt content limit */
+if(!function_exists('print_excerpt')){
+	function print_excerpt($length) { // Max excerpt length. Length is set in characters
+		global $post;
+                $length = ($length =='')? '50' : $length;
+		$tmpdata = get_option('supreme_theme_settings');
+		$morelink = @$tmpdata['templatic_excerpt_link'];
+		if($morelink!="")
+			$morelink=sprintf(__('<a href="%s" class="more">%s</a>','supreme'),get_permalink(),$morelink);
+		else
+			$morelink=sprintf(__('<a href="%s" class="more">Read More...</a>','supreme'),get_permalink());
+		
+		$text = $post->post_excerpt;
+		if ($text =='') {
+			$text = get_the_content($post->ID);
+			$text = apply_filters('the_excerpt', $text);
+			$text = str_replace(']]>', ']]>', $text);
+		}
+		$text = strip_shortcodes($text); // optional, recommended
+		$text = strip_tags($text); // use ' $text = strip_tags($text,'<p><a>'); ' if you want to keep some tags
+
+		$text = substr($text,0,$length);		
+		if(reverse_strrchr($text, '.', 1)){
+			$excerpt = reverse_strrchr($text, '.', 1)." ".sprintf(__('%s','supreme'),$morelink);
+		}else{
+			$excerpt = $text." ".sprintf(__('%s','supreme'),$morelink);
+		}
+		if( $excerpt ) {
+			echo apply_filters('the_excerpt',$excerpt);
+		} else {
+			echo apply_filters('the_excerpt',$text);
+		}
+	}
+}
 ?>

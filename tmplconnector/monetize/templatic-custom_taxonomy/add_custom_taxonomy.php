@@ -3,7 +3,7 @@
 ?>
 <div class="wrap">
 	<div class="icon32 icon32-posts-post" id="icon-edit"><br></div>
-	<h2><?php echo __('Add New Post type',ADMINDOMAIN); ?><a id="back_cutom_taxonomy" class="add-new-h2" href="<?php echo site_url().'/wp-admin/admin.php?page=custom_taxonomy';?>" title="<?php echo __('Back to Post type list',ADMINDOMAIN);?>" name="btnviewlisting"/><?php echo __('Back to Post type list',ADMINDOMAIN); ?>
+	<h2><?php echo __('Add New Post type',ADMINDOMAIN); ?><a id="back_cutom_taxonomy" class="add-new-h2" href="<?php echo site_url().'/wp-admin/admin.php?page=custom_setup&ctab=custom_setup';?>" title="<?php echo __('Back to Post type list',ADMINDOMAIN);?>" name="btnviewlisting"/><?php echo __('Back to Post type list',ADMINDOMAIN); ?>
 	</a></h2>
 <?php
 $edit_post = array();
@@ -17,8 +17,8 @@ else
 	unset($_SESSION['taxonomy_post_type']);
 }
 ?>
-<script type="text/javascript" src="<?php echo TEMPL_PLUGIN_URL.'tmplconnector/monetize/templatic-custom_taxonomy/add_taxonomy_validations.js';?>"></script>
-<form action="<?php echo site_url();?>/wp-admin/admin.php?page=custom_taxonomy&action=add_taxonomy" method="post" name="custom_taxonomy" onsubmit="return check_taxonomy_form();" >
+<script type="text/javascript" async src="<?php echo TEMPL_PLUGIN_URL.'tmplconnector/monetize/templatic-custom_taxonomy/add_taxonomy_validations.js';?>"></script>
+<form action="<?php echo site_url();?>/wp-admin/admin.php?page=custom_setup&ctab=custom_setup&action=add_taxonomy" method="post" name="custom_taxonomy" onsubmit="return check_taxonomy_form();" >
      <table class="form-table" id="form_table_taxonomy">
           <thead>
                <tr colspan="3">                   
@@ -43,7 +43,7 @@ else
                     </th>
                     <td>
                          <input onkeydown="return character_validation(event)" onkeyup="return character_validation(event)" type="text" class="regular-text" <?php if($edit_post) { ?>readonly="readonly" <?php } ?> value="<?php if($edit_post) { echo $edit_post[@$_REQUEST['post-type']]['rewrite']['slug']; } ?>" name="post_slug" id="post_slug" />
-                         <p class="description"><?php echo __('e.g. places, events etc',ADMINDOMAIN); ?>.<strong> <?php echo __('Note',ADMINDOMAIN); ?>: </strong><?php echo __('Just enter small letters without any space.',ADMINDOMAIN); ?></p>
+                         <p class="description"><?php echo __('e.g. places, events etc',ADMINDOMAIN); ?>.<strong> <?php echo __('Note',ADMINDOMAIN); ?>: </strong><?php echo __('Just enter small letters without any space, Maximum 20 characters are allowed.',ADMINDOMAIN); ?></p>
                     </td>
                </tr>
                <tr class="" id="tax_name">
@@ -60,7 +60,7 @@ else
                     	<label for="taxonomy_slug"  class="textfield-label"><?php echo __('Taxonomy Slug ',ADMINDOMAIN); ?> <span class="required"><?php echo FLD_REQUIRED_TEXT; ?></span></label>
                     </th>
                     <td>
-                         <input type="text" class="regular-text" onkeydown="return character_validation(event)" onkeyup="return character_validation(event)" <?php if($edit_post) { ?>readonly="readonly" <?php } ?> value="<?php if($edit_post) { echo $edit_post[@$_REQUEST['post-type']]['slugs'][0]; } ?>" name="taxonomy_slug" id="taxonomy_slug">                         <p class="description"><?php echo __('e.g. eventcategories, placecategories etc',ADMINDOMAIN); ?>.<strong> <?php echo __('Note',ADMINDOMAIN); ?>: </strong><?php echo __('Just enter small letters without any space.',ADMINDOMAIN); ?></p>
+                         <input type="text" class="regular-text" onkeydown="return character_validation(event)" onkeyup="return character_validation(event)" <?php if($edit_post) { ?>readonly="readonly" <?php } ?> value="<?php if($edit_post) { echo $edit_post[@$_REQUEST['post-type']]['slugs'][0]; } ?>" name="taxonomy_slug" id="taxonomy_slug">                         <p class="description"><?php echo __('e.g. eventcategories, placecategories etc',ADMINDOMAIN); ?>.<strong> <?php echo __('Note',ADMINDOMAIN); ?>: </strong><?php echo __('Just enter small letters without any space, Maximum 20 characters are allowed.',ADMINDOMAIN); ?></p>
                     </td>
                </tr>
                <tr class="" id="tag_title">
@@ -78,7 +78,7 @@ else
                     </th>
                     <td>
                          <input type="text" class="regular-text" onkeydown="return character_validation(event)" onkeyup="return character_validation(event)"  <?php if($edit_post) { ?>readonly="readonly" <?php } ?> value="<?php if($edit_post) { echo $edit_post[@$_REQUEST['post-type']]['slugs'][1]; } ?>" name="tag_slug" id="tag_slug">
-                         <p class="description"><?php echo __('e.g. etags, placetags etc',ADMINDOMAIN); ?>.<strong> <?php echo __('Note',ADMINDOMAIN); ?>: </strong><?php echo __('Just enter small letters without any space.',ADMINDOMAIN); ?></p>
+                         <p class="description"><?php echo __('e.g. etags, placetags etc',ADMINDOMAIN); ?>.<strong> <?php echo __('Note',ADMINDOMAIN); ?>: </strong><?php echo __('Just enter small letters without any space, Maximum 20 characters are allowed.',ADMINDOMAIN); ?></p>
                     </td>
                </tr>
                <tr>
@@ -101,8 +101,8 @@ else
                     </th>
                     <td>
                          <input id="upload_image" type="text" size="36" name="upload_image" value="<?php if($edit_post) { echo $edit_post[@$_REQUEST['post-type']]['menu_icon']; } ?>" /> <?php echo __('Or',ADMINDOMAIN);?>
-                         <input id="upload_image_button" type="button" value="Upload Image"  class="button upload_button"/>                         
-                         <p class="description"><?php echo __('Enter the URL or upload an image of 16 x 16 pixels for the custom post type icon and click on "Insert into post" button',ADMINDOMAIN); ?>.</p>                         
+                          <a data-id="upload_image" id="Upload Icon" type="submit" class="upload_file_button button"><?php  echo __('Upload Image',ADMINDOMAIN);?></a>   	   
+                         <p class="description"><?php echo __('Enter the URL or upload an image of 16 x 16 pixels for the custom post type icon.',ADMINDOMAIN); ?>.</p>                         
                     </td>
                </tr>
 			   <?php } 
@@ -183,7 +183,7 @@ else
                </tr>
           </tbody>
      </table>
-    <input type="submit" class="button-primary form-submit form-submit submit" value="<?php echo __('Save Taxonomy',ADMINDOMAIN); ?>" name="submit-taxonomy" id="submit-1">
+    <input type="submit" class="button button-primary button-hero" value="<?php echo __('Save Taxonomy',ADMINDOMAIN); ?>" name="submit-taxonomy" id="submit-1">
 </form>
 </div>
 <?php
@@ -206,7 +206,7 @@ if(isset($_POST['submit-taxonomy']) && $_POST['submit-taxonomy'] !='')
 	 }
 	else
 	 {
-		$upload_image = '';
+		$upload_image = TEMPL_PLUGIN_URL.'/images/templatic-logo.png';
 	 }
 	/* Register custom post type array */
 	if($post_slug)
@@ -227,14 +227,14 @@ if(isset($_POST['submit-taxonomy']) && $_POST['submit-taxonomy'] !='')
 							'public' 			=> true,
 							'has_archive'       => true,
 							'can_export'		=> true,
-							'show_ui' 		=> true, // UI in admin panel
-							'_builtin' 		=> false, // It's a custom post type, not built in
+							'show_ui' 		=> true, /* UI in admin panel*/
+							'_builtin' 		=> false, /* It's a custom post type, not built in*/
 							'_edit_link' 		=> 'post.php?post=%d',
 							'capability_type' 	=> 'post',
 							'menu_icon' 		=> $upload_image,
 							'hierarchical' 	=> false,
-							'rewrite' 		=> array("slug" => "$custom_post_type"), // Permalinks
-							'query_var' 		=> "$custom_post_type", // This goes to the WP_Query schema
+							'rewrite' 		=> array("slug" => "$custom_post_type"), /* Permalinks*/
+							'query_var' 		=> "$custom_post_type", /* This goes to the WP_Query schema*/
 							'supports' 		=> array(	'title','author','excerpt','thumbnail','comments','editor', 'trackbacks','custom-fields','revisions'),
 							'show_in_nav_menus'	=> true ,
 							'description'       => $_POST['description'],
@@ -247,17 +247,19 @@ if(isset($_POST['submit-taxonomy']) && $_POST['submit-taxonomy'] !='')
 		$all_post_type = '';
 		$post_heading = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE $wpdb->posts.post_title = '[#taxonomy_name#]' and $wpdb->posts.post_type = 'custom_fields'");
 		$all_post_type = get_post_meta($post_heading, 'post_type' , true);
-		if(in_array($post_slug,explode(",",$all_post_type)))
-		 {
+		/* Sort order update new create post type*/
+		update_post_meta($post_heading,$post_slug.'_sort_order',get_post_meta($post_heading,'sort_order',true));		
+		if(in_array($post_slug,explode(",",$all_post_type))){
 			$all_post_type = $all_post_type; 
-		 }
-		else
-		 {
+		}else{
 			$all_post_type .= ",".$post_slug;
 		 }
 		update_post_meta($post_heading, 'post_type' ,$all_post_type);
 		$post_category_id = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE $wpdb->posts.post_title = 'Post Category' and $wpdb->posts.post_type = 'custom_fields'");
 		update_post_meta($post_category_id, 'post_type_'.$post_slug.'' , 'all');
+		/* Sort order update new create post type*/
+		update_post_meta($post_category_id,$post_slug.'_sort_order',get_post_meta($post_category_id,'sort_order',true));
+		update_post_meta($post_category_id,$post_slug.'_heading_type','[#taxonomy_name#]');
 		$all_post_type = get_post_meta($post_category_id, 'post_type' , true);
 		if(in_array($post_slug,explode(",",$all_post_type)))
 		 {
@@ -271,6 +273,9 @@ if(isset($_POST['submit-taxonomy']) && $_POST['submit-taxonomy'] !='')
 		
 		$post_title_id = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE $wpdb->posts.post_title = 'Post Title' and $wpdb->posts.post_type = 'custom_fields'");
 		update_post_meta($post_title_id, 'post_type_'.$post_slug.'' , 'all');
+		/* Sort order update new create post type*/
+		update_post_meta($post_title_id,$post_slug.'_sort_order',get_post_meta($post_title_id,'sort_order',true));
+		update_post_meta($post_title_id,$post_slug.'_heading_type','[#taxonomy_name#]');
 		$all_post_type = get_post_meta($post_title_id, 'post_type' , true);
 		if(in_array($post_slug,explode(",",$all_post_type)))
 		 {
@@ -285,6 +290,9 @@ if(isset($_POST['submit-taxonomy']) && $_POST['submit-taxonomy'] !='')
 		
 		$post_excerpt_id = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE $wpdb->posts.post_title = 'Post Excerpt' and $wpdb->posts.post_type = 'custom_fields'");
 		update_post_meta($post_excerpt_id, 'post_type_'.$post_slug.'' , 'all');
+		/* Sort order update new create post type*/
+		update_post_meta($post_excerpt_id,$post_slug.'_sort_order',get_post_meta($post_excerpt_id,'sort_order',true));
+		update_post_meta($post_excerpt_id,$post_slug.'_heading_type','[#taxonomy_name#]');
 		$all_post_type = get_post_meta($post_excerpt_id, 'post_type' , true);
 		if(in_array($post_slug,explode(",",$all_post_type)))
 		 {
@@ -298,6 +306,9 @@ if(isset($_POST['submit-taxonomy']) && $_POST['submit-taxonomy'] !='')
 		
 		$post_image_id = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE $wpdb->posts.post_title = 'Post Images' and $wpdb->posts.post_type = 'custom_fields'");
 		update_post_meta($post_image_id, 'post_type_'.$post_slug.'' , 'all');
+		/* Sort order update new create post type*/
+		update_post_meta($post_image_id,$post_slug.'_sort_order',get_post_meta($post_image_id,'sort_order',true));
+		update_post_meta($post_image_id,$post_slug.'_heading_type','[#taxonomy_name#]');
 		$all_post_type = get_post_meta($post_image_id, 'post_type' , true);
 		if(in_array($post_slug,explode(",",$all_post_type)))
 		 {
@@ -312,6 +323,9 @@ if(isset($_POST['submit-taxonomy']) && $_POST['submit-taxonomy'] !='')
 		
 		$post_content_id = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE $wpdb->posts.post_title = 'Post Content' and $wpdb->posts.post_type = 'custom_fields'");
 		update_post_meta($post_content_id, 'post_type_'.$post_slug.'' , 'all');
+		/* Sort order update new create post type*/
+		update_post_meta($post_content_id,$post_slug.'_sort_order',get_post_meta($post_content_id,'sort_order',true));
+		update_post_meta($post_content_id,$post_slug.'_heading_type','[#taxonomy_name#]');
 		$all_post_type = get_post_meta($post_content_id, 'post_type' , true);
 		if(in_array($post_slug,explode(",",$all_post_type)))
 		 {
@@ -323,13 +337,13 @@ if(isset($_POST['submit-taxonomy']) && $_POST['submit-taxonomy'] !='')
 		 }
 		update_post_meta($post_content_id, 'post_type' ,$all_post_type);
 		/* add this taxonomy in custom fields selection */
-	// Register custom taxonomy
+	/* Register custom taxonomy*/
 	if($taxonomy_slug)
 	 {
 		$custom_taxonomy[$taxonomy_slug] =	
 					array (	"hierarchical" => true, 
 							"label" 		=> stripslashes($_POST['taxonomy_name']),
-							"post_type"	=> str_replace(" ","",strtolower($_POST['post_name'])),
+							"post_type"	=> str_replace(" ","",strtolower(sanitize_title($_POST['post_name']))),
 							"post_slug"	=> str_replace(" ","",strtolower($_POST['post_slug'])),
 							'labels' 		=> array(	'name' 			=>  stripslashes($_POST['taxonomy_name']),
 												'singular_name' 	=>  sanitize_title($_POST['taxonomy_slug']),
@@ -352,7 +366,7 @@ if(isset($_POST['submit-taxonomy']) && $_POST['submit-taxonomy'] !='')
 		$custom_tags[$tag_slug] = 
 					array(	"hierarchical" => false,
 							"label" 		=> stripslashes($_POST['tag_name']),
-							"post_type"	=> str_replace(" ","",strtolower($_POST['post_name'])),
+							"post_type"	=> str_replace(" ","",strtolower(sanitize_title($_POST['post_name']))),
 							"post_slug"	=> str_replace(" ","",strtolower($_POST['post_slug'])),
 							'labels' 		=> array(	'name' 			=>  stripslashes($_POST['tag_name']),
 												'singular_name' 	=>  sanitize_title($_POST['tag_slug']),
@@ -476,11 +490,12 @@ ksort($tags_arr_merge);
 update_option('templatic_custom_tags',$tags_arr_merge);
 ?>	
 	<form action="<?php echo $location; ?>" method="get" id="frm_edit_custom_taxonomy" name="frm_edit_custom_taxonomy">
-        <input type="hidden" value="custom_taxonomy" name="page" />
+        <input type="hidden" value="custom_setup" name="page" />
+        <input type="hidden" value="custom_setup" name="ctab" />
         <input type="hidden" value="add" name="custom_msg_type" />
     </form>
-	<script>document.frm_edit_custom_taxonomy.submit();</script>';
-<?php
+	<script type="text/javascript" async>document.frm_edit_custom_taxonomy.submit();</script>';
+<?php	
 	exit;	
 }
 ?>

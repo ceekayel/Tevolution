@@ -1,837 +1,943 @@
 <?php
+/******************************************************************
+=======  PLEASE DO NOT CHANGE BELOW CODE  =====
+You can add in below code but don't remove original code.
+This code to include registration, login and edit profile page.
+This file is included in functions.php of theme root at very last php coding line.
+You can call registration, login and edit profile page  by the link 
+edit profile : http://mydomain.com/?ptype=profile  => echo site_url().'/?ptype=profile';
+registration : http://mydomain.com/?ptype=register => echo site_url().'/?ptype=register';
+login : http://mydomain.com/?ptype=login => echo site_url().'/?ptype=login';
+logout : http://mydomain.com/?ptype=login&action=logout => echo site_url().'/?ptype=login&action=logout';
+********************************************************************/
+
 global $wp_query,$wpdb,$wp_rewrite,$post;
 define('TEMPL_REGISTRATION_FOLDER_PATH',TEMPL_MONETIZE_FOLDER_PATH.'templatic-registration/');
-/* conditions for activation of login wizard */
-if((isset($_REQUEST['activated']) && $_REQUEST['activated'] == 'templatic-login') && (isset($_REQUEST['true']) && $_REQUEST['true']==1)){
-	update_option('templatic-login','Active');
-}elseif((isset($_REQUEST['deactivate']) && $_REQUEST['deactivate'] == 'templatic-login') && (isset($_REQUEST['true']) && $_REQUEST['true']==0)){
-	
-	$tmpdata = get_option('templatic_settings');	
-	delete_option('templatic-login');
-	/* delete two fields of user name and email while deavtivation this meta box */
-	$postname = 'user_fname';
-	$postid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $postname . "'" );
-	wp_delete_post($postid);
-	$postname = 'user_email';
-	$postid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $postname . "'" );
-	wp_delete_post($postid);
-	$display_name = 'display_name';
-	$postid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $display_name . "'" );
-	wp_delete_post($postid);
-	$postname = 'facebook';
-	$postid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $postname . "'" );
-	wp_delete_post($postid);
-	$postname = 'twitter';
-	$postid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $postname . "'" );
-	wp_delete_post($postid);
-	$postname = 'linkedin';
-	$postid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $postname . "'" );
-	wp_delete_post($postid);
-	$postname = 'description';
-	$postid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $postname . "'" );
-	wp_delete_post($postid);
-	$postname = 'profile_photo';
-	$postid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $postname . "'" );
-	wp_delete_post($postid);
-	$postname = 'url';
-	$postid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $postname . "'" );
-	wp_delete_post($postid);
-	$postname = 'user_phone';
-	$postid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $postname . "'" );
-	wp_delete_post($postid);
-	/*Delete the tevolution register module related page */
-	//remove tevolution_login
-	wp_delete_post($tmpdata['tevolution_login'],true);
-	$tevolution_login = array_search($tmpdata['tevolution_login'], $tmpdata);
-	unset($tmpdata[$tevolution_login]);
-	delete_option('tevolution_login');
-	//remove tevolution_register
-	wp_delete_post($tmpdata['tevolution_register'],true);
-	$tevolution_register = array_search($tmpdata['tevolution_register'], $tmpdata);
-	unset($tmpdata[$tevolution_register]);
-	delete_option('tevolution_register');
-	
-	//remove tevolution profile page
-	wp_delete_post($tmpdata['tevolution_profile'],true);
-	$tevolution_profile = array_search($tmpdata['tevolution_profile'], $tmpdata);
-	unset($tmpdata[$tevolution_profile]);
-	delete_option('tevolution_profile');
-	
-	update_option('templatic_settings',$tmpdata);
-}
-/*
-*Name:create_default_registration_customfields
-*Description: create user custom fields while registration module activate.
-*/
-add_action('admin_init','create_default_registration_customfields');
-function create_default_registration_customfields()
-{
-	if((@$_REQUEST['activated'] == 'templatic-login' && @$_REQUEST['true']==1) || (@$_REQUEST['page'] == 'templatic_system_menu' && @$_REQUEST['activated']=='true')){
-		$args = array(
-      'public' => true,
-      'label'  => 'User Fields'
-    );
-    register_post_type( 'custom_user_field', $args );
-		$tmpdata = get_option('templatic_settings');
-		$tmpdata['allow_autologin_after_reg'] = 'No';
-		update_option('templatic_settings',$tmpdata);
-		/* insert two fields of user name and email while activation this meta box */
-		global $current_user,$wpdb;
-		$postname = 'user_email';
-		$postid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $postname . "'" );
-		if(!$postid)
-		{
-			$my_post = array();
-			$my_post['post_title'] = 'E-mail';
-			$my_post['post_name'] = 'user_email';
-			$my_post['post_content'] = '';
-			$my_post['post_status'] = 'publish';
-			$my_post['post_author'] = 1;		
-			$my_post['post_type'] = 'custom_user_field';
-			$custom = array("ctype"		     => 'text',
-						 "sort_order" 		=> '1',
-						 "on_registration"	=> '1',
-						 "on_profile"		=> '1',
-						 "option_values"	=> '',
-						 "is_require"		=> '1',
-						 "on_author_page"	=> '1'
-						);
-			$last_postid = wp_insert_post( $my_post );
-			/* Finish the place geo_latitude and geo_longitude in postcodes table*/
-			if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
-				if(function_exists('wpml_insert_templ_post'))
-					wpml_insert_templ_post($last_postid,'custom_user_field'); /* insert post in language */
-			}
-			foreach($custom as $key=>$val)
-			{				
-				update_post_meta($last_postid, $key, $val);
-			}
-		}
-		$postname = 'user_fname';
-		$postid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $postname . "'" );
-		if(!$postid)
-		{
-			/* User Name custom field */
-			$my_post = array();
-			$my_post['post_title']  = 'User name';
-			$my_post['post_name']   = 'user_fname';
-			$my_post['post_content']= '';
-			$my_post['post_status'] = 'publish';
-			$my_post['post_author'] = 1;
-			$my_post['post_type']   = 'custom_user_field';
-			$custom = array("ctype"		     => 'text',
-						 "sort_order" 		=> '2',
-						 "on_registration"	=> '1',
-						 "on_profile"		=> '1',
-						 "option_values"	=> '',
-						 "is_require"		=> '1',
-						 "on_author_page"	=> '1'
-						);
-			$last_postid = wp_insert_post( $my_post );
-			/* Finish the place geo_latitude and geo_longitude in postcodes table*/
-			if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
-				if(function_exists('wpml_insert_templ_post'))
-					wpml_insert_templ_post($last_postid,'custom_user_field'); /* insert post in language */
-			}
-			foreach($custom as $key=>$val)
-			{				
-				update_post_meta($last_postid, $key, $val);
-			}
-		}
-		$display_name = 'display_name';
-		$display_namepostid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $display_name . "'" );
-		if(!$display_namepostid)
-		{
-			/* website url custom field */
-			$my_post = array();
-			$my_post['post_title']  = 'Display Name';
-			$my_post['post_name']   = 'display_name';
-			$my_post['post_content']= '';
-			$my_post['post_status'] = 'publish';
-			$my_post['post_author'] = 1;
-			$my_post['post_type']   = 'custom_user_field';
-			$custom = array("ctype"		     => 'text',
-						 "sort_order" 		=> '3',
-						 "on_registration"	=> '0',
-						 "on_profile"		=> '1',
-						 "option_values"	=> '',
-						 "is_require"		=> '0',
-						 "on_author_page"	=> '1'
-						);
-			$last_postid = wp_insert_post( $my_post );
-			/* Finish the place geo_latitude and geo_longitude in postcodes table*/
-			if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
-				if(function_exists('wpml_insert_templ_post'))
-					wpml_insert_templ_post($last_postid,'custom_user_field'); /* insert post in language */
-			}
-			foreach($custom as $key=>$val)
-			{				
-				update_post_meta($last_postid, $key, $val);
-			}
-		}
-		$user_google = 'user_google';
-		$user_google_id = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $user_google . "'" );
-		if(!$user_google_id)
-		{
-			/* website url custom field */
-			$my_post = array();
-			$my_post['post_title']  = 'Google+';
-			$my_post['post_name']   = 'user_google';
-			$my_post['post_content']= '';
-			$my_post['post_status'] = 'publish';
-			$my_post['post_author'] = 1;
-			$my_post['post_type']   = 'custom_user_field';
-			$custom = array("ctype"		     => 'text',
-						 "sort_order" 		=> '3',
-						 "on_registration"	=> '0',
-						 "on_profile"		=> '1',
-						 "option_values"	=> '',
-						 "is_require"		=> '0',
-						 "on_author_page"	=> '1'
-						);
-			$last_postid = wp_insert_post( $my_post );
-			/* Finish the place geo_latitude and geo_longitude in postcodes table*/
-			if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
-				if(function_exists('wpml_insert_templ_post'))
-					wpml_insert_templ_post($last_postid,'custom_user_field'); /* insert post in language */
-			}
-			foreach($custom as $key=>$val)
-			{				
-				update_post_meta($last_postid, $key, $val);
-			}
-		}			
-		$website = 'url';
-		$websitepostid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $website . "'" );
-		if(!$websitepostid)
-		{
-			/* website url custom field */
-			$my_post = array();
-			$my_post['post_title']  = 'Website';
-			$my_post['post_name']   = 'url';
-			$my_post['post_content']= '';
-			$my_post['post_status'] = 'publish';
-			$my_post['post_author'] = 1;
-			$my_post['post_type']   = 'custom_user_field';
-			$custom = array("ctype"		     => 'text',
-						 "sort_order" 		=> '4',
-						 "on_registration"	=> '0',
-						 "on_profile"		=> '1',
-						 "option_values"	=> '',
-						 "is_require"		=> '0',
-						 "on_author_page"	=> '1'
-						);
-			$last_postid = wp_insert_post( $my_post );
-			/* Finish the place geo_latitude and geo_longitude in postcodes table*/
-			if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
-				if(function_exists('wpml_insert_templ_post'))
-					wpml_insert_templ_post($last_postid,'custom_user_field'); /* insert post in language */
-			}
-			foreach($custom as $key=>$val)
-			{				
-				update_post_meta($last_postid, $key, $val);
-			}
-		}
-		$user_phone = 'user_phone';
-		$user_phonepostid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $user_phone . "'" );
-		if(!$user_phonepostid)
-		{
-			/* website url custom field */
-			$my_post = array();
-			$my_post['post_title']  = 'Phone';
-			$my_post['post_name']   = 'user_phone';
-			$my_post['post_content']= '';
-			$my_post['post_status'] = 'publish';
-			$my_post['post_author'] = 1;
-			$my_post['post_type']   = 'custom_user_field';
-			$custom = array("ctype"		     => 'text',
-						 "sort_order" 		=> '5',
-						 "on_registration"	=> '0',
-						 "on_profile"		=> '1',
-						 "option_values"	=> '',
-						 "is_require"		=> '0',
-						 "on_author_page"	=> '1'
-						);
-			$last_postid = wp_insert_post( $my_post );
-			/* Finish the place geo_latitude and geo_longitude in postcodes table*/
-			if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
-				if(function_exists('wpml_insert_templ_post'))
-					wpml_insert_templ_post($last_postid,'custom_user_field'); /* insert post in language */
-			}
-			foreach($custom as $key=>$val)
-			{				
-				update_post_meta($last_postid, $key, $val);
-			}
-		}
-		
-		$facebook = 'facebook';
-		$facebookpostid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $facebook . "'" );
-		if(!$facebookpostid)
-		{
-			/* Facebook url custom field */
-			$my_post = array();
-			$my_post['post_title']  = 'Facebook';
-			$my_post['post_name']   = 'facebook';
-			$my_post['post_content']= '';
-			$my_post['post_status'] = 'publish';
-			$my_post['post_author'] = 1;
-			$my_post['post_type']   = 'custom_user_field';
-			$custom = array("ctype"		     => 'text',
-						 "sort_order" 		=> '6',
-						 "on_registration"	=> '0',
-						 "on_profile"		=> '1',
-						 "option_values"	=> '',
-						 "is_require"		=> '0',
-						 "on_author_page"	=> '1'
-						);
-			$last_postid = wp_insert_post( $my_post );
-			/* Finish the place geo_latitude and geo_longitude in postcodes table*/
-			if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
-				if(function_exists('wpml_insert_templ_post'))
-					wpml_insert_templ_post($last_postid,'custom_user_field'); /* insert post in language */
-			}
-			foreach($custom as $key=>$val)
-			{				
-				update_post_meta($last_postid, $key, $val);
-			}
-		}
-		
-		$twitter = 'twitter';
-		$twitterpostid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $twitter . "'" );
-		if(!$twitterpostid)
-		{
-			/* Twitter url custom field */
-			$my_post = array();
-			$my_post['post_title']  = 'Twitter';
-			$my_post['post_name']   = 'twitter';
-			$my_post['post_content']= '';
-			$my_post['post_status'] = 'publish';
-			$my_post['post_author'] = 1;
-			$my_post['post_type']   = 'custom_user_field';
-			$custom = array("ctype"		     => 'text',
-						 "sort_order" 		=> '7',
-						 "on_registration"	=> '0',
-						 "on_profile"		=> '1',
-						 "option_values"	=> '',
-						 "is_require"		=> '0',
-						 "on_author_page"	=> '1'
-						);
-			$last_postid = wp_insert_post( $my_post );
-			/* Finish the place geo_latitude and geo_longitude in postcodes table*/
-			if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
-				if(function_exists('wpml_insert_templ_post'))
-					wpml_insert_templ_post($last_postid,'custom_user_field'); /* insert post in language */
-			}
-			foreach($custom as $key=>$val)
-			{				
-				update_post_meta($last_postid, $key, $val);
-			}
-		}
-		$linkedin = 'linkedin';
-		$linkedinpostid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $linkedin . "'" );
-		if(!$linkedinpostid)
-		{	
-			/* Linkedin url custom field */
-			$my_post = array();
-			$my_post['post_title']  = 'LinkedIn';
-			$my_post['post_name']   = 'linkedin';
-			$my_post['post_content']= '';
-			$my_post['post_status'] = 'publish';
-			$my_post['post_author'] = 1;
-			$my_post['post_type']   = 'custom_user_field';
-			$custom = array("ctype"		     => 'text',
-						 "sort_order" 		=> '8',
-						 "on_registration"	=> '0',
-						 "on_profile"		=> '1',
-						 "option_values"	=> '',
-						 "is_require"		=> '0',
-						 "on_author_page"	=> '1'
-						);
-			$last_postid = wp_insert_post( $my_post );
-			/* Finish the place geo_latitude and geo_longitude in postcodes table*/
-			if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
-				if(function_exists('wpml_insert_templ_post'))
-					wpml_insert_templ_post($last_postid,'custom_user_field'); /* insert post in language */
-			}
-			foreach($custom as $key=>$val)
-			{				
-				update_post_meta($last_postid, $key, $val);
-			}
-		}
-		$description = 'description';
-		$descriptionpostid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $description . "'" );
-		if(!$descriptionpostid)
-		{
-			/* Author Biography custom field */
-			$my_post = array();
-			$my_post['post_title']  = 'Author Biography';
-			$my_post['post_name']   = 'description';
-			$my_post['post_content']= '';
-			$my_post['post_status'] = 'publish';
-			$my_post['post_author'] = 1;
-			$my_post['post_type']   = 'custom_user_field';
-			$custom = array("ctype"		     => 'texteditor',
-						 "sort_order" 		=> '9',
-						 "on_registration"	=> '0',
-						 "on_profile"		=> '1',
-						 "option_values"	=> '',
-						 "is_require"		=> '0',
-						 "on_author_page"	=> '1'
-						);
-			$last_postid = wp_insert_post( $my_post );
-			/* Finish the place geo_latitude and geo_longitude in postcodes table*/
-			if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
-				if(function_exists('wpml_insert_templ_post'))
-					wpml_insert_templ_post($last_postid,'custom_user_field'); /* insert post in language */
-			}
-			foreach($custom as $key=>$val)
-			{				
-				update_post_meta($last_postid, $key, $val);
-			}
-		}
-		$profile_photo = 'profile_photo';
-		$profile_photopostid = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '" . $profile_photo . "'" );
-		if(!$profile_photopostid)
-		{	
-			/* Linkedin url custom field */
-			$my_post = array();
-			$my_post['post_title']  = 'Profile Photo';
-			$my_post['post_name']   = 'profile_photo';
-			$my_post['post_content']= '';
-			$my_post['post_status'] = 'publish';
-			$my_post['post_author'] = 1;
-			$my_post['post_type']   = 'custom_user_field';
-			$custom = array("ctype"		     => 'upload',
-						 "sort_order" 		=> '10',
-						 "on_registration"	=> '0',
-						 "on_profile"		=> '1',
-						 "option_values"	=> '',
-						 "is_require"		=> '0',
-						 "on_author_page"	=> '1'
-						);
-			$last_postid = wp_insert_post( $my_post );
-			/* Finish the place geo_latitude and geo_longitude in postcodes table*/
-			if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
-				if(function_exists('wpml_insert_templ_post'))
-					wpml_insert_templ_post($last_postid,'custom_user_field'); /* insert post in language */
-			}
-			foreach($custom as $key=>$val)
-			{				
-				update_post_meta($last_postid, $key, $val);
-			}
-		}
-			global $wp_post_types;
-			if ( isset( $wp_post_types[ 'custom_user_field' ] ) ) {
-				unset( $wp_post_types[ 'custom_user_field' ] );
-			}
-		/*Register Module auto install page like login, register, profile*/
-		add_action('admin_init','register_module_insert_page',100);		
-		/*end Register Module auto install page like login, register, profile*/
-	}
-}
-if(is_active_addons('templatic-login')){
-	add_action('templ_add_admin_menu_', 'templ_add_subadmin_menu',12);
-	
+
+/* Registration module related constant variable */
+define('NEW_PW_TEXT',__('New Password',DOMAIN));
+define('CONFIRM_NEW_PW_TEXT',__('Confirm New Password',DOMAIN));
+define('EDIT_PROFILE_UPDATE_BUTTON',__('Update',DOMAIN));
+define('GET_NEW_PW_TEXT',__('Get New Password',DOMAIN));
+define('ABOUT_TEXT',__('About you',DOMAIN));
+define('YR_WEBSITE_TEXT',__('Your Website',DOMAIN));
+define('ABOUT_U_TEXT',__('Provide brief information about yourself',DOMAIN));
+define('TEMPL_REGISTRATION_FOLDER',TEMPL_MONETIZE_FOLDER_PATH . "templatic-registration/");
+define('TEMPL_REGISTRATION_URI',TEMPL_MONETIZE_FOLDER_PATH. "templatic-registration/");
+define('TT_REGISTRATION_FOLDER_PATH',TEMPL_MONETIZE_FOLDER_PATH.'templatic-registration/');
+include_once(TEMPL_REGISTRATION_FOLDER.'registration_language.php');
+if(!defined('PLEASE_SELECT')) 
+	define('PLEASE_SELECT',__('Please Select',DOMAIN));
+/**--below are the main file which will work with registration -**/	
+
+if(is_admin() && strstr($_SERVER['REQUEST_URI'],'/wp-admin/' )){
+	include_once(TEMPL_REGISTRATION_FOLDER_PATH . 'admin_registration_functions.php');	
+}else{
 	if(file_exists(TEMPL_REGISTRATION_FOLDER_PATH . 'registration_functions.php'))
-	{
-		/* Registeration module related constant variable */
-		define(TT_CUSTOM_USERMETA_FOLDER_PATH, TEMPL_REGISTRATION_FOLDER_PATH.'custom_usermeta/');		
-		define('NEW_PW_TEXT',__('New Password',DOMAIN));
-		define('CONFIRM_NEW_PW_TEXT',__('Confirm New Password',DOMAIN));
-		define('EDIT_PROFILE_UPDATE_BUTTON',__('Update',DOMAIN));
-		define('GET_NEW_PW_TEXT',__('Get New Password',DOMAIN));
-		define('ABOUT_TEXT',__('About you',DOMAIN));
-		define('YR_WEBSITE_TEXT',__('Your Website',DOMAIN));
-		define('ABOUT_U_TEXT',__('Provide brief information about yourself',DOMAIN));
-		
-		/**--below are the main file which will work with registration -**/
-		include_once(TEMPL_REGISTRATION_FOLDER_PATH . 'registration_functions.php');		
-		include_once(TEMPL_REGISTRATION_FOLDER_PATH . 'login_box_widget.php');
-		include_once(TEMPL_REGISTRATION_FOLDER_PATH . 'shortcodes_registration.php');
+	{	
+		include_once(TEMPL_REGISTRATION_FOLDER_PATH . 'registration_functions.php');	
 	}
-	
-	add_action( 'after_setup_theme', 'theme_login_setup',11 );
-	add_action('login_form','sfc_register_add_login_button');
-	add_action('wp_head','tmpl_reg_js',12);
-	add_filter('templatic_general_settings_tab', 'registration_email_setting',13);
-	add_action('templatic_general_data','registration_email_setting_data',11);
-	add_action('templatic_general_data','legends_email_setting_data',15);
-	add_action('templatic_general_setting_data','templatic_general_setting_register_data',11);
-	
 }
+include_once(TEMPL_REGISTRATION_FOLDER_PATH . 'login_box_widget.php');
+include_once(TEMPL_REGISTRATION_FOLDER_PATH . 'shortcodes_registration.php');
 
-/*
-name:templ_add_subadmin_menu
-description: coading to add submenu under main menu--**/
-	
-function templ_add_subadmin_menu()
-{ 
-	$menu_title1 = __('Profile Fields Setup',ADMINDOMAIN);
-	$hook = add_submenu_page('templatic_system_menu', $menu_title1,$menu_title1, 'administrator', 'user_custom_fields', 'my_user_plugin_function');
-	add_action( "load-$hook", 'add_screen_options_user_custom_fields' ); /* CALL A FUNCTION TO ADD SCREEN OPTIONS */	
-}
+add_action( 'after_setup_theme', 'theme_login_setup',11 );
 
-/*
- * Function Name: add_screen_options_user_custom_fields
- * return: display the screen option in profile fields setip page
- */
-function add_screen_options_user_custom_fields()
-{
-	$option = 'per_page';
-	$args = array('label'   => 'User custom fields',
-			    'default' => 10,
-		         'option'  => 'user_custom_fields_per_page'
-			);
-	add_screen_option( $option, $args ); /* ADD SCREEN OPTION */
-}
 
 function theme_login_setup(){
 	add_filter('wp_nav_menu_items', 'filter_my_theme_nav_bars', 10, 2);
 }
-
+/* show login or register link under our menu */
 function filter_my_theme_nav_bars($items, $args) {
 	global $current_user;	
-	//login url
+	
 	$login_url=get_tevolution_login_permalink();	
-	//register url	
+	
 	$register_url=get_tevolution_register_permalink();
 	
+	$theme_locations = apply_filters('tmpl_logreg_links',array('primary','footer'));
+	
 	/*Primary Menu location */
-	/* Check the condition for theme menu location promart, footer andsecondory */
-	if($args->theme_location == 'primary' || $args->theme_location == 'footer' || $args->theme_location == 'secondory')
+	/* Check the condition for theme menu location prompt, footer and secondary */
+	if(in_array($args->theme_location,$theme_locations))
 	{
 		if($current_user->ID){
-			$loginlink = '<li class="home' . ((is_home())? ' ' : '') . '"><a href="' .wp_logout_url(home_url()). '">' . __('Log out',DOMAIN) . '</a></li>'; 
+			$loginlink = '<li class="tmpl-login' . ((is_home())? ' ' : '') . '"><a href="' .wp_logout_url(home_url()). '">' . __('Log out',DOMAIN) . '</a></li>'; 
 		}else{
-			$loginlink = '<li class="home' . (($_REQUEST['ptype']=='login')? ' current_page_item' : '') . '"><a href="' .$login_url . '">' . __('Login',DOMAIN) . '</a></li>'; 
+			$loginlink = '<li class="tmpl-login' . (($_REQUEST['ptype']=='login')? ' current_page_item' : '') . '" ><a data-reveal-id="tmpl_reg_login_container" href="javascript:void(0);" onClick="tmpl_login_frm();">' . __('Login',DOMAIN) . '</a></li>'; 
 		}
 		if($current_user->ID){
-			$reglink = '<li class="home' . ((is_home())? ' ' : '') . '"><a href="' . get_author_posts_url($current_user->ID) . '">' . $current_user->display_name . '</a></li>'; 
+			$reglink = '<li class="tmpl-login' . ((is_author())? ' current-menu-item ' : '') . '"><a href="' . get_author_posts_url($current_user->ID) . '">' . $current_user->display_name . '</a></li>'; 
 		}else{
 			$users_can_register = get_option('users_can_register');
 			if($users_can_register){				
-				$reglink = '<li class="home' . (($_REQUEST['ptype']=='register')? ' current_page_item' : '') . '"><a href="' .$register_url . '">' . __('Register',DOMAIN) . '</a></li>';
+				$reglink = '<li class="tmpl-login' . (($_REQUEST['ptype']=='register')? ' current_page_item' : '') . '"><a data-reveal-id="tmpl_reg_login_container" href="javascript:void(0);" onClick="tmpl_registretion_frm();">' . __('Register',DOMAIN) . '</a></li>';
+				
 			}
-		}
+		}		
 		$items = $items. $loginlink.$reglink ;
 	} 		
     return $items;
 }
 
 /*
-name : my_user_plugin_function
-description :Function to insert file for add/edit/delete options for custom fields BOF */
-function my_user_plugin_function(){
-	if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'addnew'){
-		include (TEMPL_REGISTRATION_FOLDER_PATH . "admin_custom_usermeta_edit.php");
-	}else{
-		include (TEMPL_REGISTRATION_FOLDER_PATH . "admin_custom_usermeta_list.php");
-	}
-}
-/**-- Function to insert file for add/edit/delete options for custom fields EOF --**/
-
-function sfc_register_add_login_button() {
-	if(isset($_REQUEST['ptype']) && $_REQUEST['ptype']!=''){		
-		echo '<p><fb:login-button v="2" registration-url="'.site_url('wp-login.php?action=register', 'login').'" scope="email,user_website" onlogin="window.location.reload();" /></p>';
-	}
-}
-
-function tmpl_reg_js(){
-	global $wp_query,$post;
-	// If a static page is set as the front page, $pagename will not be set. Retrieve it from the queried object	
-    if(!empty($post)):
-		$is_tevolution_submit_form = get_post_meta( $post->ID, 'is_tevolution_submit_form', TRUE );
-		else:
-		$is_tevolution_submit_form='';
-	endif;
-	/* include only for pages and registration page */
-	$login_page_id=get_option('tevolution_login');
-	$register_page_id=get_option('tevolution_register');
-	$profile_page_id=get_option('tevolution_profile');
-	
-	if(!empty($post) && @$post->ID == $login_page_id || @$post->ID == $register_page_id || @$post->ID == $profile_page_id || @$is_tevolution_submit_form==1){
-		include_once(TEMPL_REGISTRATION_FOLDER_PATH . 'registration_js.php');
-	}
-}
-	
-/*
- * Add Filter for create the general setting sub tab for email setting
- */	
-function registration_email_setting($tabs ) {			
-	$tabs['email']=__('Email Settings',ADMINDOMAIN);
-	return $tabs;
-}	
-/*
- * Create email setting data action
- */
-function registration_email_setting_data($column)
+	return user custom fields for register or profile page.
+*/
+function fetch_user_registration_fields($validate,$user_id='',$form_name='')
 {
-	$tmpdata = get_option('templatic_settings');		
-	switch($column)
-	{
-		case 'email':	
-			?>
-			<tr class="registration-email alternate">
-				<td><label class="form-textfield-label"><?php echo __('After registration email',ADMINDOMAIN); ?></label></td>
-			   
-				<td>
-					<a href="javascript:void(0);" onclick="open_quick_edit('registration-email','edit-registration-email')"><?php echo __("Quick Edit",ADMINDOMAIN);?></a> 
-					| 
-					<a href="javascript:void(0);" onclick="reset_to_default('registration_success_email_subject','registration_success_email_content','registration-email');"><?php echo __("Reset",ADMINDOMAIN);?></a>
-					<span class="spinner" style="margin:2px 18px 0;"></span>
-					<span class="qucik_reset"><?php echo __("Data reset",DOMAIN);?></span>
-				</td>
-			</tr>
-			<tr class="edit-registration-email alternate" style="display:none">
-				<td width="100%" colspan="3">
-					<h4 class="edit-sub-title">Quick Edit</h4>
-					<table width="98%" align="left" class="tab-sub-table">
-						<tr>
-							<td style="line-height:10px">
-								<label class="form-textfield-label sub-title"><?php echo __('Subject',ADMINDOMAIN); ?></label>
-							</td>
-							<td width="90%" style="line-height:10px">
-								<input type="text" name="registration_success_email_subject" id="registration_success_email_subject" value="<?php if(isset($tmpdata['registration_success_email_subject'])){echo $tmpdata['registration_success_email_subject'];}else{echo 'Thank you for registering!'; } ?>"/>
-							</td>
-						</tr>
-						<tr>
-							<td style="line-height:10px">
-								<label class="form-textfield-label sub-title"><?php echo __('Message',ADMINDOMAIN); ?></label>
-							</td>
-							<td width="90%" style="line-height:10px">
-								<?php
-								$settings =   array(
-												'wpautop' => false, // use wpautop?
-												'media_buttons' => false, // show insert/upload button(s)
-												'textarea_name' => 'registration_success_email_content', // set the textarea name to something different, square brackets [] can be used here
-												'textarea_rows' => '7', // rows="..."
-												'tabindex' => '',
-												'editor_css' => '<style>.wp-editor-wrap{width:640px;margin-left:0px;}</style>', // intended for extra styles for both visual and HTML editors buttons, needs to include the <style> tags, can use "scoped".
-												'editor_class' => '', // add extra class(es) to the editor textarea
-												'teeny' => true, // output the minimal editor config used in Press This
-												'dfw' => true, // replace the default fullscreen with DFW (supported on the front-end in WordPress 3.4)
-												'tinymce' => true, // load TinyMCE, can be used to pass settings directly to TinyMCE using an array()
-												'quicktags' => true // load Quicktags, can be used to pass settings directly to Quicktags using an array()
-											);	
-								if($tmpdata['registration_success_email_content'] != ""){
-									$content = stripslashes($tmpdata['registration_success_email_content']);
-								}else{
-									$content = '<p>Dear [#user_name#],</p><p>Thank you for registering and welcome to [#site_name#]. You can proceed with logging in to your account.</p><p>Login here: [#site_login_url_link#]</p><p>Username: [#user_login#]</p><p>Password: [#user_password#]</p><p>Feel free to change the password after you login for the first time.</p><p>&nbsp;</p><p>Thanks again for signing up at [#site_name#]</p>';
-								}
-								wp_editor( $content, 'registration_success_email_content', $settings);
-							?>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<div class="buttons">
-									<div class="inline_update">
-									<a class="button-primary save  alignleft quick_save" href="javascript:void(0);" accesskey="s"><?php echo __("Save Changes",ADMINDOMAIN);?></a>
-									<a class="button-secondary cancel alignright " href="javascript:void(0);" onclick="open_quick_edit('edit-registration-email','registration-email')" accesskey="c"><?php echo __("Cancel",ADMINDOMAIN);?></a>
-									<span class="save_error" style="display:none"></span><span class="spinner"></span>
-									</div>
-								</div>	
-							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-   <?php
-		break;		
-	}
-}
-/*
- * Create email setting data action
- */	
-function legends_email_setting_data($column)
-{
-	$tmpdata = get_option('templatic_settings');		
-	switch($column)
-	{
-		case 'email':	
-			echo '<div>'.templatic_legend_notification().'</div>';
-			break;
-	}
-}
-
-
-
-
-function templatic_general_setting_register_data($column){
-	
-	$tmpdata = get_option('templatic_settings');
-	$logion_id=get_option('tevolution_login');
-	if(@$logion_id!=@$tmpdata['tevolution_login'])
-	{
-		update_option('tevolution_login',$tmpdata['tevolution_login']);	
-	}
-	//register page
-	$register_id=get_option('tevolution_register');
-	if(@$register_id!=@$tmpdata['tevolution_register'])
-	{
-		update_option('tevolution_register',$tmpdata['tevolution_register']);	
-	}
-	//profile page
-	$profile_id=get_option('tevolution_profile');
-	if(@$profile_id!=@$tmpdata['tevolution_profile'])
-	{
-		update_option('tevolution_profile',$tmpdata['tevolution_profile']);	
-	}
-	?>
-		<tr id="registration_page_setup">
-			<th colspan="2"><div class="tevo_sub_title"><?php echo __('Registration options',ADMINDOMAIN);?></div> <p class="tevolution_desc"><?php echo sprintf(__('Match your Login, Register and Profile pages below to ensure registration works correctly. These pages were created automatically when Tevolution was activated. If you need to create them manually please open the %s',ADMINDOMAIN),'<a href="http://templatic.com/docs/tevolution-guide/#registration" target= "_blank"> documentation guide</a>')?></p></th>
-		</tr>
-		 <tr>
-			<th><label><?php echo __('Allow user to auto login after registration',ADMINDOMAIN);  ?></label></th>
-			<td>
-			   <div class="input_wrap"><label for="allow_autologin_after_reg"><input type="checkbox" id="allow_autologin_after_reg" name="allow_autologin_after_reg" value="1" <?php if(isset($tmpdata['allow_autologin_after_reg']) && $tmpdata['allow_autologin_after_reg']==1){?>checked="checked"<?php }?> />&nbsp;<?php echo __('Enable',ADMINDOMAIN);?></label></div>
-				<p class="description"><?php echo __('Enabling this option will automatically show the user status as logged in after registering on your site.',ADMINDOMAIN); ?></p>
-			</td>
-		 </tr>  
-		 <tr>
-			<th><label><?php echo __('Login Page',ADMINDOMAIN);?></label></th>
-			<td>
-				<?php $pages = get_pages();?>
-				<select id="tevolution_login" name="tevolution_login">
-					<?php
-					if($pages) :
-					$select_page=$tmpdata['tevolution_login'];
-						foreach ( $pages as $page ) {
-							$selected=($select_page==$page->ID)?'selected="selected"':'';
-							$option = '<option value="' . $page->ID . '" ' . $selected . '>';
-							$option .= $page->post_title;
-							$option .= '</option>';
-							echo $option;
-						}
-					else :
-						echo '<option>' . __('No pages found', ADMINDOMAIN) . '</option>';
-					endif;
-					?>
-				</select> 
-				<div style="display:none" id="tevolution_login_page" class="description act_success  tevolution_highlight"><?php echo __('Copy this shortcode and paste it in the editor of your selected page to make it work correctly.<br> Shortcode - [tevolution_login] (including square braces)', ADMINDOMAIN); ?></div>
-			</td>
-		 </tr>
-		  <tr>
-			<th><label><?php echo __('Register Page',ADMINDOMAIN);?></label></th>
-			<td>
-				<?php $pages = get_pages();?>
-				<select id="tevolution_register" name="tevolution_register">
-					<?php
-					if($pages) :
-					$select_page=$tmpdata['tevolution_register'];
-						foreach ( $pages as $page ) {
-							$selected=($select_page==$page->ID)?'selected="selected"':'';
-							$option = '<option value="' . $page->ID . '" ' . $selected . '>';
-							$option .= $page->post_title;
-							$option .= '</option>';
-							echo $option;
-						}
-					else :
-						echo '<option>' . __('No pages found', ADMINDOMAIN) . '</option>';
-					endif;
-					?>
-				</select> <div style="display:none" id="tevolution_register_page" class="description act_success  tevolution_highlight"><?php echo __('Copy this shortcode and paste it in the editor of your selected page to make it work correctly.<br> Shortcode - [tevolution_register] (including square braces)',ADMINDOMAIN); ?></div>
-			</td>
-		 </tr>
-		  <tr>
-			<th><label><?php echo __('Profile Page',ADMINDOMAIN);?></label></th>
-			<td>
-				<?php $pages = get_pages();?>
-				<select id="tevolution_profile" name="tevolution_profile">
-					<?php
-					if($pages) :
-					$select_page=$tmpdata['tevolution_profile'];
-						foreach ( $pages as $page ) {
-							$selected=($select_page==$page->ID)?'selected="selected"':'';
-							$option = '<option value="' . $page->ID . '" ' . $selected . '>';
-							$option .= $page->post_title;
-							$option .= '</option>';
-							echo $option;
-						}
-					else :
-						echo '<option>' . __('No pages found', ADMINDOMAIN) . '</option>';
-					endif;
-					?>
-				</select> <div style="display:none" id="tevolution_profile_page" class="description act_success tevolution_highlight"><?php echo __('Copy this shortcode and paste it in the editor of your selected page to make it work correctly.<br> Shortcode - [tevolution_profile] (including square braces)',ADMINDOMAIN); ?></div>
-			</td>
-		 </tr>
-	<?php			
-}
-	
-
-/*
- * Function Name: register_module_insert_page
- * Return: create login. register and profile shortcode page
- */
-
-function register_module_insert_page()
-{ 
-	global $wpdb;
-	/*Tevolution login page */
-	$templatic_settings=get_option('templatic_settings');
-	
-	$login_id = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = 'login'" );		
-	if($login_id=='')
-	{	
-		$login_data = array(
-		'post_status' 		=> 'publish',
-		'post_type' 		=> 'page',
-		'post_author' 		=> 1,
-		'post_name' 		=> 'login',
-		'post_title' 		=> 'Login',
-		'post_content' 		=> '[tevolution_login][tevolution_register]',
-		'post_parent' 		=> 0,
-		'comment_status' 	=> 'closed'
-		);
-		$login_id = wp_insert_post( $login_data );
-		update_post_meta($login_id,'_wp_page_template','default');
+	global $form_fields_usermeta,$user_validation_info,$current_user;
+	/* Fetch the user custom fields */
+	$form_fields_usermeta=fetch_user_custom_fields();
+	$user_validation_info = array();	
+	if($form_fields_usermeta){
+	foreach($form_fields_usermeta as $key=>$val)
+	{ 
+		if(($form_name == 'popup_register' || $form_name == 'register_login_widget' ) && ($key != 'user_email' && $key != 'user_fname' ))
+		{
+			continue;
+		}
+		if($validate == 'register')
+			$validate_form = $val['on_registration'];
+		else
+			$validate_form = $val['on_profile'];
+			
+		if($validate_form){
+        $str = ''; $fval = '';
+        $field_val = $key.'_val';
 		
-		$tmpdata['tevolution_login'] = $login_id;
-		$templatic_settings=array_merge($templatic_settings,$tmpdata);			   
-		update_option('templatic_settings',$templatic_settings);
-		update_option('tevolution_login',$login_id);
-	
+        if(isset($field_val) && $field_val){ $fval = $field_val; }else{ $fval = $val['default']; }
+      
+        if($val['is_require'])
+        {
+            $user_validation_info[] = array(
+                                       'name'	=> $key,
+                                       'espan'	=> $key.'_error',
+                                       'type'	=> $val['type'],
+                                       'text'	=> $val['label'],
+                                       );
+        }
+		
+		if($key)
+		{
+			if($user_id != '' )
+			{
+				$fval = get_user_meta($user_id,$key,true);
+			}
+			else
+			{
+				$fval = get_user_meta($current_user->ID,$key,true);
+			}
+		}
+		
+        if($val['type']=='text')
+        {
+			if(!(is_templ_wp_admin() && ( $key == 'user_email' || $key == 'user_fname' || $key == 'display_name'))) /* CONDITION FOR EMAIL AND USER NAME FIELD */
+			{
+				if($key=='user_email')
+				{
+					$fval=($fval=='')?$current_user->user_email: $fval;
+					
+				}
+				
+				if($key=='user_fname')
+				{
+					if($validate != 'register')
+					{					
+						$readonly = 'readonly="readonly"';
+						$background_color = 'style="background-color:#EEEEEE"';
+					}
+					$fval=($fval=='')?$current_user->user_login: $fval;
+				}
+				if($key=='display_name')
+				{
+					$fval=($fval=='')?$current_user->display_name: $fval;
+					
+				}
+				$str = '<input '.@$readonly.' name="'.$key.'" type="text" '.$val['extra'].' '.@$background_color.' value="'.$fval.'">';
+				$readonly = '';
+				$background_color = '';
+				if($val['is_require'])
+				{
+					$str .= '<span id="'.$key.'_error"></span>';
+				}
+			}
+        }elseif($val['type']=='hidden')
+        {
+            $str = '<input name="'.$key.'" type="hidden" '.$val['extra'].' value="'.$fval.'">';	
+            if($val['is_require'])
+            {
+                $str .= '<span id="'.$key.'_error"></span>';	
+            }
+        }else
+        if($val['type']=='textarea')
+        {
+            $str = '<textarea name="'.$key.'" '.$val['extra'].'>'.$fval.'</textarea>';	
+            if($val['is_require'])
+            {
+                $str .= '<span id="'.$key.'_error"></span>';	
+            }
+        }else
+        if($val['type']=='file')
+        {
+            $str = '<input name="'.$key.'" type="file" '.$val['extra'].' value="'.$fval.'">';
+            if($val['is_require'])
+            {
+                $str .= '<span id="'.$key.'_error"></span>';	
+            }
+        }else
+        if($val['type']=='include')
+        {
+            $str = @include_once($val['default']);
+        }else
+        if($val['type']=='head')
+        {
+            $str = '';
+        }else
+        if($val['type']=='date')
+        {	
+			wp_enqueue_style('jQuery_datepicker_css',TEMPL_PLUGIN_URL.'css/datepicker/jquery.ui.all.min.css');	
+			?>
+			<script type="text/javascript">	
+				jQuery(function(){
+				var pickerOpts = {
+						showOn: "both",
+						dateFormat: 'yy-mm-dd',
+						monthNames: objectL11tmpl.monthNames,
+						monthNamesShort: objectL11tmpl.monthNamesShort,
+						dayNames: objectL11tmpl.dayNames,
+						dayNamesShort: objectL11tmpl.dayNamesShort,
+						dayNamesMin: objectL11tmpl.dayNamesMin,
+						isRTL: objectL11tmpl.isRTL,
+						/*buttonImage: "<?php echo TEMPL_PLUGIN_URL; ?>css/datepicker/images/cal.png",*/
+						buttonText: '<i class="fa fa-calendar"></i>',
+					};	
+					jQuery("#<?php echo $key;?>").datepicker(pickerOpts);					
+				});
+			</script>
+			<?php
+			$str = '<input name="'.$key.'" id="'.$key.'" type="text" '.$val['extra'].' value="'.$fval.'">';			
+			if($val['is_require'])
+			{
+			$str .= '<span id="'.$key.'_error"></span>';	
+			}
+
+        }else
+        if($val['type']=='catselect')
+        {
+            $term = get_term( (int)$fval, CUSTOM_CATEGORY_TYPE1);
+            $str = '<select name="'.$key.'" '.$val['extra'].'>';
+            $args = array('taxonomy' => CUSTOM_CATEGORY_TYPE1);
+            $all_categories = get_categories($args);
+            foreach($all_categories as $key => $cat) 
+            {
+            
+                $seled='';
+                if($term->name==$cat->name){ $seled='selected="selected"';}
+                $str .= '<option value="'.$cat->name.'" '.$seled.'>'.$cat->name.'</option>';	
+            }
+            $str .= '</select>';
+            if($val['is_require'])
+            {
+                $str .= '<span id="'.$key.'_error"></span>';	
+            }
+        }else
+        if($val['type']=='catdropdown')
+        {
+            $cat_args = array('name' => 'post_category', 'id' => 'post_category_0', 'selected' => $fval, 'class' => 'textfield', 'orderby' => 'name', 'echo' => '0', 'hierarchical' => 1, 'taxonomy'=>CUSTOM_CATEGORY_TYPE1);
+            $cat_args['show_option_none'] = __('Select Category',DOMAIN);
+            $str .=wp_dropdown_categories(apply_filters('widget_categories_dropdown_args', $cat_args));
+            if($val['is_require'])
+            {
+                $str .= '<span id="'.$key.'_error"></span>';	
+            }
+        }else
+        if($val['type']=='select')
+        {
+			 $option_values_arr = explode(',', $val['options']);
+			 $option_titles_arr = explode(',',$val['option_titles']);
+			 if (function_exists('icl_register_string')) {		
+				icl_register_string(DOMAIN, $val['option_titles'].'_'.$key,$val['option_titles']);	
+				$option_titles_arr = icl_t(DOMAIN, $val['option_titles'].'_'.$key,$val['option_titles']);
+		   }
+            $str = '<select name="'.$key.'" '.$val['extra'].'>';
+			 $str .= '<option value="" >'.PLEASE_SELECT.'</option>';	
+            for($i=0;$i<count($option_values_arr);$i++)
+            {
+                $seled='';
+                
+                if($fval==$option_values_arr[$i]){ $seled='selected="selected"';}
+                $str .= '<option value="'.$option_values_arr[$i].'" '.$seled.'>'.$option_titles_arr[$i].'</option>';	
+            }
+            $str .= '</select>';
+            if($val['is_require'])
+            {
+                $str .= '<span id="'.$key.'_error"></span>';	
+            }
+        }else
+        if($val['type']=='catcheckbox')
+        {
+            $fval_arr = explode(',',$fval);
+            $str .= $val['tag_before'].get_categories_checkboxes_form(CUSTOM_CATEGORY_TYPE1,$fval_arr).$oval.$val['tag_after'];
+            if($val['is_require'])
+            {
+                $str .= '<span id="'.$key.'_error"></span>';	
+            }
+        }else
+        if($val['type']=='catradio')
+        {
+            $args = array('taxonomy' => CUSTOM_CATEGORY_TYPE1);
+            $all_categories = get_categories($args);
+            foreach($all_categories as $key1 => $cat) 
+            {
+                
+                
+                    $seled='';
+                    if($fval==$cat->term_id){ $seled='checked="checked"';}
+                    $str .= $val['tag_before'].'<input name="'.$key.'" type="radio" '.$val['extra'].' value="'.$cat->name.'" '.$seled.'> '.$cat->name.$val['tag_after'].'</div>';
+                
+            }
+            if($val['is_require'])
+            {
+                $str .= '<span id="'.$key.'_error"></span>';	
+            }
+        }else
+        if($val['type']=='checkbox')
+        {
+            if($fval){ $seled='checked="checked"';}
+            $str = '<input name="'.$key.'" id="'.$key.'" type="checkbox" '.$val['extra'].' value="1" '.$seled.'>';
+            if($val['is_require'])
+            {
+                $str .= '<span id="'.$key.'_error"></span>';	
+            }
+        }else
+        if($val['type']=='upload')
+        {
+			$wp_upload_dir = wp_upload_dir();
+			$dirinfo = wp_upload_dir();
+			$path = $dirinfo['path'];
+			$url = $dirinfo['url'];
+			$extention = tev_findexts($fval);
+			$img_type = array('png','gif','jpg','jpeg','ico');
+			$str = '<input name="'.$key.'" type="hidden" '.@$val['extra'].' '.@$uclass.' value="'.$fval.'" > ';
+			$str .='<div class="upload_box">
+						<div class="hide_drag_option_ie">
+							<p>'. __('You can drag &amp; drop images from your computer to this box.',DOMAIN).'</p>
+							<p>'. __('OR',DOMAIN).'</p>
+						</div>
+						<div class="tmpl_single_uploader">
+		                	<div id="fancy-contact-form">
+							<div class="dz-default dz-message" ><span  id="fancy-'. $key.'"><span><i class="fa fa-folder"></i>'.__('Upload Image',DOMAIN).'</span></span></div>
+							<span  id="image-'.$key.'">';
+								
+								if(in_array($extention,$img_type))
+									$str .='<br/><img id="img_'.$key.'" src="'.$fval.'" border="0" class="company_logo" height="80" width="80" /><span class="ajax-file-upload-red" onclick="delete_image(\''.basename($fval).'\')">'.__('Delete',DOMAIN).'</span>';
+							$str .='</span>
+							</div></div>';
+							?>
+						<script type="text/javascript" async>
+							var image_thumb_src = '<?php echo  $wp_upload_dir['url'];?>/';
+							jQuery(document).ready(function(){
+								var settings = {
+									url: '<?php echo TEMPL_PLUGIN_URL; ?>tmplconnector/monetize/templatic-custom_fields/single-upload.php',
+									dragDrop:true,
+									fileName: "<?php echo $key; ?>",
+									allowedTypes:"jpeg,jpg,png,gif,doc,pdf,zip",	
+									returnType:"json",
+									multiple:false,
+									showDone:false,
+									showAbort:false,
+									showProgress:true,
+									onSuccess:function(files,data,xhr)
+									{
+										jQuery('#image-<?php echo $key; ?>').html('');
+										if(jQuery('#img_<?php echo $key; ?>').length > 0)
+										{
+											jQuery('#img_<?php echo $key; ?>').remove();
+										}
+									    var img = jQuery('<img height="100px" width="100px" id="img_<?php echo $key; ?>">'); /*Equivalent: $(document.createElement('img'))*/
+										data = data+'';
+										var id_name = data.split('.'); 
+										var img_name = '<?php echo bloginfo('template_url')."/images/tmp/"; ?>'+id_name[0]+"."+id_name[1];
+										img.attr('src', img_name);
+										img.appendTo('#image-<?php echo $key; ?>');
+										jQuery('#image-<?php echo $key; ?>').css('display','');
+										jQuery('#<?php echo $key; ?>').val(image_thumb_src+data);
+										jQuery('.ajax-file-upload-filename').css('display','none');
+										jQuery('.ajax-file-upload-red').css('display','none');
+										jQuery('.ajax-file-upload-progress').css('display','none');
+									},
+									showDelete:true,
+									deleteCallback: function(data,pd)
+									{
+										for(var i=0;i<data.length;i++)
+										{
+											jQuery.post("<?php echo TEMPL_PLUGIN_URL; ?>tmplconnector/monetize/templatic-custom_fields/delete_image.php",{op:"delete",name:data[i]},
+											function(resp, textStatus, jqXHR)
+											{
+												/*Show Message  */
+												jQuery('#image-<?php echo $key; ?>').html("<div>File Deleted</div>");
+												jQuery('#<?php echo $key; ?>').val('');
+											});
+										 }
+										pd.statusbar.hide(); /*You choice to hide/not.*/
+									}
+								}
+								var uploadObj = jQuery("#fancy-"+'<?php echo $key; ?>').uploadFile(settings);
+							});
+							function delete_image(name)
+							{
+								jQuery.ajax({
+									 url: '<?php echo TEMPL_PLUGIN_URL; ?>tmplconnector/monetize/templatic-custom_fields/delete_image.php?op=delete&name='+name,
+									 type: 'POST',
+									 success:function(result){			 
+										jQuery('#image-<?php echo $key; ?>').html("<div>File Deleted</div>");
+										jQuery('#<?php echo $key; ?>').val('');			
+									}				 
+								 });
+							}
+						</script>
+						<?php
+			if($fval!='' && (in_array($extention,$img_type))){
+				$str .='
+				<input type="hidden" name="prev_upload" value="'.$fval.'" />
+				';	
+			}
+			if($val['is_require'])
+			{
+				$str .='<span id="'.$key.'_error"></span>';	
+			}
+			
+			$str .= '</div>';
+			
+        }
+        else
+        if($val['type']=='radio')
+        {
+            $options = $val['options'];
+		  $option_titles = $val['option_titles'];	
+		  if (function_exists('icl_register_string')) {		
+				icl_register_string(DOMAIN, $val['option_titles'].'_'.$key,$val['option_titles']);	
+				$option_titles = icl_t(DOMAIN, $val['option_titles'].'_'.$key,$val['option_titles']);
+		   }
+            if($options)
+            {
+			  $chkcounter = 0;
+                $option_values_arr = explode(',',$options);
+			 $option_titles_arr = explode(',',$option_titles);
+			 $str='<div class="form_cat_left hr_input_radio">';
+                for($i=0;$i<count($option_values_arr);$i++)
+                {
+                    $seled='';
+				$chkcounter++;
+                    if($fval==$option_values_arr[$i]){$seled='checked="checked"';}
+                    $str .= '<div class="form_cat">'.$val['tag_before'].'<label for="'.$key.'_'.$chkcounter.'"><input id="'.$key.'_'.$chkcounter.'" name="'.$key.'" type="radio" '.$val['extra'].'  value="'.$option_values_arr[$i].'" '.$seled.'> '.$option_titles_arr[$i].$val['tag_after']."</label>".'</div>';
+                }
+                if($val['is_require'])
+                {
+                    $str .= '<span id="'.$key.'_error"></span>';	
+                }
+			$str.="</div>";
+            }
+        }else
+        if($val['type']=='multicheckbox')
+        {
+            $options = $val['options'];
+		  $option_titles = $val['option_titles'];		  
+		    if (function_exists('icl_register_string')) {		
+				icl_register_string(DOMAIN, $val['option_titles'].'_'.$key,$val['option_titles']);	
+				$option_titles = icl_t(DOMAIN, $val['option_titles'].'_'.$key,$val['option_titles']);
+		   }
+            if($options)
+            {  
+				$chkcounter = 0;
+                $option_values_arr = explode(',',$options);
+			 $option_titles_arr = explode(',',$option_titles);
+			 $str='<div class="form_cat_left hr_input_multicheckbox">';
+                for($i=0;$i<count($option_values_arr);$i++)
+                {
+                    $chkcounter++;
+                    $seled='';
+					if($fval)
+					{
+				   		if(in_array($option_values_arr[$i],$fval)){ $seled='checked="checked"';}
+					}
+                    $str .= $val['tag_before'].'<label for="'.$key.'_'.$chkcounter.'"><input name="'.$key.'[]"  id="'.$key.'_'.$chkcounter.'" type="checkbox" '.$val['extra'].' value="'.$option_values_arr[$i].'" '.$seled.'> '.$option_titles_arr[$i]."</label>".$val['tag_after'];
+                }
+                if($val['is_require'])
+                {
+                    $str .= '<span id="'.$key.'_error"></span>';	
+                }
+			 $str.="</div>";
+            }
+        }
+        else
+        if($val['type']=='packageradio')
+        {
+            $options = $val['options'];
+            foreach($options as $okey=>$oval)
+            {
+                $seled='';
+                if($fval==$okey){$seled='checked="checked"';}
+                $str .= $val['tag_before'].'<input name="'.$key.'" type="radio" '.$val['extra'].' value="'.$okey.'" '.$seled.'> '.$oval.$val['tag_after'];	
+            }
+            if($val['is_require'])
+            {
+                $str .= '<span id="'.$key.'_error"></span>';	
+            }
+        }else
+        if($val['type']=='geo_map')
+        {
+            do_action('templ_submit_form_googlemap');	
+        }else
+        if($val['type']=='image_uploader')
+        {
+            do_action('templ_submit_form_image_uploader');	
+        }
+	   
+	   if (function_exists('icl_register_string')) {		
+			icl_register_string(DOMAIN, $val['type'].'_'.$key,$val['label']);	
+			$val['label'] = icl_t(DOMAIN, $val['type'].'_'.$key,$val['label']);
+	   }
+        if($val['is_require'] && !is_admin())
+        {
+            $label = '<label>'.$val['label'].' <span class="indicates">*</span> </label>';
+        }
+		elseif($val['is_require'] && is_admin())
+        {
+           $label = '<label> <span class="indicates">*</span> </label>';
+        }
+		elseif(is_admin())
+        {
+            $label = '';
+        }elseif($val['type']=='head'){
+		  $label = '<h3>'.$val['label'].'</h3>'; 
+	   }else
+        {
+            $label = '<label>'.$val['label'].'</label>';
+        }
+		if(!(is_templ_wp_admin() && ( $key == 'user_email' || $key == 'user_fname' || $key == 'description'))) /* CONDITION FOR EMAIL AND USER NAME FIELD */
+		{			
+			if($val['type']=='texteditor')
+			{
+				echo $val['outer_st'].$label.$val['tag_st'];
+				 echo $val['tag_before'].$val['tag_after'];
+					$settings =   array(
+						'wpautop' => false,
+						'media_buttons' => $media_pro,
+						'textarea_name' => $key,
+						'textarea_rows' => apply_filters('tmpl_wp_editor_rows',get_option('default_post_edit_rows',6)), /* rows="..."*/
+						'tabindex' => '',
+						'editor_css' => '<style>.wp-editor-wrap{width:640px;margin-left:0px;}</style>',
+						'editor_class' => '',
+						'toolbar1'=> 'bold,italic,underline,bullist,numlist,link,unlink,forecolor,undo,redo',
+						'editor_height' => '150',
+						'teeny' => false,
+						'dfw' => false,
+						'tinymce' => true,
+						'quicktags' => false
+					);			
+					if(isset($fval) && $fval != '') 
+					{  $content=$fval; }
+					else{$content= $fval; } 				
+					wp_editor( $content, $key, $settings);				
+			
+					if($val['is_require'])
+					{
+						$str .= '<span id="'.$key.'_error"></span>';	
+					}
+				echo $str.$val['tag_end'].$val['outer_end'];
+			}else{	
+				if(is_admin())
+					echo $val['outer_st'].$val['label'].$val['tag_st'].$str.$val['tag_end'].$val['outer_end'];
+				else
+					echo $val['outer_st'].$label.$val['tag_st'].$str.$val['tag_end'].$val['outer_end'];
+			}
+        }
+		}
 	}
-	/*Tevolution Register Page */
-	$register_id = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = 'register'" );
-	if($register_id=='')
-	{	
-		$register_data = array(
-		'post_status' 		=> 'publish',
-		'post_type' 		=> 'page',
-		'post_author' 		=> 1,
-		'post_name' 		=> 'register',
-		'post_title' 		=> 'Register',
-		'post_content' 		=> '[tevolution_register]',
-		'post_parent' 		=> 0,
-		'comment_status' 	=> 'closed'
-		);
-		$register_id = wp_insert_post( $register_data );
-		update_post_meta($register_id,'_wp_page_template','default');
-		$tmpdata['tevolution_register'] = $register_id;
-		$templatic_settings=array_merge($templatic_settings,$tmpdata);			   
-		update_option('templatic_settings',$templatic_settings);
-		update_option('tevolution_register',$register_id);
-	}
-	/*Tevolution Register Page */
-	$profile_id = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = 'profile'" );
-	if($profile_id=='')
-	{	
-		$profile_data = array(
-		'post_status' 		=> 'publish',
-		'post_type' 		=> 'page',
-		'post_author' 		=> 1,
-		'post_name' 		=> 'profile',
-		'post_title' 		=> 'Profile',
-		'post_content' 		=> '[tevolution_profile]',
-		'post_parent' 		=> 0,
-		'comment_status' 	=> 'closed'
-		);
-		$profile_id = wp_insert_post( $profile_data );
-		update_post_meta($profile_id,'_wp_page_template','default');
-		$tmpdata['tevolution_profile'] = $profile_id;
-		$templatic_settings=array_merge($templatic_settings,$tmpdata);
-		update_option('templatic_settings',$templatic_settings);
-		update_option('tevolution_profile',$profile_id);
 	}
 }
-?>
+/*
+	get the login page URL
+*/
+function get_tevolution_login_permalink(){
+	
+	$login_page_id=get_option('tevolution_login');
+	if(is_plugin_active('sitepress-multilingual-cms/sitepress.php') && function_exists('icl_object_id')){
+		$login_page_id = icl_object_id( $login_page_id, 'page', false, ICL_LANGUAGE_CODE );
+	 }
+	return get_permalink($login_page_id);
+}
+
+/*
+	get the registration page uRL
+*/
+function get_tevolution_register_permalink(){
+	
+	$register_page_id=get_option('tevolution_register');
+	if(is_plugin_active('sitepress-multilingual-cms/sitepress.php') && function_exists('icl_object_id')){									
+		$register_page_id = icl_object_id( $register_page_id, 'page', false, ICL_LANGUAGE_CODE );
+	 }
+	 if($register_page_id !='')
+		return get_permalink($register_page_id);
+}
+/*
+	get the profile page URL
+ */
+function get_tevolution_profile_permalink(){
+	
+	$profile_page_id=get_option('tevolution_profile');
+	if(is_plugin_active('sitepress-multilingual-cms/sitepress.php') && function_exists('icl_object_id')){
+		$profile_page_id = icl_object_id( $profile_page_id, 'page', false, ICL_LANGUAGE_CODE );
+	 }
+	return get_permalink($profile_page_id);
+}
+
+/* verification of user name and email on registration page */
+add_action('wp_ajax_tmpl_ajax_check_user_email','tmpl_ajax_check_user_email');
+add_action('wp_ajax_nopriv_tmpl_ajax_check_user_email','tmpl_ajax_check_user_email');
+
+/* verification of user name and email on registration page. Previous code was in - Tevolution\tmplconnector\monetize\templatic-registration\ajax_check_user_email.php */
+function tmpl_ajax_check_user_email()
+{
+	require(ABSPATH."wp-load.php");	
+	global $wpdb,$current_user;
+	if(isset($_REQUEST['user_email']) && $_REQUEST['user_email']!= '' )
+	{
+		$user_email = $_REQUEST['user_email'];
+		$cur_user_email = $current_user->user_email;	
+		if($cur_user_email != $user_email){
+			$count_email =  email_exists($user_email); /* check email id registered/valid */
+		}
+		echo $count_email.",email";exit;
+	}
+	elseif(isset($_REQUEST['user_fname']) && $_REQUEST['user_fname']!= '')
+	{
+		$user_fname = $_REQUEST['user_fname'];
+		$cur_user_login = $current_user->user_login;	
+		if($cur_user_login != $user_fname){
+			$user = get_user_by('login',$user_fname);
+		}
+		$count_fname = count($user->ID);
+		echo $count_fname.",fname";exit;
+	}
+}
+/* user cutom fields array*/
+function fetch_user_custom_fields(){	
+	global $wpdb,$custom_post_meta_db_table_name,$current_user,$form_fields_usermeta;
+	
+	$args = array(
+				'post_type'       => 'custom_user_field',
+				'post_status'     => 'publish',
+				'numberposts'	   => -1,
+				'meta_key'        => 'sort_order',
+				'orderby'         => 'meta_value_num',
+				'meta_value_num'  => 'sort_order',
+				'order'           => 'ASC'
+			);
+	$custom_metaboxes_fields = get_posts( $args );
+	if(isset($custom_metaboxes_fields) && $custom_metaboxes_fields != '')
+	{
+		$form_fields_usermeta_usermeta = array();
+		foreach($custom_metaboxes_fields as $custom_metaboxes)
+		{
+			$name            = $custom_metaboxes->post_name;
+			$site_title      = stripslashes($custom_metaboxes->post_title);
+			$type            = get_post_meta($custom_metaboxes->ID,'ctype',true);
+			$default_value   = get_post_meta($custom_metaboxes->ID,'default_value',true);
+			$is_require      = get_post_meta($custom_metaboxes->ID,'is_require',true);
+			$admin_desc      = $custom_metaboxes->post_content;
+			$option_values   = get_post_meta($custom_metaboxes->ID,'option_values',true);
+			$option_titles   = get_post_meta($custom_metaboxes->ID,'option_titles',true);
+			$on_registration = get_post_meta($custom_metaboxes->ID,'on_registration',true);
+			$on_profile      = get_post_meta($custom_metaboxes->ID,'on_profile',true);
+			$on_author_page  = get_post_meta($custom_metaboxes->ID,'on_author_page',true);
+			
+			if(is_admin())
+			{
+				$label      = '<tr><th>'.$site_title.'</th>';
+				$outer_st   = '<table class="form-table">';
+				$outer_end  = '</table>';
+				$tag_st     = '<td>';
+				$tag_end    = '<span class="message_note">'.$admin_desc.'</span></td></tr>';
+				$tag_before = '';
+				$tag_after  = '';
+			} else {
+				$label      = $site_title;
+				$outer_st   = '<div class="form_row clearfix">';
+				$outer_end  = '</div>';
+				$tag_st     = '';
+				$tag_end    = '<span class="message_note">'.$admin_desc.'</span>';
+				$tag_before = '';
+				$tag_after  = '';
+			}
+			
+			if($type == 'text')
+			{
+				$form_fields_usermeta[$name] = array("label"		        => $label,
+												"type"		   => 'text',
+												"default"	        => $default_value,
+												"extra"		   => 'id="'.$name.'" size="25" class="textfield"',
+												"is_require"	   => $is_require,
+												"outer_st" 	   => $outer_st,
+												"outer_end"	   => $outer_end,
+												"tag_st"	        => $tag_st,
+												"tag_end"	        => $tag_end,
+												"tag_before"      => $tag_before,
+												"tag_after"       => $tag_after,
+												"on_registration" => $on_registration,
+												"on_profile"	   => $on_profile,
+												"on_author_page"  => $on_author_page,
+											);
+			}
+			if($type == 'head')
+			{
+				$form_fields_usermeta[$name] = array(
+												"label"		   => $label,
+												"type"		   => 'head',
+												"default"	        => $default_value,
+												"extra"		   => 'id="'.$name.'" size="25" class="head"',
+												"is_require"	   => $is_require,
+												"outer_st"	   => $outer_st,
+												"outer_end"	   => $outer_end,
+												"tag_st"	        => $tag_st,
+												"tag_end"	        => $tag_end,
+												"tag_before"      => $tag_before,
+												"tag_after"       => $tag_after,
+												"on_registration" => $on_registration,
+												"on_profile"	   => $on_profile,
+												"on_author_page"  => $on_author_page,
+											);
+			}
+			elseif($type == 'checkbox')
+			{
+				$form_fields_usermeta[$name] = array(
+												"label"		   => $label,
+												"type"		   => 'checkbox',
+												"default"	        => $default_value,
+												"extra"		   => 'id="'.$name.'" size="25" class="checkbox"',
+												"is_require"	   => $is_require,
+												"outer_st"	   => $outer_st,
+												"outer_end"	   => $outer_end,
+												"tag_st"	        => $tag_st,
+												"tag_end"	        => $tag_end,
+												"tag_before"      => $tag_before,
+												"tag_after"       => $tag_after,
+												"on_registration" => $on_registration,
+												"on_profile"	   => $on_profile,
+												"on_author_page"  => $on_author_page,
+												);
+			}
+			elseif($type == 'textarea')
+			{
+				$form_fields_usermeta[$name] = array(
+												"label"		   => $label,
+												"type"		   => 'textarea',
+												"default"	        => $default_value,
+												"extra"		   => 'id="'.$name.'" size="25" class="textarea"',
+												"is_require"	   => $is_require,
+												"outer_st"	   => $outer_st,
+												"outer_end"	   => $outer_end,
+												"tag_st"	        => $tag_st,
+												"tag_end"	        => $tag_end,
+												"tag_before"      => $tag_before,
+												"tag_after"       => $tag_after,
+												"on_registration" => $on_registration,
+												"on_profile"	   => $on_profile,
+												"on_author_page"  => $on_author_page,
+												);
+			}
+			elseif($type == 'texteditor')
+			{
+				$form_fields_usermeta[$name] = array(
+												"label"		   => $label,
+												"type"		   => 'texteditor',
+												"default"	        => $default_value,
+												"extra"		   => 'id="'.$name.'" size="25" class="mce"',
+												"is_require"	   => $is_require,
+												"outer_st"	   => $outer_st,
+												"outer_end"	   => $outer_end,
+												"tag_st"	        => $tag_st,
+												"tag_end"	        => $tag_end,
+												"tag_before"      => '<div class="clear">',
+												"tag_after"       => '</div>',
+												"on_registration" => $on_registration,
+												"on_profile"	   => $on_profile,
+												"on_author_page"  => $on_author_page,
+												);
+			}
+			elseif($type == 'select')
+			{
+				$form_fields_usermeta[$name] = array(
+												"label"		   => $label,
+												"type"		   => 'select',
+												"default"	        => $default_value,
+												"extra"		   => 'id="'.$name.'"',
+												"options"	        => $option_values,
+												"option_titles"   => $option_titles,
+												"is_require"	   => $is_require,
+												"outer_st"	   => $outer_st,
+												"outer_end"	   => $outer_end,
+												"tag_st"	        => $tag_st,
+												"tag_end"	        => $tag_end,
+												"tag_before"      => $tag_before,
+												"tag_after"       => $tag_after,
+												"on_registration" => $on_registration,
+												"on_profile"	   => $on_profile,
+												"on_author_page"  => $on_author_page,
+												);
+			}
+			elseif($type == 'radio')
+			{
+				
+				$form_fields_usermeta[$name] = array(
+												"label"		   => $label,
+												"type"		   => 'radio',
+												"default"	        => $default_value,
+												"extra"		   => '',
+												"options"	        => $option_values,
+												"option_titles"   => $option_titles,
+												"is_require"	   => $is_require,
+												"outer_st"	   => $outer_st,
+												"outer_end"	   => $outer_end,
+												"tag_st"	        => $tag_st,
+												"tag_end"	        => $tag_end,
+												"tag_before"      => '',
+												"tag_after"       => '',
+												"on_registration" => $on_registration,
+												"on_profile"	   => $on_profile,
+												"on_author_page"  => $on_author_page,
+												);
+			}
+			elseif($type == 'multicheckbox')
+			{
+				
+				$form_fields_usermeta[$name] = array(
+												"label"		   => $label,
+												"type"		   => 'multicheckbox',
+												"default"	        => $default_value,
+												"extra"		   => '',
+												"options"	        =>  $option_values,
+												"option_titles"   => $option_titles,
+												"is_require"	   => $is_require,
+												"outer_st"	   => $outer_st,
+												"outer_end"	   => $outer_end,
+												"tag_st"	        => $tag_st,
+												"tag_end"	        => $tag_end,
+												"tag_before"      => '<div class="form_cat">',
+												"tag_after"       => '</div>',
+												"on_registration" => $on_registration,
+												"on_profile"	   => $on_profile,
+												"on_author_page"  => $on_author_page,
+												);
+			}
+			elseif($type == 'date')
+			{
+				$form_fields_usermeta[$name] = array(
+												"label"		   => $label,
+												"type"		   => 'date',
+												"default"	        => $default_value,
+												"extra"		   => 'id="'.$name.'" size="25" class="textfield_date"',
+												"is_require"	   => $is_require,
+												"outer_st" 	   => $outer_st,
+												"outer_end"	   => $outer_end,
+												"tag_st"	        => $tag_st,
+												"tag_end"	        => $tag_end,
+												"tag_before"      => $tag_before,
+												"tag_after"       => $tag_after,												
+												"on_registration" => $on_registration,
+												"on_profile"	   => $on_profile,
+												"on_author_page"  => $on_author_page,
+												);
+			}
+			elseif($type == 'upload')
+			{
+				$form_fields_usermeta[$name] = array(
+												"label"		   => $label,
+												"type"		   => 'upload',
+												"default"	        => $default_value,
+												"extra"		   => 'id="'.$name.'" class="textfield"',
+												"is_require"	   => $is_require,
+												"outer_st"	   => $outer_st,
+												"outer_end"	   => $outer_end,
+												"tag_st"	        => $tag_st,
+												"tag_end"	        => $tag_end,
+												"tag_before"      => $tag_before,
+												"tag_after"       => $tag_after,
+												"on_registration" => $on_registration,
+												"on_profile"	   => $on_profile,
+												"on_author_page"  => $on_author_page,
+												);
+			}
+			elseif($type == 'head')
+			{
+				$form_fields_usermeta[$name] = array(
+												"label"		   => $label,
+												"type"		   => 'head',
+												"outer_st"	   => '<h1 class="form_title">',
+												"outer_end"	   => '</h1>',
+												"on_registration" => $on_registration,
+												"on_profile"	   => $on_profile,
+												"on_author_page"  => $on_author_page
+												);
+			}
+			elseif($type == 'geo_map')
+			{
+				$form_fields_usermeta[$name] = array(
+												"label"		   => '',
+												"type"		   => 'geo_map',
+												"default"	        => $default_value,
+												"extra"		   => '',
+												"is_require"	   => $is_require,
+												"outer_st"	   => '',
+												"outer_end"	   => '',
+												"tag_st"	        => '',
+												"tag_end"	        => '',
+												"on_registration" => $on_registration,
+												"on_profile"	   => $on_profile,
+												"on_author_page"  => $on_author_page,
+												);		
+			}
+			elseif($type == 'image_uploader')
+			{
+				$form_fields_usermeta[$name] = array(
+												"label"		   => '',
+												"type"		   => 'image_uploader',
+												"default"	        => $default_value,
+												"extra"		   => '',
+												"is_require"	   => $is_require,
+												"outer_st"	   => '',
+												"outer_end"	   => '',
+												"tag_st"	        => '',
+												"tag_end"	        => '',
+												"tag_before"      => $tag_before,
+												"tag_after"       => $tag_after,
+												"on_registration" => $on_registration,
+												"on_profile"	   => $on_profile,
+												"on_author_page"  => $on_author_page,
+												);		
+			}
+			
+				
+		}
+		
+		return $form_fields_usermeta;
+	}/* finish if condition */
+	
+}
+/*
+	check user name while login.
+*/
+add_action( 'wp_ajax_nopriv_ajaxcheckusername', 'ajaxcheckusername' );
+function ajaxcheckusername(){
+	header('Content-Type: application/json; charset=utf-8');
+ 
+ 	$info = array();
+    $info['user_login'] = $_POST['username'];
+   
+   	$user = get_user_by('login',$_POST['username']);
+	
+	echo $count_fname = count($user->ID);
+    
+    die();
+}

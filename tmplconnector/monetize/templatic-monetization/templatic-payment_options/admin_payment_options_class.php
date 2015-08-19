@@ -1,5 +1,8 @@
 <?php
-/* to delete the payment options */
+/* 
+ * class to fetch the payment listing in backend
+ */
+global $pagenow;
 if(!class_exists('Tmpl_WP_List_Table')){
     include_once( WP_PLUGIN_DIR . '/Tevolution/templatic.php');
 }
@@ -91,7 +94,7 @@ class wp_list_payment_options extends Tmpl_WP_List_Table
 		foreach ($payment_options as $key => $row) {
 		     $display_order[$key]  = $row['display_order']; 
 			$status[$key]  = $row['status'];   			
-		    // of course, replace 0 with whatever is the date field's index
+		    /* of course, replace 0 with whatever is the date field's index*/
 		}
 		array_multisort($status, SORT_ASC,$display_order, SORT_ASC, $payment_options);
 		
@@ -103,7 +106,7 @@ class wp_list_payment_options extends Tmpl_WP_List_Table
 	function get_columns()
 	{
 		$columns = array('title'         => __('Payment Method',DOMAIN),			
-					 // 'display_order' => __('Display Order',DOMAIN),
+					 /* 'display_order' => __('Display Order',DOMAIN),*/
 					  'status'        => __('Status',DOMAIN),
 					  'action'        => __('Action',DOMAIN)
 					);
@@ -113,7 +116,7 @@ class wp_list_payment_options extends Tmpl_WP_List_Table
     
 	function prepare_items()
 	{
-		//$per_page = 3; /* NUMBER OF POSTS PER PAGE */
+		/*$per_page = 3; /* NUMBER OF POSTS PER PAGE */
 		$per_page = $this->get_items_per_page('package_per_page', 10);
 		$columns = $this->get_columns(); /* CALL FUNCTION TO GET THE COLUMNS */
 		$hidden = array();
@@ -130,8 +133,8 @@ class wp_list_payment_options extends Tmpl_WP_List_Table
 		/* REGISTER PAGINATION OPTIONS */
 		
 		$this->set_pagination_args( array(
-									'total_items' => $total_items,      //WE have to calculate the total number of items
-									'per_page'    => $per_page         //WE have to determine how many items to show on a page
+									'total_items' => $total_items,      /*WE have to calculate the total number of items*/
+									'per_page'    => $per_page         /*WE have to determine how many items to show on a page*/
 								) 
 							);
 	}
@@ -148,7 +151,7 @@ class wp_list_payment_options extends Tmpl_WP_List_Table
 			case 'action':
 			return $item[ $column_name ];
 			default:
-			return print_r( $item, true ) ; //Show the whole array for troubleshooting purposes
+			return print_r( $item, true ) ; /*Show the whole array for troubleshooting purposes*/
 		}
 	}
 	
@@ -166,7 +169,7 @@ class wp_list_payment_options extends Tmpl_WP_List_Table
 		if(strtolower($item['status']) == strtolower('yes'))
 		{
 			$actions = array(
-				'settings' => sprintf('<a href="?page=%s&action=%s&id=%s&tab=%s&payact=%s#option_payment">Settings</a>',$_REQUEST['page'],'settings',$item['ID'],'payment_options','setting')
+				'settings' => sprintf('<a href="?page=%s&action=%s&id=%s&tab=%s&payact=%s#option_payment">'.__('Settings',ADMINDOMAIN).'</a>',$_REQUEST['page'],'settings',$item['ID'],'payment_options','setting')
 				);
 		}else{
 			$actions = array();
@@ -180,4 +183,5 @@ class wp_list_payment_options extends Tmpl_WP_List_Table
 	{ 
 		return sprintf('<input type="checkbox" name="op_id[]" value="%s" />', $item['ID']);
 	}
-} ?>
+} 
+?>

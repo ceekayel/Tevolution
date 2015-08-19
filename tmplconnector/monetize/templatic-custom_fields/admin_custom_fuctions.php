@@ -104,7 +104,7 @@ if(isset($_POST['Verify']) && $_POST['Verify'] !=''){
 			 'cookies' => array()
 		);
 	$warnning_message='';
-	$response = wp_remote_get('http://templatic.com/members/tevolution_api/verification/index.php',$arg );
+	$response = wp_remote_get('http://templatic.net/api/verification/index.php',$arg );
 
 	if(!is_wp_error( $response ) ) {
 		update_option('templatic_licence_key',$response['body']);
@@ -115,7 +115,8 @@ if(isset($_POST['Verify']) && $_POST['Verify'] !=''){
 				add_action('tevolution_error_message','tevolution_error_message_error');
 			}else{ 
 				update_option('templatic_licence_key_',$_POST['licencekey']);
-				add_action('tevolution_error_message','tevolution_error_message_success');
+				add_action('tevolution_error_message','tevolution_key_is_verified');
+				add_action('tevolution_activation_success_message','tevolution_error_message_success');
 			}
 		}else{
 			update_option('templatic_licence_key_','');
@@ -161,7 +162,7 @@ function tevolution_error_message_error($message){
 			}
 		echo "</span>";
 	}
-	echo "<p>".__('The key can be obtained from Templatic',ADMINDOMAIN)." <a href='http://templatic.com/members/member'>".__('member area',ADMINDOMAIN)."</a></p>";
+	echo "<p>".__('If you need help with this, please ',ADMINDOMAIN). "<a href='http://templatic.com/contact/'>" .__('contact us',ADMINDOMAIN) . "</a> ". __('and we will help you.',ADMINDOMAIN). "</p>";
 }
 /* 
 * tevolution licence key success message 
@@ -186,20 +187,20 @@ function tevolution_licensekey_popupbox(){
 			<div id="boxes" class="licensekey_boxes">
 				<div style="top:0px; left: 551.5px; display: none;" id="dialog" class="window">
                     	<span class="close"><a href="#" class="close"><span class="dashicons dashicons-no close-btn"></span></a></span>
-					<h2><?php echo __('Licence key',ADMINDOMAIN); ?></h2>
+					<h2><?php echo __('Verify your product license',ADMINDOMAIN); ?></h2>
                          <form action="<?php /* echo site_url()."/wp-admin/admin.php?page=templatic_system_menu"; */ ?>" name="" method="post">
                          <div class="inside">
-						 <?php
-						$templatic_licence_key = get_option('templatic_licence_key');
-						if(get_option('templatic_licence_key_') =='' && !$_POST){
-						?>
-                         <p><?php echo __('Enter the license key in order to unlock the plugin and enable automatic updates.',ADMINDOMAIN); ?></p>
-						 <?php } ?>
-						 <div id="licence_fields">
+                                <?php
+                               $templatic_licence_key = get_option('templatic_licence_key');
+                               if(get_option('templatic_licence_key_') =='' && !$_POST){
+                               ?>
+                                   <p><?php echo __('You should be able to get your product license key from',ADMINDOMAIN) . '<a href="http://templatic.com/members/member">'. __(' Templatic Member Area',ADMINDOMAIN).'</a>. ' . __("Here's how a",ADMINDOMAIN).'<a href="http://templatic.com/docs/tevolution-guide/">'. __(' guide',ADMINDOMAIN) . '</a> ' . __('if you need some help with this.',ADMINDOMAIN); ?></p>
+                                <?php } ?>
+                                <div id="licence_fields">
                                    <input type="password" name="licencekey" id="licencekey" value="<?php echo get_option('templatic_licence_key_'); ?>" size="30" max-length="36" PLACEHOLDER="templatic.com purchase code"/>
                                    <input type="submit" accesskey="p" value="<?php echo __('Verify',ADMINDOMAIN);?>" class="button button-primary button-large" id="Verify" name="Verify">
                                    <?php do_action('tevolution_error_message'); ?>
-						</div>
+                                </div>
                          </div>
                          </form>
 				</div>
@@ -530,7 +531,7 @@ function tevolution_comment_meta_box( $post ) {
 		$hidden = get_hidden_meta_boxes( get_current_screen() );
 		if ( ! in_array('commentsdiv', $hidden) ) {
 			?>
-			<script type="text/javascript">jQuery(document).ready(function(){commentsBox.get(<?php echo $total; ?>, 10);});</script>
+			<script type="text/javascript" async >jQuery(document).ready(function(){commentsBox.get(<?php echo $total; ?>, 10);});</script>
 			<?php
 		}
 		?>
@@ -696,7 +697,7 @@ function tevolution_images_box($post){
 	 </p>
      <p class="description"><?php echo __('<b>Note:</b> You cannot directly select the images from the media library, instead you have to upload a new image.',ADMINDOMAIN);?></p>
      </div>
-	<script type="text/javascript">
+	<script type="text/javascript" async >
 		jQuery(document).ready(function($){
 			/* Uploading files */
 			var image_gallery_frame;
@@ -1158,7 +1159,7 @@ function tevolution_custom_meta_box_content($post, $metabox ) {
 				}elseif ($pt_metabox['type'] == 'date'){
 					 
 					 ?>
-					 <script type="text/javascript">	
+					<script type="text/javascript" async >
 						jQuery(function(){
 						var pickerOpts = {
 								showOn: "both",
@@ -1275,7 +1276,7 @@ function tevolution_custom_meta_box_content($post, $metabox ) {
 									echo '<br/><img id="img_'.$pt_metabox["name"].'" src="'.get_post_meta($post->ID,$pt_metabox["name"], $single = true).'" border="0" class="company_logo" height="140" width="140" />';
 							?><?php if($pt_metaboxvalue != ''){?><span class="ajax-file-upload-red" onclick="delete_image('<?php echo basename($pt_metaboxvalue);?>','<?php echo $pt_metabox["name"]; ?>')"><?php echo __('Delete',ADMINDOMAIN); ?></span> <?php } ?></span>
 							</div>
-						<script>
+						<script type="text/javascript" async>
 							var image_thumb_src = '<?php echo  $wp_upload_dir['url'];?>/';
 							jQuery(document).ready(function(){
 								var settings = {
@@ -1397,7 +1398,7 @@ function tevolution_featured_list_fn($post_id){
 	$currency = get_option('currency_symbol');
 	$position = get_option('currency_pos');
 	?>
-    <script>
+    <script type="text/javascript" async>
 		var currency = '<?php echo get_option('currency_symbol'); ?>';
 		var position = '<?php echo get_option('currency_pos'); ?>';
 		var num_decimals    = '<?php echo $num_decimals; ?>';
@@ -1468,7 +1469,7 @@ add_action('admin_footer','tmpl_htmlvar_name_validation');
 
 function tmpl_htmlvar_name_validation(){
 	?>
-	<script type="text/javascript">
+	<script type="text/javascript" async >
 		jQuery(document).ready(function(){
 			jQuery('#htmlvar_name').blur(function(){ 
 				var htmlvar_name = jQuery("#htmlvar_name").val();
@@ -1555,7 +1556,7 @@ function tevolution_transaction_msg_fn()
 				/* save post data while upgrade post from transaction listing */
 				if(get_post_meta($pid,'upgrade_request',true) == 1  && (isset($_REQUEST['action']) && $_REQUEST['action'] == 'confirm'))
 				{ 
-					do_action('tranaction_upgrade_post',$pid); /* add an action to save upgrade post data. */
+					do_action('tranaction_upgrade_post',$pid,$cf[0]); /* add an action to save upgrade post data. */
 				}
 				if($orderinfo->payment_method != '' && $orderinfo->payment_method != '-')
 					$payment_type = $orderinfo->payment_method;
@@ -1574,18 +1575,21 @@ function tevolution_transaction_msg_fn()
 				{
 					$payment_status = APPROVED_TEXT;
 					$status = 'publish';
-					if($orderinfo->payforfeatured_h == 1  && $orderinfo->payforfeatured_c == 1){
-						update_post_meta($pid, 'featured_c', 'c');
-						update_post_meta($pid, 'featured_h', 'h');
-						update_post_meta($pid, 'featured_type', 'both');			
-					}elseif($orderinfo->payforfeatured_c == 1){
-						update_post_meta($pid, 'featured_c', 'c');
-						update_post_meta($pid, 'featured_type', 'c');
-					}elseif($orderinfo->payforfeatured_h == 1){
-						update_post_meta($pid, 'featured_h', 'h');
-						update_post_meta($pid, 'featured_type', 'h');
-					}else{
-						update_post_meta($pid, 'featured_type', 'none');	
+					if(get_post_meta($pid,'upgrade_request',true) != 1 )
+					{
+						if($orderinfo->payforfeatured_h == 1  && $orderinfo->payforfeatured_c == 1){
+							update_post_meta($pid, 'featured_c', 'c');
+							update_post_meta($pid, 'featured_h', 'h');
+							update_post_meta($pid, 'featured_type', 'both');			
+						}elseif($orderinfo->payforfeatured_c == 1){
+							update_post_meta($pid, 'featured_c', 'c');
+							update_post_meta($pid, 'featured_type', 'c');
+						}elseif($orderinfo->payforfeatured_h == 1){
+							update_post_meta($pid, 'featured_h', 'h');
+							update_post_meta($pid, 'featured_type', 'h');
+						}else{
+							update_post_meta($pid, 'featured_type', 'none');	
+						}
 					}
 				}
 				elseif(isset($_REQUEST['action']) && $_REQUEST['action']== 'pending')
@@ -1610,6 +1614,7 @@ function tevolution_transaction_msg_fn()
 				{
 					$payment_status = PENDING_MONI;
 					$status = 'draft';
+					update_user_meta($orderinfo->user_id,get_post_type($pid).'_list_of_post',(get_user_meta($orderinfo->user_id,get_post_type($pid).'_list_of_post',true) -1));
 				}
 				
 				$my_post['post_status'] = $status;
@@ -1625,37 +1630,37 @@ function tevolution_transaction_msg_fn()
 				$post_type_mail = $productinfo->post_type;
 				$transaction_details="";
 				$transaction_details .= "-------------------------------------------------- <br/>\r\n";
-				$transaction_details .= __('Payment Details for',DOMAIN).": ".$post_name."<br/>\r\n";
+				$transaction_details .= __('Payment Details for',ADMINDOMAIN).": ".$post_name."<br/>\r\n";
 				$transaction_details .= "-------------------------------------------------- <br/>\r\n";
-				$transaction_details .= __('Package Name',DOMAIN).": ".$package_name->post_title."<br/>\r\n";
-				$transaction_details .= __('Status',DOMAIN).": ".$payment_status."<br/>\r\n";
-				$transaction_details .= __('Type',DOMAIN).": $payment_type <br/>\r\n";
-				$transaction_details .= __('Date',DOMAIN).": $payment_date <br/>\r\n";
+				$transaction_details .= __('Package Name',ADMINDOMAIN).": ".$package_name->post_title."<br/>\r\n";
+				$transaction_details .= __('Status',ADMINDOMAIN).": ".$payment_status."<br/>\r\n";
+				$transaction_details .= __('Type',ADMINDOMAIN).": $payment_type <br/>\r\n";
+				$transaction_details .= __('Date',ADMINDOMAIN).": $payment_date <br/>\r\n";
 				$transaction_details .= "-------------------------------------------------- <br/>\r\n";
 				$transaction_details = $transaction_details;
 				if((isset($_REQUEST['action']) && $_REQUEST['action'] == 'confirm' ) || (isset($_REQUEST['action2']) && $_REQUEST['action2'] == 'confirm' ))
 				{
-					$subject = $tmpdata['payment_success_email_subject_to_admin'];
+					$subject = apply_filters('payment_success_email_subject_to_admin',$tmpdata['payment_success_email_subject_to_admin'],$orderinfo);
 					if(!$subject)
 					{
-						$subject = __("You have received a payment",DOMAIN);
+						$subject = __("You have received a payment",ADMINDOMAIN);
 					}
-					$content = $tmpdata['payment_success_email_content_to_admin'];
+					$content = apply_filters('payment_success_email_content_to_admin',$tmpdata['payment_success_email_content_to_admin'],$orderinfo);
 					if(!$content){
-						$content = __("<p>Howdy [#to_name#],</p><p>A post has been approved of [#payable_amt#] on [#site_name#].",DOMAIN).' '.__('Details are available below',DOMAIN).'</p><p>[#transaction_details#]</p><p>'.__('Thanks,',DOMAIN).'<br/>[#site_name#]</p>';
+						$content = __("<p>Howdy [#to_name#],</p><p>A post has been approved of [#payable_amt#] on [#site_name#].",ADMINDOMAIN).' '.__('Details are available below',ADMINDOMAIN).'</p><p>[#transaction_details#]</p><p>'.__('Thanks,',ADMINDOMAIN).'<br/>[#site_name#]</p>';
 					}
 				}
 				if((isset($_REQUEST['action']) && $_REQUEST['action'] == 'pending' ) || (isset($_REQUEST['action2']) && $_REQUEST['action2'] == 'pending' ))
 				{
-					$subject = $tmpdata['pending_listing_notification_subject'];
+					$subject = apply_filters('pending_listing_notification_subject',$tmpdata['pending_listing_notification_subject'],$orderinfo);
 					if(!$subject)
 					{
-						$subject = __("Listing payment not confirmed",DOMAIN);
+						$subject = __("Listing payment not confirmed",ADMINDOMAIN);
 					}
-					$content = $tmpdata['pending_listing_notification_content'];
+					$content = apply_filters('pending_listing_notification_content',$tmpdata['pending_listing_notification_content'],$orderinfo);
 					if(!$content)
 					{
-						$content = __("<p>Hi [#to_name#],<br />A listing request on the below details has been rejected.<p>[#transaction_details#]</p>Please try again later.<br />Thanks you.<br />[#site_name#]</p>",DOMAIN);
+						$content = __("<p>Hi [#to_name#],<br />A listing request on the below details has been rejected.<p>[#transaction_details#]</p>Please try again later.<br />Thanks you.<br />[#site_name#]</p>",ADMINDOMAIN);
 					}
 				}
 				$store_name = '<a href="'.site_url().'">'.get_option('blogname').'</a>';
@@ -1678,47 +1683,47 @@ function tevolution_transaction_msg_fn()
 					$user_email = $userInfo->user_email;
 				
 				$transaction_details ="";
-				$transaction_details .= __('Information Submitted URL',DOMAIN)." <br/>\r\n";
+				$transaction_details .= __('Information Submitted URL',ADMINDOMAIN)." <br/>\r\n";
 				$transaction_details .= "-------------------------------------------------- <br/>\r\n";
 				$transaction_details .= "  $post_title <br/>\r\n";
-				$transaction_details = __($transaction_details,DOMAIN);
+				$transaction_details = __($transaction_details,ADMINDOMAIN);
 				if((isset($_REQUEST['action']) && $_REQUEST['action'] == 'confirm' ) || (isset($_REQUEST['action2']) && $_REQUEST['action2'] == 'confirm' ))
 				{
-					$subject = $tmpdata['payment_success_email_subject_to_client'];
+					$subject = apply_filters('tmpl_success_email_subject',$tmpdata['payment_success_email_subject_to_client'],$orderinfo);
 					if(!$subject)
 					{
-						$subject = __("Thank you for your submission!",DOMAIN);
+						$subject = __("Thank you for your submission!",ADMINDOMAIN);
 					}
-					$content = $tmpdata['payment_success_email_content_to_client'];
+					$content = apply_filters('tmpl_success_email_content_to_client',$tmpdata['payment_success_email_content_to_client'],$orderinfo);
 					if(!$content)
 					{
-						$content = __("<p>Hello [#to_name#],</p><p>Your submission has been approved! You can see the listing here:</p><p>[#transaction_details#]</p><p>If you'll have any questions about this please send an email to [#admin_email#]</p><p>Thanks!,<br/>[#site_name#]</p>",DOMAIN);
+						$content = __("<p>Hello [#to_name#],</p><p>Your submission has been approved! You can see the listing here:</p><p>[#transaction_details#]</p><p>If you'll have any questions about this please send an email to [#admin_email#]</p><p>Thanks!,<br/>[#site_name#]</p>",ADMINDOMAIN);
 					}
 				}
 				if((isset($_REQUEST['action']) && $_REQUEST['action'] == 'pending' ) || (isset($_REQUEST['action2']) && $_REQUEST['action2'] == 'pending' ))
 				{
-					$subject = $tmpdata['pending_listing_notification_subject'];
+					$subject = apply_filters('pending_listing_notification_subject',$tmpdata['pending_listing_notification_subject'],$orderinfo);
 					if(!$subject)
 					{
-						$subject = __("Listing payment not confirmed",DOMAIN);
+						$subject = __("Listing payment not confirmed",ADMINDOMAIN);
 					}
-					$content = $tmpdata['pending_listing_notification_content'];
+					$content = apply_filters('pending_listing_notification_content',$tmpdata['pending_listing_notification_content'],$orderinfo);
 					if(!$content)
 					{
-						$content = __("<p>Hi [#to_name#],<br />A listing request on the below details has been rejected.<p>[#transaction_details#]</p>Please try again later.<br />Thanks you.<br />[#site_name#]</p>",DOMAIN);
+						$content = __("<p>Hi [#to_name#],<br />A listing request on the below details has been rejected.<p>[#transaction_details#]</p>Please try again later.<br />Thanks you.<br />[#site_name#]</p>",ADMINDOMAIN);
 					}
 				}
 				if((isset($_REQUEST['action']) && $_REQUEST['action'] == 'cancel' ) || (isset($_REQUEST['action2']) && $_REQUEST['action2'] == 'cancel' ))
 				{
-					$subject = $tmpdata['payment_cancelled_subject'];
+					$subject = apply_filters('tmpl_payment_cancelled_subject',$tmpdata['payment_cancelled_subject']);
 					if(!$subject)
 					{
-						$subject = __("Payment Cancelled",DOMAIN);
+						$subject = __("Payment Cancelled",ADMINDOMAIN);
 					}
-					$content = $tmpdata['payment_cancelled_content'];
+					$content = apply_filters('tmpl_payment_cancelled_content',$tmpdata['payment_cancelled_content']);
 					if(!$content)
 					{
-						$content = __("<p>[#post_type#] has been cancelled with transaction id [#transection_id#]</p>",DOMAIN);
+						$content = __("<p>[#post_type#] has been cancelled with transaction id [#transection_id#]</p>",ADMINDOMAIN);
 					}
 				}
 				$store_name = '<a href="'.site_url().'">'.get_option('blogname').'</a>';

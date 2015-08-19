@@ -1,4 +1,7 @@
 <?php
+/*
+ * ajax to delete an image from submit form for muslti upload image field.
+ */
 require("../../../../../../wp-load.php");	
 if(isset($_REQUEST['image_arr']) && isset($_REQUEST['name']))
 {	
@@ -15,7 +18,11 @@ if(isset($_REQUEST['image_arr']) && isset($_REQUEST['name']))
 }
 else
 {
-	$image_name=implode(',',$_REQUEST['i']);
+	if(is_array($_REQUEST['i'])){
+		$image_name=implode(',',$_REQUEST['i']);
+	}else{
+		$image_name=$_REQUEST['i'];
+	}
 	echo $image_name;
 }
 if(isset($_REQUEST['pid']))
@@ -26,8 +33,8 @@ if(isset($_REQUEST['pid']))
    $path_info = pathinfo($image_name);
    $file_extension = $path_info["extension"];
    $image_name = basename($image_name,".".$file_extension);
-   //$expImg = strlen(end(explode("-",$image_name)));
-   //$finalImg = substr($image_name,0,-($expImg + 1));
+   /*$expImg = strlen(end(explode("-",$image_name)));*/
+   /*$finalImg = substr($image_name,0,-($expImg + 1));*/
    @unlink($uploaddir.$image_name.".".$file_extension);
    @unlink($uploaddir.$image_name."-150X150.".$file_extension);
    @unlink($uploaddir.$image_name."-300X300.".$file_extension);

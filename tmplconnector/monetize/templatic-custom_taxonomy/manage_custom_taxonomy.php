@@ -8,15 +8,19 @@
 	<?php endif; ?>    
 	<div id="icon-edit" class="icon32 icon32-posts-post"><br/></div>
 	<h2>
-	<?php echo __("Custom Post types",ADMINDOMAIN); ?>
-	<a class="add-new-h2" id="add_custom_taxonomy" href="<?php echo admin_url("admin.php?page=custom_taxonomy&action=add_taxonomy"); ?>"><?php echo __('Add Custom Post type',ADMINDOMAIN); ?></a>
+	<?php echo __("Custom Post Types",ADMINDOMAIN); ?>
+	<a class="add-new-h2" id="add_custom_taxonomy" href="<?php echo admin_url("admin.php?page=custom_setup&ctab=custom_setup&action=add_taxonomy"); ?>"><?php echo __('Add Custom Post Type',ADMINDOMAIN); ?></a>
 	</h2>
-	<p class="tevolution_desc"><?php echo __('Start adding new custom post type by simply clicking above "Add Custom Post Type" link (e.g. events, places etc). To learn more about post types in general visit the <a href="http://codex.wordpress.org/Post_Types">WordPress codex</a>. To know how to properly utilize this functionality inside Tevolution, refer <a href="http://templatic.com/docs/tevolution-guide/#intro_cpt">documentation guide</a>. <br><br> <strong>Tip:</strong> After you create custom post type, you should also follow the chain steps like creating custom fields, price package, submit page using <a href="http://templatic.com/docs/tevolution-guide/#tevolution_shortcodes">shortcode</a>, payment gateways etc. However, it is not compulsory but advisable.',ADMINDOMAIN); ?></p>
+	<p class="tevolution_desc">
+	
+	<?php echo __('Start adding new custom post types by simply clicking above "Add Custom Post Type" link (e.g. jobs, cars etc). To learn more about using custom post types in general visit the <a href="http://codex.wordpress.org/Post_Types">WordPress codex</a>. To know how to properly utilize this functionality inside Tevolution, please refer to the <a href="http://templatic.com/docs/tevolution-guide/#intro_cpt">documentation guide</a>.<br><br> <strong>Tip:</strong> After you create a custom post type, you should also follow the set of steps to make it all work together. For example your new post type needs its custom fields and price packages if you want it to have its own ones. The post type will need its own submission page and categories.',ADMINDOMAIN); ?>
+	
+	</p>
      
      <?php do_action('tevolution_custom_taxonomy_msg');?>
      
 </div><br />
-<form name="all_custom_post_types" id="posts-filter" action="<?php echo admin_url("admin.php?page=custom_taxonomy"); ?>" method="post" >
+<form name="all_custom_post_types" id="posts-filter" action="<?php echo admin_url("admin.php?page=custom_setup"); ?>" method="post" >
 	<?php
 	$templ_list_table = new taxonmy_list_table();
 	$templ_list_table->prepare_items();

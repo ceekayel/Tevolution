@@ -1,4 +1,7 @@
 <?php
+/*
+ * add/edit user custo field
+ */
 global $wpdb,$current_user;
 $post_id = @$_REQUEST['cf'];
 $post_val = get_post($post_id);
@@ -42,7 +45,7 @@ if(isset($_POST['save_user']) && $_POST['save_user'] != "")
 	
 	$url = site_url().'/wp-admin/admin.php';
 	echo '<form action="'.$url.'#option_display_custom_usermeta" method="get" id="frm_edit_customuser_fields" name="frm_edit_customuser_fields">
-	<input type="hidden" value="user_custom_fields" name="page"><input type="hidden" value="'.$msgtype.'" name="msgtype">
+	<input type="hidden" value="custom_setup" name="page"><input type="hidden" value="user_custom_fields" name="ctab"><input type="hidden" value="'.$msgtype.'" name="msgtype">
 	</form>
 	<script>document.frm_edit_customuser_fields.submit();</script>
 	';exit;
@@ -58,11 +61,11 @@ if(isset($_POST['save_user']) && $_POST['save_user'] != "")
 		 }else{
 			echo __('Add a field for users&rsquo; profile',ADMINDOMAIN); 			
 		 }?>
-	  	<a href="<?php echo site_url();?>/wp-admin/admin.php?page=user_custom_fields" name="btnviewlisting" id="edit_custom_user_custom_field" class="add-new-h2" title="<?php echo __('Back to Manage fields list',ADMINDOMAIN);?>">
+	  	<a href="<?php echo site_url();?>/wp-admin/admin.php?page=custom_setup&ctab=user_custom_fields" name="btnviewlisting" id="edit_custom_user_custom_field" class="add-new-h2" title="<?php echo __('Back to Manage fields list',ADMINDOMAIN);?>">
 			<?php echo __('Back to Manage fields list',ADMINDOMAIN); ?>
 		</a> 
     </h2>
-	<form class="form_style" action="<?php echo site_url();?>/wp-admin/admin.php?page=user_custom_fields&action=addnew" method="post" name="custom_fields_frm" onsubmit="return chk_userfield_form();">	
+	<form class="form_style" action="<?php echo site_url();?>/wp-admin/admin.php?page=custom_setup&ctab=user_custom_fields&action=addnew" method="post" name="custom_fields_frm" onsubmit="return chk_userfield_form();">	
 	
 	<input type="hidden" name="save" value="1" /> 
 	<?php if(isset($_REQUEST['cf']) && $_REQUEST['cf']){?>
@@ -101,7 +104,7 @@ if(isset($_POST['save_user']) && $_POST['save_user'] != "")
                     <th><?php echo __('Option values',ADMINDOMAIN);?></th>
                     <td> 
                     	<input type="text" class="regular-text" name="option_values" id="option_values" value="<?php echo get_post_meta($post_id,"option_values",true);?>" size="50" />
-	                    <p class="description"><?php echo __('Separate multiple option values with a comma. eg. Yes, No',ADMINDOMAIN);?></p>
+	                    <p class="description"><?php echo __('Separate multiple option values with a comma. eg. Yes, No(Do not add space after comma)',ADMINDOMAIN);?></p>
                     </td>
                </tr>
                 <tr id="ctype_titles_tr_id"  <?php if(get_post_meta($post_id,"ctype",true)=='select'){?> style="display:block;" <?php }else{?> style="display:none;" <?php }?> >
@@ -172,23 +175,30 @@ if(isset($_POST['save_user']) && $_POST['save_user'] != "")
                </tr>
                <!-- Compulsory end-->	
 				
-			   <?php //if( "facebook" != @$post_val->post_name && "twitter" != @$post_val->post_name && "linkedin" != @$post_val->post_name && "profile_photo" != @$post_val->post_name ) { ?>
                <!-- on Registration page start -->               
                <tr style="display:block;">
                	<th><?php echo __('Show the field on',ADMINDOMAIN);?></th>
                     <td>
-                    	<fieldset>
-                         	<input type="checkbox" name="on_profile" id="on_profile" value="1"  <?php if(get_post_meta($post_id,"on_profile",true)=='1'){ echo 'checked="checked"';}?>/>&nbsp;<label for="on_profile"><?php echo __('Edit profile page',ADMINDOMAIN);?></label><br />
-                         	<input type="checkbox" name="on_registration" id="on_registration" value="1"  <?php if(get_post_meta($post_id,"on_registration",true)=='1'){ echo 'checked="checked"';}?>/>&nbsp;<label for="on_registration"><?php echo __('Registration page',ADMINDOMAIN);?></label><br />
-                            <input type="checkbox" name="on_author_page" id="on_author_page" value="1"  <?php if(get_post_meta($post_id,"on_author_page",true)=='1'){ echo 'checked="checked"';}?>/>&nbsp;<label for="on_author_page"><?php echo __('User dashboard page',ADMINDOMAIN);?></label><br />                             
-                         </fieldset>
+                    	
+                         	<p id="for_profile"><input type="checkbox" name="on_profile" id="on_profile" value="1"  <?php if(get_post_meta($post_id,"on_profile",true)=='1'){ echo 'checked="checked"';}?>/>&nbsp;<label for="on_profile"><?php echo __('Edit profile page',ADMINDOMAIN);?></label></p>
+                         	<p id="for_registration"><input type="checkbox" name="on_registration" id="on_registration" value="1"  <?php if(get_post_meta($post_id,"on_registration",true)=='1'){ echo 'checked="checked"';}?>/>&nbsp;<label for="on_registration"><?php echo __('Registration page',ADMINDOMAIN);?></label>
+                            <p class="description"><?php echo __('Only username and email field will be shown in pop up register form.',ADMINDOMAIN); ?></p></p>
+                            <p id="for_author"><input type="checkbox" name="on_author_page" id="on_author_page" value="1"  <?php if(get_post_meta($post_id,"on_author_page",true)=='1'){ echo 'checked="checked"';}?>/>&nbsp;<label for="on_author_page"><?php echo __('User dashboard page',ADMINDOMAIN);?></label></p>                             
+                         
                     </td>                    
                </tr>
                <!--in authot box  page end-->
-               <?php //} ?>
+         
                <tr style="display:block">
                	<td class="save" colspan="2">
-		               <input type="submit" class="button-primary" name="save_user"  id="save" value="<?php echo __('Save all changes',ADMINDOMAIN);?>" />
+					<?php
+					if(isset($_REQUEST['cf']) && $_REQUEST['cf'] !=''){
+						$val = __('Update Changes',ADMINDOMAIN);
+					}else{
+						$val = __('Save all changes',ADMINDOMAIN);
+					}
+					?>
+		               <input type="submit" class="button button-primary button-hero" name="save_user"  id="save" value="<?php echo $val; ?>" />
           	     </td>
                </tr>
 		</tbody>

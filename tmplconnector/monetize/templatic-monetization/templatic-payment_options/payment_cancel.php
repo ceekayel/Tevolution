@@ -1,4 +1,7 @@
 <?php 
+/*
+ * file is called after if cancel the payment
+ */
 global $current_user,$wpdb;
 $transaction_tabel = $wpdb->prefix."transactions";
 define('PAY_CANCELATION_TITLE',__('Payment Cancellation',DOMAIN));

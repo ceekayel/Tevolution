@@ -1,16 +1,418 @@
-Templatic Plugin - Tevolution(version 2.1.8)   
+Templatic Plugin - Tevolution(2.2.9)  
 =========================================================================================================
 
-25th April 2015 (Version 2.1.8)
+18th June 2015 (Version 2.2.9)
 ---------------------------------------------------------------------------------------------------------
-Fix - Tevolution Verified showing twice once you activate and verify it.
+Improved : Wp-rest-api plugin which is third party plugin, When active this plugin automatic 
+	   json api functionality going to work.
+	   Make effect in browse by category/tags widget.
+---------------------------------------------------------------------------------------------------------
+\tmplconnector\monetize\templatic-widgets\templatic_browse_by_categories_widget.php
+---------------------------------------------------------------------------------------------------------
+Fix - Sort order alphabetical option was not working properly.
 
-Fix - Automotive custom field model_status validation.
+Fix - Post renew, after default save as draft issue.
 
-Fix - wp list added into tevolution.
+Fix - Irregular clustering was showing on all in one map.
+
+Fix - On author page price was showing wrong, when coupon applied.
+
+Fix - While upgrade the listing show wrong price on success page.
+
+Fix - Event calender mouse hover get data.
+
+Fix - Clustering issue after unchecking post type on all in one map.
+
+Fix - Renew post status showing wrong.
+
+Fix - Custome field post content was not showing on detail page.
+
+Fix - Claim verification process was not working.
+
+Fix - Featured status tag showing wrong place.
+---------------------------------------------------------------------------------------------------------
+
+28th May 2015 (Version 2.2.8)
+---------------------------------------------------------------------------------------------------------
+Fix - Subscription package payment become free when any free package is submitted.
+
+Fix - For custome field "Text editor" was not showing editing menu, when category wise filter was enable.
+
+Fix - Submit form dosen't submit, beacuse when click on submit button nothing was happened.
+
+Fix - Search problem when get multiple results for post codes in proximity search.
+
+Fix - RTL submit form design issue.
+
+Fix - Added extra number from user name if same username is exist.
+
+Fix - When recurring package is auto updated, Transaction status mail was not fire.
+
+Fix - Select box design issue after selecting category.
+
+Fix - Facebook login issue when no email is fetched.
+
+Fix - Post type was not translated with wpml on detail page "listing Description".
+
+Fix - "http:" is shown even if we have not added website url.
+
+Fix - Expiration mail was not going when package type is recurring.
+
+Fix - Zero counter category was showing in global location.
+
+Fix - Featured options set before transaction is approved.
+
+Fix - Custom fields on additional post types submit form was not showing.
+
+Add - Notice to do not add multiple image uploder in same submit form.
+
+Add - Added option for testomode enable/disable for paypal setting in backend.
+
+Fix - Social buttons was not showing after changing heading type.
+
+Fix - After logout from social login, you can logged in without filling up the user name and password again.
+
+Fix - Text showing on price package, even if the home page and category page listing option were not selected.
+
+Fix - Fetch latest claim post on admin dashboard widget.
+
+Fix - When admin cancel the transaction user should pay for listing again.
+
+Fix - Facebook registration was not working.
+
+Fix - Translation issue with WPML.
+
+Fix - custom fileds was showing, even if it is not checked as show on detail page.
+
+Fix - paypal express checkout payment return page was blank.
+
+Fix - Toggle on all in one map page was not working when location manager was not active.
+
+Fix - set anyone can register default one at the time of tevolution activation.
+---------------------------------------------------------------------------------------------------------
+
+24th April 2015 (Version 2.2.7)
+---------------------------------------------------------------------------------------------------------
+Fix - Home page custom fields not shown for post type event.
+
+Fix - Heading type was not showing on detail page.
+
+Fix - Made latitude and longitude blank when address is blank.
+
+Fix - Address field become blank when copy paste by mouse.
+
+Fix - The widget 'below homepage content' show two times on the mobile homepage, (try to place a widget called T->display Post at below homepage content widget area)
+
+Fix - After approving from upgrade post Featured: Home, Category does not get selected.
+
+Fix - Custom fileds was not saving from backend.
+
+Fix - Map zooming was not working.
+
+Fix - Listing became featured, before price package is updated.
+
+Fix - Addded captcha script of contact us.
+
+Fix - Select author name in drop down which have been selected while approve in claim.
+
+Fix - payment problem when free trial period is over.
+
+Fix - Sign up was not showing on detail page, when try to access restricted custome fields.
+
+Fix - popup design changes in license key.
+
+Fix - Menu order gets changed after editing the price package.
+
+Fix - Remove street view address control form the map.
+
+Fix - Set live payment url instead of sandbox.
+
+Fix - Custom fields are not showing backend.
 
 Fix - WordPress 4.2 & Security related changes.
 ---------------------------------------------------------------------------------------------------------
+
+16th March 2015 (Version 2.2.6)
+---------------------------------------------------------------------------------------------------------
+Fix - Currency symbol is not showing in mail with total price.
+
+Fix - City wise search result is not comming.
+
+Fix - Amount was not showing properly on success page.
+
+Fix - Custome field file type disabled in archive pages and category pages, like images, video, geo maps.
+
+Fix - Calculation of coupon was not proper when go back and edit time.
+
+Fix - On event backend listing page price package total price is not comming.
+
+Fix - Subject with special character was not proper showinh in mail.
+
+Fix - Upload button was not working when click on category on submit form.
+
+Fix - Category is not showing on preview page.
+
+Fix - If default post paid status is publish, then in prebank transfer mail status goes as pending.
+
+Fix - Category price not calculated with total amount.
+
+Fix - Tags and categories was not showing when special cahacter name of post type.
+
+Fix - If user registration is off removed a user insertion for claim.
+
+Fix - Multiple form links were generated when two post types name like same.
+
+Fix - Twitter login not working after logout.
+
+Fix - Search result issue while map drag and drop.
+
+Fix - Submit form button showing twice on success page.
+
+Fix - Upgrade price package does not work after successful payment.
+
+Fix - Submit form shows price package of other post type too if post type slug contains the text of other.
+
+Fix - When activate the WPML plugin, new custom fields will disappear.
+
+Fix - In backend transaction status was not changing.
+
+Fix - Design issue on Submit listing form check box in mobile view.
+
+Fix - Supported version of wordpress 4.2
+---------------------------------------------------------------------------------------------------------
+
+18th February 2015 (Version 2.2.5)
+---------------------------------------------------------------------------------------------------------
+Fix - In mail content radio button shows value instead of it's title.
+
+Fix - Internet Explorer version 11 design issue on detail page. when click on send to friend button form is getting transparent.
+
+Fix - Submit listing through backend upload image delete button design issue.
+
+Fix - Submit listing through frontend upload image delete button design issue.
+
+Fix - Backend wordpress user page goes blank due to large number of listings.
+
+Fix - Category page on pagination first page and last page button design issue.
+
+Fix - Infowindow height, width was not proper when click on clustering on category page map.
+
+Fix - All in one map after search place is find, but can not click on it.
+
+Fix - User custom fields not inserted while easy install.
+
+Fix - Claim owner ship pop up design issue.
+
+Fix - Sorting options were not working on event category page.
+
+Fix - Warning messages come while payment, even if debuge mode = "false".
+
+Fix - Editing a listing through admin page while that time listing cant be submitted.
+
+Fix - While claim ownership if we register with already email address show login link with error message.
+
+Fix - Backend widget area in responsive view design break issue.
+
+Fix - Category price not included while submit listing.
+
+Fix - Multi images disappear after change in category selection when category wise custom fields is true.
+
+Fix - Validation for Different payment gateway was not working.
+
+Fix - Submit listing was not showing when only one payment gateway is active.
+
+Fix - Query optimization.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+30th January 2015 (Version 2.2.4)
+--------------------------------------------------------------------------------------------------------------------------------------------
+Fix - In instant search citywise search option was not work correctly when the options "search from city" and "exact search" both options are selected.
+
+Fix - Added new Translation strings on po/mo files.
+
+Fix - Applied WordPress nounce code for submision form.
+
+Fix - Single city map loading was not working.
+
+Fix - Map clustering is not working at particular zooming level, when in widget area option " Disable Clustering" is not selected. 
+
+Fix - logged in as an admin, submitted listing detail page shows "claim ownership" request link.
+
+Fix - Through backend custome field logo, when click on image delete button image is not getting removed.
+
+Fix - when remove author base slug from tevolution permalink settings, while that time author page shows 404 error.
+
+Fix - Full width map page responsive design issue.
+
+Fix - Facebook like button design issue.
+
+Fix - shows different prices on mail and success page.
+
+Fix - Stripe validation was not working.
+
+Fix - price package was not showing after upgrade through author page.
+
+Fix - Sorting options are not working on category pages.
+
+Fix - While price package upgrade time package update, before payment success.
+
+Fix - Submit listing Total price was not showing On IE 11.
+
+Fix - 404 error on instant search widget when non existing listing was not submitted yet.
+
+Fix - user can't logged in through submit form.
+
+Fix - In one page there are Multiple registration forms are available. when i am trying to login as widget "login box" while that time validation shows me at another area login form, inside that page.
+
+Fix - Field monetization validation issue, while select all category on submit listing page at frontend.
+
+Fix - Transaction approval from backend, while that time mail does not fire.
+
+Fix - Mail content radio button field shows value instead of title.
+
+Fix - Social Sharing counters are not increamented.
+
+Fix - While adding listing if we select theme to be shown as Featured on Home page and Category page and makes payment by prebank transfer method the listings are not showing as Featured on Home page and Category page as well as admin page
+
+Fix - Screen Options are not showing in backend for Price Package.
+
+
+
+25th December 2014 (Version 2.2.3)
+-------------------------------------------------------------------------------------------------------
+Fix - Instant Search compatibility with WordPress4.1
+
+Fix - Preview page for "Post" post type
+
+Fix - All in one map clustering marker
+
+Fix - Calculation in price on Submit form with multiple prices
+
+Fix - Expiration date on editing the post
+
+Fix - Remove Listing tab from author page is Listing post type is deleted
+
+Fix - Payment method tab was not coming if Decimal Seperator/Thousand Seperators are changed.
+
+Fix - Save Ugrade package information after payment and other upgrade proces fixes
+
+Fix - Registraion on Submit listing page
+
+Fix - Localization and Grammer
+
+Fix - wyswing redirection without login
+
+Fix - Zero price in subscription type package
+
+Fix - Sort By in Additional Post Type
+
+Fix - Listing Category page permalink
+
+Fix - Fatal errors and warnings on different pages
+
+Fix - Captcha on Registration Page
+
+Fix - Mobile View design
+
+Fix - sitemap xml file not included in "tevolution_taxonimies_filter_rewrite_rules" function
+
+Fix - Validation on different forms such as send to Inquiry, Submit, etc...
+
+
+
+29th November 2014 (Version 2.2.2)
+-------------------------------------------------------------------------------------------------------
+New - Added reCaptcha API compatibility in Tevolution, reCaptcha plugin compatibility is abandoned now
+
+Fix - Fatal error coming up on preview pop up
+
+Fix - Images were not getting uploaded when url is https
+
+Fix - Social media login was not working properly
+
+Fix - Corrected some scripts which consumed more CPU on servers
+
+Fix: Solved some PHP notices and warnings
+
+Fix: "Array" was displaying on WordPress admin login page
+
+Fix: An error was displaying on submission form when category list is displayed as select box
+
+Fix: Site was loading slow if permalinks were customized with options given in Tevolution
+
+Fix: Validation issue with Text Editor field on submission form
+
+Fix: Fields created with text editor type were not appearing on preview popup
+
+Fix: Renamed some transients because the longer names were not getting saved on some servers due to a limited length n database
+
+
+
+
+11th November 2014 (Version 2.2.1)
+----------------------------------------------------------------
+Fix - When user login From login widget login was not work.
+
+Fix - User could not submit the form in certain conditions.
+
+Fix - The logo upload from front end was not aper in media section in backend.
+
+Fix - Image can not upload when image name contain the spaces.
+
+Fix - Search was not display properly in certain conditions.
+
+Fix - When we drag the map or zoom-in/zoom-out on map results was not display how it should be. make some changes info bubble.
+
+Fix - Info bubble not open with same address on map with clustering.
+
+Fixed -  Remove category base from permalink option was not work
+
+
+4th November 2014 (Version 2.2)
+
+Note: This Updates For Directory and directory child theme's user only, it will not compatible with other non-directory themes ( like nightlife,automotive,5star,publisher etc ).
+---------------------------------------------------------------------------------------------------------
+
+
+- Remove advance search shortcode and modification in advance search widget.
+
+- Login & Register - Social media login for FB, Twitter, G+ included by default, Login, Register links will be pop up forms.
+
+- All New Submission process - Rearranged into different steps (1,2,3,4). Easier for users to submit
+
+- Default form fields are kept to minimum and removed fields which were not absolutely necessary
+
+- In submission form, you start typing your address and it automatically starts suggesting you addresses (from the city you have selected as your location)
+
+- Price Packages section in backend now has a link for all price packages. This can skip the “package selection” step if you come to that direct URL. This also opens up possibility for users to show their packages table the way they want.
+
+- Authors should be able to change the category while editing the listing. The already selected category while submission will be disabled for selection.
+ Manage transactions management, Price packages management
+ Payment gateway – if only one payment gateway is available, it will simply go to payment gateway to collect payment instead of showing it on the next step (thus, reduced a step)
+
+- Improved search & filters – instead of two fields (what, where), we will have one, global search field which will show instant results while typing. This improves location discovery to a great extent. Criteria for this can be managed from the widget in wp-admin.
+
+- Search results page – works and designed in the same way that category pages are working
+
+- Images- Front end – users can not only browse and upload but can also drag and drop images into that area now (disabled in IE).
+  Standardized image sizes – mini thumb, thumb, bigger, etc. (so as to avoid many version of the same image being created and saves lots of space)
+  
+- In submission form, you start typing your address and it automatically starts suggesting you addresses
+
+- You don’t have to click “set address on map” button anymore. As you type the address, it automatically sets the map accordingly.
+
+- Some Tevolution Modules moved as free add-ons:	Bulk Import/Export, Security Manager, Manage Coupons
+
+- Use admin-Ajax instead of cusotm ajax.
+
+- "Are you human" not supported with new version.
+
+- Advance seach change completely.
+
+
+
+--------------------------------------------------------------------------------------------------------
 
 10th July 2014 (Version 2.1.7)
 -----------------------------------------------------------------------------------------------------------
@@ -1073,7 +1475,7 @@ tmplconnector/monetize/templatic-custom_fields/js/payment_gateway_validation.js
 
 -------------------------------------------------------------------------
 FIX :
-pay per subscription issue with multiple taxonomy selected for price package.
+Subscription issue with multiple taxonomy selected for price package.
 Issue of number format issue for final total amount on success page.
 Issue of pay per subscription with multiple post type.
 WPML related issues.

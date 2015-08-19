@@ -8,16 +8,7 @@
     background: #000;
     display: none;
 }
-.modal_close {
-    background: url("../../templatic-generalization/images/close.gif") repeat scroll 0 0 transparent;
-    display: block;
-    height: 14px;
-    position: absolute;
-    right: 12px;
-    top: 12px;
-    width: 14px;
-    z-index: 2;
-}
+
 .send_button {
 	margin: 10px 15px 10px 0px;
 	background: none repeat scroll 0 0 #5CB3FF;
@@ -33,6 +24,7 @@
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
     width: auto;
 }
+.reveal-modal .send_button { float: left; }
 #basic-modal-content span ,#inquiry_div span {
 	color: #E41B17;
 }
@@ -60,7 +52,7 @@
 .claimed {
 	background: none repeat scroll 0 0 #FFFFE0 !important;
     border: 1px solid #E6DB55 !important;
-	padding: 5px 5px 5px 5px;
+	padding: 5px 12px;
 	color:red;
 }
 .recaptcha_claim {
@@ -126,6 +118,6 @@
 .claimed {
 	background: none repeat scroll 0 0 #FFFFE0 !important;
     border: 1px solid #E6DB55 !important;
-	padding: 5px 5px 5px 5px;
+	padding: 5px 12px;
 	color:red;
 }

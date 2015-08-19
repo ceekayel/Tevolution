@@ -126,6 +126,8 @@ function new_googlemap_ajaxSearch(){
 		});	
 }
 
+var taxo_googlemap = null;
+
 /*Google map widget initialize */
 function taxo_googlemap_initialize(map){
 	var post_type='';
@@ -143,6 +145,7 @@ function taxo_googlemap_initialize(map){
 		id_name=jQuery(this).attr('data-category');
 		if(checkbox_id==classname){
 			jQuery('.'+classname).find(':checkbox').attr('checked', jQuery('#'+classname).is(":checked"));
+			
 		}
 
 			post_type=jQuery(this).val()+',';
@@ -157,15 +160,21 @@ function taxo_googlemap_initialize(map){
 			});// finish post type category loop
 			
 			
-			jQuery.ajax({
+			taxo_googlemap =jQuery.ajax({
 				url:ajaxUrl,
 				type:'POST',
 				data:'action=taxonomies_googlemap_initialize&posttype='+post_type+'&categoryname='+categoryname,
+				beforeSend : function(){
+					if(taxo_googlemap != null){
+						taxo_googlemap.abort();
+					}
+				},
 				success:function(results){
 					document.getElementById('map_loading_div').style.display = 'none';
 					all_googlemap(results);
 				}
 			});
+		
 
 	});// finish post type loop
 	
@@ -184,30 +193,32 @@ function all_googlemap(data) {
   	// create the info window
 	infowindow = new google.maps.InfoWindow();
   	// if no markers found, display map_marker_nofound div with no search criteria met message	
-  	 if (jsonData[0].totalcount <= 0) {
-		document.getElementById('map_marker_nofound').style.display = 'block';
+  	 if (jsonData[0].totalcount <= 0  && search_string!='') {
+		 
 		var mapcenter = new google.maps.LatLng(map_latitude,map_longitude);
+		if(navigator.appName =='Microsoft Internet Explorer'){
+			all_googlemap_listMapMarkers1(jsonData);  
+		}else{
+			all_googlemap_listMapMarkers1(jsonData); 
+		}		
+  	}else{
+
+		var mapcenter = new google.maps.LatLng(map_latitude,map_longitude);		
 		all_googlemap_listMapMarkers1(jsonData);
+		if(search_string.value!="" ){
+			map.fitBounds(bounds);
+			var center = bounds.getCenter();
+			map.setCenter(center);
+		}
+	}
+	
+	if(zoom_option==1){
+		map.fitBounds(bounds);
+		var center = bounds.getCenter();
+		map.setCenter(center);
+	}else{
 		map.setCenter(mapcenter);
 		map.setZoom(map_zomming_fact);
-  	}else{	
-		document.getElementById('map_marker_nofound').style.display = 'none';
-		var mapcenter = new google.maps.LatLng(map_latitude,map_longitude);
-		all_googlemap_listMapMarkers1(jsonData);
-		if(zoom_option==1){
-			map.fitBounds(bounds);
-			var center = bounds.getCenter();
-			map.setCenter(center);
-		}else{
-			map.setCenter(mapcenter);
-			map.setZoom(map_zomming_fact);
-		}
-		
-		if(search_string.value!="" ){			
-			map.fitBounds(bounds);
-			var center = bounds.getCenter();
-			map.setCenter(center);
-		}
 	}
 }
 /*Delete the existing google map markers */
@@ -234,12 +245,12 @@ function all_googlemap_deleteMarkers() {
 function all_googlemap_listMapMarkers1(input) {
 	markers=input;
 	var search_string = document.getElementById('search_string');
-	var totalcount = input[0].totalcount;
-	if(mClusterer != null)
-	{
-		mClusterer.clearMarkers();
-	}	
-	mClusterer = null;	
+	var totalcount = input[0].totalcount;	
+	//New infobundle			
+	 infoBubble = new InfoBubble({
+		maxWidth:210,minWidth:210,minHeight:"auto",padding:0,borderRadius:0,borderWidth:0,borderColor:"none",overflow:"visible",backgroundColor:"#fff"
+	  });			
+	//finish new infobundle
 	if(totalcount > 0){
 		for (var i = 0; i < input.length; i++) {							 
 			var details = input[i];				
@@ -262,24 +273,13 @@ function all_googlemap_listMapMarkers1(input) {
 				maxWidth: 210,
 				minWidth: 210,
 			});	
-			 
-			//New infobundle			
-			 infoBubble = new InfoBubble({
-				maxWidth:210,minWidth:210,minHeight:"auto",padding:0,content:details.message,borderRadius:0,borderWidth:0,borderColor:"none",overflow:"visible",backgroundColor:"#fff"
-			  });			
-			//finish new infobundle
 			
-			//Start			
-                google.maps.event.addListener(markers, "click", function (e) {														    
-				infoBubble.open(map, details.message);					
-                });
-			
-			
-			
+			//Start
 			mgr.addMarkers( markers[i], 0 );			
 			
 			if(search_string.value!="" && input.length==1){
-				 infoBubble.open(map,  markers[i]);
+				 infoBubble.setContent( details.message );
+				 infoBubble.open(map, markers[i]);
 				 all_marker_attachMessage(markers[i], details.message);
 			}else{
 				all_marker_attachMessage(markers[i], details.message);
@@ -287,14 +287,36 @@ function all_googlemap_listMapMarkers1(input) {
 			m_counter++;
 		}	
 		ClustererMarkers = markers.concat(ClustererMarkers);
-		if(clustering != 1)
-			mClusterer = new MarkerClusterer(map, ClustererMarkers,{
-						maxZoom: 0,
-						gridSize: 10,
-						styles: null,
-						infoOnClick: 1,
-						infoOnClickZoom: 18,
-						});
+		if(clustering != 1){
+			mClusterer = new MarkerClusterer(map, ClustererMarkers,{maxZoom: 0,gridSize: 10,batchSizeIE: 100,styles: null,infoOnClick: 1,infoOnClickZoom: 18,});
+						
+			google.maps.event.addListener(mClusterer, 'clusterclick', function(cluster) {
+					/* Convert lat/long from cluster object to a usable MVCObject */
+					var info = new google.maps.MVCObject;
+					info.set('position', cluster.center_);
+					/*Get markers*/
+					var markers = cluster.getMarkers();
+					var content = "";
+					/*Get all the titles*/
+					for(var i = 0; i < markers.length; i++) {
+						content += markers[i].content + "\n";
+					}
+					//google.maps.event.addListener(map, 'zoom_changed', function() {
+					if(map.getMapTypeId() == 'terrain'){
+						var map_zoom = 15;
+					}else if(map.getMapTypeId() == 'satellite'){
+						var map_zoom = 19;
+					}else{
+						var map_zoom = 21;
+					}	
+						if(map.getZoom()==map_zoom){
+							infowindow.close();
+							infowindow.setContent( content );
+							infowindow.open(map, info);
+						}
+					//});
+			});
+		}
 	}  
 }
 // but that message is not within the marker's instance data 

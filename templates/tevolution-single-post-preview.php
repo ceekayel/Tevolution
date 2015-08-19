@@ -73,7 +73,7 @@ $_REQUEST['imgarr'] = (isset($_REQUEST['imgarr']) && $_REQUEST['imgarr']!='')? e
 	do_action('templ_preview_address_map');	/*Add action for display preview map */?>
 </div>
 <!--End content part -->
-<script type="text/javascript">	
+<script type="text/javascript" async >
 (function($) {	
 	Demo.init();
 })(jQuery); 

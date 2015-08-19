@@ -1,1121 +1,304 @@
-<?php ob_start(); ?>
-<script type="text/javascript">
+<script type="text/javascript" async >
 /*
 Name :show_featuredprice
 Description : Return the total prices and add the calculation in span.
 */
 <?php if(!isset($_REQUEST['action']) && $_REQUEST['action'] !='edit'){ ?>
 	window.onload=function(){ if(document.getElementById('price_package_price_list')){document.getElementById('price_package_price_list').style.display =='none'; } };
-<?php }  ?>
-function show_featuredprice(pkid)
+<?php }  
+if(is_admin())
 {
-
-	if(document.getElementById("all_packages_error"))
-	{
-		jQuery("#all_packages_error").html("");
-	}
-	if (pkid=="")
-	  {
-	  document.getElementById("featured_h").innerHTML="";
-	  return;
-	  }else{
-	  //document.getElementById("featured_h").innerHTML="";
-		if(document.getElementById("process2"))
-		{
-	  		document.getElementById("process2").style.visibility ="";
-		}
-		document.getElementById('is_featured').style.display='none';
-	  }
-	if (window.XMLHttpRequest)
-	  {// code for IE7+, Firefox, Chrome, Opera, Safari
-	  	xmlhttp=new XMLHttpRequest();
-	  }
-		else
-	  {// code for IE6, IE5
-	  	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	  }
-		xmlhttp.onreadystatechange=function()
-	  {
-	    if (xmlhttp.readyState==4 && xmlhttp.status==200)
-		{
-			jQuery(this).parents('div.package');
-			 theHtml = jQuery('div#process2').html();			
-			if(document.getElementById("process2"))
+?>
+	jQuery(document).ready(function(){
+		jQuery('.select-plan').live('click',function(event){
+			event.preventDefault();
+			finishStep = [];
+			var $target = jQuery(event.currentTarget),
+			$ul = $target.closest('ul'),
+			$ula = $target.closest('ul a'),
+			amount = $ul.attr('data-price'),
+			pkg_type =  $ul.attr('data-type'),
+			package_free_submission =  $ul.attr('data-free'),
+			pkg_subscribed =  $ul.attr('data-subscribed'),
+			$step = $ul.closest('div.step'),
+			view = this;
+			package_id = $ul.attr("data-id");
+			upgrade = $ula.attr("data-upgrade");	
+			jQuery('#pkg_id').val(package_id);
+			jQuery('#pkg_type').val(pkg_type);
+			jQuery('#package_free_submission').val(package_free_submission);
+			jQuery('#upgrade').val(upgrade);
+			jQuery('#total_price').val(amount);
+			if($ul.attr("data-post"))
 			{
-				document.getElementById("process2").style.visibility ="hidden";
+				pkg_post = $ul.attr("data-post");
 			}
-		
-		var myString =xmlhttp.responseText;
-		var myStringArray = myString.split("###RAWR###");  /* split with ###RAWR### because return result is concated with ###RAWR###*/
-		document.getElementById('alive_days').value = myStringArray[6];
-		
-		if(myStringArray[5] == 1){
-		if(document.getElementById('is_featured').style.display == "none")
-		{
-			document.getElementById('is_featured').style.display="";
-		}
-			if(document.getElementById('price_package_price_list'))
-			{ 
-				if(myStringArray[1] > 0 ||  myStringArray[0] > 0 || myStringArray[4] > 0)
-				{
-					if(document.getElementById('moderate_comment'))
+			currentStep = 'plan';
+			jQuery('#step-post').css('display','block');
+			if (parseInt(jQuery('#step-auth').length) === 0)
+			{
+				jQuery('#select_payment').html('3');
+			}
+			jQuery("#plan").find("ul.selected").removeClass('selected');
+			/*added class to highlight the selected package*/
+			$target.parents('ul').addClass('selected');
+			/*fetch category as per selected price package*/
+			jQuery('#submit_category_box').css('opacity','0.5');
+			jQuery('#submit_category_box').addClass('overlay_opacity');
+			var submit_from = jQuery('form#post').serialize();
+			/*fetch selected price package featured option*/
+			jQuery.ajax({
+				url:ajaxUrl,
+				type:'POST',
+				async: true,
+				data:'pkg_subscribed='+pkg_subscribed+'&' + submit_from+'&action=tmpl_tevolution_submit_from_package_featured_option',
+				success:function(results){
+					if(jQuery('#package_free_submission').val() <= 0 || jQuery('#package_free_submission').val() == '' || upgrade == 'upgrade' )
 					{
-						if(parseFloat(myStringArray[8] ) > 0 || myStringArray[1] > 0 ||  myStringArray[0] > 0 || myStringArray[4] > 0){
-							if(parseFloat(document.getElementById('all_cat_price').value) > 0)
-							{
-								document.getElementById('cat_price').style.display = "";
-								document.getElementById('cat_price_id').style.display = "";
-								document.getElementById('before_cat_price_id').style.display = "";
-								document.getElementById('pakg_add').style.display = "";
-							}
-							else
-							{
-								document.getElementById('cat_price').style.display = "none";
-								document.getElementById('cat_price_id').style.display = "none";
-								document.getElementById('before_cat_price_id').style.display = "none";
-								document.getElementById('pakg_add').style.display = "none";
-							}
-							if(myStringArray[4] > 0)
-							{
-								document.getElementById('before_pkg_price_id').style.display = "";
-								document.getElementById('pkg_price').style.display = "";
-								document.getElementById('pkg_price_id').style.display = "";
-							}
-							else
-							{
-								document.getElementById('before_pkg_price_id').style.display = "none";
-								document.getElementById('pkg_price').style.display = "none";
-								document.getElementById('pkg_price_id').style.display = "none";
-								document.getElementById('pakg_add').style.display = "none";
-							}
-							if(document.getElementById("all_cat_price").value > 0)
-							{
-								document.getElementById('cat_price_total_price').style.display = "";
-							}
-							document.getElementById('price_package_price_list').style.display = "block";
-							
-						}
-					}
-					else
-					{
-						if(parseFloat(document.getElementById('all_cat_price').value) > 0)
+						jQuery('#show_featured_option').css('display','block');
+						jQuery('div#show_featured_option').html(results);
+						if(parseFloat(jQuery('#total_price').val()) >0)
 						{
-							document.getElementById('cat_price').style.display = "";
-							document.getElementById('cat_price_id').style.display = "";
-							document.getElementById('before_cat_price_id').style.display = "";
-							document.getElementById('pakg_add').style.display = "";
+							jQuery('#submit_coupon_code').css('display','block');
+							jQuery('#price_package_price_list').css('display','block');
 						}
 						else
 						{
-							document.getElementById('cat_price').style.display = "none";
-							document.getElementById('cat_price_id').style.display = "none";
-							document.getElementById('before_cat_price_id').style.display = "none";
-							document.getElementById('pakg_add').style.display = "none";
-						}
-						if(myStringArray[4] > 0)
-						{
-							document.getElementById('before_pkg_price_id').style.display = "";
-							document.getElementById('pkg_price').style.display = "";
-							document.getElementById('pkg_price_id').style.display = "";
-							document.getElementById('pakg_add').style.display = "";
-						}
-						else
-						{
-							document.getElementById('before_pkg_price_id').style.display = "none";
-							document.getElementById('pkg_price').style.display = "none";
-							document.getElementById('pkg_price_id').style.display = "none";
-							document.getElementById('pakg_add').style.display = "none";
-						}
-						if(document.getElementById("all_cat_price").value > 0)
-						{
-							document.getElementById('cat_price_total_price').style.display = "";
-						}
-						document.getElementById('price_package_price_list').style.display = 'block';
-					}
-				}
-				else
-				{
-					if(parseFloat(document.getElementById('all_cat_price').value) > 0)
-					{
-						document.getElementById('cat_price').style.display = "";
-						document.getElementById('cat_price_id').style.display = "";
-						document.getElementById('before_cat_price_id').style.display = "";
-						document.getElementById('price_package_price_list').style.display = 'block';
-						document.getElementById('cat_price_total_price').style.display = "";
-						document.getElementById('pakg_add').style.display = "";
-					}
-					else
-					{
-						document.getElementById('cat_price').style.display = "none";
-						document.getElementById('cat_price_id').style.display = "none";
-						document.getElementById('before_cat_price_id').style.display = "none";
-						document.getElementById('price_package_price_list').style.display = 'none';
-						document.getElementById('cat_price_total_price').style.display = "none";
-						document.getElementById('pakg_add').style.display = "none";
-					}
-				}
-			}
-			if(document.getElementById('moderate_comment'))
-			{
-				if(myStringArray[7] == 1 && (parseFloat(myStringArray[8]) > 0 )){
-					document.getElementById('moderate_comment').style.display = "block";
-				}
-				else
-				{
-					document.getElementById('moderate_comment').style.display = "none";
-				}
-			}
-			document.getElementById('featured_c').value = myStringArray[1];
-			document.getElementById('featured_h').value = myStringArray[0];
-			
-			if(document.getElementById('author_can_moderate_comment'))
-				document.getElementById('author_can_moderate_comment').value = myStringArray[8];
-			
-			var positionof = '<?php echo get_option('currency_pos'); ?>';
-			var ftrhome_value = '';
-			var ftrhome_currency_symbol = '';
-			var ftrcat_value = '';
-			var ftrcat_currency_symbol = '';
-			if(myStringArray[0] <=0)
-			{
-				ftrhome_value = '<?php _e('Free',DOMAIN); ?>';
-			}
-			else
-			{
-				ftrhome_value = addCurrencyFormate(parseFloat(myStringArray[0]).toFixed(2));
-				ftrhome_currency_symbol = '<?php echo tmpl_fetch_currency();?>';
-			}
-			if(myStringArray[1] <=0)
-			{
-				ftrcat_value = '<?php _e('Free',DOMAIN); ?>';
-				ftrcat_currency_symbol = '';
-			}
-			else
-			{
-				ftrcat_value = addCurrencyFormate(parseFloat(myStringArray[1]).toFixed(2));
-				ftrcat_currency_symbol = '<?php echo tmpl_fetch_currency();?>';
-			}
-			
-			if(positionof == 1){ 
-			
-			document.getElementById('ftrhome').innerHTML = "("+ftrhome_currency_symbol+ftrhome_value+")";
-			document.getElementById('ftrcat').innerHTML = "("+ftrcat_currency_symbol+ftrcat_value+")";
-			if(document.getElementById('ftrcomnt'))
-			{
-				document.getElementById('ftrcomnt').innerHTML =  "(<?php echo tmpl_fetch_currency();?>"+addCurrencyFormate(parseFloat(myStringArray[8]).toFixed(2))+")";
-			}
-			}else if(positionof == 2){
-			document.getElementById('ftrhome').innerHTML = "("+ftrhome_currency_symbol+' '+ftrhome_value+")";
-			document.getElementById('ftrcat').innerHTML = "("+ftrcat_currency_symbol+' '+ftrcat_value+")";
-			if(document.getElementById('ftrcomnt'))
-			{
-				document.getElementById('ftrcomnt').innerHTML = "(<?php echo tmpl_fetch_currency(get_option('currency_symbol'),'currency_symbol');?> "+myStringArray[8]+")";
-			}
-			}else if(positionof == 3){
-			document.getElementById('ftrhome').innerHTML = "("+ftrhome_value+ftrhome_currency_symbol+")";
-			document.getElementById('ftrcat').innerHTML = "("+ftrcat_value+ftrcat_currency_symbol+")";
-			if(document.getElementById('ftrcomnt'))
-			{
-				document.getElementById('ftrcomnt').innerHTML = "("+myStringArray[8]+" <?php echo tmpl_fetch_currency();?>)";
-			}
-			}else{
-			document.getElementById('ftrhome').innerHTML = "("+ftrhome_value+' '+ftrhome_currency_symbol +")";
-			document.getElementById('ftrcat').innerHTML = "("+ftrcat_value+' '+ftrcat_currency_symbol+")";
-			if(document.getElementById('ftrcomnt'))
-			{
-				document.getElementById('ftrcomnt').innerHTML = "("+myStringArray[8]+" <?php echo tmpl_fetch_currency();?>)";
-			}
-			}
-			if(document.getElementById('pkg_price'))
-				document.getElementById('pkg_price').innerHTML = addCurrencyFormate(parseFloat(myStringArray[4]).toFixed(2));
-		}else{
-			if(document.getElementById('moderate_comment'))
-			{
-				if(myStringArray[7] == 1 && ( parseFloat(myStringArray[8]) > 0 )){
-					document.getElementById('moderate_comment').style.display = "";
-					document.getElementById('ftrcomnt').innerHTML =  "("+myStringArray[8]+" <?php echo tmpl_fetch_currency();?>)";
-					if(document.getElementById('author_can_moderate_comment'))
-						document.getElementById('author_can_moderate_comment').value = myStringArray[8];
-				}
-				else
-				{
-					document.getElementById('moderate_comment').style.display = "none";
-				}
-			}
-			if(document.getElementById('price_package_price_list'))
-			{
-				if(myStringArray[1] > 0 ||  myStringArray[0] > 0 || myStringArray[4] > 0 )
-				{
-					if(document.getElementById('moderate_comment'))
-					{
-						if(parseFloat(myStringArray[8]) > 0 || myStringArray[1] > 0 ||  myStringArray[0] > 0 || myStringArray[4] > 0 ){
-						
-							if(parseFloat(document.getElementById('all_cat_price').value) > 0)
-							{
-								document.getElementById('cat_price').style.display = "";
-								document.getElementById('cat_price_id').style.display = "";
-								document.getElementById('before_cat_price_id').style.display = "";
-								document.getElementById('pakg_add').style.display = "";
-							}
-							else
-							{
-								document.getElementById('cat_price').style.display = "none";
-								document.getElementById('cat_price_id').style.display = "none";
-								document.getElementById('before_cat_price_id').style.display = "none";
-								document.getElementById('pakg_add').style.display = "none";
-							}
-							
-							if(myStringArray[4] > 0)
-							{
-								document.getElementById('before_pkg_price_id').style.display = "";
-								document.getElementById('pkg_price').style.display = "";
-								document.getElementById('pkg_price_id').style.display = "";
-							}
-							else
-							{
-								document.getElementById('before_pkg_price_id').style.display = "none";
-								document.getElementById('pkg_price').style.display = "none";
-								document.getElementById('pkg_price_id').style.display = "none";
-							}
-							if(document.getElementById("all_cat_price").value > 0)
-							{
-								document.getElementById('cat_price_total_price').style.display = "";
-							}
-							document.getElementById('price_package_price_list').style.display = "block";
+							jQuery('#submit_coupon_code').css('display','none');
+							jQuery('#price_package_price_list').css('display','none');
 						}
 					}
-					else
-					{
-						if(parseFloat(document.getElementById('all_cat_price').value) > 0)
-						{
-							document.getElementById('cat_price').style.display = "";
-							document.getElementById('cat_price_id').style.display = "";
-							document.getElementById('before_cat_price_id').style.display = "";
-							document.getElementById('pakg_add').style.display = "";
-							document.getElementById('cat_price_total_price').style.display = "";
-						}
-						else
-						{
-							document.getElementById('cat_price').style.display = "none";
-							document.getElementById('cat_price_id').style.display = "none";
-							document.getElementById('before_cat_price_id').style.display = "none";
-							document.getElementById('pakg_add').style.display = "none";
-							document.getElementById('cat_price_total_price').style.display = "none";
-						}
-						if(myStringArray[4] > 0)
-						{
-							document.getElementById('before_pkg_price_id').style.display = "";
-							document.getElementById('pkg_price').style.display = "";
-							document.getElementById('pkg_price_id').style.display = "";
-						}
-						else
-						{
-							document.getElementById('before_pkg_price_id').style.display = "none";
-							document.getElementById('pkg_price').style.display = "none";
-							document.getElementById('pkg_price_id').style.display = "none";
-						}
-						document.getElementById('price_package_price_list').style.display = 'block';
-					}
-				}
-				else
-				{
-					if(parseFloat(document.getElementById('all_cat_price').value) > 0)
-					{
-						document.getElementById('cat_price').style.display = "";
-						document.getElementById('cat_price_id').style.display = "";
-						document.getElementById('before_cat_price_id').style.display = "";
-						document.getElementById('price_package_price_list').style.display = 'block';
-					}
-					else
-					{
-						document.getElementById('cat_price').style.display = "none";
-						document.getElementById('cat_price_id').style.display = "none";
-						document.getElementById('before_cat_price_id').style.display = "none";
-						document.getElementById('price_package_price_list').style.display = 'none';
-					}
-				}
-			}
-			if(document.getElementById('pkg_price')){
-				document.getElementById('pkg_price').innerHTML = addCurrencyFormate(parseFloat(myStringArray[4]).toFixed(2));
-			}
-			if(document.getElementById('featured_c')){
-				document.getElementById('featured_c').value=0;
-			}
-			if(document.getElementById('ftrcat')){
-				document.getElementById('ftrcat').innerHTML	= '<?php _e('Free',DOMAIN); ?>';	
-			}	
-			
-			document.getElementById('featured_h').value=0;
-			if(document.getElementById('ftrhome')){
-				document.getElementById('ftrhome').innerHTML = '<?php _e('Free',DOMAIN); ?>';
-			}
-			if(document.getElementById('is_featured')){
-				document.getElementById('is_featured').style.display = "none"; 
-			}
-			
-			document.getElementById('total_price').value = parseFloat(myStringArray[0]) + parseFloat(myStringArray[1]) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(myStringArray[4]);
-			document.getElementById('result_price').innerHTML = addCurrencyFormate((parseFloat(myStringArray[0]) + parseFloat(myStringArray[1]) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(myStringArray[4])).toFixed(2));
-		
-		}		
-		
-		if((document.getElementById('featured_h').checked== true) && (document.getElementById('featured_c').checked== true))
-		{			
-			if(myStringArray[0]==""){myStringArray[0]=0}else{myStringArray[0]=myStringArray[0];}
-			if(myStringArray[1]==""){myStringArray[1]=0}else{myStringArray[1]=myStringArray[1];}
-			
-			var myStringArray1 = parseFloat(myStringArray[0]);
-			var myStringArray2 = parseFloat(myStringArray[1]);
-			var myStringArray4 = parseFloat(myStringArray[4]);
-			var myStringArrayNum = isNaN(myStringArray1) ? 0.0 : myStringArray1;
-			var myStringArrayNum2 = isNaN(myStringArray2) ? 0.0 : myStringArray2;
-			var myStringArrayNum4 = isNaN(myStringArray4) ? 0.0 : myStringArray4;
-			document.getElementById('feture_price').innerHTML = addCurrencyFormate((parseFloat(myStringArrayNum) + parseFloat(myStringArrayNum2)).toFixed(2));
-			
-			document.getElementById('total_price').value = (parseFloat(myStringArrayNum) + parseFloat(myStringArrayNum2) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(myStringArrayNum4)).toFixed(2);
-			
-			document.getElementById('result_price').innerHTML = addCurrencyFormate((parseFloat(myStringArrayNum) + parseFloat(myStringArrayNum2) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(myStringArrayNum4)).toFixed(2));
-			
-			
-		}else if((document.getElementById('featured_h').checked == true) && (document.getElementById('featured_c').checked == false)){
-			if(myStringArray[0]==""){myStringArray[0]=0}else{myStringArray[0]=myStringArray[0];}			
-			document.getElementById('feture_price').innerHTML = addCurrencyFormate(parseFloat(myStringArray[0]).toFixed(2));
-			
-			document.getElementById('total_price').value = (parseFloat(document.getElementById('feture_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(myStringArray[4])).toFixed(2);
-			document.getElementById('result_price').innerHTML = addCurrencyFormate((parseFloat(document.getElementById('feture_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(myStringArray[4])).toFixed(2));
-			
-		}else if((document.getElementById('featured_h').checked == false) && (document.getElementById('featured_c').checked == true)){
-			if(myStringArray[1]==""){myStringArray[1]=0}else{myStringArray[1]=myStringArray[1];}
-			document.getElementById('feture_price').innerHTML = addCurrencyFormate(parseFloat(myStringArray[1]).toFixed(2));
-			document.getElementById('total_price').value = (parseFloat(document.getElementById('feture_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(myStringArray[4])).toFixed(2);
-			document.getElementById('result_price').innerHTML =  addCurrencyFormate((parseFloat(document.getElementById('feture_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(myStringArray[4])).toFixed(2));
-		}else if((document.getElementById('author_can_moderate_comment')) && (document.getElementById('author_can_moderate_comment').checked == false) && (document.getElementById('author_can_moderate_comment').checked == true)){
-			if(myStringArray[8]==""){myStringArray[8]=0}else{myStringArray[8]=myStringArray[8];}
-			var ftrcomnt = 0;
-			if(document.getElementById('ftrcomnt'))
-			{
-				document.getElementById('ftrcomnt').innerHTML = parseFloat(myStringArray[8]).toFixed(2);
-				ftrcomnt = parseFloat(myStringArray[8]);
-			}
-			document.getElementById('total_price').value = (parseFloat(document.getElementById('feture_price').innerHTML.replace(',','')) +  parseFloat(ftrcomnt) + parseFloat(myStringArray[8])).toFixed(2);
-			
-			document.getElementById('result_price').innerHTML =  addCurrencyFormate(parseFloat(document.getElementById('feture_price').innerHTML.replace(',','')).toFixed(2) +  parseFloat(ftrcomnt).toFixed(2) + parseFloat(myStringArray[8]).toFixed(2));
-		}
-		else{			
-			document.getElementById('total_price').value = (parseFloat(document.getElementById('feture_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(myStringArray[4])).toFixed(2);
-			
-			document.getElementById('result_price').innerHTML = addCurrencyFormate((parseFloat(document.getElementById('feture_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(myStringArray[4])).toFixed(2));
-		}
-		if(document.getElementById('submit_coupon_code') && document.getElementById('total_price').value > 0)
-		{
-			document.getElementById('submit_coupon_code').style.display='';
-		}
-		else
-		{
-			if(document.getElementById('submit_coupon_code'))
-			{
-				document.getElementById('submit_coupon_code').style.display='none';
-			}
-		}
-		if(document.getElementById('category_can_select') && document.getElementById('moderate_comment')){
-				document.getElementById('category_can_select').value = myStringArray[9];
-		}
-		if(document.getElementById('category_can_select') ){
-				document.getElementById('category_can_select').value = myStringArray[7];
-		}
-	  } 
-	  }
-	  url="<?php echo TEMPL_PLUGIN_URL;?>/tmplconnector/monetize/templatic-monetization/ajax_price.php?pkid="+pkid
-	  xmlhttp.open("GET",url,true);
-	  xmlhttp.send();
-	 
-}
-/*
-Name :fetch_packages
-Description : Rerun package details and category pricing( term_price for category ) USE THIE IF IN FUTURE WE are going to give categorywise pricing
-*/
-function fetch_packages(pkgid,form,pri)
-{ 
-	var total = 0;
-	var t=0;
-	if(pkgid != '')
-	{
-		document.getElementById("category_error").style.display = 'none';
-	}
-	<?php $tmpdata = get_option('templatic_settings'); ?>
-     var cat_display = '<?php echo $tmpdata['templatic-category_type']; ?>';
-	var cat_wise_display = '<?php echo $tmpdata['templatic-category_custom_fields']; ?>';
-	var is_post_upgrade = '<?php echo @$_REQUEST['upgpkg']; ?>';
-	var is_fronted_edit=(jQuery('.frontend_edit_submit_cat').val())? jQuery('.frontend_edit_submit_cat').val() : '';	
-	var dml = document.forms['submit_form'];
-	var c = document.getElementsByName('category[]');
-	
-	var cats = document.getElementById('all_cat').value;
-	if(document.getElementById('all_cat')){
-		document.getElementById('all_cat').value = "";
-	}
-	if(document.getElementById('all_cat_price')){
-		document.getElementById('all_cat_price').value = 0;
-	}		
-	if(document.getElementById('cat_price')){
-		document.getElementById('cat_price').innerHTML = 0;
-	}
-	
-	if(document.getElementById('all_cat_price').value <= 0)
-	{
-		if(document.getElementById('before_cat_price_id')){
-			document.getElementById('before_cat_price_id').style.display = "none";
-		
-		document.getElementById('cat_price').style.display = "none";
-		
-		document.getElementById('cat_price_id').style.display = "none";
-		
-		document.getElementById('pakg_add').style.display = "none";
-		
-		document.getElementById('cat_price_total_price').style.display = "none";
-		}
-	}
-	
-	if(cat_display =='checkbox' || cat_display==''){
-		for(var i=0;i<c.length;i++){
-			c[i].checked?t++:null;
-			if(c[i].checked)
-			{	
-				var a = c[i].value.split(",");
-				
-				document.getElementById('all_cat').value += a[0]+"|";
-				
-				
-				document.getElementById('all_cat_price').value = parseFloat(document.getElementById('all_cat_price').value) + parseFloat(a[1]);
-				
-				document.getElementById('cat_price').innerHTML = addCurrencyFormate(parseFloat(document.getElementById('all_cat_price').value).toFixed(2));
-			}
-			if(document.getElementById('all_cat_price').value > 0)
-			{
-				if(document.getElementById('before_cat_price_id')){
-				document.getElementById('before_cat_price_id').style.display = "";
-				
-				
-				
-				document.getElementById('pakg_add').style.display = "";
-				
-				document.getElementById('cat_price_total_price').style.display = "";
-				document.getElementById('cat_price_id').style.display = "";
-				}
-				document.getElementById('cat_price').style.display = "";				
-				
-			}
-			else
-			{
-				if( document.getElementById('before_cat_price_id') ){
-					document.getElementById('before_cat_price_id').style.display = "none";
-				}
-				if( document.getElementById('cat_price') ){
-					document.getElementById('cat_price').style.display = "none";
-				}
-				if( document.getElementById('cat_price_id') ){				
-					document.getElementById('cat_price_id').style.display = "none";
-				}
-			}
-				if(document.getElementById('pkg_price'))
-				{
-					document.getElementById('total_price').value =  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('feture_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',',''));
-					
-					document.getElementById('result_price').innerHTML =  addCurrencyFormate((parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('feture_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',',''))).toFixed(2));
-				}else
-				{
-					document.getElementById('total_price').value =  parseFloat(document.getElementById('all_cat_price').value) ;
-					
-					document.getElementById('result_price').innerHTML =  addCurrencyFormate(parseFloat(document.getElementById('all_cat_price').value).toFixed(2)) ;
-				}
-		}
-		if(document.getElementById('price_package_price_list')){
-			if(document.getElementById('all_cat_price').value > 0)
-			{
-				document.getElementById('price_package_price_list').style.display = 'block';
-			}
-			else
-			{
-				document.getElementById('price_package_price_list').style.display = 'none';
-			}
-		}
-	}else{		
-		if(cat_display == 'select'){
-			var s = document.getElementById('select_category'); /* var is use for select box */
-			if(s.options[s.selectedIndex].value){
-					var a = s.options[s.selectedIndex].value.split(",");
-					document.getElementById('all_cat').value += a[0]+"|";
-					document.getElementById('all_cat_price').value = parseFloat(document.getElementById('all_cat_price').value) + parseFloat(a[1]);
-					document.getElementById('cat_price').innerHTML = addCurrencyFormate(parseFloat(document.getElementById('all_cat_price').value).toFixed(2));
-			}
-			
-			if(document.getElementById('all_cat_price').value > 0)
-			{
-				if(document.getElementById('before_cat_price_id')){
-					document.getElementById('before_cat_price_id').style.display = "";
-					document.getElementById('pakg_add').style.display = "";
-					document.getElementById('cat_price_total_price').style.display = "";
-					document.getElementById('cat_price_id').style.display = "";
-				}
-				document.getElementById('cat_price').style.display = "";
-			}
-			else
-			{
-				if( document.getElementById('before_cat_price_id') ){
-					document.getElementById('before_cat_price_id').style.display = "none";
-				}
-				if( document.getElementById('cat_price') ){
-					document.getElementById('cat_price').style.display = "none";
-				}
-				if( document.getElementById('cat_price_id') ){				
-					document.getElementById('cat_price_id').style.display = "none";
-				}
-			}
-			document.getElementById('total_price').value = (parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('feture_price').innerHTML.replace(',','')) + parseFloat(document.getElementById('pkg_price').innerHTML.replace(',',''))).toFixed(2);			
-			document.getElementById('result_price').innerHTML = addCurrencyFormate((parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('feture_price').innerHTML.replace(',','')) + parseFloat(document.getElementById('pkg_price').innerHTML.replace(',',''))).toFixed(2));
-			
-		}else if(cat_display == 'multiselectbox'){
-			var s = document.getElementById('select_category'); /* var is use for select box */
-			
-			for(var i=0;i < s.options.length;i++){
-				s.options[i].selected?t++:null;
-				
-				if(s.options[ i ].selected){
-						var a = s.options[ i ].value.split(",");
-						document.getElementById('all_cat').value += a[0]+"|";
-						document.getElementById('all_cat_price').value = parseFloat(document.getElementById('all_cat_price').value) + parseFloat(a[1]);
-						document.getElementById('cat_price').innerHTML = addCurrencyFormate(parseFloat(document.getElementById('all_cat_price').value).toFixed(2));
-				}
-				if(document.getElementById('all_cat_price').value > 0)
-				{
-					if(document.getElementById('before_cat_price_id')){
-						document.getElementById('before_cat_price_id').style.display = "";
-						document.getElementById('pakg_add').style.display = "";
-						document.getElementById('cat_price_total_price').style.display = "";
-						document.getElementById('cat_price_id').style.display = "";
-					}
-					document.getElementById('cat_price').style.display = "";
-				}
-				else
-				{
-					if( document.getElementById('before_cat_price_id') ){
-						document.getElementById('before_cat_price_id').style.display = "none";
-					}
-					if( document.getElementById('cat_price') ){
-						document.getElementById('cat_price').style.display = "none";
-					}
-					if( document.getElementById('cat_price_id') ){				
-						document.getElementById('cat_price_id').style.display = "none";
-					}
-				}
-				
-				document.getElementById('total_price').value = (parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('feture_price').innerHTML.replace(',','')) + parseFloat(document.getElementById('pkg_price').innerHTML.replace(',',''))).toFixed(2);			
-				document.getElementById('result_price').innerHTML = addCurrencyFormate((parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('feture_price').innerHTML.replace(',','')) + parseFloat(document.getElementById('pkg_price').innerHTML.replace(',',''))).toFixed(2));
-			}
-		}
-	}
-	if(document.getElementById('total_price').value=='' || document.getElementById('total_price').value==0 ){
-		document.getElementById('price_package_price_list').style.display = "none";
-	}
-	var cats = document.getElementById('all_cat').value;
-	var post_type = document.getElementById('cur_post_type').value ;
-	var taxonomy = document.getElementById('cur_post_taxonomy').value ;
-	/* Below code is for category wise packages */
-	if(cat_wise_display == 'No' || is_post_upgrade== 1 || is_fronted_edit==1)
-	 {
-		document.getElementById("packages_checkbox").innerHTML="";
-		if(document.getElementById("process2"))
-		{
-	    	document.getElementById("process2").style.visibility ="";
-		}
-	 
-		if (window.XMLHttpRequest)
-		  {// code for IE7+, Firefox, Chrome, Opera, Safari
-		  xmlhttp=new XMLHttpRequest();
-		  }
-			else
-		  {// code for IE6, IE5
-		  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		  }
-			xmlhttp.onreadystatechange=function()
-		  {
-			if (xmlhttp.readyState==4 && xmlhttp.status==200)
-			{
-			document.getElementById("packages_checkbox").innerHTML =xmlhttp.responseText;
-			if(document.getElementById("process2"))
-			{
-				document.getElementById("process2").style.visibility ="hidden";
-			}
-			}
-		  }
-		  <?php
-		$language='';
-		if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')){
-			global $sitepress;
-			$current_lang_code= ICL_LANGUAGE_CODE;
-			$language="&language=".$current_lang_code;
-		}
-		if(isset($_REQUEST['upgpkg']) && $_REQUEST['upgpkg']==1 && isset($_REQUEST['pid']) && $_REQUEST['pid']!=""){
-			$language.='&upgpkg=1&pid='.$_REQUEST['pid'];	
-		}
-		
-		?>		
-		  url="<?php echo TEMPL_PLUGIN_URL;?>/tmplconnector/monetize/templatic-monetization/ajax_price.php?pckid="+cats+"&post_type="+post_type+"&taxonomy="+taxonomy+"<?php echo $language;?>";
-		  xmlhttp.open("GET",url,true);
-		  xmlhttp.send();
-	 }
-}
-/*
-Name :templ_all_categories
-Description : function return the result when all categories selected
-*/
-function templ_all_categories(cp_price) {
-	var total = 0;
-	var t=0;
-	//var c= form['category[]'];
-	var dml = document.forms['submit_form'];
-	var c = dml.elements['category[]'];
-	var selectall = dml.elements['selectall'];
-	if(selectall.checked == false){
-		cp_price = 0;
-	} else {
-		cp_price = cp_price;
-	}
-	if(document.getElementById('price_package_price_list')){
-		if(cp_price > 0)
-		{
-			document.getElementById('price_package_price_list').style.display = 'block';
-		}
-		else
-		{
-			document.getElementById('price_package_price_list').style.display = 'none';
-		}
-	}
-	var post_type = document.getElementById('cur_post_type').value ;
-	var taxonomy = document.getElementById('cur_post_taxonomy').value ;
-	var cats = document.getElementById('all_cat').value;
-	document.getElementById('all_cat').value = "";
-	document.getElementById('all_cat_price').value = 0;
-	document.getElementById('feture_price').innerHTML = 0;
-	document.getElementById('cat_price').innerHTML = 0;
-	
-		for(var i=0 ;i < c.length;i++){
-		c[i].checked?t++:null;
-		if(c[i].checked){	
-			var a = c[i].value.split(",");
-			if(i ==  (c.length - 1) ){
-				document.getElementById('all_cat').value += a[0];
-			} else {
-				document.getElementById('all_cat').value += a[0]+"|";
-			}
-		}
-	}
-	document.getElementById('all_cat_price').value = parseFloat(cp_price);
-	document.getElementById('cat_price').innerHTML = parseFloat(document.getElementById('all_cat_price').value);
-	document.getElementById('total_price').value =  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('feture_price').innerHTML) +  parseFloat(document.getElementById('pkg_price').innerHTML);
-	document.getElementById('result_price').innerHTML =  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('feture_price').innerHTML) +  parseFloat(document.getElementById('pkg_price').innerHTML);
-	
-	var cats = document.getElementById('all_cat').value ;
-	
-	  document.getElementById("packages_checkbox").innerHTML="";
-	  if(document.getElementById("process2")){
-		document.getElementById("process2").style.visibility ="";
-		}
-	  if (window.XMLHttpRequest)
-	  {// code for IE7+, Firefox, Chrome, Opera, Safari
-	  xmlhttp=new XMLHttpRequest();
-	  }
-		else
-	  {// code for IE6, IE5
-	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	  }
-		xmlhttp.onreadystatechange=function()
-	  {
-	    if (xmlhttp.readyState==4 && xmlhttp.status==200)
-		{
-		document.getElementById("packages_checkbox").innerHTML =xmlhttp.responseText;
-			if(document.getElementById("process2"))
-			{
-			document.getElementById("process2").style.visibility ="hidden";
-			}
-		}
-	  }	  
-	   url="<?php echo TEMPL_PLUGIN_URL;?>/tmplconnector/monetize/templatic-monetization/ajax_price.php?pckid="+cats+"&post_type="+post_type+"&taxonomy="+taxonomy
-	  xmlhttp.open("GET",url,true);
-	  xmlhttp.send();	
-	}
-	
-	function myfields(fid)
-{
-	document.getElementById(fid+'_hidden').value = document.getElementById(fid).value;
-}
-/*
-Name :featured_list
-Description : function return the result after user select feature listing type(check box)
-*/
-function featured_list(fid)
-{
-
-	<?php 
-	if(is_plugin_active('thoughtful-comments/fv-thoughtful-comments.php')){
-	?>
-	if((document.getElementById('featured_h').checked== true) && (document.getElementById('featured_c').checked== true) && (document.getElementById('author_can_moderate_comment').checked == true))
-	{
-		document.getElementById('featured_type').value = 'both';
-		document.getElementById('author_moderate').value = '1';
-		var totprice = parseFloat(document.getElementById('featured_c').value) + parseFloat(document.getElementById('featured_h').value) + parseFloat(document.getElementById('author_can_moderate_comment').value);
-		var resprice = parseFloat(document.getElementById('featured_c').value) + parseFloat(document.getElementById('featured_h').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('author_can_moderate_comment').value);
-		document.getElementById('feture_price').innerHTML = addCurrencyFormate(totprice.toFixed(2));
-		document.getElementById('result_price').innerHTML = addCurrencyFormate(resprice.toFixed(2));
-		document.getElementById('total_price').value = (parseFloat(document.getElementById('featured_c').value) + parseFloat(document.getElementById('featured_h').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('author_can_moderate_comment').value)).toFixed(2);
-	
-	}else if((document.getElementById('featured_h').checked == true) && (document.getElementById('featured_c').checked == false) && (document.getElementById('author_can_moderate_comment').checked == true)){
-		document.getElementById('featured_type').value = 'h';
-		document.getElementById('author_moderate').value = '1';
-		document.getElementById('feture_price').innerHTML = addCurrencyFormate((parseFloat(document.getElementById('featured_h').value) + parseFloat(document.getElementById('author_can_moderate_comment').value)).toFixed(2));
-		
-		document.getElementById('result_price').innerHTML = addCurrencyFormate((parseFloat(document.getElementById('featured_h').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('author_can_moderate_comment').value)).toFixed(2));
-		
-		document.getElementById('total_price').value = (parseFloat(document.getElementById('featured_h').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('author_can_moderate_comment').value)).toFixed(2);
-	}else if((document.getElementById('featured_h').checked == false) && (document.getElementById('featured_c').checked == true) && (document.getElementById('author_can_moderate_comment').checked == true)){
-		document.getElementById('author_moderate').value = '1';
-		document.getElementById('featured_type').value = 'c';
-		document.getElementById('feture_price').innerHTML = addCurrencyFormate((parseFloat(parseFloat(document.getElementById('featured_c').value) + parseFloat(document.getElementById('author_can_moderate_comment').value))).toFixed(2));
-		
-		document.getElementById('result_price').innerHTML = addCurrencyFormate((parseFloat(document.getElementById('featured_c').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('author_can_moderate_comment').value)).toFixed(2));
-		
-		document.getElementById('total_price').value = (parseFloat(document.getElementById('featured_c').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('author_can_moderate_comment').value)).toFixed(2);
-		
-	}else if((document.getElementById('featured_h').checked == false) && (document.getElementById('featured_c').checked == false) && (document.getElementById('author_can_moderate_comment').checked == true)){
-		document.getElementById('author_moderate').value = '1';
-		document.getElementById('featured_type').value = '';
-		document.getElementById('feture_price').innerHTML = addCurrencyFormate(( parseFloat(document.getElementById('author_can_moderate_comment').value)).toFixed(2));
-		
-		document.getElementById('result_price').innerHTML = addCurrencyFormate((parseFloat(document.getElementById('featured_c').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('author_can_moderate_comment').value)).toFixed(2));
-		
-		document.getElementById('total_price').value = (parseFloat(document.getElementById('featured_c').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('author_can_moderate_comment').value)).toFixed(2);		
-	}
-	
-	if((document.getElementById('featured_h').checked== true) && (document.getElementById('featured_c').checked== true) && (document.getElementById('author_can_moderate_comment').checked == false))
-	{
-		document.getElementById('author_moderate').value = '0';
-		document.getElementById('featured_type').value = 'both';
-		var totprice = parseFloat(document.getElementById('featured_c').value) + parseFloat(document.getElementById('featured_h').value) ;
-		var resprice = parseFloat(document.getElementById('featured_c').value) + parseFloat(document.getElementById('featured_h').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value);
-		document.getElementById('feture_price').innerHTML = addCurrencyFormate(totprice.toFixed(2));
-		document.getElementById('result_price').innerHTML = addCurrencyFormate(resprice.toFixed(2));
-		
-		document.getElementById('total_price').value = (parseFloat(document.getElementById('featured_c').value) + parseFloat(document.getElementById('featured_h').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')).innerHTML) +  parseFloat(document.getElementById('all_cat_price').value).toFixed(2);
-	
-	}else if((document.getElementById('featured_h').checked == true) && (document.getElementById('featured_c').checked == false) && (document.getElementById('author_can_moderate_comment').checked == false)){
-		document.getElementById('author_moderate').value = '0';
-		document.getElementById('featured_type').value = 'h';
-		document.getElementById('feture_price').innerHTML = addCurrencyFormate(parseFloat(document.getElementById('featured_h').value).toFixed(2));
-		
-		document.getElementById('result_price').innerHTML = addCurrencyFormate((parseFloat(document.getElementById('featured_h').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value)).toFixed(2));
-		
-		document.getElementById('total_price').value = (parseFloat(document.getElementById('featured_h').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value)).toFixed(2);
-	}else if((document.getElementById('featured_h').checked == false) && (document.getElementById('featured_c').checked == true) && (document.getElementById('author_can_moderate_comment').checked == false)){
-		document.getElementById('featured_type').value = 'c';
-		document.getElementById('author_moderate').value = '0';
-		document.getElementById('feture_price').innerHTML = addCurrencyFormate(parseFloat(document.getElementById('featured_c').value).toFixed(2));
-		
-		document.getElementById('result_price').innerHTML = addCurrencyFormate((parseFloat(document.getElementById('featured_c').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value)).toFixed(2));
-		
-		document.getElementById('total_price').value = (parseFloat(document.getElementById('featured_c').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value)).toFixed(2);
-		
-	}
-	else if((document.getElementById('featured_h').checked == false) && (document.getElementById('featured_c').checked == false) && (document.getElementById('author_can_moderate_comment').checked == true)){
-		document.getElementById('author_moderate').value = '1';
-		document.getElementById('feture_price').innerHTML =  addCurrencyFormate(parseFloat(document.getElementById('author_can_moderate_comment').value).toFixed(2));
-		
-		document.getElementById('result_price').innerHTML = addCurrencyFormate((parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('author_can_moderate_comment').value)).toFixed(2));
-		
-		document.getElementById('total_price').value = parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value) + parseFloat(document.getElementById('author_can_moderate_comment').value);
-	}
-	else if((document.getElementById('featured_h').checked == false) && (document.getElementById('featured_c').checked == false) && (document.getElementById('author_can_moderate_comment').checked == false)){
-		document.getElementById('author_moderate').value = '0';
-		document.getElementById('featured_type').value = 'n';
-		document.getElementById('feture_price').innerHTML = '0';
-		document.getElementById('result_price').innerHTML = addCurrencyFormate((parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value)).toFixed(2));
-		
-		document.getElementById('total_price').value = (parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value)).toFixed(2);
-	}
+				},
+			});
+		});
+	});
 	<?php
-	}
-	else
-	{
-	?>
-		if((document.getElementById('featured_h').checked== true) && (document.getElementById('featured_c').checked== true))
-	{
-		document.getElementById('featured_type').value = 'both';
-		var totprice = parseFloat(document.getElementById('featured_c').value) + parseFloat(document.getElementById('featured_h').value);
-		var resprice = parseFloat(document.getElementById('featured_c').value) + parseFloat(document.getElementById('featured_h').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value);
-		
-		document.getElementById('feture_price').innerHTML = addCurrencyFormate(totprice.toFixed(2));
-		document.getElementById('result_price').innerHTML = addCurrencyFormate(resprice.toFixed(2));
-		
-		document.getElementById('total_price').value = (parseFloat(document.getElementById('featured_c').value) + parseFloat(document.getElementById('featured_h').value) +   parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value)).toFixed(2);
-	
-	}else if((document.getElementById('featured_h').checked == true) && (document.getElementById('featured_c').checked == false)){
-		document.getElementById('featured_type').value = 'h';
-		document.getElementById('feture_price').innerHTML = parseFloat(document.getElementById('featured_h').value.replace(',','')).toFixed(2);		
-		
-		document.getElementById('result_price').innerHTML = addCurrencyFormate((parseFloat(document.getElementById('featured_h').value.replace(',','')) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value.replace(',',''))).toFixed(2));		
-		
-		document.getElementById('total_price').value = (parseFloat(document.getElementById('featured_h').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value)).toFixed(2);
-	}else if((document.getElementById('featured_h').checked == false) && (document.getElementById('featured_c').checked == true)){
-		document.getElementById('featured_type').value = 'c';
-		document.getElementById('feture_price').innerHTML = parseFloat(document.getElementById('featured_c').value).toFixed(2);
-		
-		document.getElementById('result_price').innerHTML = addCurrencyFormate((parseFloat(document.getElementById('featured_c').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value)).toFixed(2));	
-		
-		document.getElementById('total_price').value = (parseFloat(document.getElementById('featured_c').value) +  parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value)).toFixed(2);
-		
-	}else if((document.getElementById('featured_h').checked == false) && (document.getElementById('featured_c').checked == false)){
-		document.getElementById('featured_type').value = 'n';
-		document.getElementById('feture_price').innerHTML = '0';
-		document.getElementById('result_price').innerHTML = addCurrencyFormate((parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value)).toFixed(2));
-		document.getElementById('total_price').value = (parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value)).toFixed(2);
-	
-	}else{
-		document.getElementById('featured_type').value = 'n';
-		document.getElementById('feture_price').innerHTML = '0';
-		document.getElementById('result_price').innerHTML = addCurrencyFormate((parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value)).toFixed(2));
-		document.getElementById('total_price').value = (parseFloat(document.getElementById('pkg_price').innerHTML.replace(',','')) +  parseFloat(document.getElementById('all_cat_price').value)).toFixed(2);
-	}
-	<?php
-	}
-	?>
-	if(document.getElementById('featured_type').value == "n")
-	{
-		document.getElementById('feture_price_id').style.display = "none";
-		document.getElementById('feture_price').style.display = "none";
-		document.getElementById('before_feture_price_id').style.display = "none";
-		if(document.getElementById("all_cat_price").value > 0 || document.getElementById('feture_price').innerHTML != 0 )
-		{
-			document.getElementById('cat_price_total_price').style.display = "";
-		}else
-		{
-			document.getElementById('cat_price_total_price').style.display = "none";
-		}
-		document.getElementById('pakg_price_add').style.display = "none";
-	}
-	else if(document.getElementById('featured_type').value == "h" &&  parseFloat(document.getElementById('featured_h').value) > 0)
-	{
-		document.getElementById('feture_price_id').style.display = "";
-		document.getElementById('feture_price').style.display = "";
-		document.getElementById('before_feture_price_id').style.display = "";
-		if(document.getElementById("all_cat_price").value > 0 || document.getElementById('pkg_price').style.display == '')
-		{
-			document.getElementById('cat_price_total_price').style.display = "";
-			document.getElementById('pakg_price_add').style.display = "";
-		}else
-		{
-			document.getElementById('cat_price_total_price').style.display = "none";
-			document.getElementById('pakg_price_add').style.display = "none";
-		}
-	}
-	else if(document.getElementById('featured_type').value == "h" &&  parseFloat(document.getElementById('featured_h').value) <= 0)
-	{
-		if(document.getElementById('author_can_moderate_comment'))
-		{
-			if( parseFloat(document.getElementById('author_can_moderate_comment').value) > 0 && parseFloat(document.getElementById('author_moderate').value) == 1 )
-			{
-				document.getElementById('feture_price_id').style.display = "";
-				document.getElementById('feture_price').style.display = "";
-				document.getElementById('before_feture_price_id').style.display = "";
-				if(document.getElementById('pkg_price').innerHTML != 0)
-				{
-					document.getElementById('cat_price_total_price').style.display = "";
-					document.getElementById('pakg_price_add').style.display = "";
-				}
-			}
-			else
-			{
-				document.getElementById('feture_price_id').style.display = "none";
-				document.getElementById('feture_price').style.display = "none";
-				document.getElementById('before_feture_price_id').style.display = "none";
-				if(document.getElementById("all_cat_price").value > 0 || document.getElementById('feture_price').innerHTML != 0)
-				{
-					document.getElementById('cat_price_total_price').style.display = "";
-				}else
-				{
-					document.getElementById('cat_price_total_price').style.display = "none";
-				}
-				document.getElementById('pakg_price_add').style.display = "none";
-			}
-		}else
-		{
-			document.getElementById('feture_price_id').style.display = "none";
-			document.getElementById('feture_price').style.display = "none";
-			document.getElementById('before_feture_price_id').style.display = "none";
-			if(document.getElementById("all_cat_price").value > 0 || document.getElementById('feture_price').innerHTML != 0)
-			{
-				document.getElementById('cat_price_total_price').style.display = "";
-			}else
-			{
-				document.getElementById('cat_price_total_price').style.display = "none";
-			}
-			document.getElementById('pakg_price_add').style.display = "none";
-		}
-	}
-	else if(document.getElementById('featured_type').value == "c" &&  parseFloat(document.getElementById('featured_c').value) > 0)
-	{
-		document.getElementById('feture_price_id').style.display = "";
-		document.getElementById('feture_price').style.display = "";
-		document.getElementById('before_feture_price_id').style.display = "";
-		if((document.getElementById("all_cat_price").value > 0 || document.getElementById('feture_price').innerHTML != 0) && document.getElementById('pkg_price').innerHTML != 0)
-		{
-			document.getElementById('cat_price_total_price').style.display = "";
-			document.getElementById('pakg_price_add').style.display = "";
-		}else
-		{
-			document.getElementById('cat_price_total_price').style.display = "none";
-			document.getElementById('pakg_price_add').style.display = "none";
-		}
-	}
-	else if(document.getElementById('featured_type').value == "c" )
-	{
-		if(document.getElementById('author_can_moderate_comment'))
-		{
-			if( parseFloat(document.getElementById('author_can_moderate_comment').value) > 0 && parseFloat(document.getElementById('author_moderate').value) == 1 )
-			{
-				document.getElementById('feture_price_id').style.display = "";
-				document.getElementById('feture_price').style.display = "";
-				document.getElementById('before_feture_price_id').style.display = "";
-				if(document.getElementById('feture_price').innerHTML != 0)
-				{
-					document.getElementById('cat_price_total_price').style.display = "none";
-					document.getElementById('pakg_price_add').style.display = "none";
-				}else
-				{
-						document.getElementById('cat_price_total_price').style.display = "";
-					document.getElementById('pakg_price_add').style.display = "";
-				}
-			}
-			else
-			{
-				document.getElementById('feture_price_id').style.display = "none";
-				document.getElementById('feture_price').style.display = "none";
-				document.getElementById('before_feture_price_id').style.display = "none";
-				if(document.getElementById("all_cat_price").value > 0 || document.getElementById('pkg_price').innerHTML != 0)
-				{
-					document.getElementById('cat_price_total_price').style.display = "";
-				}else
-				{
-					document.getElementById('cat_price_total_price').style.display = "none";
-				}
-				document.getElementById('pakg_price_add').style.display = "none";
-			}
-		}
-		else{
-			document.getElementById('feture_price_id').style.display = "none";
-			document.getElementById('feture_price').style.display = "none";
-			document.getElementById('before_feture_price_id').style.display = "none";
-			if(document.getElementById("all_cat_price").value > 0 || document.getElementById('feture_price').innerHTML != 0)
-			{
-				document.getElementById('cat_price_total_price').style.display = "";
-			}else
-			{
-				document.getElementById('cat_price_total_price').style.display = "none";
-			}
-			document.getElementById('pakg_price_add').style.display = "none";
-		}
-	}
-	else if(document.getElementById('featured_type').value == "both" && ( parseFloat(document.getElementById('featured_h').value) > 0 ||  parseFloat(document.getElementById('featured_c').value) > 0))
-	{
-		document.getElementById('feture_price_id').style.display = "";
-		document.getElementById('feture_price').style.display = "";
-		document.getElementById('before_feture_price_id').style.display = "";
-		if(document.getElementById("all_cat_price").value > 0 || document.getElementById('pkg_price').style.display == '')
-		{
-			document.getElementById('cat_price_total_price').style.display = "";
-			document.getElementById('pakg_price_add').style.display = "";
-		}else
-		{
-			document.getElementById('cat_price_total_price').style.display = "none";
-			document.getElementById('pakg_price_add').style.display = "none";
-		}
-	}
-	else if(document.getElementById('author_can_moderate_comment').value)
-	{
-		if( parseFloat(document.getElementById('author_can_moderate_comment').value) > 0 && parseFloat(document.getElementById('author_moderate').value) == 1 )
-		{
-			document.getElementById('feture_price_id').style.display = "";
-			document.getElementById('feture_price').style.display = "";
-			document.getElementById('before_feture_price_id').style.display = "";
-			if(document.getElementById('feture_price').innerHTML != 0 || document.getElementById("all_cat_price").value > 0)
-			{
-				document.getElementById('cat_price_total_price').style.display = "";
-				document.getElementById('pakg_price_add').style.display = "";
-			}
-		}
-		if(document.getElementById('featured_type').value == "n" && parseFloat(document.getElementById('author_moderate').value) != 1 )
-		{
-			document.getElementById('feture_price_id').style.display = "none";
-			document.getElementById('feture_price').style.display = "none";
-			document.getElementById('before_feture_price_id').style.display = "none";
-			if(document.getElementById("all_cat_price").value > 0 )
-			{
-				document.getElementById('cat_price_total_price').style.display = "";
-			}else
-			{
-				document.getElementById('cat_price_total_price').style.display = "none";
-			}
-			document.getElementById('pakg_price_add').style.display = "none";
-		}
-	}
-	else if(document.getElementById('featured_type').value == "n")
-	{
-		document.getElementById('feture_price_id').style.display = "none";
-		document.getElementById('feture_price').style.display = "none";
-		document.getElementById('before_feture_price_id').style.display = "none";
-		if(document.getElementById("all_cat_price").value > 0 || document.getElementById('pkg_price').innerHTML != 0 )
-		{
-			document.getElementById('cat_price_total_price').style.display = "";
-		}else
-		{
-			document.getElementById('cat_price_total_price').style.display = "none";
-		}
-		document.getElementById('pakg_price_add').style.display = "none";
-	}
-	else
-	{
-		document.getElementById('feture_price_id').style.display = "none";
-		document.getElementById('feture_price').style.display = "none";
-		document.getElementById('before_feture_price_id').style.display = "none";
-		if(document.getElementById("all_cat_price").value > 0)
-		{
-			document.getElementById('cat_price_total_price').style.display = "";
-		}else
-		{
-			document.getElementById('cat_price_total_price').style.display = "none";
-		}
-		document.getElementById('pakg_price_add').style.display = "none";
-	}
-	if(document.getElementById('submit_coupon_code') && document.getElementById('total_price').value > 0)
-	{
-		document.getElementById('submit_coupon_code').style.display='';
-	}
-	else
-	{
-		if(document.getElementById('submit_coupon_code'))
-		{
-			document.getElementById('submit_coupon_code').style.display='none';
-		}
-	}
 }
-
-function addCurrencyFormate(nStr)
-{
-	nStr += '';
-	x = nStr.split('.');
-	x1 = x[0];
-	x2 = x.length > 1 ? '.' + x[1] : '';
-	var rgx = /(\d+)(\d{3})/;
-	while (rgx.test(x1)) {
-		x1 = x1.replace(rgx, '$1' + ',' + '$2');
-	}
-	return x1 + x2;
-}
+?>
 </script>
+<?php
+add_action('wp_footer','tmpl_select_price_pkg',9);
+function tmpl_select_price_pkg()
+{
+	?>
+    	<script>
+			var pkg_post = '';
+			jQuery(document).ready(function(){
+				function addLoginFinishStep(step) {
+					if (typeof finishStep === 'undefined') {
+						finishStep = [];
+					}
+					finishStep.push(step);
+				}
+				function showNextLoginStep()
+				{
+					var next = 'post',
+					view = this;
+					jQuery('.step-wrapper').removeClass('current');
+					jQuery('.content').slideUp(500, function() {
+						/* current step is plan*/
+						if (currentStep === 'plan') {
+							if((jQuery('#pkg_type').val() == 1 || pkg_post == 1 || jQuery('#post_upgrade').val() == 'post_upgrade') && jQuery('#upgrade').val() != 'upgrade' )
+							{
+								next = 'post';
+							}
+							else if((jQuery('#pkg_type').val() == 2 && jQuery('#package_free_submission').val() == '' ) || ( jQuery('#pkg_type').val() == 2 && jQuery('#upgrade').val() == 'upgrade') )
+							{
+								jQuery('#step-post').css('display','none');
+								if (parseInt(jQuery('#step-auth').length) === 0)
+								{
+									jQuery('#select_payment').html('2');
+									user_login = true;
+								}
+								else
+								{
+									jQuery('#span_user_login').html('2');
+									jQuery('#select_payment').html('3');
+									user_login = false;
+								}
+								if (user_login) {
+									next = 'payment';
+								}
+								else
+								{
+									next = 'auth';
+								}
+							}
+							else if((jQuery('#pkg_type').val() == 2 && jQuery('#package_free_submission').val() != '')  || ( jQuery('#pkg_type').val() == 2 && jQuery('#upgrade').val() != 'upgrade'))
+							{
+								next = 'post';
+								jQuery('#show_featured_option').css('display','none');
+								jQuery('#submit_coupon_code').css('display','none');
+							}
+						}
+						
+						/*show payment tab if total price is greater tha zero*/
+						if(jQuery('#total_price').val() > 0)
+						{
+							jQuery('#step-payment').css('display','block');
+						}
+						else
+						{
+							jQuery('#step-payment').css('display','none');
+						}
+						/* show next step*/
+						jQuery('.step-' + next + '  .content').slideDown(10).end();
+						jQuery('.step-' + next).addClass('current');
+					});
+				}
+				jQuery(window).load( function( response, status ){
+				<?php
+					if($_SESSION['custom_fields']['pkg_id'] || (isset($_REQUEST['backandedit']) && $_REQUEST['backandedit'] == 1))
+					{
+						?>
+							var pkg_id =  <?php echo ($_SESSION['custom_fields']['pkg_id'])?$_SESSION['custom_fields']['pkg_id']:$_REQUEST['pkg_id']; ?>;
+						
+							$ul = jQuery("ul").find("[data-id='" + pkg_id + "']"),
+							amount = $ul.attr('data-price'),
+							pkg_type =  $ul.attr('data-type'),
+							$step = $ul.closest('div.step'),
+							view = this;
+							package_id = $ul.attr("data-id");
+							
+							currentStep = 'plan';
+							/*added class to highlight the selected package*/
+							$ul.closest('ul').addClass('selected');
+					
+							pkg_type =  $ul.closest('ul').attr('data-type');
+							upgrade =  $ul.closest('ul a').attr('data-upgrade');
+							if($ul.closest('ul').attr('data-free'))
+							{
+								package_free_submission =  $ul.closest('ul').attr('data-free');
+							}else{
+								package_free_submission = '';
+							}
+							jQuery('#pkg_id').val(package_id);
+							jQuery('#pkg_type').val(pkg_type);
+							jQuery('#package_free_submission').val(package_free_submission);
+							jQuery('#upgrade').val(upgrade);
+							if($ul.closest('ul').attr('data-post'))
+							{
+								pkg_post = $ul.closest('ul').attr('data-post');
+							}
+							jQuery('#total_price').val($ul.closest('ul').attr('data-price'));
+							if(parseFloat(jQuery('#total_price').val()) >0)
+							{
+								jQuery('#submit_coupon_code').css('display','block');
+								jQuery('#price_package_price_list').css('display','block');
+								
+							}
+							else
+							{
+								jQuery('#submit_coupon_code').css('display','none');
+								jQuery('#price_package_price_list').css('display','block');
+							}
+							/*fetch category as per selected price package*/
+							jQuery('#submit_category_box').css('opacity','0.5');
+							jQuery('#submit_category_box').addClass('overlay_opacity');
+							
+							/*to show category selected*/
+							jQuery('#submit_category_box').css('opacity','');
+							jQuery('#submit_category_box').removeClass('overlay_opacity');
+							
+							/*to show price package featured option*/
+							if(jQuery('#package_free_submission').val() <= 0 || jQuery('#package_free_submission').val() == '' || upgrade == 'upgrade' )
+							{
+								jQuery('#show_featured_option').css('display','block');
+								jQuery('div#show_featured_option').html(response);
+								if(parseFloat(jQuery('#total_price').val()) >0)
+								{
+									jQuery('#submit_coupon_code').css('display','block');
+									jQuery('#price_package_price_list').css('display','block');
+								}
+								else
+								{
+									jQuery('#submit_coupon_code').css('display','none');
+									jQuery('#price_package_price_list').css('display','none');
+								}
+							}
+							
+							/* hide all content step*/
+							$ul.closest('div.step-wrapper').addClass('complete');
+							/* add step plan to finish array*/
+							addLoginFinishStep('step-plan');
+							/* show next step*/
+							showNextLoginStep();		
+						
+						
+						var submit_from = jQuery('form#submit_form').serialize();
+						jQuery.ajax({
+							url:ajaxUrl,
+							type:'POST',
+							async: true,
+							data:'action=tmpl_tevolution_select_pay_per_subscription_price_package&' + submit_from,
+							success:function(results){
+								if(Math.floor(results) == results && jQuery.isNumeric(results)) 
+								{
+									jQuery('.select-plan').trigger('click');
+								}
+							},
+						});
+						<?php
+						if(($_SESSION['custom_fields']['featured_h']!='' && $_SESSION['custom_fields']['featured_c']!='') || (get_post_meta($_REQUEST['pid'],'featured_h',true)!= '' && get_post_meta($_REQUEST['pid'],'featured_c',true)!= '' ))
+						{
+							?>
+							jQuery('#featured_h').trigger('change');
+							<?php
+						}elseif(!isset($_SESSION['custom_fields']['featured_h'])&& $_SESSION['custom_fields']['featured_c']!='' || (get_post_meta($_REQUEST['pid'],'featured_h',true) == 'h' && get_post_meta($_REQUEST['pid'],'featured_c',true)!= '' )){
+							?>
+							jQuery('#featured_c').trigger('change');
+							<?php
+						}elseif($_SESSION['custom_fields']['featured_h']!='' && !isset($_SESSION['custom_fields']['featured_c']) || (get_post_meta($_REQUEST['pid'],'featured_h',true)!='' && get_post_meta($_REQUEST['pid'],'featured_c',true) == 'c' ) ){
+							?>
+							jQuery('#featured_h').trigger('change');
+							<?php
+						}
+						
+						$cat_price=0;
+						$num_decimals    = absint( get_option( 'tmpl_price_num_decimals' ) );
+						$decimal_sep     = wp_specialchars_decode( stripslashes( get_option( 'tmpl_price_decimal_sep' ) ), ENT_QUOTES );
+						$thousands_sep   = wp_specialchars_decode( stripslashes( get_option( 'tmpl_price_thousand_sep' ) ), ENT_QUOTES );
+						$currency = get_option('currency_symbol');
+						$position = get_option('currency_pos');
+						if((isset($_SESSION['custom_fields']) && $_SESSION['custom_fields']['category']!='') || (isset($_SESSION['custom_fields']) && $_SESSION['custom_fields']['all_cat_price']!='')){
+							
+							foreach($_SESSION['custom_fields']['category'] as $category){
+								$category_price = explode(',',$category);
+								$cat_price+=$category_price[1];	
+							}
+							if(@$_SESSION['custom_fields']['all_cat_price']!='')
+							{
+								$cat_price = $_SESSION['custom_fields']['all_cat_price'];
+							}
+							$pkg_id = ($_SESSION['custom_fields']['pkg_id'])?$_SESSION['custom_fields']['pkg_id']:$_REQUEST['pkg_id'];
+							$package_price=get_post_meta($pkg_id,'package_amount',true);
+							$featured_c=$featured_h=0;
+							if(isset($_SESSION['custom_fields']['featured_h'])){
+								$featured_h=$_SESSION['custom_fields']['featured_h'];
+							}
+							if(isset($_SESSION['custom_fields']['featured_c'])){
+								$featured_c=$_SESSION['custom_fields']['featured_c'];
+							}
+							if(get_post_meta($_REQUEST['pkg_id'],'featured_h',true) == 'h'){
+								$featured_h=$_REQUEST['pkg_id']['featured_h'];
+							}
+							if(get_post_meta($_REQUEST['pkg_id'],'featured_c',true) == 'c'){
+								$featured_c=$_REQUEST['pkg_id']['featured_c'];
+							}
+							$total_price=$cat_price+$package_price+$featured_h+$featured_c;
+						}
+						?>
+						
+						jQuery('#result_price').html('<?php echo apply_filters( 'formatted_tmpl_price', number_format( $total_price, $num_decimals, $decimal_sep, $thousands_sep ), $amount, $num_decimals, $decimal_sep, $thousands_sep )?>');
+						jQuery('#total_price').val('<?php echo apply_filters( 'formatted_tmpl_price', number_format( $total_price, $num_decimals, $decimal_sep, $thousands_sep ), $amount, $num_decimals, $decimal_sep, $thousands_sep )?>');
+						/*jQuery(".category_label input[name^='category'], .category_label input[name='selectall'],.category_label select[name^='category']").trigger('click');*/
+						return true;
+						<?php
+					}
+				?>
+				});
+			});
+		</script>
+    <?php
+}
+?>

@@ -1,4 +1,5 @@
-<?php /* INSERT DUMMY PACKAGES IN MONETIZATION PRICE PACKAGES */
+<?php 
+/* insert dummy packages in monetization price packages */
 global $wp_query,$wpdb,$wp_rewrite;
 $cus_pos_type = get_option("templatic_custom_post");
 $post_type_arr='';
@@ -29,7 +30,8 @@ $post_info = array(
 					"post_content"	=>	'This package allows you to submit a free listing at no cost.',
 					'post_status'   => 'publish',
 					'post_author'   => 1,
-					'post_type'     => 'monetization_package'
+					'post_type'     => 'monetization_package',
+					'menu_order'    => 1,
 					);
 $results = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE post_type='monetization_package' AND post_title='Free'");
 if(count($results) == '')
@@ -50,7 +52,8 @@ $post_info1 = array(
 					"post_content"	=>	'',
 					'post_status'   => 'publish',
 					'post_author'   => 1,
-					'post_type'     => 'monetization_package'
+					'post_type'     => 'monetization_package',
+					'menu_order'    => 2,
 					);
 $results = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE post_type='monetization_package' AND post_title='Multi Listing Special'");
 if(count($results) == '')
@@ -72,6 +75,7 @@ $post_meta = array(
 					"category"               => 'all,'.substr($cat_ids,0,-1),
 					"show_package"			=> '1',
 					"package_amount"		=> '0',
+					"days_for_no_post"      => '30',
 					"validity" 			=> '12',
 					"validity_per" 		=> 'M',
 					"package_status"		=> '1',

@@ -684,11 +684,22 @@ function templatic_general_setting_register_data($column){
 		<tr>
 		<th><label><?php echo __('Login Page',ADMINDOMAIN);?></label></th>
 		<td>
-			<?php $pages = get_pages();?>
+			<?php $pages = get_pages();
+                                                                                        $select_page=$tmpdata['tevolution_login'];
+                                                                                          if( $select_page !=''){
+                                                                                                    $page = get_page($select_page);
+                                                                                                    if(has_shortcode($page->post_content, 'tevolution_login')){
+                                                                                                              $sp = 1;
+                                                                                                    }else{
+                                                                                                              $sp = 0;
+                                                                                                    }
+                                                                                          }
+                                                                      ?>
+			<input type="hidden" id="input_tevolution_login" name="input_tevolution_login" value="<?php echo $sp;  ?>">
 			<select id="tevolution_login" name="tevolution_login">
 				<?php
 				if($pages) :
-				$select_page=$tmpdata['tevolution_login'];
+				
 					foreach ( $pages as $page ) {
 						$selected=($select_page==$page->ID)?'selected="selected"':'';
 						$option = '<option value="' . $page->ID . '" ' . $selected . '>';
@@ -701,17 +712,28 @@ function templatic_general_setting_register_data($column){
 				endif;
 				?>
 			</select> 
-			<div style="display:none" id="tevolution_login_page" class="description act_success  tevolution_highlight"><?php echo __('Copy this shortcode and paste it in the editor of your selected page to make it work correctly.<br> Shortcode - [tevolution_login] (including square braces)', ADMINDOMAIN); ?></div>
+			<p style="display:none" id="tevolution_login_page" class="description act_success"><?php echo __('Copy this shortcode and paste it in the editor of your selected page to make it work correctly.<br> Shortcode - [tevolution_login] (including square braces)', ADMINDOMAIN); ?></p>
 		</td>
 		</tr>
 		<tr>
 		<th><label><?php echo __('Register Page',ADMINDOMAIN);?></label></th>
 		<td>
-			<?php $pages = get_pages();?>
+			<?php 
+                                                                                          $pages = get_pages();
+                                                                                          $select_page=$tmpdata['tevolution_register'];
+                                                                                          if( $select_page !=''){
+                                                                                                    $page = get_page($select_page);
+                                                                                                    if(has_shortcode($page->post_content, 'tevolution_register')){
+                                                                                                              $sp = 1;
+                                                                                                    }else{
+                                                                                                              $sp = 0;
+                                                                                                    }
+                                                                                          }
+                                                                                ?>
+                                                                           <input type="hidden" id="input_tevolution_register" name="input_tevolution_register" value="<?php echo $sp; ?>">
 			<select id="tevolution_register" name="tevolution_register">
 				<?php
 				if($pages) :
-				$select_page=$tmpdata['tevolution_register'];
 					foreach ( $pages as $page ) {
 						$selected=($select_page==$page->ID)?'selected="selected"':'';
 						$option = '<option value="' . $page->ID . '" ' . $selected . '>';
@@ -723,17 +745,28 @@ function templatic_general_setting_register_data($column){
 					echo '<option>' . __('No pages found', ADMINDOMAIN) . '</option>';
 				endif;
 				?>
-			</select> <div style="display:none" id="tevolution_register_page" class="description act_success  tevolution_highlight"><?php echo __('Copy this shortcode and paste it in the editor of your selected page to make it work correctly.<br> Shortcode - [tevolution_register] (including square braces)',ADMINDOMAIN); ?></div>
+			</select> 
+                                                                           <p style="display:none" id="tevolution_register_page" class="description act_success"><?php echo __('Copy this shortcode and paste it in the editor of your selected page to make it work correctly.<br> Shortcode - [tevolution_register] (including square braces)',ADMINDOMAIN); ?></p>
 		</td>
 		</tr>
 		<tr>
 		<th><label><?php echo __('Profile Page',ADMINDOMAIN);?></label></th>
 		<td>
-			<?php $pages = get_pages();?>
+			<?php $pages = get_pages();
+                                                                                          $select_page=$tmpdata['tevolution_profile'];
+                                                                                          if( $select_page !=''){
+                                                                                                    $page = get_page($select_page);
+                                                                                                    if(has_shortcode($page->post_content, 'tevolution_profile')){
+                                                                                                              $sp = 1;
+                                                                                                    }else{
+                                                                                                              $sp = 0;
+                                                                                                    }
+                                                                                          }
+                                                                                ?>
+                                                                           <input type="hidden" id="input_tevolution_profile" name="input_tevolution_profile" value="<?php echo $sp; ?>">
 			<select id="tevolution_profile" name="tevolution_profile">
 				<?php
 				if($pages) :
-				$select_page=$tmpdata['tevolution_profile'];
 					foreach ( $pages as $page ) {
 						$selected=($select_page==$page->ID)?'selected="selected"':'';
 						$option = '<option value="' . $page->ID . '" ' . $selected . '>';
@@ -745,7 +778,8 @@ function templatic_general_setting_register_data($column){
 					echo '<option>' . __('No pages found', ADMINDOMAIN) . '</option>';
 				endif;
 				?>
-			</select> <div style="display:none" id="tevolution_profile_page" class="description act_success tevolution_highlight"><?php echo __('Copy this shortcode and paste it in the editor of your selected page to make it work correctly.<br> Shortcode - [tevolution_profile] (including square braces)',ADMINDOMAIN); ?></div>
+			</select> 
+                                                                           <p style="display:none" id="tevolution_profile_page" class="description act_success"><?php echo __('Copy this shortcode and paste it in the editor of your selected page to make it work correctly.<br> Shortcode - [tevolution_profile] (including square braces)',ADMINDOMAIN); ?></p>
 		</td>
 		</tr>
 		<tr>

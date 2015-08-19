@@ -37,7 +37,7 @@ function tevolution_all_list_map($atts ){
 		wp_enqueue_script( 'wp_show_taxonomies_map_js');
 		
 		$mapcategory_info =get_shortcode_map_categoryinfo($post_info);	
-		//$mappost_info =get_map_postinfo($post_info);	
+		/*$mappost_info =get_map_postinfo($post_info);	*/
 		
 		
 		$tmpdata = get_option('templatic_settings');			
@@ -47,12 +47,10 @@ function tevolution_all_list_map($atts ){
 		$map_type    = $map_type;
 		$map_display = $map_display;
 		$zoom_level  = $zoom_level;
-		
-		wp_print_scripts( 'google-maps-apiscript' );		
-		wp_print_scripts( 'google-clusterig' );		
+	
 		wp_print_scripts( 'wp_show_taxonomies_map_js' );
 		
-		$google_map_customizer=get_option('google_map_customizer');// store google map customizer required formate.
+		$google_map_customizer=get_option('google_map_customizer');/* store google map customizer required formate.*/
 		if(!isset($_GET['h'])){
 			$PHP_SELF = $_SERVER['PHP_SELF'];
 		?>	
@@ -103,7 +101,7 @@ function tevolution_all_list_map($atts ){
 			map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
 			var styles = [<?php echo substr($google_map_customizer,0,-1);?>];			
 			map.setOptions({styles: styles});
-			// Initialize Fluster and give it a existing map		 
+			/* Initialize Fluster and give it a existing map		 */
 			mgr = new MarkerManager( map );
 			
 		}
@@ -119,7 +117,7 @@ function tevolution_all_list_map($atts ){
                <div class="iprelative">
                	<div id="map_canvas" style="width: 100%; height:<?php echo $_GET['h']; ?>; " class="map_canvas"></div>               
                     <div id="map_loading_div" style="width: 100%; height:<?php echo $_GET['h']-200; ?>px; display: none;"></div>                     
-                    <div id="map_marker_nofound"><?php _e('<p>Your selected category do not have any records yet at your current location.</p>',LM_DOMAIN) ?></div>     
+                    <div id="map_marker_nofound"><?php echo '<p>';_e('Your selected category do not have any records yet at your current location.',DOMAIN);echo '</p>'; ?></div>     
                </div>             
               
                <form id="ajaxform" name="slider_search" class="pe_advsearch_form" action="javascript:void(0);"  onsubmit="return(new_googlemap_ajaxSearch());">
@@ -136,7 +134,7 @@ function tevolution_all_list_map($atts ){
                     <label><input type="checkbox" data-category="<?php echo str_replace("&",'&amp;',$post_info[$c]).'categories';?>" onclick="taxo_googlemap_initialize(this);"  value="<?php echo str_replace("&",'&amp;',$post_info[$c]);?>"  <?php if(!empty($_POST['posttype']) && !in_array(str_replace("&",'&amp;',$post_info[$c]) ,$_POST['posttype'])):?> <?php else:?> checked="checked" <?php endif;?> class="<?php echo str_replace("&",'&amp;',$post_info[$c]).'custom_categories';?>" id="<?php echo str_replace("&",'&amp;',$post_info[$c]).'custom_categories';?>" name="posttype[]"> <?php echo ucfirst($_PostTypeName);?></label><span id='<?php echo $post_info[$c].'_toggle';?>' class="toggle_post_type toggleon" onclick="custom_post_type_taxonomy('<?php echo $post_info[$c].'categories';?>',this)"></span></div>
                          <div class="custom_categories <?php echo str_replace("&",'&amp;',$post_info[$c]).'custom_categories';?>" id="<?php echo str_replace("&",'&amp;',$post_info[$c]).'categories';?>" >
                          	 <?php foreach($mapcategory_info[$post_info[$c]] as $key => $value){ ?>
-                    				<label><input type="checkbox" onclick="taxo_googlemap_initialize(this);"  value="<?php echo $value['slug'];?>"  <?php if(!empty($_POST['categoryname']) && !in_array($key,$_POST['categoryname'])):?> <?php else:?> checked="checked" <?php endif;?> id="<?php echo $key;?>" name="categoryname[]"><img height="14" width="8" alt="" src="<?php echo $value['icon']?>"> <?php echo $value['name']?></label>
+                    				<label><input type="checkbox" onclick="taxo_googlemap_initialize(this);"  value="<?php echo $value['termid'];?>"  <?php if(!empty($_POST['categoryname']) && !in_array($key,$_POST['categoryname'])):?> <?php else:?> checked="checked" <?php endif;?> id="<?php echo $key;?>" name="categoryname[]"><img height="14" width="8" alt="" src="<?php echo $value['icon']?>"> <?php echo $value['name']?></label>
                     
                     <?php }?>
                          </div>
@@ -151,11 +149,11 @@ function tevolution_all_list_map($atts ){
           </div>
           </div>
 		 </div>
-        <script>
+        <script type="text/javascript" async>
 		var maxMap = document.getElementById( 'triggermap' );		
 		google.maps.event.addDomListener(maxMap, 'click', showFullscreen);
 		function showFullscreen() {
-			  // window.alert('DIV clicked');
+			  /* window.alert('DIV clicked');*/
 				jQuery('#map_canvas').toggleClass('map-fullscreen');
 				jQuery('.map_category').toggleClass('map_category_fullscreen');
 				jQuery('.map_post_type').toggleClass('map_category_fullscreen');
@@ -167,7 +165,7 @@ function tevolution_all_list_map($atts ){
 				jQuery('#triggermap').toggleClass('triggermap_fullscreen');
 				
 				jQuery('.TopLeft').toggleClass('TopLeft_fullscreen');		
-					 //map.setCenter(darwin);
+					 /*map.setCenter(darwin);*/
 					 window.setTimeout(function() { 
 					var center = map.getCenter(); 
 					google.maps.event.trigger(map, 'resize'); 
@@ -192,10 +190,10 @@ function get_shortcode_map_categoryinfo($post_type){
 			if(@$cat->term_icon)
 				$term_icon=$cat->term_icon;
 			else
-				$term_icon=TEVOLUTION_LOCATION_URL.'images/pin.png';			
+				$term_icon=apply_filters('tmpl_default_map_icon',TEVOLUTION_LOCATION_URL.'images/pin.png');
 			
 			
-				$categoriesinfo[]=array( 'slug'=> @$cat->slug,'name'=>$cat->name,'icon'=>$term_icon);	
+				$categoriesinfo[]=array( 'termid' => $cat->term_id , 'slug'=> @$cat->slug,'name'=>$cat->name,'icon'=>$term_icon);	
 			
 			
 		}
@@ -228,7 +226,7 @@ function taxonomies_googlemap_initialize(){
 		$catname_arr=get_categories( $r );	
 		foreach($catname_arr as $cat)	{
 			$catname=$cat->slug;
-			if(!in_array($cat->slug,$categoryname))
+			if(!in_array($cat->term_id,$categoryname))
 				continue;
 				
 			$cat_ID.=$cat->term_id.',';
@@ -263,7 +261,7 @@ function taxonomies_googlemap_initialize(){
 							$term_icon=$post_category->term_icon;
 							break;
 						}else{
-							$term_icon=TEMPL_PLUGIN_URL.'images/pin.png';
+							$term_icon=apply_filters('tmpl_default_map_icon',TEMPL_PLUGIN_URL.'images/pin.png');
 						}
 						
 						$ID =get_the_ID();				
@@ -274,6 +272,8 @@ function taxonomies_googlemap_initialize(){
 						$address = stripcslashes(str_replace($srcharr,$replarr,(get_post_meta($ID,'address',true))));
 						$contact = str_replace($srcharr,$replarr,(get_post_meta($ID,'phone',true)));
 						$website = get_post_meta($ID,'website',true);
+						if(!strstr($website,'http') && $website !='')
+								$website = 'http://'.$website;
 						/*Fetch the image for display in map */
 						if ( has_post_thumbnail()){
 							$post_img = wp_get_attachment_image_src( get_post_thumbnail_id(), 'thumbnail');						
@@ -293,7 +293,7 @@ function taxonomies_googlemap_initialize(){
 						
 						$image_class=($post_image)?'map-image' :'';
 						$comment_count= count(get_comments(array('post_id' => $ID)));
-						$review=($comment_count <=1 )? __('review',DOMAIN):__('reviews',DOMAIN);	
+						$review=($comment_count ==1 )? __('review',DOMAIN):__('reviews',DOMAIN);	
 						
 						if(($lat && $lng )&& !in_array($ID,$pids))
 						{ 	
@@ -304,16 +304,15 @@ function taxonomies_googlemap_initialize(){
 							$retstr .= '<h6><a href='.$plink.' class=ptitle><span>'.$title.'</span></a></h6>';							
 							if($address){$retstr .= '<p class=address>'.trim($address).'</p>';}
 							$retstr .= apply_filters('tmpl_map_after_address_fields','',$ID );
-							if($contact){$retstr .= '<p class=contact>'.ltrim(rtrim($contact)).'</p>';}
+							if($contact){$retstr .= '<p class=contact>'.ltrim(rtrim(stripslashes($contact))).'</p>';}
 							$retstr .= apply_filters('tmpl_map_after_contact_fields','',$ID );
 							if($website){$retstr .= '<p class=website><a href= '.trim($website).'>'.trim($website).'</a></p>';}
 							$retstr .= apply_filters('tmpl_map_custom_fields','',$ID );
 							if($templatic_settings['templatin_rating']=='yes'){
 								$rating=draw_rating_star_plugin(get_post_average_rating(get_the_ID()));
 								$retstr .= '<div class=map_rating>'.str_replace('"','',$rating).' <span><a href='.$plink.'#comments>'.$comment_count.' '.$review.'</a></span></div>';
-							}elseif(is_plugin_active('Templatic-MultiRating/multiple_rating.php') && function_exists('single_average_rating')){
-								$rating=get_single_average_rating(get_the_ID());
-								$retstr .= '<div class=map_rating>'.stripcslashes(str_replace('"','',$rating)).'<span><a href='.$plink.'#comments>'.$comment_count.' '.$review.'</a></span></div>';
+							}else{
+								$retstr .= apply_filters('show_map_multi_rating',get_the_ID(),$plink,$comment_count,$review);
 							}
 							$retstr .= '</div></div></div>';
 							$retstr .= '",';
@@ -335,7 +334,6 @@ function taxonomies_googlemap_initialize(){
 				$cat_content_info[]= implode(',',$content_data);
 	}
 	
-	//
 	if($cat_content_info)
 	{
 		echo '[{"totalcount":"'.$j.'",'.substr(implode(',',$cat_content_info),1).']';

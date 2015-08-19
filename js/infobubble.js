@@ -1,3 +1,6 @@
+/*
+ * pop up for google map marker
+ */
 function InfoBubble(e) {
     this.extend(InfoBubble, google.maps.OverlayView);
     this.baseZIndex_ = 100;

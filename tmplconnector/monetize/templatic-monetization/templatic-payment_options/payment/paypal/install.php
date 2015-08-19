@@ -1,19 +1,22 @@
 <?php
+/*
+ * insert option for paypal in database while plugin activation
+ */
 $paymentmethodname = 'paypal'; 
 if($_REQUEST['install']==$paymentmethodname)
 {
 	$paymethodinfo = array();
 	$payOpts = array();
 	$payOpts[] = array(
-					"title"			=>	__('Your Paypal email',ADMINDOMAIN),
+					"title"			=>	__('Your PayPal Email',ADMINDOMAIN),
 					"fieldname"		=>	"merchantid",
 					"value"			=>	"email@example.com",
-					"description"	=>	__('Example',ADMINDOMAIN).__(" : email@example.com",ADMINDOMAIN)
+					"description"	=>	__('Example',ADMINDOMAIN).__(": email@example.com",ADMINDOMAIN)
 					);
 	$paymethodinfo = array(
-						"name" 		=> __('Paypal',ADMINDOMAIN),
+						"name" 		=> __('PayPal',ADMINDOMAIN),
 						"key" 		=> $paymentmethodname,
-						"isactive"	=>	'1', // 1->display,0->hide
+						"isactive"	=>	'1', /* 1->display,0->hide*/
 						"display_order"=>'1',
 						"payOpts"	=>	$payOpts,
 						);

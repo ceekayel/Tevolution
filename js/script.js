@@ -1,3 +1,6 @@
+/*
+ * grid list view option
+ */
 jQuery.cookie = function(name, value, options) {
     if (typeof value != 'undefined') { // name and value given, set cookie
         options = options || {};
@@ -88,10 +91,3 @@ jQuery(document).ready(function() {
 		jQuery.cookie("display_view", "grid");
 	});
 });
-function sort_as_set(val)
-{
-	if(document.getElementById('tevolution_sortby').value)
-	{
-		document.tevolution_sorting.submit();
-	}
-}

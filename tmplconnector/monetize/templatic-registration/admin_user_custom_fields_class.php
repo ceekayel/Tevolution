@@ -1,4 +1,9 @@
 <?php
+/*
+ * class to fetch the user custom fileds listing for backend
+ */
+global $pagenow;
+if($pagenow == 'admin.php' && (isset($_REQUEST['page']) && $_REQUEST['page'] == 'custom_setup' && isset($_REQUEST['ctab']) && $_REQUEST['ctab'] == 'user_custom_fields')){
 if(!class_exists('Tmpl_WP_List_Table')){
     include_once( WP_PLUGIN_DIR . '/Tevolution/templatic.php');
 }
@@ -12,7 +17,7 @@ class wp_list_custom_user_field extends Tmpl_WP_List_Table
 		$sort_order = get_post_meta($post_id,'sort_order',true);	
 		
 		$meta_data = array( 'ID'			 => $post_id,
-						'title'		 => '<strong><a href="'.site_url().	'/wp-admin/admin.php?page=user_custom_fields&action=addnew&cf='.$post_id.'">'.$post_title.'</a></strong><input type="hidden" name="user_field_sort[]" value="'.$post_id.'">',
+						'title'		 => '<strong><a href="'.site_url().	'/wp-admin/admin.php?page=custom_setup&ctab=user_custom_fields&action=addnew&cf='.$post_id.'">'.$post_title.'</a></strong><input type="hidden" name="user_field_sort[]" value="'.$post_id.'">',
 						'type' 		 => $ctype,
 						'variable_name' => $post_name,
 						'active' 		 => $post_status,
@@ -71,14 +76,15 @@ class wp_list_custom_user_field extends Tmpl_WP_List_Table
 					   'type'          => __('Type',ADMINDOMAIN),
 					   'variable_name' => __('Variable Name',ADMINDOMAIN),
 					   'active'        => __('Active',ADMINDOMAIN),
-					   //'display_order' => __('Display Order',DOMAIN)
+                                                                                                                                  
+					   /*'display_order' => __('Display Order',DOMAIN)*/
 					);
 		return $columns;
 	}
 	/**/
 	function process_bulk_action()
 	{ 
-		//Detect when a bulk action is being triggered...
+		/*Detect when a bulk action is being triggered...*/
 		if( 'delete' === $this->current_action() )
 		{
 			$cids = $_REQUEST['cf'];
@@ -88,7 +94,7 @@ class wp_list_custom_user_field extends Tmpl_WP_List_Table
 			}
 			$url = site_url().'/wp-admin/admin.php';
 			echo '
-			<input type="hidden" value="user_custom_fields" name="page"><input type="hidden" value="delsuccess" name="usermetamsg">
+			<input type="hidden" value="custom_setup" name="page"><input type="hidden" value="user_custom_fields" name="ctab"><input type="hidden" value="delsuccess" name="usermetamsg">
 			<script>document.register_custom_fields.submit();</script>
 			';exit;	
 		}
@@ -96,23 +102,24 @@ class wp_list_custom_user_field extends Tmpl_WP_List_Table
     
 	function prepare_items()
 	{
-		$per_page = $this->get_items_per_page('user_custom_fields_per_page', 10);
+		if($this->get_items_per_page('taxonomy_per_page') =='')
+			$per_page = $this->get_items_per_page('taxonomy_per_page', 10);
 		$columns = $this->get_columns(); /* CALL FUNCTION TO GET THE COLUMNS */
 		$hidden = array();
 		$sortable = array();
 		$sortable = $this->get_sortable_columns(); /* GET THE SORTABLE COLUMNS */
 		$this->_column_headers = array($columns, $hidden, $sortable);
 		$this->process_bulk_action(); /* FUNCTION TO PROCESS THE BULK ACTIONS */
-		//$action = $this->current_action();
+		/*$action = $this->current_action();*/
 		$data = $this->custom_user_fields(); /* RETIRIVE THE USER FIELDS DATA */
 		
 		/* FUNCTION THAT SORTS THE COLUMNS */
 		function usort_reorder($a,$b)
 		{
-			$orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'title'; //If no sort, default to title
-			$order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
-			$result = strcmp($a[$orderby], $b[$orderby]); //Determine sort order
-			return ($order==='asc') ? $result : -$result; //Send final sort direction to usort
+			$orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'title'; /*If no sort, default to title*/
+			$order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; /*If no order, default to asc*/
+			$result = strcmp($a[$orderby], $b[$orderby]); /*Determine sort order*/
+			return ($order==='asc') ? $result : -$result; /*Send final sort direction to usort*/
 		}
 		if(is_array($data) && isset($_REQUEST['orderby'])){
 			usort( $data, 'usort_reorder');
@@ -142,7 +149,7 @@ class wp_list_custom_user_field extends Tmpl_WP_List_Table
 				
 				return $active;
 			default:
-				return print_r( $item, true ) ; //Show the whole array for troubleshooting purposes
+				return print_r( $item, true ) ; /*Show the whole array for troubleshooting purposes*/
 		}
 	}
 	
@@ -158,8 +165,8 @@ class wp_list_custom_user_field extends Tmpl_WP_List_Table
 	function column_title($item)
 	{
 		$actions = array(
-			'edit' => sprintf('<a href="?page=%s&action=%s&cf=%s">Edit</a>',$_REQUEST['page'],'addnew',$item['ID']),
-			'delete' => sprintf('<a href="?page=%s&action_del=%s&cf[]=%s" onclick="return confirm(\'Are you sure for deleteing custom field?\')">Delete</a>',$_REQUEST['page'],'delete',$item['ID'])
+			'edit' => sprintf('<a href="?page=%s&ctab=%s&action=%s&cf=%s">'.__('Edit',ADMINDOMAIN).'</a>',$_REQUEST['page'],'user_custom_fields','addnew',$item['ID']),
+			'delete' => sprintf('<a href="?page=%s&ctab=%s&action_del=%s&cf[]=%s" onclick="return confirm(\''.__('Are you sure for deleteing custom field?',ADMINDOMAIN).'\')">'.__('Delete',ADMINDOMAIN).'</a>',$_REQUEST['page'],'user_custom_fields','delete',$item['ID'])
 			);
 		
 		return sprintf('%1$s %2$s', $item['title'], $this->row_actions($actions , $always_visible = false) );
@@ -179,4 +186,6 @@ class wp_list_custom_user_field extends Tmpl_WP_List_Table
 			'<input type="checkbox" name="cf[]" value="%s" />', $item['ID']
 			);
 	}
-} ?>
+}
+} 
+?>
