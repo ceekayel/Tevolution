@@ -1,8 +1,8 @@
 {
-  "name": "trick-e/tevolution",
+  "name": "trick-e/Tevolution",
   "description": "Tevolution Wordpress Plugin for Directory, by Templatic.",
   "license": "proprietary",
-  "keywords": ["wordpress","plugin","plugins","tevolution", "tevolution-plugin","directory-theme", "templatic"],
+  "keywords": ["wordpress","plugin","plugins","Tevolution", "tevolution-plugin","directory-theme", "templatic"],
   "authors": [
     {
       "name": "Christopher Legan",
