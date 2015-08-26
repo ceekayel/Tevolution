@@ -1,5 +1,5 @@
 <?php
-include_once('../../../wp-load.php' );
+require_once( $_SERVER['DOCUMENT_ROOT'] . '/wp/wp-load.php' );
 error_reporting(E_ALL);
 header("Content-type: text/css");
 $tev_css= array();
