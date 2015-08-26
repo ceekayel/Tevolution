@@ -8,7 +8,8 @@ define( 'DOING_AJAX', true );
 define( 'WP_ADMIN', true );
 define('WP_DEBUG', false);
 /* Load WordPress Bootstrap */
-require_once( dirname(dirname( dirname(dirname( __FILE__ ) ) )) . '/wp-load.php' );
+//require_once( dirname(dirname( dirname(dirname( __FILE__ ) ) )) . '/wp-load.php' );
+require_once( $_SERVER['DOCUMENT_ROOT'] . '/wp/wp-load.php' );
 /* Require an action parameter  */
 if ( empty( $_REQUEST['action'] ) )
 	die( '0' );
